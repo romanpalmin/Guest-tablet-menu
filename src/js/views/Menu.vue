@@ -1,7 +1,7 @@
 <template>
     <div>
-        <div>this is template body</div>
-        <div>{{msg}}</div>
+        <div>{{msg1}}</div>
+        <mainMenu />
     </div>
 </template>
 <style>
@@ -10,14 +10,15 @@
     }
 </style>
 <script>
-
+    import mainMenu from './components/MainMenu.vue';
     export default{
         data(){
             return{
-                msg:'hello vue 11111'
+                msg1:'Загружаем компонент списка бургеров'
             }
         },
         components:{
+            mainMenu
         }
     }
 </script>
