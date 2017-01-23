@@ -7,20 +7,31 @@ body {
     background: url('../images/background.jpg');
 }
 
+a {
+    text-decoration: none;
+    color: #000;
+    outline: none;
+}
+
 .pages-nav {
     display: flex;
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 5px;
+    padding: 5px 5px 0 5px;
     text-align: center;
     background: #0e0f0f;
 }
 
 .pages-nav__item {
+     width: 21%;
+     padding: 1em 1em 0 1em;
+ }
+
+.pages-nav__item {
     width: 21%;
-    padding: 1em;
+    padding: 1em 1em 0 1em;
 }
 
 .link-page {
@@ -37,6 +48,22 @@ body {
     letter-spacing: 1px;
     text-transform: uppercase;
     text-decoration: none;
+}
+
+
+.router-link-active{
+    color: #FFFFFF;
+    background-color: #555555;
+}
+
+.menu__link--current{
+    color: #FFFFFF;
+    background-color: #555555;
+}
+
+.menu__link--current.sidebar{
+    color: #FFFFFF;
+    background-color: #e2e2e2;
 }
 
 .link-page:not(.link-faded)::before {

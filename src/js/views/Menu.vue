@@ -1,12 +1,12 @@
 <template>
     <div>
-        <div>{{msg1}}</div>
+        <div></div>
         <mainMenu />
     </div>
 </template>
 <style>
     body{
-        background-color:#dddddd;
+        background-color:#ffffff;
     }
 </style>
 <script>
@@ -14,7 +14,7 @@
     export default{
         data(){
             return{
-                msg1:'Загружаем компонент списка бургеров'
+                msg:'Загружаем компонент списка бургеров'
             }
         },
         components:{

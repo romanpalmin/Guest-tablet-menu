@@ -17,7 +17,8 @@ const routes = [
 ];
 
 var router = new VueRouter({
-    routes
+    routes,
+    linkActiveClass:'menu__link--current'
 });
 
 const app = new Vue({
@@ -25,11 +26,11 @@ const app = new Vue({
     template: `
     <div id="app-menu">
         <nav class="pages-nav">
-            <div class="pages-nav__item "><router-link to="/site"><a class="link-page link">Сайт</a></router-link></div>
-            <div class="pages-nav__item "><router-link to="/shedule"><a class="link-page link">Развлечения</a></router-link></div>
-            <div class="pages-nav__item "><router-link to="/menu"><a class="link-page link">Меню</a></router-link></div>
-            <div class="pages-nav__item "><router-link to="/order"><a class="link-page link">Заказ</a></router-link></div>
+            <div class="pages-nav__item "><router-link to="/site" class="link-page link">Сайт</router-link></div>
+            <div class="pages-nav__item "><router-link to="/shedule" class="link-page link">Развлечения</router-link></div>
+            <div class="pages-nav__item "><router-link to="/menu" class="link-page link">Меню</router-link></div>
+            <div class="pages-nav__item "><router-link to="/order" class="link-page link">Вы выбрали</router-link></div>
         </nav>
-      <router-view class="view" @eventname="console.log(123);"></router-view>
+      <router-view class="view"></router-view>
     </div>`
 }).$mount('#app');
