@@ -7,43 +7,43 @@ export default [
     },
     {
         'name':'Бургеры',
-        'code':332020,
+        'code':2,
         'urlSmallImage':'../src/images/burger-small.png',
         'urlBigImage':'../src/images/burger-big.png'
     },
     {
         'name':'Бургеры',
-        'code':332020,
+        'code':3,
         'urlSmallImage':'../src/images/burger-small.png',
         'urlBigImage':'../src/images/burger-big.png'
     },
     {
         'name':'Бургеры',
-        'code':332020,
+        'code':4,
         'urlSmallImage':'../src/images/burger-small.png',
         'urlBigImage':'../src/images/burger-big.png'
     },
     {
         'name':'Бургеры',
-        'code':332020,
+        'code':5,
         'urlSmallImage':'../src/images/burger-small.png',
         'urlBigImage':'../src/images/burger-big.png'
     },
     {
         'name':'Бургеры',
-        'code':332020,
+        'code':6,
         'urlSmallImage':'../src/images/burger-small.png',
         'urlBigImage':'../src/images/burger-big.png'
     },
     {
         'name':'Бургеры',
-        'code':332020,
+        'code':7,
         'urlSmallImage':'../src/images/burger-small.png',
         'urlBigImage':'../src/images/burger-big.png'
     },
     {
         'name':'Бургеры',
-        'code':332020,
+        'code':8,
         'urlSmallImage':'../src/images/burger-small.png',
         'urlBigImage':'../src/images/burger-big.png'
     }

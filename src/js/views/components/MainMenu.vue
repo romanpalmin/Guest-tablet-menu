@@ -1,24 +1,22 @@
 <template>
     <div>
 
-        <div class="main-menu" v-if="menuType === 'Main'">
+        <div class="main-menu">
             <div>Основное меню :</div>
             <ul class="root-icons">
-                <li class="root-icon" v-for="item in ctgs_with_styles" @click="changeMenu">
-                    <a :root-data-code="item.code">
-                        <div class="root-icon-image" :style="item.style">
-                            <div class="root-icon-descr">
-                                {{ item.name }}
+                <li class="root-icon" v-for="item in ctgs_with_params">
+                    <router-link :to="item.route">
+
+                        <a :root-data-code="item.code">
+                            <div class="root-icon-image" :style="item.style">
+                                <div class="root-icon-descr">
+                                    {{ item.name }}
+                                </div>
                             </div>
-                        </div>
-                    </a>
+                        </a>
+                    </router-link>
                 </li>
             </ul>
-        </div>
-
-        <div class="sidebar-menu" v-if="menuType === 'Sidebar'">
-            <div>Боковое меню:</div>
-
         </div>
     </div>
 </template>
@@ -61,47 +59,27 @@
         }
     }
 
-    .sidebar-menu {
-        .dummy-logo {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 300px;
-            height: 220px;
-            text-align: center;
-            color: #3b3d4a;
-            background: #F7F7F7;
-        }
-    }
-
 </style>
 <script>
     import categories from './data/category'
     export default{
         data(){
-            return{
-                ctgs: categories,
-                menuType: 'Main'
+            return {
+                ctgs: categories
             }
         },
         computed: {
-            ctgs_with_styles: function() {
-                var res = this.ctgs.map(function(item) {
-                    item.style = 'background-image: url(' + item.urlBigImage + ');'
+            ctgs_with_params: function () {
+                var res = this.ctgs.map(function (item) {
+                    item.style = 'background-image: url(' + item.urlBigImage + ');';
+                    item.route = 'menu/'+item.code;
                     return item;
                 });
-                console.log(res);
                 return res;
-            }
+            },
         },
-        methods:{
-            changeMenu: function(evt){
-                this.menuType = 'Sidebar';
-            }
-        },
-        beforeRouteLeave (to, from, next) {
-    // вызывается перед переходом от пути, соответствующего текущему компоненту;
-    // имеет доступ к контексту инстанса компонента `this`.
+        methods: {
+
         }
     }
 

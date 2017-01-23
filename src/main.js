@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import menu from './js/views/Menu.vue';
+import sidebar from './js/views/components/sidebar.vue';
 import site from './js/views/Site.vue';
 import order from './js/views/Order.vue';
 import shedule from './js/views/Shedule.vue';
@@ -8,32 +9,17 @@ Vue.use(VueRouter);
 
 
 const routes = [
-    {path: '/menu', component: menu},
-    {path: '/site', component: site},
-    {path: '/order', component: order},
-    {path: '/shedule', component: shedule}
+    {name: 'menu', path: '/menu', component: menu},
+    {name: 'site', path: '/site', component: site},
+    {name: 'order', path: '/order', component: order},
+    {name: 'shedule', path: '/shedule', component: shedule},
+    {name: 'sidebar', path: '/menu/:id', component: sidebar}
 ];
 
 var router = new VueRouter({
-    linkActiveClass: 'active-page-delete',
     routes
-
 });
 
-router.afterEach((to, from) => {
-    var link = document.getElementsByClassName('active-page-delete');
-    console.log(link);
-    if (link.length > 0) {
-        console.log(222);
-        link[0].addEventListener('click', function () {
-            router.push('menu');
-            console.log(1);
-        });
-    }
-
-});
-
-/* Bootstrap routes to the main component */
 const app = new Vue({
     router,
     template: `

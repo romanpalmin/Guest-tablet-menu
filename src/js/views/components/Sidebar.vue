@@ -1,28 +1,34 @@
 <template>
     <div>
-        <div>this is template body</div>
+        <div>this is template body sidebr {{$route.params.id}}</div>
+        <div @click="getData"> test</div>
+        <div>{{id}}</div>
     </div>
 </template>
 <style>
-    body{
-        background-color:#ff0000;
-    }
+    p{
+     }
 </style>
 <script>
    import categories from './data/category'
     export default{
         data(){
             return{
-                ctgs: categories
+                ctgs: categories,
+                id: this.$route.params.id
             }
         },
         computed: {
-            ctgs_with_styles: function() {
+            ctgs_with_params: function() {
                 var res = this.ctgs.map(function(item) {
                     return item;
                 });
                 console.log(res);
                 return res;
+            }
+        },
+        methods: {
+            getData: function(){
             }
         }
     }
