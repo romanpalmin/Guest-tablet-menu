@@ -2,7 +2,7 @@
     <div>
 
         <div class="main-menu">
-            <div>Основное меню :</div>
+            <div @click="reCalculate">Основное  меню : {{CurrentId}}</div>
             <ul class="root-icons">
                 <li class="root-icon" v-for="item in ctgs_with_params">
                     <router-link :to="item.route">
@@ -65,7 +65,8 @@
     export default{
         data(){
             return {
-                ctgs: categories
+                ctgs: categories,
+                CurrentId: 666
             }
         },
         computed: {
@@ -79,7 +80,9 @@
             },
         },
         methods: {
-
+            reCalculate: function(){
+                this.CurrentId++;
+            }
         }
     }
 

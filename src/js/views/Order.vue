@@ -3,7 +3,7 @@
         <div>
             <div class='white-panel'>
                 <div class="dummy-logo">
-                    <img src="./components/images/beer-zha.png">
+                    <img src="assets/images/beer-zha.png">
                 </div>
             </div>
             <header>
@@ -23,7 +23,7 @@
                             <td>
                                 <div class="close-wrap">
                                     <div class="delete"><img :data-code="item.id"
-                                                             @click="deleteOrder" src="./components/images/close.png">
+                                                             @click="deleteOrder" src="assets/images/close.png">
                                     </div>
                                 </div>
                             </td>

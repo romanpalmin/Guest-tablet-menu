@@ -1,11 +1,11 @@
 <template>
     <div>
-        <div class="white-panel">test</div>
+        <div class="white-panel"></div>
         <div class="sidebar">
             <header class="bp-header ">
             </header>
             <div class="dummy-logo">
-                <img src="./images/beer-zha.png">
+                <img src="assets/images/beer-zha.png">
                 <nav class="menu">
                     <nav class="menu__breadcrumbs"><a>Разделы</a></nav>
                     <div class="menu__wrap">
