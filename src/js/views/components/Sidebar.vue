@@ -27,9 +27,17 @@
 
             </div>
         </div>
+        <div class="list">
+            <span>{{currentCategoryId}}</span>
+            <positionslist :categoryId="currentCategoryId">MyTest: {{currentCategoryId}}</positionslist>
+        </div>
     </div>
 </template>
 <style scoped lang="less">
+    .list {
+        padding-left: 300px;
+    }
+
     .white-panel {
         position: absolute;
         top: 0;
@@ -170,12 +178,14 @@
 
 </style>
 <script>
-    import categories from './data/category'
+    import categories from './data/category';
+    import positionslist from './PositionsList.vue';
+    import bus from './store/store';
     export default{
         data(){
             return{
                 ctgs: categories,
-                id: this.$route.params.id
+                currentSelectedId: this.$route.params.id
             }
         },
         computed: {
@@ -193,13 +203,23 @@
                     return item;
                 });
                 return res;
+            },
+            currentCategoryId: function(){
+                let newVal = this.$route.params.id;
+                bus.$emit('select-cat-id', newVal);
+                return newVal;
             }
         },
         methods: {
             getData: function(){
-                console.log(this.$route.params.id)
+                //this.currentSelectedId = this.$route.params.id;
             }
 
+        },
+        components:{
+            positionslist
         }
+
+
     }
 </script>

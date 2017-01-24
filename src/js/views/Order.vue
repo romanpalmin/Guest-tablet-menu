@@ -22,7 +22,7 @@
                             <td>{{ item.name }}</td>
                             <td>
                                 <div class="close-wrap">
-                                    <div class="delete"><img :id="item.price" :data-code="item.price"
+                                    <div class="delete"><img :data-code="item.id"
                                                              @click="deleteOrder" src="./components/images/close.png">
                                     </div>
                                 </div>
@@ -54,6 +54,7 @@
                 width: 100%;
                 height: 20px;
                 .delete {
+                    cursor: pointer;
                     width: 20px;
                     height: 20px;
                     img {
@@ -83,7 +84,6 @@
         left: 320px;
         top: 80px;
         height: 40px;
-        background-color: #0000cc;
         width: 200px;
         color: white;
         font-size: xx-large;
@@ -123,7 +123,6 @@
 </style>
 <script>
     import orders from './components/data/orders'
-    console.log(orders);
     export default{
         ready: function(){
         this.init();
@@ -133,13 +132,10 @@
                 positions: orders
             }
         },
-        created () {
-            console.log('Загружаем данные');
-        },
 
         methods:{
             deleteOrder: function(evt){
-                console.log(evt.target.dataset.code);
+                console.log(+evt.target.dataset.code);
             }
         }
     }
