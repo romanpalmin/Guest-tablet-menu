@@ -1,15 +1,20 @@
 <template>
     <div>
-        <div class="main-position-list">
-            <slot> Сообщение от родителя </slot>
+        <div class="products">
 
+            dsdsdsdsds sd s ds s s d s
         </div>
 
     </div>
 </template>
 <style scoped lang="less">
-    .main-position-list {
-
+    .products {
+        width:100%;
+        text-align: right;
+        user-select: none;
+        margin: 0px;
+        padding: 1em;
+        background-color: #0000cc;
     }
 
 </style>
@@ -55,10 +60,7 @@
            populateData: function(id){
                 console.log('Заполняем данные по ID = ' + id);
            }
-        },
-
-        componentUpdated: function(){
-            console.log(1234);
         }
     }
+
 </script>
