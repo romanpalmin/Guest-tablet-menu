@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>
+        <div clas="div-overlay">
         <ul class="products" >
             <li class="product" v-for="item in positionsWithProps" @click="showDetails" >
                 <div class="product-inner" >
@@ -20,12 +20,16 @@
     </div>
 </template>
 <style scoped lang="less">
+    .div-overlay{
+        overflow: auto;
+    }
     .products {
         margin: 0;
         padding: 1em;
         text-align: left;
         user-select: none;
-        overflow: visible;
+        height: 670px;
+        overflow-y: scroll;
 
         .product {
             display: inline-table;
@@ -87,7 +91,7 @@
             return{
                 currentCatId: this.categoryId,
                 positionslist : [],
-                show: false,
+                show: true,
                 code:0
             }
         },
