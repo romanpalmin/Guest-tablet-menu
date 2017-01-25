@@ -28,8 +28,7 @@
             </div>
         </div>
         <div class="list">
-            <span>{{currentCategoryId}}</span>
-            <positionslist :categoryId="currentCategoryId">MyTest: {{currentCategoryId}}</positionslist>
+            <positionslist :categoryId="currentCategoryId"/>
         </div>
     </div>
 </template>

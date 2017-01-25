@@ -1,14 +1,14 @@
 export default [
     {
-        'name':'Гамбургер 1',
-        'code':'021339',
+        'name':'Бургер Ред Булл',
+        'code':'021324',
         'urlImage':'./assets/images/hamb1-sm.png',
-        'price': 160
+        'price': 490
     },
     {
-        'name':'Гамбургер 2',
-        'code':'021340',
+        'name':'Фест бургер',
+        'code':'021315',
         'urlImage':'./assets/images/hamb2-sm.png',
-        'price': 270
+        'price': 440
     }
 ];

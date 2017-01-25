@@ -1,14 +1,14 @@
 export default [
     {
-        'name':'Старт1',
-        'code':'021339',
+        'name':'Хрустящие листья салата с горчичной заправкой',
+        'code':'021329',
         'urlImage':'./assets/images/start1.jpg',
-        'price': 160
+        'price': 290
     },
     {
-        'name':'Старт2',
+        'name':'Фермерский салат с йогуртовой заправкой',
         'code':'021340',
         'urlImage':'./assets/images/start2.jpg',
-        'price': 270
+        'price': 280
     }
 ];

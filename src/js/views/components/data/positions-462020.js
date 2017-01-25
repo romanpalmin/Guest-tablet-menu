@@ -1,14 +1,14 @@
 export default [
     {
-        'name':'Байкал',
-        'code':'021339',
+        'name':'Вода "Байкал" 0.53',
+        'code':'022161',
         'urlImage':'./assets/images/water1.jpg',
-        'price': 160
+        'price': 200
     },
     {
-        'name':'Фанта',
-        'code':'021340',
+        'name':'Фанта 0.25л',
+        'code':'016469',
         'urlImage':'./assets/images/water2.jpg',
-        'price': 270
+        'price': 150
     }
 ];

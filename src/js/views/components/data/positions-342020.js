@@ -1,14 +1,14 @@
 export default [
     {
-        'name':'Сосиски1',
-        'code':'021339',
+        'name':'XXL. Краковская колбаса',
+        'code':'021565',
         'urlImage':'./assets/images/sausage1.jpg',
-        'price': 160
+        'price': 590
     },
     {
-        'name':'Сосиски2',
-        'code':'021340',
+        'name':'XXL. Нюрнбергские колбаски',
+        'code':'021563',
         'urlImage':'./assets/images/sausage2.jpg',
-        'price': 270
+        'price': 570
     }
 ];

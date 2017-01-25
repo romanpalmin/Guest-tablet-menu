@@ -1,14 +1,14 @@
 export default [
     {
-        'name':'Айс1',
-        'code':'021339',
+        'name':'Мороженое шоколадное',
+        'code':'021366',
         'urlImage':'./assets/images/ice1.jpg',
-        'price': 160
+        'price': 130
     },
     {
-        'name':'Айс2',
-        'code':'021340',
+        'name':'Мороженое ванильное',
+        'code':'021612',
         'urlImage':'./assets/images/ice2.jpg',
-        'price': 270
+        'price': 130
     }
 ];

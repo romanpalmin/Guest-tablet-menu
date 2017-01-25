@@ -1,14 +1,14 @@
 export default [
     {
-        'name':'BBQ1',
-        'code':'021339',
+        'name':'Стейк из лосося',
+        'code':'021275',
         'urlImage':'./assets/images/bbq1.jpg',
-        'price': 160
+        'price': 880
     },
     {
-        'name':'BBQ2',
-        'code':'021340',
+        'name':'Палтус на огне',
+        'code':'021277',
         'urlImage':'./assets/images/bbq2.jpg',
-        'price': 270
+        'price': 1150
     }
 ];

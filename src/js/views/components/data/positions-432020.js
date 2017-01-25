@@ -1,14 +1,14 @@
 export default [
     {
-        'name':'Гиннес',
-        'code':'021339',
+        'name':'Пиво "Гиннес Драфт", 0.3л',
+        'code':'021776',
         'urlImage':'./assets/images/beer1.jpg',
-        'price': 160
+        'price': 245
     },
     {
-        'name':'Брюссель',
-        'code':'021340',
+        'name':'Пиво "Бланш де Брюссель", 0.3л',
+        'code':'021800',
         'urlImage':'./assets/images/beer2.jpg',
-        'price': 270
+        'price': 245
     }
 ];

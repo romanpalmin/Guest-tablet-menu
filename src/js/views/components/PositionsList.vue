@@ -1,7 +1,7 @@
 <template>
     <div>
-        <ul class="products" v-for="item in positionsWithProps">
-            <li class="product">
+        <ul class="products" >
+            <li class="product" v-for="item in positionsWithProps">
                 <div class="product-inner">
                     <div class="product-top-block" :style="item.style">
                         <div class="product-top-block-price">
@@ -75,14 +75,7 @@
 </style>
 <script>
     import bus from './store/store';
-    import positions332020 from './data/positions-332020';
-    import positions342020 from './data/positions-342020';
-    import positions352020 from './data/positions-352020';
-    import positions392020 from './data/positions-392020';
-    import positions412020 from './data/positions-412020';
-    import positions422020 from './data/positions-422020';
-    import positions432020 from './data/positions-432020';
-    import positions462020 from './data/positions-462020';
+    import positions from './data/positions';
 
     export default{
         data(){
@@ -115,7 +108,6 @@
         },
         mounted: function(){
             var self = this;
-            self.getData();
             this.populateData(this.currentCatId);
             bus.$on('select-cat-id', function (id) {
                 this.currentCatId = id;
@@ -128,42 +120,14 @@
         },
 
         methods: {
-           getData: function(){
-                console.log('Первичная инициализация');
-           },
            populateData: function(id){
                 console.log('Заполняем данные по ID = ' + id);
                 console.log(id);
-                switch (+id){
-                    case 332020:
-                        this.positionslist = positions332020;
-                        break;
-                    case 342020:
-                        this.positionslist = positions342020;
-                        break;
-                    case 352020:
-                        this.positionslist = positions352020;
-                        break;
-                    case 392020:
-                        this.positionslist = positions392020;
-                        break;
-                    case 412020:
-                        this.positionslist = positions412020;
-                        break;
-                    case 422020:
-                        this.positionslist = positions422020;
-                        break;
-                    case 432020:
-                        this.positionslist = positions432020;
-                        break;
-                    case 462020:
-                        this.positionslist = positions462020;
-                        break;
-                    default:
-                        this.positionslist = [];
-                        break;
+                if (positions && id !== ''){
+                console.log(123);
+                    this.positionslist = positions[id];
+                    console.log(this.positionsList);
                 }
-
            }
         }
     }
