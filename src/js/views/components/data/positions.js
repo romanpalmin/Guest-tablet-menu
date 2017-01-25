@@ -38,8 +38,6 @@ export default {
             'urlImage': './assets/images/ice2.jpg',
             'price': 130
         }],
-
-
     '412020': [
         {
             'name': 'Хрустящие листья салата с горчичной заправкой',
@@ -53,9 +51,7 @@ export default {
             'urlImage': './assets/images/start2.jpg',
             'price': 280
         }
-    ]
-    ,
-
+    ],
     '392020': [
         {
             'name': 'Гренки ржаные из домашнего хлеба',
@@ -69,9 +65,7 @@ export default {
             'urlImage': './assets/images/chips2.jpg',
             'price': 270
         }
-    ]
-    ,
-
+    ],
     '352020': [
         {
             'name': 'Стейк из лосося',
@@ -86,8 +80,6 @@ export default {
             'price': 1150
         }
     ],
-
-
     '342020': [
         {
             'name': 'XXL. Краковская колбаса',
@@ -102,7 +94,6 @@ export default {
             'price': 570
         }
     ],
-
     '332020': [
         {
             'name': 'Бургер Ред Булл',
