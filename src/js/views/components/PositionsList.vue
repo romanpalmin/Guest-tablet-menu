@@ -97,13 +97,7 @@
                     item.style = 'background-image: url(' + item.urlImage + ');';
                     return item;
                 });
-                console.log(res);
                 return res;
-            }
-        },
-        watch:{
-            currentCatId: function(){
-                console.log('test');
             }
         },
         mounted: function(){
@@ -121,12 +115,9 @@
 
         methods: {
            populateData: function(id){
-                console.log('Заполняем данные по ID = ' + id);
-                console.log(id);
+                //console.log('Заполняем данные по ID = ' + id);
                 if (positions && id !== ''){
-                console.log(123);
                     this.positionslist = positions[id];
-                    console.log(this.positionsList);
                 }
            }
         }
