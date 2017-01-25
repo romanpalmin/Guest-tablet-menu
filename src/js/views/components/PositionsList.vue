@@ -1,20 +1,22 @@
 <template>
     <div>
+        <div>
         <ul class="products" >
-            <li class="product" v-for="item in positionsWithProps">
-                <div class="product-inner">
-                    <div class="product-top-block" :style="item.style">
-                        <div class="product-top-block-price">
+            <li class="product" v-for="item in positionsWithProps" @click="showDetails" >
+                <div class="product-inner" >
+                    <div class="product-top-block" :data-Code="item.code" :style="item.style">
+                        <div class="product-top-block-price" :data-Code="item.code">
                             {{ item.price }}
                         </div>
                     </div>
-                    <div class="product-inner-label">
+                    <div class="product-inner-label" :data-Code="item.code">
                         {{ item.name }}
                     </div>
                 </div>
             </li>
+            <position v-if="show" :positionId="code"/>
         </ul>
-
+        </div>
     </div>
 </template>
 <style scoped lang="less">
@@ -23,6 +25,7 @@
         padding: 1em;
         text-align: left;
         user-select: none;
+        overflow: visible;
 
         .product {
             display: inline-table;
@@ -38,12 +41,13 @@
                     height: 190px;
                     background-size: cover;
                     border-radius: 30px;
+                    position: relative;
 
                     .product-top-block-price {
                         width: 75px;
                         height: 77px;
                         background-size: cover;
-                        position: relative;
+                        position: absolute;
                         left: 125px;
                         top: -10px;
                         color: rgb(0, 0, 0);
@@ -75,14 +79,16 @@
 </style>
 <script>
     import bus from './store/store';
+    import Position from './Position.vue';
     import positions from './data/positions';
 
     export default{
         data(){
             return{
-                msg:'hello vue',
                 currentCatId: this.categoryId,
-                positionslist : []
+                positionslist : [],
+                show: false,
+                code:0
             }
         },
         props: ["categoryId"],
@@ -119,7 +125,16 @@
                 if (positions && id !== ''){
                     this.positionslist = positions[id];
                 }
+           },
+           showDetails: function(evt){
+                console.log(evt.target);
+                var el = evt.target;
+                this.code = el.dataset.code;
+                this.show = true;
            }
+        },
+        components:{
+            'position' : Position
         }
     }
 

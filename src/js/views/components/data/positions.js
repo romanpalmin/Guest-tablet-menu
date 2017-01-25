@@ -1,5 +1,89 @@
 export default {
-    '462020': [
+    '432020': [
+        {
+            'name': 'Вода "Байкал" 0.53',
+            'code': '022161',
+            'urlImage': './assets/images/water1.jpg',
+            'price': 200
+        },
+        {
+            'name': 'Фанта 0.25л',
+            'code': '016469',
+            'urlImage': './assets/images/water2.jpg',
+            'price': 150
+        },
+        {
+            'name': 'Вода "Байкал" 0.53',
+            'code': '022161',
+            'urlImage': './assets/images/water1.jpg',
+            'price': 200
+        },
+        {
+            'name': 'Фанта 0.25л',
+            'code': '016469',
+            'urlImage': './assets/images/water2.jpg',
+            'price': 150
+        },
+        {
+            'name': 'Вода "Байкал" 0.53',
+            'code': '022161',
+            'urlImage': './assets/images/water1.jpg',
+            'price': 200
+        },
+        {
+            'name': 'Фанта 0.25л',
+            'code': '016469',
+            'urlImage': './assets/images/water2.jpg',
+            'price': 150
+        },
+        {
+            'name': 'Вода "Байкал" 0.53',
+            'code': '022161',
+            'urlImage': './assets/images/water1.jpg',
+            'price': 200
+        },
+        {
+            'name': 'Фанта 0.25л',
+            'code': '016469',
+            'urlImage': './assets/images/water2.jpg',
+            'price': 150
+        },
+        {
+            'name': 'Вода "Байкал" 0.53',
+            'code': '022161',
+            'urlImage': './assets/images/water1.jpg',
+            'price': 200
+        },
+        {
+            'name': 'Фанта 0.25л',
+            'code': '016469',
+            'urlImage': './assets/images/water2.jpg',
+            'price': 150
+        },
+        {
+            'name': 'Вода "Байкал" 0.53',
+            'code': '022161',
+            'urlImage': './assets/images/water1.jpg',
+            'price': 200
+        },
+        {
+            'name': 'Фанта 0.25л',
+            'code': '016469',
+            'urlImage': './assets/images/water2.jpg',
+            'price': 150
+        },
+        {
+            'name': 'Вода "Байкал" 0.53',
+            'code': '022161',
+            'urlImage': './assets/images/water1.jpg',
+            'price': 200
+        },
+        {
+            'name': 'Фанта 0.25л',
+            'code': '016469',
+            'urlImage': './assets/images/water2.jpg',
+            'price': 150
+        },
         {
             'name': 'Вода "Байкал" 0.53',
             'code': '022161',
@@ -12,7 +96,7 @@ export default {
             'urlImage': './assets/images/water2.jpg',
             'price': 150
         }],
-    '432020': [
+    '462020': [
         {
             'name': 'Пиво "Гиннес Драфт", 0.3л',
             'code': '021776',

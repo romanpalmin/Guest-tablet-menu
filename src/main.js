@@ -25,12 +25,16 @@ const app = new Vue({
     router,
     template: `
     <div id="app-menu">
+    <div class="header">
         <nav class="pages-nav">
             <div class="pages-nav__item "><router-link to="/site" class="link-page link">Сайт</router-link></div>
             <div class="pages-nav__item "><router-link to="/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/menu" class="link-page link">Меню</router-link></div>
             <div class="pages-nav__item "><router-link to="/order" class="link-page link">Вы выбрали</router-link></div>
         </nav>
+      </div>
+      <div class="content">
       <router-view class="view"></router-view>
+      </div>
     </div>`
 }).$mount('#app');
