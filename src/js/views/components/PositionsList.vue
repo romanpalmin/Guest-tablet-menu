@@ -2,7 +2,7 @@
     <div>
         <div clas="div-overlay">
         <ul class="products" >
-            <li class="product" v-for="item in positionsWithProps" @click="showDetails" >
+            <li class="product" v-for="item in positionsWithProps" @click="toggleDetails" >
                 <div class="product-inner" >
                     <div class="product-top-block" :data-Code="item.code" :style="item.style">
                         <div class="product-top-block-price" :data-Code="item.code">
@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </li>
-            <position v-if="show" :positionId="code"/>
+            <position v-if="showDetails" :positionId="code"/>
         </ul>
         </div>
     </div>
@@ -28,7 +28,7 @@
         padding: 1em;
         text-align: left;
         user-select: none;
-        height: 670px;
+        height: 720px;
         overflow-y: scroll;
 
         .product {
@@ -91,7 +91,7 @@
             return{
                 currentCatId: this.categoryId,
                 positionslist : [],
-                show: true,
+                showDetails: false,
                 code:0
             }
         },
@@ -130,11 +130,11 @@
                     this.positionslist = positions[id];
                 }
            },
-           showDetails: function(evt){
-                console.log(evt.target);
+           toggleDetails: function(evt){
+                //console.log(evt.target.dataset.code);
                 var el = evt.target;
                 this.code = el.dataset.code;
-                this.show = true;
+                this.showDetails = true;
            }
         },
         components:{
