@@ -1,9 +1,20 @@
 <template>
     <div>
         <div class="content-item-container">
-            <div class="item-close"><img class="item-image" src="assets/images/close.png" @click="$parent.show=false"></div>
+            <div class="item-close"><img class="item-image" src="assets/images/close.png" @click="$parent.showDetails=false">
+            </div>
             <div class="inner-item-container">
-
+                <div class="item-column-image">
+                     <img :src="positionSet.urlImage" class="item-image">
+                </div>
+                <div class="item-column-data">
+                    <div class="h1-item">{{positionSet.name}}</div>
+                    <div class="p-item">{{positionSet.description}}</div>
+                    <div class="item-price">{{positionSet.price}} P</div>
+                    <div class="item-button-add">
+                        <button class="btn btn-add">Добавить</button>
+                    </div>
+                </div>
 
             </div>
         </div>
@@ -22,10 +33,10 @@
         position: fixed;
         .item-close {
             top: 6%;
-            left:92%;
-            width:5%;
-            height:5%;
-            position:relative;
+            left: 92%;
+            width: 5%;
+            height: 5%;
+            position: relative;
             z-index: 999;
             .item-image {
                 width: 100%;
@@ -42,7 +53,63 @@
             position: relative;
             overflow: auto;
             background-image: url(/dist/background.jpg);
+            .item-column-image {
+                display: inline-block;
+                width: 47%;
+                float: left;
+                padding-left: 15px;
+                padding-top: 15px;
+                padding-right: 30px;
+                .item-image {
+                    width: 90%;
+                    height: auto;
+                    border-radius: 30px;
+                }
+            }
+            .item-column-data {
+                display: inline-block;
+                padding-left: 30px;
+                padding-top: 15px;
+                padding-right: 15px;
+                vertical-align: top;
+                width: 44%;
+                float: right;
+                .h1-item {
+                    display: block;
+                    font-size: 40px;
+                    padding-bottom: 15px;
+                    margin-bottom: 40px;
+                    border-bottom: #FFFFFF;
+                    border-bottom-width: medium;
+                    border-bottom-style: solid;
+                }
+                .p-item {
+                    display: block;
+                    font-size: 20px;
+                    padding-bottom: 15px;
+                    margin-bottom: 15px;
+                    text-align: justify;
+                    border-bottom: #FFFFFF;
+                    border-bottom-width: thin;
+                    border-bottom-style: solid;
+                }
+                .item-price {
+                    display: block;
+                    font-size: 70px;
+                    padding-bottom: 15px;
+                    text-align: right;
+                }
+                .item-button-add {
+                    display: block;
+                    font-size: 20px;
+                    padding-bottom: 15px;
+                    margin-bottom: 15px;
+                    text-align: center;
+                    position: relative;
+                    bottom: -100px;
 
+                }
+            }
         }
     }
 
@@ -59,6 +126,9 @@
             },
             props: ["positionId"]
     }
+
+
+
 
 
 
