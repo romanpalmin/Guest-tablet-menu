@@ -9,11 +9,11 @@ Vue.use(VueRouter);
 
 
 const routes = [
-    {name: 'menu', path: '/menu', component: menu},
-    {name: 'site', path: '/site', component: site},
-    {name: 'order', path: '/order', component: order},
-    {name: 'shedule', path: '/shedule', component: shedule},
-    {name: 'sidebar', path: '/menu/:id', component: sidebar}
+    {name: 'menu', path: '/:lang/menu', component: menu},
+    {name: 'site', path: '/:lang/site', component: site},
+    {name: 'order', path: '/:lang/order', component: order},
+    {name: 'shedule', path: '/:lang/shedule', component: shedule},
+    {name: 'sidebar', path: '/:lang/menu/:id', component: sidebar}
 ];
 
 var router = new VueRouter({
@@ -27,10 +27,10 @@ const app = new Vue({
     <div id="app-menu">
     <div class="header">
         <nav class="pages-nav">
-            <div class="pages-nav__item "><router-link to="/site" class="link-page link">Сайт</router-link></div>
-            <div class="pages-nav__item "><router-link to="/shedule" class="link-page link">Развлечения</router-link></div>
-            <div class="pages-nav__item "><router-link to="/menu" class="link-page link">Меню</router-link></div>
-            <div class="pages-nav__item "><router-link to="/order" class="link-page link">Вы выбрали</router-link></div>
+            <div class="pages-nav__item "><router-link to="/ru/site" class="link-page link">Сайт</router-link></div>
+            <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
+            <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
+            <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы выбрали</router-link></div>
         </nav>
       </div>
       <div class="content">
