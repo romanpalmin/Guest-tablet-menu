@@ -26,7 +26,7 @@
         display: block;
         text-align: center;
         vertical-align: top;
-        overflow-y: hidden;
+        overflow-y: auto;
         overflow-x: hidden;
 
         .watch-content {
