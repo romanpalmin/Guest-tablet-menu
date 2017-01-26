@@ -27,7 +27,7 @@
             margin: -100px 0 0 -150px;
             border: 2px solid #ffffff;
             background: lightblue;
-            background: linear-gradient(to right, blue, lightblue);
+            background: linear-gradient(to right, #0b183e, #40414d);
             line-height: 200px;
             text-align: center;
             border-radius: 3%;
@@ -46,7 +46,7 @@
     export default{
         data(){
             return{
-                msg:'hello vue site'
+                msg:'Если нужно, вставим <iframe>'
             }
         }
     }

@@ -2,7 +2,6 @@
     <div>
 
         <div class="main-menu">
-            <div @click="reCalculate">Основное меню : {{CurrentId}}</div>
             <ul class="root-icons">
                 <li class="root-icon" v-for="item in ctgs_with_params">
                     <router-link :to="item.route">
@@ -78,11 +77,6 @@
                 });
                 return res;
             },
-        },
-        methods: {
-            reCalculate: function(){
-                this.CurrentId += 10;
-            }
         }
     }
 
