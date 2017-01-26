@@ -10,13 +10,12 @@ var distAssets = dist + assets;
 module.exports = {
     js: {
         src: ['./assets/js/*'],
-        dest: distAssets + '/js',
-        dest2: srcAssets+'/js'
+        dest: distAssets+'/js'
     },
 
     css: {
         src: [
-            srcAssets + '/css/*.css',
+            './assets/css/*.css',
             '!' + srcAssets + '/css/*.min.css',
             '!' + srcAssets + '/css/*.all.css'
         ],
@@ -24,7 +23,7 @@ module.exports = {
     },
 
     images: {
-        src: [srcAssets + '/images/**/*'],
+        src: [ './assets/images/**/*'],
         dest: distAssets + '/images'
     },
 

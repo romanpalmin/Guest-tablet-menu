@@ -58,7 +58,7 @@
                         text-align: center;
                         padding-left: 18px;
                         padding-top: 14px;
-                        background-image: url("./images/price.png");
+
                     }
                 }
 

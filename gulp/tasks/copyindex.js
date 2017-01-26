@@ -6,8 +6,6 @@ var gulp = require('gulp'),
 
 
 gulp.task('copyindex', function () {
-    console.log(config.index.src);
-    console.log(config.index.dest);
     return gulp.src(config.index.src)
         .pipe(gulp.dest(config.index.dest))
 });

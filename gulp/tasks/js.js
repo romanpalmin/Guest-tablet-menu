@@ -6,7 +6,7 @@ var gulp = require('gulp'),
 
 gulp.task('js', function () {
     return gulp.src(config.src)
-        .pipe(gulp.dest(config.dest))
-        .pipe(gulp.dest(config.dest2))
+        .pipe(gulp.dest(config.dest));
+
 
 });
