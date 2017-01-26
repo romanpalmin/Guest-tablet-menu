@@ -21,6 +21,11 @@ module.exports = {
         ],
         dest: distAssets + '/css'
     },
+    
+    less: {
+        src: ['./assets/less/*.less',],
+        dest: distAssets + '/css'
+    },
 
     images: {
         src: [ './assets/images/**/*'],

@@ -49,10 +49,9 @@
             height: 70%;
             top: 5%;
             left: 5%;
-            background-color: #4d2926;
+            background-color: #000000;
             position: relative;
             overflow: auto;
-            background-image: url(/dist/background.jpg);
             .item-column-image {
                 display: inline-block;
                 width: 47%;
