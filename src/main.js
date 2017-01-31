@@ -5,7 +5,13 @@ import site from './js/views/Site.vue';
 import order from './js/views/Order.vue';
 import shedule from './js/views/Shedule.vue';
 import VueRouter from 'vue-router'
+import ajax from 'vue-resource';
+import axios from 'axios'
+import VueAxios from 'vue-axios'
+Vue.use(ajax);
 Vue.use(VueRouter);
+Vue.use(VueAxios, axios);
+
 
 
 const routes = [
@@ -21,13 +27,16 @@ var router = new VueRouter({
     linkActiveClass:'menu__link--current'
 });
 
+console.log('Что-нибудь загрузим через аякс');
+
 const app = new Vue({
     router,
     template: `
     <div id="app-menu">
     <div class="header">
         <nav class="pages-nav">
-            <div class="pages-nav__item "><router-link to="/ru/site" class="link-page link">Сайт</router-link></div>
+            <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Фишки</router-link></div>
+            <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Акции</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы выбрали</router-link></div>

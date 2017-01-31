@@ -180,6 +180,8 @@
     import categories from './data/category';
     import positionslist from './PositionsList.vue';
     import bus from './store/store';
+
+
     export default{
         data(){
             return{
