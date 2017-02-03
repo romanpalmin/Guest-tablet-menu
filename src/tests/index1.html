@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test API</title>
+</head>
+<style>
+    .name {
+        font-weight: bold;
+    }
+
+    .error {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<body>
+<div id="app"></div>
+<template id="tmpl">
+    <div>
+        <div class="loading" v-show="!statusCat && !statusPos">
+            <h1>Идет обращение к серверу по категориям и по товару#{{positionCode}}</h1>
+        </div>
+
+        <!-- товар -->
+        <div v-show="statusCat" class="position">
+            <h1>{{pstname}}</h1>
+            <div>
+                <div><span class="name">Код: </span>{{position.code}}</div>
+                <div><span class="name">Наименование: </span>{{position.name}}</div>
+                <div><span class="name">Группа: </span>{{position.parent}}</div>
+                <div><span class="name">Ссылка на большое изображение: </span>{{position.urlImage}}</div>
+                <div><span class="name">Описание: </span>{{position.description}}</div>
+                <div><span class="name">Цена: </span><span v-if="!position.price && statusPos"><span class="error">Нет цены</span></span><span
+                        v-else>{{position.price}}</span></div>
+            </div>
+        </div>
+
+        <!-- категории -->
+        <div class="category" v-show="statusPos">
+            <h1>{{ctgrs}}</h1>
+            <div v-for="item in category" :key="item.code">
+                <div><span class="name">Код: </span>{{item.code}}</div>
+                <div><span class="name">Наименование: </span>{{item.name}}</div>
+                <div><span class="name">Ссылка на маленькое изображение: </span>{{item.urlSmallImage}}</div>
+                <div><span class="name">Ссылка на большое изображение: </span>{{item.urlBigImage}}</div>
+                <hr/>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
+<script src="vue-axios.min.js"></script>
+<script>
+    var app = new Vue({
+        el: '#app',
+        template: '#tmpl',
+        data: {
+            title: 'Test: ',
+            add: '',
+            category: [],
+            position: {},
+            statusCat: false,
+            statusPos: false,
+            positionCode: '021322',
+            times:{
+                pos:0,
+                cat:0
+            }
+        },
+        computed: {
+            ctgrs: function () {
+                return this.title + ' Список категорий';
+            },
+            pstname: function () {
+                return this.title + ' Товар';
+            }
+        },
+        methods: {
+            getCategory: function () {
+                var self = this;
+                var start = new Date().getTime();
+                var urlCategory = 'http://10.10.250.61/menu/hs/model?groups';
+                this.axios.get(urlCategory)
+                        .then(function (response) {
+                            self.times.cat = start - new Date().getTime();
+                            self.statusCat = true;
+                            console.log(response.data);
+                            self.category = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+            },
+            getPosition: function () {
+                var self = this;
+                var start = new Date().getTime();
+                var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=332020&category=332020&tovar=' + this.positionCode;
+                this.axios.get(urlCategory)
+                        .then(function (response) {
+                            self.times.pos = start - new Date().getTime();
+                            self.statusPos = true;
+                            console.log(response.data);
+                            self.position = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+            }
+        },
+        mounted(){
+            this.getCategory();
+            this.getPosition();
+        }
+    })
+
+</script>
+
+</body>
+</html>

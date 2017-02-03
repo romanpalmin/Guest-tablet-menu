@@ -6,6 +6,7 @@
 
 <script>
     import mainMenu from './components/MainMenu.vue';
+    import $ from 'jquery'
     export default{
         data(){
             return{
@@ -17,16 +18,20 @@
             mainMenu
         },
         mounted: function(){
-            var api = 'http://DataExchange:123456@birzhaserv/menu/hs/display/get-current-actions';
-            var api2 = 'http://DataExchange:123456@birzhaserv/menu/hs/display/get-super-action';
-            console.log('Почему бы и не здесь');
+        console.log('Проверим аякс');
 
-            this.axios.get(api).then((response) => {
-              console.log(response.data)
-            });
-            this.axios.get(api2).then((response) => {
-              console.log(response.data)
-            });
+
+
+
+
+        $.ajax({
+            url: "http://tab01:01@10.10.250.61/menu/hs/model?groups=",
+            method: 'GET'
+        }).done(function(resp) {
+         console.log(resp);
+        });
+
+
         }
     }
 </script>

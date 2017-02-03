@@ -131,7 +131,6 @@
                 }
            },
            toggleDetails: function(evt){
-                //console.log(evt.target.dataset.code);
                 var el = evt.target;
                 this.code = el.dataset.code;
                 this.showDetails = true;

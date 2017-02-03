@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test API</title>
+</head>
+<style>
+</style>
+<body>
+<div id="app"></div>
+<template id="tmpl">
+    <div>
+        <h1>{{headTitle}}</h1>
+        <div v-if="positions.tovar">
+            <ul v-for="item in positions.tovar">
+                <li>{{item.name}}</li>
+            </ul>
+        </div>
+        <div v-else>Начинаем поиск</div>
+
+
+    </div>
+</template>
+
+<script src="https://unpkg.com/vue/dist/vue.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
+<script src="vue-axios.min.js"></script>
+<script>
+    /*
+     'Бургеры':332020, 'Сосидж фэктори':342020, 'BBQ':352020,'Бэйкс и снэкс':392020,
+     '4Starts':412020,'Айси-спайси':422020,'Пиво':462020,'Напитки':432020*/
+    var src = {
+        'burger': {
+            url: 'json/burgers.json',
+            code: 332020
+        },
+        'factory': {
+            url: 'json/factory.json',
+            code: 342020
+        },
+        'bbq': {
+            url: 'json/bbq.json',
+            code: 352020
+        },
+        'snakes': {
+            url: 'json/snakes.json',
+            code: 392020
+        },
+        'starts': {
+            url: 'json/4starts.json',
+            code: 412020
+        },
+        'ice': {
+            url: 'json/ice.json',
+            code: 422020
+        },
+        'beer': {
+            url: 'json/beer.json',
+            code: 462020
+        },
+        'drinks': {
+            url: 'json/drinks.json',
+            code: 432020
+        }
+    };
+    var app = new Vue({
+        el: '#app',
+        template: '#tmpl',
+        data: {
+            title: 'Test: ',
+            positions: {},
+            newList : {}
+        },
+        computed: {
+            headTitle: function () {
+                return this.title + ' Список товаров';
+            }
+        },
+        methods: {
+            getJson: function () {
+                var self = this;
+                var testSet = {};
+                var current = src.drinks;
+                //var urlCategory = current.url;
+                var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=432020&category=432020';
+                this.axios.get(urlCategory)
+                        .then(function (response) {
+                            //self.positions = response.data[current.code];
+                            testSet = response.data[current.code];
+                            self.formatJson(testSet, current.code);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+            },
+            formatJson: function (resp, code) {
+                var cur;
+                var curO = [];
+                if ('tovar' in resp) {
+                    console.log('Выводим товар');
+                    this.newList = resp['tovar'];
+                }
+                else {
+                    for (var item in resp){
+                        var newO = {};
+                        cur = resp[item];
+                        for (var subitem in cur){
+                            var curSubItem = cur[subitem];
+                            if (curSubItem === 'ИКОНКАМИ' || curSubItem === 'СПИСКОМ'){
+                                if (curSubItem === 'ИКОНКАМИ') {
+                                    newO.type = 'icons';
+                                }
+                                if (curSubItem === 'СПИСКОМ') {
+                                    newO.type = 'list';
+                                }
+                            } else {
+                                newO.name = subitem;
+                                if ('tovar' in curSubItem){
+                                    newO.items = curSubItem['tovar'];
+                                    newO.groups = [];
+                                } else {
+                                      var groups = [];
+                                    for (var it in curSubItem){
+                                        var newSO = {};
+                                        var curSubItemIt = curSubItem[it]
+                                        for (var nso in curSubItemIt){
+                                            var curSubItemItNso = curSubItemIt[nso];
+                                            if (curSubItemItNso === 'ИКОНКАМИ' || curSubItemItNso === 'СПИСКОМ'){
+                                                if (curSubItemItNso === 'ИКОНКАМИ') {
+                                                    newSO.type = 'icons';
+                                                }
+                                                if (curSubItemItNso === 'СПИСКОМ') {
+                                                    newSO.type = 'list';
+                                                }
+                                            }
+                                            else{
+                                                newSO.name = nso;
+                                                if ('tovar' in curSubItemItNso){
+                                                    newSO.items = curSubItemItNso['tovar'];
+                                                    newSO.groups = [];
+                                                }
+                                                else{
+                                                    //todo в худшем случае
+                                                }
+                                            }
+                                        }
+                                           groups.push(newSO);
+                                    }
+                                    newO.groups = groups;
+                                }
+                            }
+                        }
+                        curO.push(newO);
+                    }
+
+
+                        console.log(curO);
+
+
+
+                }
+            }
+        },
+        mounted(){
+            this.getJson();
+        }
+
+    });
+
+</script>
+
+</body>
+</html>
