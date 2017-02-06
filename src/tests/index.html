@@ -81,8 +81,8 @@
                 var self = this;
                 var testSet = {};
                 var current = src.drinks;
-                //var urlCategory = current.url;
-                var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=432020&category=432020';
+                var urlCategory = current.url;
+                //var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=432020&category=432020';
                 this.axios.get(urlCategory)
                         .then(function (response) {
                             //self.positions = response.data[current.code];
@@ -153,10 +153,12 @@
                         curO.push(newO);
                     }
 
-
+                   setTimeout(function()
+                    {
                         console.log(curO);
-
-
+                        var json = JSON.stringify(curO);
+                        console.log(json);
+                    }, 100);
 
                 }
             }

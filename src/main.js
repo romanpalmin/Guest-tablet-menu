@@ -27,7 +27,6 @@ var router = new VueRouter({
     linkActiveClass:'menu__link--current'
 });
 
-console.log('Что-нибудь загрузим через аякс');
 
 const app = new Vue({
     router,

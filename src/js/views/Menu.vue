@@ -18,19 +18,6 @@
             mainMenu
         },
         mounted: function(){
-        console.log('Проверим аякс');
-
-
-
-
-
-        $.ajax({
-            url: "http://tab01:01@10.10.250.61/menu/hs/model?groups=",
-            method: 'GET'
-        }).done(function(resp) {
-         console.log(resp);
-        });
-
 
         }
     }

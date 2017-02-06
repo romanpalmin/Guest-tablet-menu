@@ -60,23 +60,36 @@
 
 </style>
 <script>
-    import categories from './data/category'
+    import constants from './data/const'
     export default{
         data(){
             return {
-                ctgs: categories,
+                ctgs: [],
                 CurrentId: 600
             }
         },
         computed: {
             ctgs_with_params: function () {
                 var res = this.ctgs.map(function (item) {
-                    item.style = 'background-image: url(' + item.urlBigImage + ');';
+                    item.style = 'background-image: url(' + constants.server +'images' + item.urlBigImage + ');';
                     item.route = 'menu/'+item.code;
                     return item;
                 });
                 return res;
             },
+        },
+        mounted(){
+            var self = this;
+             //var url = 'http://10.10.250.61/menu/hs/model?groups=';
+             var url = './assets/data/category.json';
+             this.axios.get(url)
+                        .then(function (response) {
+                            console.log(response.data);
+                            self.ctgs = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
         }
     }
 

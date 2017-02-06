@@ -82,7 +82,7 @@
             getCategory: function () {
                 var self = this;
                 var start = new Date().getTime();
-                var urlCategory = 'http://10.10.250.61/menu/hs/model?groups';
+                //var urlCategory = 'http://10.10.250.61/menu/hs/model?groups';
                 this.axios.get(urlCategory)
                         .then(function (response) {
                             self.times.cat = start - new Date().getTime();
@@ -97,7 +97,7 @@
             getPosition: function () {
                 var self = this;
                 var start = new Date().getTime();
-                var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=332020&category=332020&tovar=' + this.positionCode;
+                //var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=332020&category=332020&tovar=' + this.positionCode;
                 this.axios.get(urlCategory)
                         .then(function (response) {
                             self.times.pos = start - new Date().getTime();

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="watch-container" >
+        <div class="watch-container">
             <div class="watch-content" v-for="dayItem in fixedShedule">
                 <div class="day-date">{{ dayItem.daydate }}</div>
                 <div class="day-descr">{{ dayItem.daydescr }}</div>
@@ -12,7 +12,7 @@
                         <div class="event-type">{{ contentItem.event.eventtype }}</div>
                     </div>
                     <div class="event-descr-row">
-                        <div class="event-descr-cell">{{ contentItem.event.description }}</div>
+                        <div class="event-descr-cell">{{ contentItem.event.description  }}</div>
                     </div>
                 </div>
             </div>
@@ -90,24 +90,77 @@
                 }
             }
 
-
         }
     }
 </style>
 <script>
 
-import shedule from './components/data/watches';
+//import shedule from './components/data/watches';
     export default{
         data(){
             return {
-                rasp : shedule
+                rasp : []
             }
         },
         computed: {
             fixedShedule: function(){
                 return this.rasp;
             }
+        },
+
+        filters: {
+            replaceHash : function( value ){
+                return value.replace('#', '"');
+            }
+        },
+
+        methods:{
+            parseJson: function(json){
+                var res = [];
+                var dayEvent = {};
+                var day = {};
+                console.log(json);
+                for (var item in json){
+                    var dayEvents = [];
+                    day.daydate = item;
+                    day.daydescr = json[item]["День"];
+
+                    var events = json[item]["события"];
+                    for (var event in events){
+                        var dayEvent = {
+                            'event':{
+                                'timebegin': events[event]["Время"],
+                                'eventtype': events[event]["ВидМероприятия_Наименование"],
+                                'description': events[event]["Наименование"]
+                            }
+                        }
+                        dayEvents.push(dayEvent);
+                    }
+                    day.daycontent = dayEvents;
+                    res.push(day);
+                }
+                console.log(JSON.srtingify(res));
+                this.rasp = res;
+            },
+
+            getShow: function(){
+                var self = this;
+                //var url = 'http://10.10.250.61/menu/hs/model?groups=1&shows=1';
+                var url = './assets/data/shows.json';
+                this.axios.get(url)
+                        .then(function (response) {
+                            self.ctgs = self.parseJson(response.data);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+            }
+        },
+
+        mounted() {
+            this.getShow();
         }
     }
+
 
 </script>

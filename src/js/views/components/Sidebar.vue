@@ -177,15 +177,14 @@
 
 </style>
 <script>
-    import categories from './data/category';
     import positionslist from './PositionsList.vue';
     import bus from './store/store';
-
+     import constants from './data/const'
 
     export default{
         data(){
             return{
-                ctgs: categories,
+                ctgs: [],
                 currentSelectedId: this.$route.params.id
             }
         },
@@ -193,7 +192,7 @@
             ctgs_with_params: function() {
                 var self = this;
                 var res = this.ctgs.map(function(item) {
-                    item.style = 'background-image: url(' + item.urlSmallImage + ');';
+                    item.style = 'background-image: url(' + constants.server +'images' + item.urlSmallImage + ');';
                     item.route = '/ru/menu/'+ item.code;
 
                     if (+item.code ===+self.$route.params.id){
@@ -219,8 +218,22 @@
         },
         components:{
             positionslist
+        },
+        mounted(){
+            var self = this;
+             //var url = 'http://10.10.250.61/menu/hs/model?groups=';
+             var url = './assets/data/category.json';
+             this.axios.get(url)
+                        .then(function (response) {
+                            console.log(response.data);
+                            self.ctgs = response.data;
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
         }
 
 
     }
+
 </script>
