@@ -1,28 +1,31 @@
 <template>
     <div>
         <div clas="div-overlay">
-        <ul class="products" >
-            <li class="product" v-for="item in positionsWithProps" @click="toggleDetails" >
-                <div class="product-inner" >
-                    <div class="product-top-block" :data-Code="item.code" :style="item.style">
-                        <div class="product-top-block-price" :data-Code="item.code">
-                            {{ item.price }}
+            <div v-if="positions.tovar">
+                <ul class="products">
+                    <li class="product" v-for="item in positionsWithProps" @click="toggleDetails">
+                        <div class="product-inner">
+                            <div class="product-top-block" :data-Code="item.code" :style="item.style">
+                                <div class="product-top-block-price" :data-Code="item.code">
+                                    {{ item.price }}
+                                </div>
+                            </div>
+                            <div class="product-inner-label" :data-Code="item.code">
+                                {{ item.name }}
+                            </div>
                         </div>
-                    </div>
-                    <div class="product-inner-label" :data-Code="item.code">
-                        {{ item.name }}
-                    </div>
-                </div>
-            </li>
-            <position v-if="showDetails" :positionId="code"/>
-        </ul>
+                    </li>
+                    <position v-if="showDetails" :positionId="code"/>
+                </ul>
+            </div>
         </div>
     </div>
 </template>
 <style scoped lang="less">
-    .div-overlay{
+    .div-overlay {
         overflow: auto;
     }
+
     .products {
         margin: 0;
         padding: 1em;
@@ -112,11 +115,12 @@
         },
         mounted: function(){
             var self = this;
-            this.populateData(this.currentCatId);
+            //this.populateData(this.currentCatId);
             bus.$on('select-cat-id', function (id) {
                 this.currentCatId = id;
                 self.populateData(id);
             });
+            this.getJson();
         },
 
         destroyed: function(){
@@ -134,12 +138,98 @@
                 var el = evt.target;
                 this.code = el.dataset.code;
                 this.showDetails = true;
-           }
+           },
+           getJson: function () {
+                var self = this;
+                var testSet = {};
+                var current = src.burger;
+                var urlCategory = current.url;
+                //var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=432020&category=432020';
+                this.axios.get(urlCategory)
+                        .then(function (response) {
+                            //self.positions = response.data[current.code];
+                            testSet = response.data[current.code];
+                            self.formatJson(testSet, current.code);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+            },
+            formatJson: function (resp, code) {
+                var cur;
+                var curO = [];
+                if ('tovar' in resp) {
+                    console.log('Выводим товар');
+                    this.newList = resp;
+                    this.positions = resp;
+                }
+                else {
+                    for (var item in resp) {
+                        var newO = {};
+                        cur = resp[item];
+                        for (var subitem in cur) {
+                            var curSubItem = cur[subitem];
+                            if (curSubItem === 'ИКОНКАМИ' || curSubItem === 'СПИСКОМ') {
+                                if (curSubItem === 'ИКОНКАМИ') {
+                                    newO.type = 'icons';
+                                }
+                                if (curSubItem === 'СПИСКОМ') {
+                                    newO.type = 'list';
+                                }
+                            } else {
+                                newO.name = subitem;
+                                if ('tovar' in curSubItem) {
+                                    newO.items = curSubItem['tovar'];
+                                    newO.groups = [];
+                                } else {
+                                    var groups = [];
+                                    for (var it in curSubItem) {
+                                        var newSO = {};
+                                        var curSubItemIt = curSubItem[it]
+                                        for (var nso in curSubItemIt) {
+                                            var curSubItemItNso = curSubItemIt[nso];
+                                            if (curSubItemItNso === 'ИКОНКАМИ' || curSubItemItNso === 'СПИСКОМ') {
+                                                if (curSubItemItNso === 'ИКОНКАМИ') {
+                                                    newSO.type = 'icons';
+                                                }
+                                                if (curSubItemItNso === 'СПИСКОМ') {
+                                                    newSO.type = 'list';
+                                                }
+                                            }
+                                            else {
+                                                newSO.name = nso;
+                                                if ('tovar' in curSubItemItNso) {
+                                                    newSO.items = curSubItemItNso['tovar'];
+                                                    newSO.groups = [];
+                                                }
+                                                else {
+                                                    //todo в худшем случае
+                                                }
+                                            }
+                                        }
+                                        groups.push(newSO);
+                                    }
+                                    newO.groups = groups;
+                                }
+                            }
+                        }
+                        curO.push(newO);
+                    }
+
+                    setTimeout(function () {
+                        console.log(curO);
+                        var json = JSON.stringify(curO);
+                        console.log(json);
+                    }, 100);
+
+                }
+            }
         },
         components:{
             'position' : Position
         }
     }
+
 
 
 

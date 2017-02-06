@@ -5,19 +5,128 @@
     <title>Test API</title>
 </head>
 <style>
+    .div-overlay {
+        overflow: auto;
+    }
+
+    .products {
+        margin: 0;
+        padding: 1em;
+        text-align: left;
+        user-select: none;
+        height: 720px;
+        overflow-y: scroll;
+    }
+
+    .products .product {
+        display: inline-table;
+        width: 190px;
+        height: 235px;
+        color: #ffffff;
+        background-size: cover;
+        margin: 10px;
+    }
+
+    .products .product .product-inner .product-top-block {
+        width: 190px;
+        height: 190px;
+        background-size: cover;
+        border-radius: 30px;
+        position: relative;
+    }
+
+    .products .product .product-inner .product-top-block .product-top-block-price {
+        width: 75px;
+        height: 77px;
+        background-size: cover;
+        position: absolute;
+        left: 125px;
+        top: -10px;
+        color: #000000;
+        text-align: center;
+        padding-left: 18px;
+        padding-top: 14px;
+    }
+
+    .products .product .product-inner .product-inner-label {
+        width: 100%;
+        height: 45px;
+        color: #FFFFFF;
+        padding-top: 1px;
+        padding-left: 3px;
+        padding-right: 3px;
+        overflow: hidden;
+        text-align: center;
+    }
+
+    .products *,
+    .products *:after,
+    .products *:before {
+        box-sizing: border-box;
+    }
+
 </style>
 <body>
 <div id="app"></div>
 <template id="tmpl">
     <div>
         <h1>{{headTitle}}</h1>
-        <div v-if="positions.tovar">
-            <ul v-for="item in positions.tovar">
-                <li>{{item.name}}</li>
-            </ul>
-        </div>
-        <div v-else>Начинаем поиск</div>
+        <div clas="div-overlay">
 
+            <div v-if="positionslist.tovar">
+                <ul class="products">
+                    <li class="product" v-for="item in positionsWithProps">
+                        <div class="product-inner">
+                            <div class="product-top-block" :data-Code="item.code" :style="item.style">
+                                <div class="product-top-block-price" :data-Code="item.code">
+                                    {{ item.price }}
+                                </div>
+                            </div>
+                            <div class="product-inner-label" :data-Code="item.code">
+                                {{ item.name }}
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div v-else>
+
+                <ul>
+                    <li v-for="item in positionslist">
+                        <div v-if="item.groups.length === 0">
+                            <div>
+                                {{item.name}}
+                                <hr/>
+                                <br/>
+                                <ul>
+                                    <li v-for="subItem in item.items">{{subItem.name}}</li>
+                                </ul>
+                                <br/>
+                            </div>
+                        </div>
+                        <div v-else> $$$$
+                            <ul>
+                                <li v-for="subgroups in item.groups">
+                                    <div v-if="subgroups.groups.length === 0">
+                                        {{subgroups.name}} **
+                                        <ul>
+                                            <li v-for="subItem in subgroups.items">{{subItem.name}} %%</li>
+                                        </ul>
+                                        <br/>
+                                    </div>
+                                    <div v-else>
+                                        {{subgroups.name}} ##
+                                        <ul>
+                                            <li v-for="subsubgroups in subgroups.groups">{{subsubgroups.name}}**</li>
+                                        </ul>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
 
     </div>
 </template>
@@ -26,9 +135,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.3/axios.min.js"></script>
 <script src="vue-axios.min.js"></script>
 <script>
-    /*
-     'Бургеры':332020, 'Сосидж фэктори':342020, 'BBQ':352020,'Бэйкс и снэкс':392020,
-     '4Starts':412020,'Айси-спайси':422020,'Пиво':462020,'Напитки':432020*/
+    var serverImg = 'http://10.10.250.61/images';
     var src = {
         'burger': {
             url: 'json/burgers.json',
@@ -68,19 +175,33 @@
         template: '#tmpl',
         data: {
             title: 'Test: ',
-            positions: {},
-            newList : {}
+            positionslist: [],
+            newList: {}
         },
         computed: {
             headTitle: function () {
                 return this.title + ' Список товаров';
+            },
+            positionsWithProps: function () {
+                var self = this;
+                var res = this.positionslist['tovar'].map(function (item) {
+                    item.style = 'background-image: url(' + serverImg + item.urlImage + ');';
+                    console.log(item.style);
+                    return item;
+                });
+                return res;
+            }
+        },
+        watch: {
+            positionslist: function () {
+                console.log(this.positionslist);
             }
         },
         methods: {
             getJson: function () {
                 var self = this;
                 var testSet = {};
-                var current = src.drinks;
+                var current = src.starts;
                 var urlCategory = current.url;
                 //var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=432020&category=432020';
                 this.axios.get(urlCategory)
@@ -98,15 +219,16 @@
                 var curO = [];
                 if ('tovar' in resp) {
                     console.log('Выводим товар');
-                    this.newList = resp['tovar'];
+                    this.newList = resp;
+                    this.positionslist = resp;
                 }
                 else {
-                    for (var item in resp){
+                    for (var item in resp) {
                         var newO = {};
                         cur = resp[item];
-                        for (var subitem in cur){
+                        for (var subitem in cur) {
                             var curSubItem = cur[subitem];
-                            if (curSubItem === 'ИКОНКАМИ' || curSubItem === 'СПИСКОМ'){
+                            if (curSubItem === 'ИКОНКАМИ' || curSubItem === 'СПИСКОМ') {
                                 if (curSubItem === 'ИКОНКАМИ') {
                                     newO.type = 'icons';
                                 }
@@ -115,17 +237,17 @@
                                 }
                             } else {
                                 newO.name = subitem;
-                                if ('tovar' in curSubItem){
+                                if ('tovar' in curSubItem) {
                                     newO.items = curSubItem['tovar'];
                                     newO.groups = [];
                                 } else {
-                                      var groups = [];
-                                    for (var it in curSubItem){
+                                    var groups = [];
+                                    for (var it in curSubItem) {
                                         var newSO = {};
                                         var curSubItemIt = curSubItem[it]
-                                        for (var nso in curSubItemIt){
+                                        for (var nso in curSubItemIt) {
                                             var curSubItemItNso = curSubItemIt[nso];
-                                            if (curSubItemItNso === 'ИКОНКАМИ' || curSubItemItNso === 'СПИСКОМ'){
+                                            if (curSubItemItNso === 'ИКОНКАМИ' || curSubItemItNso === 'СПИСКОМ') {
                                                 if (curSubItemItNso === 'ИКОНКАМИ') {
                                                     newSO.type = 'icons';
                                                 }
@@ -133,18 +255,18 @@
                                                     newSO.type = 'list';
                                                 }
                                             }
-                                            else{
+                                            else {
                                                 newSO.name = nso;
-                                                if ('tovar' in curSubItemItNso){
+                                                if ('tovar' in curSubItemItNso) {
                                                     newSO.items = curSubItemItNso['tovar'];
                                                     newSO.groups = [];
                                                 }
-                                                else{
+                                                else {
                                                     //todo в худшем случае
                                                 }
                                             }
                                         }
-                                           groups.push(newSO);
+                                        groups.push(newSO);
                                     }
                                     newO.groups = groups;
                                 }
@@ -152,14 +274,7 @@
                         }
                         curO.push(newO);
                     }
-
-                   setTimeout(function()
-                    {
-                        console.log(curO);
-                        var json = JSON.stringify(curO);
-                        console.log(json);
-                    }, 100);
-
+                    this.positionslist = curO;
                 }
             }
         },
