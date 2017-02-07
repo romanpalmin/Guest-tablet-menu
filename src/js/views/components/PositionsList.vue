@@ -3,7 +3,7 @@
         <div clas="div-overlay">
             <div v-if="positionslist.tovar">
                 <ul class="products">
-                    <li class="product" v-for="item in positionsWithProps">
+                    <li class="product" v-for="item in positionsWithProps" @click="toggleDetails">
                         <div class="product-inner">
                             <div class="product-top-block" :data-Code="item.code" :style="item.style">
                                 <div class="product-top-block-price" :data-Code="item.code">
@@ -24,21 +24,21 @@
                         <div v-if="item.groups.length === 0">
                             <ul class="products">
                                 <div v-show="item.type === 'icons'">
-                                    <li class="product" v-for="subitem in item.items">
+                                    <li class="product" v-for="subitem in item.items" @click="toggleDetails">
                                         <div class="product-inner">
-                                            <div class="product-top-block" :style="getStyle(subitem)">
-                                                <div class="product-top-block-price">{{subitem.price}}</div>
+                                            <div class="product-top-block" :style="getStyle(subitem)" :data-Code="subitem.code">
+                                                <div class="product-top-block-price" :data-Code="subitem.code">{{subitem.price}}</div>
                                             </div>
-                                            <div class="product-inner-label">{{subitem.name}}</div>
+                                            <div class="product-inner-label" :data-Code="subitem.code">{{subitem.name}}</div>
                                         </div>
                                     </li>
                                 </div>
 
                                 <div v-show="item.type === 'list'">
-                                    <li class="product2" v-for="subitem in item.items">
+                                    <li class="product2" v-for="subitem in item.items" @click="toggleDetails">
                                         <div class="product-inner2">
-                                            <div class="product-inner-label2">{{subitem.name}}</div>
-                                            <div class="product-top-block-price2">{{subitem.price}}</div>
+                                            <div class="product-inner-label2" :data-Code="subitem.code">{{subitem.name}}</div>
+                                            <div class="product-top-block-price2" :data-Code="subitem.code">{{subitem.price}}</div>
                                         </div>
                                     </li>
                                 </div>
@@ -53,21 +53,21 @@
                                         <ul class="products">
 
                                             <div v-show="subgroups.type === 'list'">
-                                                <li class="product2" v-for="subItem in subgroups.items">
+                                                <li class="product2" v-for="subItem in subgroups.items" @click="toggleDetails">
                                                     <div class="product-inner2">
-                                                        <div class="product-inner-label2">{{subItem.name}}</div>
-                                                        <div class="product-top-block-price2">{{subItem.price}}</div>
+                                                        <div class="product-inner-label2" :data-Code="subItem.code">{{subItem.name}}</div>
+                                                        <div class="product-top-block-price2" :data-Code="subItem.code">{{subItem.price}}</div>
                                                     </div>
                                                 </li>
                                             </div>
 
                                             <div v-show="subgroups.type === 'icons'">
-                                                <li class="product" v-for="subItem in subgroups.items">
+                                                <li class="product" v-for="subItem in subgroups.items" @click="toggleDetails">
                                                     <div class="product-inner">
-                                                        <div class="product-top-block" :style="getStyle(subItem)">
-                                                            <div class="product-top-block-price">{{subItem.price}}</div>
+                                                        <div class="product-top-block" :style="getStyle(subItem)" :data-Code="subItem.code">
+                                                            <div class="product-top-block-price" :data-Code="subItem.code">{{subItem.price}}</div>
                                                         </div>
-                                                        <div class="product-inner-label">{{subItem.name}}</div>
+                                                        <div class="product-inner-label" :data-Code="subItem.code">{{subItem.name}}</div>
                                                     </div>
                                                 </li>
                                             </div>
@@ -81,6 +81,7 @@
                             <br/>
                         </div>
                     </li>
+                    <position v-if="showDetails" :positionId="code"/>
                 </ul>
             </div>
         </div>
@@ -297,7 +298,9 @@
             return{
                     positionslist: [],
                     newList: {},
-                    catName: 'burger'
+                    catName: 'burger',
+                    showDetails: false,
+                    code:0
                 }
         },
         props: ["categoryId"],
@@ -331,6 +334,13 @@
                 var res = 'background-image: url(' + serverImg + item.urlImage + ');';
                 return res;
             },
+
+            toggleDetails: function(evt){
+                var el = evt.target;
+                this.code = el.dataset.code;
+                console.log(this.code);
+                this.showDetails = true;
+           },
 
             checkForList: function() {
             console.log(false);
