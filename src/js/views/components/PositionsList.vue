@@ -429,7 +429,6 @@
             }
         },
         mounted(){
-            console.log(this.$route.params.id);
             this.getJson(this.$route.params.id);
             bus.$on('select-cat-id', function (id) {
                 this.currentCatId = id;
