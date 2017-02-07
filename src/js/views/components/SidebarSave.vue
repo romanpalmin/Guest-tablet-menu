@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="list">
-            <positionslist />
+            <positionslist :categoryId="currentCategoryId"/>
         </div>
     </div>
 </template>
@@ -225,6 +225,7 @@
              var url = './assets/data/category.json';
              this.axios.get(url)
                         .then(function (response) {
+                            console.log(response.data);
                             self.ctgs = response.data;
                         })
                         .catch(function (error) {

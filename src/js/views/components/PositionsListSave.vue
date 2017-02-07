@@ -1,9 +1,9 @@
 <template>
-    <div class="rolling">
+    <div>
         <div clas="div-overlay">
-            <div v-if="positionslist.tovar">
+            <div v-if="positions.tovar">
                 <ul class="products">
-                    <li class="product" v-for="item in positionsWithProps">
+                    <li class="product" v-for="item in positionsWithProps" @click="toggleDetails">
                         <div class="product-inner">
                             <div class="product-top-block" :data-Code="item.code" :style="item.style">
                                 <div class="product-top-block-price" :data-Code="item.code">
@@ -15,205 +15,112 @@
                             </div>
                         </div>
                     </li>
-                </ul>
-            </div>
-            <div v-else>
-                <ul  class="products">
-                    <li v-for="item in positionslist" class="product-group product-group-level-1">
-                        <div class="product-group-level-1-descr">{{item.name}}</div>
-                        <div v-if="item.groups.length === 0">
-                            <ul class="products">
-                                <li class="product" v-for="subitem in item.items">
-                                    <div class="product-inner">
-                                        <div class="product-top-block" :style="getStyle(subitem)">
-                                            <div class="">{{subitem.price}}</div>
-                                        </div>
-                                        <div class="product-inner-label">{{subitem.name}}</div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div v-else>2</div>
-                    </li>
+                    <position v-if="showDetails" :positionId="code"/>
                 </ul>
             </div>
         </div>
     </div>
 </template>
 <style scoped lang="less">
-    .rolling{
-        overflow-y: scroll;
-        height: 100vh;
-    }
-
     .div-overlay {
         overflow: auto;
     }
 
-    .content {
-        overflow-y: auto;
-    }
-
-    .product-group-level-1 {
-        background-color: rgba(128, 128, 128, 0.2);
-    }
-
-    .product-group {
-        display: block;
-        width: 100%;
-        margin: 10px;
-    }
-
-    .product {
-        display: inline-table;
-        width: 190px;
-        height: 235px;
-        color: #ffffff;
-        background-size: cover;
-        margin: 10px;
-    }
-
-    .product-group-level-1-descr {
-        font-family: 'Intro';
-        height: 100px;
-        font-size: 50px;
-        color: #FFFFFF;
-        padding-top: 10px;
-        padding-left: 20px;
-        text-align: left;
-        margin-top: 40px;
-    }
-
-    .product-top-block {
-        width: 190px;
-        height: 190px;
-        background-size: cover;
-        border-radius: 30px;
-        position: relative;
-    }
-
     .products {
         margin: 0;
         padding: 1em;
         text-align: left;
         user-select: none;
-    }
+        height: 720px;
+        overflow-y: scroll;
 
-    .products {
-        margin: 0;
-        padding: 1em;
-        text-align: left;
-        user-select: none;
+        .product {
+            display: inline-table;
+            width: 190px;
+            height: 235px;
+            color: #ffffff;
+            background-size: cover;
+            margin: 10px;
 
-        .product-inner {
-            .product-top-block {
-                width: 190px;
-                height: 190px;
-                background-size: cover;
-                border-radius: 30px;
-                position: relative;
-
-                .product-top-block-price {
-                    width: 75px;
-                    height: 77px;
+            .product-inner {
+                .product-top-block {
+                    width: 190px;
+                    height: 190px;
                     background-size: cover;
-                    position: absolute;
-                    left: 125px;
-                    top: -10px;
-                    color: rgb(0, 0, 0);
-                    text-align: center;
-                    padding-left: 18px;
-                    padding-top: 14px;
+                    border-radius: 30px;
+                    position: relative;
 
+                    .product-top-block-price {
+                        width: 75px;
+                        height: 77px;
+                        background-size: cover;
+                        position: absolute;
+                        left: 125px;
+                        top: -10px;
+                        color: rgb(0, 0, 0);
+                        text-align: center;
+                        padding-left: 18px;
+                        padding-top: 14px;
+
+                    }
+                }
+
+                .product-inner-label {
+                    width: 100%;
+                    height: 45px;
+                    color: #FFFFFF;
+                    padding-top: 1px;
+                    padding-left: 3px;
+                    padding-right: 3px;
+                    overflow: hidden;
+                    text-align: center;
                 }
             }
-
-            .product-inner-label {
-                width: 100%;
-                height: 45px;
-                color: #FFFFFF;
-                padding-top: 1px;
-                padding-left: 3px;
-                padding-right: 3px;
-                overflow: hidden;
-                text-align: center;
-            }
         }
-    }
+        *, *:after, *:before {
+            box-sizing: border-box;
+        }
 
-    *, *:after, *:before {
-        box-sizing: border-box;
     }
-
 
 </style>
 <script>
     import bus from './store/store';
     import Position from './Position.vue';
     import positions from './data/positions';
-    var serverImg2 = 'http://10.10.250.61/images';
-    var serverImg = 'http://10.10.182.11/images';
-    var src = {
-        'burger': {
-            url: 'assets/data/json/burgers.json',
-            code: 332020
-        },
-        'factory': {
-            url: 'assets/data/json/factory.json',
-            code: 342020
-        },
-        'bbq': {
-            url: 'assets/data/json/bbq.json',
-            code: 352020
-        },
-        'snakes': {
-            url: 'assets/data/json/snakes.json',
-            code: 392020
-        },
-        'starts': {
-            url: 'assets/data/json/4starts.json',
-            code: 412020
-        },
-        'ice': {
-            url: 'assets/data/json/ice.json',
-            code: 422020
-        },
-        'beer': {
-            url: 'assets/data/json/beer.json',
-            code: 462020
-        },
-        'drinks': {
-            url: 'assets/data/json/drinks.json',
-            code: 432020
-        }
-    };
 
     export default{
         data(){
             return{
-                    title: 'Test: ',
-                    positionslist: [],
-                    newList: {}
-                }
+                currentCatId: this.categoryId,
+                positionslist : [],
+                showDetails: false,
+                code:0
+            }
         },
         props: ["categoryId"],
+
         computed: {
-            headTitle: function () {
-                return this.title + ' Список товаров';
+            catId: function(){
+                return this.currentCatId;
             },
-            positionsWithProps: function () {
+            positionsWithProps: function(){
                 var self = this;
-                var res = this.positionslist['tovar'].map(function (item) {
-                    item.style = 'background-image: url(' + serverImg + item.urlImage + ');';
+                var res = this.positionslist.map(function(item) {
+                    item.style = 'background-image: url(' + item.urlImage + ');';
                     return item;
                 });
                 return res;
             }
         },
-        watch: {
-            positionslist: function () {
-                console.log(this.positionslist);
-            }
+        mounted: function(){
+            var self = this;
+            //this.populateData(this.currentCatId);
+            bus.$on('select-cat-id', function (id) {
+                this.currentCatId = id;
+                self.populateData(id);
+            });
+            this.getJson();
         },
 
         destroyed: function(){
@@ -221,13 +128,18 @@
         },
 
         methods: {
-            getStyle: function(item){
-                var self = this;
-                var res = 'background-image: url(' + serverImg + item.urlImage + ');';
-                return res;
-            },
-
-            getJson: function () {
+           populateData: function(id){
+                //console.log('Заполняем данные по ID = ' + id);
+                if (positions && id !== ''){
+                    this.positionslist = positions[id];
+                }
+           },
+           toggleDetails: function(evt){
+                var el = evt.target;
+                this.code = el.dataset.code;
+                this.showDetails = true;
+           },
+           getJson: function () {
                 var self = this;
                 var testSet = {};
                 var current = src.burger;
@@ -249,7 +161,7 @@
                 if ('tovar' in resp) {
                     console.log('Выводим товар');
                     this.newList = resp;
-                    this.positionslist = resp;
+                    this.positions = resp;
                 }
                 else {
                     for (var item in resp) {
@@ -303,26 +215,20 @@
                         }
                         curO.push(newO);
                     }
-                    this.positionslist = curO;
+
+                    setTimeout(function () {
+                        console.log(curO);
+                        var json = JSON.stringify(curO);
+                        console.log(json);
+                    }, 100);
+
                 }
             }
-        },
-        mounted(){
-            this.getJson();
         },
         components:{
             'position' : Position
         }
     }
-
-
-
-
-
-
-
-
-
 
 
 
