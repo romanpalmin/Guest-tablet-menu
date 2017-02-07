@@ -18,22 +18,68 @@
                 </ul>
             </div>
             <div v-else>
-                <ul  class="products">
+                <ul class="products">
                     <li v-for="item in positionslist" class="product-group product-group-level-1">
                         <div class="product-group-level-1-descr">{{item.name}}</div>
                         <div v-if="item.groups.length === 0">
                             <ul class="products">
-                                <li class="product" v-for="subitem in item.items">
-                                    <div class="product-inner">
-                                        <div class="product-top-block" :style="getStyle(subitem)">
-                                            <div class="">{{subitem.price}}</div>
+                                <div v-show="item.type === 'icons'">
+                                    <li class="product" v-for="subitem in item.items">
+                                        <div class="product-inner">
+                                            <div class="product-top-block" :style="getStyle(subitem)">
+                                                <div class="product-top-block-price">{{subitem.price}}</div>
+                                            </div>
+                                            <div class="product-inner-label">{{subitem.name}}</div>
                                         </div>
-                                        <div class="product-inner-label">{{subitem.name}}</div>
-                                    </div>
-                                </li>
+                                    </li>
+                                </div>
+
+                                <div v-show="item.type === 'list'">
+                                    <li class="product2" v-for="subitem in item.items">
+                                        <div class="product-inner2">
+                                            <div class="product-inner-label2">{{subitem.name}}</div>
+                                            <div class="product-top-block-price2">{{subitem.price}}</div>
+                                        </div>
+                                    </li>
+                                </div>
+
                             </ul>
                         </div>
-                        <div v-else>2</div>
+                        <div v-else>
+                            <ul>
+                                <li v-for="subgroups in item.groups" class="product-group-level-2">
+                                    <div class="product-group-level-2-descr">{{subgroups.name}}</div>
+                                    <div v-if="subgroups.groups.length === 0">
+                                        <ul class="products">
+
+                                            <div v-show="subgroups.type === 'list'">
+                                                <li class="product2" v-for="subItem in subgroups.items">
+                                                    <div class="product-inner2">
+                                                        <div class="product-inner-label2">{{subItem.name}}</div>
+                                                        <div class="product-top-block-price2">{{subItem.price}}</div>
+                                                    </div>
+                                                </li>
+                                            </div>
+
+                                            <div v-show="subgroups.type === 'icons'">
+                                                <li class="product" v-for="subItem in subgroups.items">
+                                                    <div class="product-inner">
+                                                        <div class="product-top-block" :style="getStyle(subItem)">
+                                                            <div class="product-top-block-price">{{subItem.price}}</div>
+                                                        </div>
+                                                        <div class="product-inner-label">{{subItem.name}}</div>
+                                                    </div>
+                                                </li>
+                                            </div>
+                                        </ul>
+                                    </div>
+                                    <div v-else></div>
+                                </li>
+                            </ul>
+                            <br/>
+                            <br/>
+                            <br/>
+                        </div>
                     </li>
                 </ul>
             </div>
@@ -41,9 +87,34 @@
     </div>
 </template>
 <style scoped lang="less">
-    .rolling{
+    .rolling {
         overflow-y: scroll;
         height: 100vh;
+    }
+
+    li {
+        list-style-type: none; /* Убираем маркеры */
+    }
+
+    .product-group-level-2 {
+        background-color: rgba(0, 0, 0, 0.2);
+    }
+
+    .product-inner2 {
+        display: table-row;
+    }
+
+    .product-inner-label2 {
+        display: table-cell;
+        width: calc(100% - 100px);
+        height: 100%;
+        color: #FFFFFF;
+        vertical-align: middle;
+        font-size: 16px;
+        padding-left: 15px;
+        padding-right: 15px;
+        overflow: hidden;
+        text-align: left;
     }
 
     .div-overlay {
@@ -73,6 +144,15 @@
         margin: 10px;
     }
 
+    .product2 {
+        display: inline-table;
+        width: 100%;
+        height: 80px;
+        margin: 10px;
+        color: #FFFFFF;
+        background-color: #808080;
+    }
+
     .product-group-level-1-descr {
         font-family: 'Intro';
         height: 100px;
@@ -84,12 +164,36 @@
         margin-top: 40px;
     }
 
+    .product-group-level-2-descr {
+        font-family: 'Intro';
+        height: 60px;
+        font-size: 54px;
+        color: #EEEEEE;
+        padding-left: 30px;
+        text-align: left;
+    }
+
     .product-top-block {
         width: 190px;
         height: 190px;
         background-size: cover;
         border-radius: 30px;
         position: relative;
+    }
+
+    .product-top-block-price2 {
+        display: table-cell;
+        width: 75px;
+        height: 77px;
+        background-image: url('http://10.10.182.11/img/price.png');
+        background-size: cover;
+        color: #000000;
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 26px;
+        padding-top: 25px;
+        background-position-x: -20px;
+        background-position-y: 10px;
     }
 
     .products {
@@ -151,7 +255,7 @@
     import bus from './store/store';
     import Position from './Position.vue';
     import positions from './data/positions';
-    var serverImg2 = 'http://10.10.250.61/images';
+    var serverImg2 = 'http://10.10.182.11/img';
     var serverImg = 'http://10.10.182.11/images';
     var src = {
         'burger': {
@@ -191,9 +295,9 @@
     export default{
         data(){
             return{
-                    title: 'Test: ',
                     positionslist: [],
-                    newList: {}
+                    newList: {},
+                    catName: 'burger'
                 }
         },
         props: ["categoryId"],
@@ -211,8 +315,9 @@
             }
         },
         watch: {
-            positionslist: function () {
-                console.log(this.positionslist);
+            categoryId: function(){
+                console.log('bingo');
+                this.getJson(this.categoryId);
             }
         },
 
@@ -227,12 +332,29 @@
                 return res;
             },
 
-            getJson: function () {
+            checkForList: function() {
+            console.log(false);
+                return false;
+            },
+
+            getJson: function (catId) {
+                switch(+catId){
+                        case 332020: this.catName = 'burger'; break;
+                        case 432020: this.catName = 'drinks'; break;
+                        case 422020: this.catName = 'ice'; break;
+                        case 412020: this.catName = 'starts'; break;
+                        case 392020: this.catName = 'snakes'; break;
+                        case 352020: this.catName = 'bbq'; break;
+                        case 342020: this.catName = 'factory'; break;
+                        case 462020: this.catName = 'beer'; break;
+                        default: this.catName = 'burger';break
+                    }
                 var self = this;
                 var testSet = {};
-                var current = src.burger;
+                var current = src[this.catName];
                 var urlCategory = current.url;
                 //var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=432020&category=432020';
+                console.log(urlCategory);
                 this.axios.get(urlCategory)
                         .then(function (response) {
                             //self.positions = response.data[current.code];
@@ -247,7 +369,6 @@
                 var cur;
                 var curO = [];
                 if ('tovar' in resp) {
-                    console.log('Выводим товар');
                     this.newList = resp;
                     this.positionslist = resp;
                 }
@@ -308,12 +429,22 @@
             }
         },
         mounted(){
-            this.getJson();
+            console.log(this.$route.params.id);
+            this.getJson(this.$route.params.id);
+            bus.$on('select-cat-id', function (id) {
+                this.currentCatId = id;
+            });
+
         },
         components:{
             'position' : Position
         }
     }
+
+
+
+
+
 
 
 

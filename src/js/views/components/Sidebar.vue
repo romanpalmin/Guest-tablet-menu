@@ -28,7 +28,7 @@
             </div>
         </div>
         <div class="list">
-            <positionslist />
+            <positionslist :categoryId="currentCategoryId"/>
         </div>
     </div>
 </template>
