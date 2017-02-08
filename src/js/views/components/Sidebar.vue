@@ -5,7 +5,7 @@
             <header class="bp-header ">
             </header>
             <div class="dummy-logo">
-                <img src="assets/images/beer-zha.png">
+                <img :src="urlLogo">
                 <nav class="menu">
                     <nav class="menu__breadcrumbs"><a>Разделы</a></nav>
                     <div class="menu__wrap">
@@ -179,12 +179,13 @@
 <script>
     import positionslist from './PositionsList.vue';
     import bus from './store/store';
-     import constants from './data/const'
+    import mp from './store/currentStates';
 
     export default{
         data(){
             return{
                 ctgs: [],
+                urlLogo: '',
                 currentSelectedId: this.$route.params.id
             }
         },
@@ -192,7 +193,7 @@
             ctgs_with_params: function() {
                 var self = this;
                 var res = this.ctgs.map(function(item) {
-                    item.style = 'background-image: url(' + constants.server +'images' + item.urlSmallImage + ');';
+                    item.style = 'background-image: url(' + mp.settings.server + mp.settings.urlBigImage + item.urlSmallImage + ');';
                     item.route = '/ru/menu/'+ item.code;
 
                     if (+item.code ===+self.$route.params.id){
@@ -221,15 +222,21 @@
         },
         mounted(){
             var self = this;
-             //var url = 'http://10.10.250.61/menu/hs/model?groups=';
-             var url = './assets/data/category.json';
-             this.axios.get(url)
-                        .then(function (response) {
-                            self.ctgs = response.data;
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+             var url = mp.settings.server + 'menu/hs/model?groups=';
+             // http://10.10.250.61/img/beer-zha.png
+             this.urlLogo = mp.settings.server +  mp.settings.urlSmallImage + mp.settings.images.logo;
+             if (mp && mp.MenuPoints && mp.MenuPoints !== 0){
+                self.ctgs = mp.MenuPoints;
+             }
+             else {
+                 this.axios.get(url)
+                            .then(function (response) {
+                                self.ctgs = response.data;
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                        }
         }
 
 
