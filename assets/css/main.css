@@ -3,7 +3,7 @@ body {
     margin: 0;
     color: #cecece;
     -webkit-font-smoothing: antialiased;
-    background: #1d1e21 url('../images/background.jpg');
+    background: #1d1e21 url('http://10.10.250.61/img/background.jpg');
     overflow: hidden;
 }
 
@@ -93,13 +93,21 @@ a {
     transform: scale3d(0, 1, 1);
 }
 
+body {
+    background: #1d1e21 url('http://10.10.250.61/img/background.jpg');
+}
+
 .inner-item-container{
-    background-image: url("../../assets/images/background.jpg");
+    background-image: url("http://10.10.250.61/img/background.jpg");
 }
 
 .product-top-block-price{
-    background-image: url("../../assets/images/price.png");
+    background-image: url("http://10.10.250.61/img/price.png");
 }
+.product-top-block-price2 {
+    background-image: url('http://10.10.182.11/img/price.png');
+}
+
 
 *:after, *:before {
     box-sizing: border-box;
