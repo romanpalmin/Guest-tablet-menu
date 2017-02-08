@@ -61,6 +61,7 @@
 </style>
 <script>
     import constants from './data/const'
+    import mp from './store/currentStates';
     export default{
         data(){
             return {
@@ -71,7 +72,7 @@
         computed: {
             ctgs_with_params: function () {
                 var res = this.ctgs.map(function (item) {
-                    item.style = 'background-image: url(' + constants.server +'images' + item.urlBigImage + ');';
+                    item.style = 'background-image: url(' +  mp.settings.server + mp.settings.server.urlBigImage + item.urlBigImage + ');';
                     item.route = 'menu/'+item.code;
                     return item;
                 });
@@ -80,18 +81,19 @@
         },
         mounted(){
             var self = this;
-             //var url = 'http://10.10.250.61/menu/hs/model?groups=';
-             var url = './assets/data/category.json';
+             var url = mp.settings.server + '/menu/hs/model?groups=';
+             console.log(url);
              this.axios.get(url)
                         .then(function (response) {
-                            console.log(response.data);
                             self.ctgs = response.data;
+                            mp.MenuPoints = response.data;
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
         }
     }
+
 
 
 
