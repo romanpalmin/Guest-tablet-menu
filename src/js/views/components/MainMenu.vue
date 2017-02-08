@@ -71,7 +71,7 @@
         computed: {
             ctgs_with_params: function () {
                 var res = this.ctgs.map(function (item) {
-                    item.style = 'background-image: url(' +  mp.settings.server + mp.settings.server.urlBigImage + item.urlBigImage + ');';
+                    item.style = 'background-image: url(' +  mp.settings.server + mp.settings.urlBigImage + item.urlBigImage + ');';
                     item.route = 'menu/'+item.code;
                     return item;
                 });
