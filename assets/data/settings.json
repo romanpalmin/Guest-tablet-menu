@@ -1,0 +1,5 @@
+{
+  'server':'http://10.10.250.61/',
+  'smallImagesUrl': 'img/',
+  'bigImagesUrl': 'img/',
+}

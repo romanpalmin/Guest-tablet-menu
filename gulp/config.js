@@ -35,5 +35,10 @@ module.exports = {
     index: {
         src:  './*.html',
         dest: dist
+    },
+    
+    settings: {
+        src: './assets/settings.json',
+        dest: distAssets
     }
 };
