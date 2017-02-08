@@ -23,7 +23,7 @@
                             <td>
                                 <div class="close-wrap">
                                     <div class="delete"><img :data-code="item.id"
-                                                             @click="deleteOrder" src="assets/images/close.png">
+                                                             @click="deleteOrder" :src="urlClose">
                                     </div>
                                 </div>
                             </td>
@@ -128,7 +128,8 @@
         data(){
             return {
                 positions: orders,
-                urlLogo: ''
+                urlLogo: '',
+                urlClose: ''
             }
         },
 
@@ -140,6 +141,7 @@
         mounted(){
             console.log(sets.settings);
             this.urlLogo = sets.settings.server + sets.settings.urlSmallImage + sets.settings.images.logo;
+            this.urlClose = sets.settings.server + sets.settings.urlSmallImage + sets.settings.images.close;
         }
     }
 </script>
