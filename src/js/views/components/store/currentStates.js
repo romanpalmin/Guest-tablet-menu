@@ -5,7 +5,8 @@ export default {
         urlSmallImage:'img/',
         urlBigImage:'images/',
         images:{
-            logo: 'beer-zha.png'
+            logo: 'beer-zha.png',
+            close: 'close.png'
         }
     }
 }
