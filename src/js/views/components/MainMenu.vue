@@ -60,7 +60,6 @@
 
 </style>
 <script>
-    import constants from './data/const'
     import mp from './store/currentStates';
     export default{
         data(){
