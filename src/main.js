@@ -3,6 +3,8 @@ import menu from './js/views/Menu.vue';
 import sidebar from './js/views/components/sidebar.vue';
 import order from './js/views/Order.vue';
 import shedule from './js/views/Shedule.vue';
+import fishki from './js/views/Fishki.vue';
+import actions from './js/views/Actions.vue';
 import VueRouter from 'vue-router'
 import ajax from 'vue-resource';
 import axios from 'axios'
@@ -28,8 +30,8 @@ Vue.use(VueAxios, axios);
 const routes = [
     {name: 'menu', path: '/:lang/menu', component: menu},
     {name: 'order', path: '/:lang/order', component: order},
-    {name: 'order', path: '/:lang/fishki', component: order},
-    {name: 'order', path: '/:lang/actions', component: order},
+    {name: 'fishki', path: '/:lang/fishki', component: fishki},
+    {name: 'actions', path: '/:lang/actions', component: actions},
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
     {name: 'sidebar', path: '/:lang/menu/:id', component: sidebar}
 ];
