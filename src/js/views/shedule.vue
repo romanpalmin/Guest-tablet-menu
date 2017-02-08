@@ -12,7 +12,7 @@
                         <div class="event-type">{{ contentItem.event.eventtype }}</div>
                     </div>
                     <div class="event-descr-row">
-                        <div class="event-descr-cell">{{ contentItem.event.description  }}</div>
+                        <div class="event-descr-cell">{{ contentItem.event.description }}</div>
                     </div>
                 </div>
             </div>
@@ -94,8 +94,8 @@
     }
 </style>
 <script>
+    import state from './components/store/currentStates'
 
-//import shedule from './components/data/watches';
     export default{
         data(){
             return {
@@ -108,48 +108,15 @@
             }
         },
 
-        filters: {
-            replaceHash : function( value ){
-                return value.replace('#', '"');
-            }
-        },
-
         methods:{
-            parseJson: function(json){
-                var res = [];
-                var dayEvent = {};
-                var day = {};
-                console.log(json);
-                for (var item in json){
-                    var dayEvents = [];
-                    day.daydate = item;
-                    day.daydescr = json[item]["День"];
-
-                    var events = json[item]["события"];
-                    for (var event in events){
-                        var dayEvent = {
-                            'event':{
-                                'timebegin': events[event]["Время"],
-                                'eventtype': events[event]["ВидМероприятия_Наименование"],
-                                'description': events[event]["Наименование"]
-                            }
-                        }
-                        dayEvents.push(dayEvent);
-                    }
-                    day.daycontent = dayEvents;
-                    res.push(day);
-                }
-                console.log(JSON.srtingify(res));
-                this.rasp = res;
-            },
-
-            getShow: function(){
+           getShow: function(){
                 var self = this;
-                //var url = 'http://10.10.250.61/menu/hs/model?groups=1&shows=1';
-                var url = './assets/data/shows.json';
+                var url = state.settings.server + 'menu/hs/model?groups=1&shows=1';
                 this.axios.get(url)
                         .then(function (response) {
-                            self.ctgs = self.parseJson(response.data);
+                            if (response.data > 0){
+                                this.rasp = res;
+                            }
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -161,6 +128,4 @@
             this.getShow();
         }
     }
-
-
 </script>
