@@ -81,7 +81,6 @@
         mounted(){
             var self = this;
              var url = mp.settings.server + '/menu/hs/model?groups=';
-             console.log(url);
              this.axios.get(url)
                         .then(function (response) {
                             self.ctgs = response.data;
@@ -92,8 +91,4 @@
                         });
         }
     }
-
-
-
-
 </script>
