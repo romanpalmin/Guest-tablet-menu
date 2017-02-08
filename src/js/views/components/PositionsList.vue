@@ -186,7 +186,6 @@
         display: table-cell;
         width: 75px;
         height: 77px;
-        background-image: url('http://10.10.182.11/img/price.png');
         background-size: cover;
         color: #000000;
         text-align: center;
@@ -256,44 +255,10 @@
     import bus from './store/store';
     import Position from './Position.vue';
     import positions from './data/positions';
-    var serverImg2 = 'http://10.10.182.11/img';
+    import state from './store/currentStates';
     var serverImg = 'http://10.10.182.11/images';
-    var src = {
-        'burger': {
-            url: 'assets/data/json/burgers.json',
-            code: 332020
-        },
-        'factory': {
-            url: 'assets/data/json/factory.json',
-            code: 342020
-        },
-        'bbq': {
-            url: 'assets/data/json/bbq.json',
-            code: 352020
-        },
-        'snakes': {
-            url: 'assets/data/json/snakes.json',
-            code: 392020
-        },
-        'starts': {
-            url: 'assets/data/json/4starts.json',
-            code: 412020
-        },
-        'ice': {
-            url: 'assets/data/json/ice.json',
-            code: 422020
-        },
-        'beer': {
-            url: 'assets/data/json/beer.json',
-            code: 462020
-        },
-        'drinks': {
-            url: 'assets/data/json/drinks.json',
-            code: 432020
-        }
-    };
 
-    export default{
+     export default{
         data(){
             return{
                     positionslist: [],
@@ -319,7 +284,6 @@
         },
         watch: {
             categoryId: function(){
-                console.log('bingo');
                 this.getJson(this.categoryId);
             }
         },
@@ -338,38 +302,17 @@
             toggleDetails: function(evt){
                 var el = evt.target;
                 this.code = el.dataset.code;
-                console.log(this.code);
                 this.showDetails = true;
            },
 
-            checkForList: function() {
-            console.log(false);
-                return false;
-            },
-
             getJson: function (catId) {
-                switch(+catId){
-                        case 332020: this.catName = 'burger'; break;
-                        case 432020: this.catName = 'drinks'; break;
-                        case 422020: this.catName = 'ice'; break;
-                        case 412020: this.catName = 'starts'; break;
-                        case 392020: this.catName = 'snakes'; break;
-                        case 352020: this.catName = 'bbq'; break;
-                        case 342020: this.catName = 'factory'; break;
-                        case 462020: this.catName = 'beer'; break;
-                        default: this.catName = 'burger';break
-                    }
                 var self = this;
                 var testSet = {};
-                var current = src[this.catName];
-                var urlCategory = current.url;
-                //var urlCategory = 'http://10.10.250.61/menu/hs/model?groups=432020&category=432020';
-                console.log(urlCategory);
+                var urlCategory = state.settings.server + 'menu/hs/model?groups='+catId+'&category=' + catId;
                 this.axios.get(urlCategory)
                         .then(function (response) {
-                            //self.positions = response.data[current.code];
-                            testSet = response.data[current.code];
-                            self.formatJson(testSet, current.code);
+                            testSet = response.data[catId];
+                            self.formatJson(testSet, catId);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -439,11 +382,8 @@
             }
         },
         mounted(){
+            console.log('From Store');
             this.getJson(this.$route.params.id);
-            bus.$on('select-cat-id', function (id) {
-                this.currentCatId = id;
-            });
-
         },
         components:{
             'position' : Position
