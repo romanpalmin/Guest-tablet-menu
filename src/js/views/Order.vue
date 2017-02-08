@@ -3,7 +3,7 @@
         <div>
             <div class='white-panel'>
                 <div class="dummy-logo">
-                    <img src="assets/images/beer-zha.png">
+                    <img :src="urlLogo">
                 </div>
             </div>
             <header>
@@ -122,14 +122,13 @@
 
 </style>
 <script>
-    import orders from './components/data/orders'
+    import orders from './components/data/orders';
+    import sets from './components/store/currentStates';
     export default{
-        ready: function(){
-        this.init();
-        },
         data(){
             return {
-                positions: orders
+                positions: orders,
+                urlLogo: ''
             }
         },
 
@@ -137,6 +136,10 @@
             deleteOrder: function(evt){
                 console.log(+evt.target.dataset.code);
             }
+        },
+        mounted(){
+            console.log(sets.settings);
+            this.urlLogo = sets.settings.server + sets.settings.urlSmallImage + sets.settings.images.logo;
         }
     }
 </script>
