@@ -2,6 +2,7 @@
 var project = '/';
 var src = './src' + project;
 var dist = './build' + project;
+var deploy = './deploy'
 var assets = 'assets';
 var srcAssets = src + assets;
 var distAssets = dist + assets;
@@ -40,5 +41,10 @@ module.exports = {
     settings: {
         src: './assets/settings.json',
         dest: distAssets
+    },
+
+    deploy:{
+        src: dist + '/**/*/',
+        dest: deploy
     }
 };
