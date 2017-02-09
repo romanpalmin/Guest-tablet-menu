@@ -114,8 +114,9 @@
                 var url = state.settings.server + 'menu/hs/model?groups=1&shows=1';
                 this.axios.get(url)
                         .then(function (response) {
-                            if (response.data > 0){
-                                this.rasp = res;
+                            if (response.data.length > 0){
+                                console.log(response.data);
+                                self.rasp = response.data;
                             }
                         })
                         .catch(function (error) {
