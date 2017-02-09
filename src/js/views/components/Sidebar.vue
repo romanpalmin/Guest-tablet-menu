@@ -178,7 +178,6 @@
 </style>
 <script>
     import positionslist from './PositionsList.vue';
-    import bus from './store/store';
     import mp from './store/currentStates';
 
     export default{
@@ -207,7 +206,6 @@
             },
             currentCategoryId: function(){
                 let newVal = this.$route.params.id;
-                bus.$emit('select-cat-id', newVal);
                 return newVal;
             }
         },
@@ -223,10 +221,9 @@
         mounted(){
             var self = this;
              var url = mp.settings.server + 'menu/hs/model?groups=';
-             // http://10.10.250.61/img/beer-zha.png
              this.urlLogo = mp.settings.server +  mp.settings.urlSmallImage + mp.settings.images.logo;
-             if (mp && mp.MenuPoints && mp.MenuPoints !== 0){
-                self.ctgs = mp.MenuPoints;
+             if (mp && mp.appState.MenuPoints && mp.appState.MenuPoints !== 0){
+                self.ctgs = mp.appState.MenuPoints;
              }
              else {
                  this.axios.get(url)
