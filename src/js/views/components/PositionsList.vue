@@ -252,11 +252,8 @@
 
 </style>
 <script>
-    import bus from './store/store';
-    import Position from './Position.vue';
-    import positions from './data/positions';
+    import Position from './PositionItem.vue';
     import state from './store/currentStates';
-    var serverImg = 'http://10.10.182.11/images';
 
      export default{
         data(){
@@ -265,7 +262,8 @@
                     newList: {},
                     catName: 'burger',
                     showDetails: false,
-                    code:0
+                    code:0,
+                    currentId: this.$route.params.id
                 }
         },
         props: ["categoryId"],
@@ -276,7 +274,7 @@
             positionsWithProps: function () {
                 var self = this;
                 var res = this.positionslist['tovar'].map(function (item) {
-                    item.style = 'background-image: url(' + serverImg + item.urlImage + ');';
+                    item.style = 'background-image: url(' + state.settings.server + state.settings.urlBackImage + item.urlImage + ');';
                     return item;
                 });
                 return res;
@@ -285,31 +283,40 @@
         watch: {
             categoryId: function(){
                 this.getJson(this.categoryId);
+            },
+            currentId: function(){
+                console.log(this.currentId);
             }
-        },
-
-        destroyed: function(){
-            bus.$off();
         },
 
         methods: {
             getStyle: function(item){
                 var self = this;
-                var res = 'background-image: url(' + serverImg + item.urlImage + ');';
+                var res = 'background-image: url(' + state.settings.server + state.settings.urlBackImage + item.urlImage  + ');';
                 return res;
             },
 
             toggleDetails: function(evt){
+
                 var el = evt.target;
                 this.code = el.dataset.code;
+                console.log(this.code);
                 this.showDetails = true;
            },
 
             getJson: function (catId) {
                 var self = this;
                 var testSet = {};
-                var urlCategory = state.settings.server + 'menu/hs/model?groups='+catId+'&category=' + catId;
-                this.axios.get(urlCategory)
+                var url = '';
+                 if (state.settings.testMode){
+                    url = './assets/data/category.json'
+                 } else {
+                    url = state.settings.server + 'menu/hs/model?groups='+catId+'&category=' + catId;
+                 }
+                if (state.appState.Category[catId].currentState.length > 0){
+                this.positionslist = state.appState.Category[catId].currentState;
+                }
+                this.axios.get(url)
                         .then(function (response) {
                             testSet = response.data[catId];
                             self.formatJson(testSet, catId);
@@ -324,6 +331,7 @@
                 if ('tovar' in resp) {
                     this.newList = resp;
                     this.positionslist = resp;
+                    state.appState.Category[this.$route.params.id].currentState = this.positionslist;
                 }
                 else {
                     for (var item in resp) {
@@ -378,36 +386,18 @@
                         curO.push(newO);
                     }
                     this.positionslist = curO;
+                    state.appState.Category[this.$route.params.id].currentState = this.positionslist;
                 }
             }
         },
         mounted(){
             console.log('From Store');
-            this.getJson(this.$route.params.id);
+            this.currentId = this.$route.params.id;
+            this.getJson(this.currentId);
         },
         components:{
             'position' : Position
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </script>
