@@ -64,8 +64,7 @@
     export default{
         data(){
             return {
-                ctgs: [],
-                CurrentId: 600
+                ctgs: []
             }
         },
         computed: {
@@ -79,16 +78,27 @@
             },
         },
         mounted(){
-            var self = this;
-             var url = mp.settings.server + '/menu/hs/model?groups=';
+             var self = this;
+             var url = '';
+             if (mp.settings.testMode){
+                url = './assets/data/category.json'
+             } else {
+                url = mp.settings.server + '/menu/hs/model?groups=';
+             }
+
+             if (mp.appState.MenuPoints.length > 0){
+                self.ctgs = mp.appState.MenuPoints;
+             }
+
              this.axios.get(url)
                         .then(function (response) {
                             self.ctgs = response.data;
-                            mp.MenuPoints = response.data;
+                            mp.appState.MenuPoints = response.data;
                         })
                         .catch(function (error) {
                             console.log(error);
                         });
         }
     }
+
 </script>
