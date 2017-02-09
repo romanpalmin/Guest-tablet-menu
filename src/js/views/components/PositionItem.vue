@@ -156,16 +156,8 @@
             },
 
             mounted(){
-                //positions[this.positionId];
                 this.getData(this.positionId);
                 this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
             }
     }
-
-
-
-
-
-
-
 </script>
