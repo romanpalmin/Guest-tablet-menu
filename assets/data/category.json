@@ -1,1 +1,50 @@
-[{ "name":"БУРГЕРЫ", "code":"332020", "urlSmallImage":"/b9b42dfa-b53a-11e6-80c0-0cc47ac6971c-sm.png", "urlBigImage":"/b9b42dfa-b53a-11e6-80c0-0cc47ac6971c-big.png"},{ "name":"СОСИДЖ ФЭКТОРИ", "code":"342020", "urlSmallImage":"/b9b42dfb-b53a-11e6-80c0-0cc47ac6971c-sm.png", "urlBigImage":"/b9b42dfb-b53a-11e6-80c0-0cc47ac6971c-big.png"},{ "name":"BBQ", "code":"352020", "urlSmallImage":"/b9b42dfc-b53a-11e6-80c0-0cc47ac6971c-sm.png", "urlBigImage":"/b9b42dfc-b53a-11e6-80c0-0cc47ac6971c-big.png"},{ "name":"БЭЙКС ЭНД СНЭКС", "code":"392020", "urlSmallImage":"/b9b42dfd-b53a-11e6-80c0-0cc47ac6971c-sm.png", "urlBigImage":"/b9b42dfd-b53a-11e6-80c0-0cc47ac6971c-big.png"},{ "name":"4STARTS", "code":"412020", "urlSmallImage":"/b9b42dfe-b53a-11e6-80c0-0cc47ac6971c-sm.png", "urlBigImage":"/b9b42dfe-b53a-11e6-80c0-0cc47ac6971c-big.png"},{ "name":"АЙСИ-СПАЙСИ", "code":"422020", "urlSmallImage":"/b9b42dff-b53a-11e6-80c0-0cc47ac6971c-sm.png", "urlBigImage":"/b9b42dff-b53a-11e6-80c0-0cc47ac6971c-big.png"},{ "name":"НАПИТКИ", "code":"432020", "urlSmallImage":"/b9b42e00-b53a-11e6-80c0-0cc47ac6971c-sm.png", "urlBigImage":"/b9b42e00-b53a-11e6-80c0-0cc47ac6971c-big.png"},{ "name":"ПИВО", "code":"462020", "urlSmallImage":"/b9b42e01-b53a-11e6-80c0-0cc47ac6971c-sm.png", "urlBigImage":"/b9b42e01-b53a-11e6-80c0-0cc47ac6971c-big.png"}]
+[
+  {
+    "name": "БУРГЕРЫ",
+    "code": "332020",
+    "urlSmallImage": "/b9b42dfa-b53a-11e6-80c0-0cc47ac6971c-sm.png",
+    "urlBigImage": "/b9b42dfa-b53a-11e6-80c0-0cc47ac6971c-big.png"
+  },
+  {
+    "name": "СОСИДЖ ФЭКТОРИ",
+    "code": "342020",
+    "urlSmallImage": "/b9b42dfb-b53a-11e6-80c0-0cc47ac6971c-sm.png",
+    "urlBigImage": "/b9b42dfb-b53a-11e6-80c0-0cc47ac6971c-big.png"
+  },
+  {
+    "name": "BBQ",
+    "code": "352020",
+    "urlSmallImage": "/b9b42dfc-b53a-11e6-80c0-0cc47ac6971c-sm.png",
+    "urlBigImage": "/b9b42dfc-b53a-11e6-80c0-0cc47ac6971c-big.png"
+  },
+  {
+    "name": "БЭЙКС ЭНД СНЭКС",
+    "code": "392020",
+    "urlSmallImage": "/b9b42dfd-b53a-11e6-80c0-0cc47ac6971c-sm.png",
+    "urlBigImage": "/b9b42dfd-b53a-11e6-80c0-0cc47ac6971c-big.png"
+  },
+  {
+    "name": "4STARTS",
+    "code": "412020",
+    "urlSmallImage": "/b9b42dfe-b53a-11e6-80c0-0cc47ac6971c-sm.png",
+    "urlBigImage": "/b9b42dfe-b53a-11e6-80c0-0cc47ac6971c-big.png"
+  },
+  {
+    "name": "АЙСИ-СПАЙСИ",
+    "code": "422020",
+    "urlSmallImage": "/b9b42dff-b53a-11e6-80c0-0cc47ac6971c-sm.png",
+    "urlBigImage": "/b9b42dff-b53a-11e6-80c0-0cc47ac6971c-big.png"
+  },
+  {
+    "name": "НАПИТКИ",
+    "code": "432020",
+    "urlSmallImage": "/b9b42e00-b53a-11e6-80c0-0cc47ac6971c-sm.png",
+    "urlBigImage": "/b9b42e00-b53a-11e6-80c0-0cc47ac6971c-big.png"
+  },
+  {
+    "name": "ПИВО",
+    "code": "462020",
+    "urlSmallImage": "/b9b42e01-b53a-11e6-80c0-0cc47ac6971c-sm.png",
+    "urlBigImage": "/b9b42e01-b53a-11e6-80c0-0cc47ac6971c-big.png"
+  }
+]
