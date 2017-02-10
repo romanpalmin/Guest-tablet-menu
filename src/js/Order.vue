@@ -21,7 +21,7 @@
                         <tr class="table-row">
                             <td class="table-cell col1">1</td>
                             <td class="table-cell col2">Хрустящие креветки с соусом Терияки</td>
-                            <td class="table-cell col3"><img class="delete" data-code="itemid" @click="deleteOrder"
+                            <td class="table-cell col3"><img class="delete" data-code="itemId" @click="deleteOrderById(itemId)"
                                                              :src="urlClose"></td>
                         </tr>
                         <tr class="table-row">
@@ -167,17 +167,20 @@
                 positions: orders,
                 urlLogo: '',
                 urlClose: '',
-                itemId: []
+                itemId: [],
+                itemId: 666
             }
         },
 
         methods:{
             deleteOrder: function(evt){
                 console.log(+evt.target.dataset.code);
+            },
+            deleteOrderById: function(id){
+                console.log(id);
             }
         },
         mounted(){
-            console.log(sets.settings);
             this.urlLogo = sets.settings.server + sets.settings.urlSmallImage + sets.settings.images.logo;
             this.urlClose = sets.settings.server + sets.settings.urlSmallImage + sets.settings.images.close;
         }

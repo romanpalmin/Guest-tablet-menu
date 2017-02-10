@@ -6,7 +6,6 @@
 
 <script>
     import mainMenu from './components/MainMenu.vue';
-    import $ from 'jquery'
     export default{
         data(){
             return{

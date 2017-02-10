@@ -267,6 +267,14 @@
                 }
         },
         props: ["categoryId"],
+
+        filters:{
+            deleteQuotes: function (value) {
+              if (!value) return '';
+              value = value.toString();
+              return value.replace(/&quot/g, '*');
+            }
+        },
         computed: {
             headTitle: function () {
                 return this.title + ' Список товаров';
@@ -318,8 +326,8 @@
                 }
                 this.axios.get(url)
                         .then(function (response) {
-                            testSet = response.data[catId];
-                            self.formatJson(testSet, catId);
+                            console.log(response);
+                            self.formatJson(response.data, catId);
                         })
                         .catch(function (error) {
                             console.log(error);
@@ -328,6 +336,7 @@
             formatJson: function (resp, code) {
                 var cur;
                 var curO = [];
+                console.log(resp);
                 if ('tovar' in resp) {
                     this.newList = resp;
                     this.positionslist = resp;

@@ -1,11 +1,9 @@
 <template>
     <div>
-
         <div class="main-menu">
             <ul class="root-icons">
                 <li class="root-icon" v-for="item in ctgs_with_params">
                     <router-link :to="item.route">
-
                         <a :root-data-code="item.code">
                             <div class="root-icon-image" :style="item.style">
                                 <div class="root-icon-descr">
