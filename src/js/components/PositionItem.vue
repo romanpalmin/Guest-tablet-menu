@@ -5,15 +5,16 @@
             </div>
             <div class="inner-item-container">
                 <div class="item-column-image">
-                     <img :src="positionUrlImage" class="item-image">
+                     <img :src="urlFromParents" class="item-image">
                 </div>
                 <div class="item-column-data">
-                    <div class="h1-item">{{positionSet.name}}</div>
-                    <div class="p-item">{{positionSet.description}}</div>
-                    <div class="item-price">{{positionSet.price}} P</div>
-                    <div class="item-button-add">
-                        <button class="btn btn-add">Добавить</button>
-                    </div>
+                    <div class="h1-item">{{nameFromParent}}</div>
+                    <div class="p-item">{{descriptionFromParent}}</div>
+                    <div class="item-price">{{priceFromParent}} P</div>
+                        <div class="item-bottom-buttons">
+                            <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle"> {{addingToCartTitle}} </div>
+                            <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp()"> Показать </div>
+                        </div>
                 </div>
 
             </div>
@@ -31,6 +32,9 @@
         background-color: #2e2e2e;
         opacity: 0.99;
         position: fixed;
+
+
+
         .item-close {
             top: 6%;
             left: 92%;
@@ -108,6 +112,22 @@
                     bottom: -100px;
 
                 }
+                .item-bottom-buttons {
+                    display: inline-block;
+                    .btn {
+                        width: 200px;
+                        height: 60px;
+                        border-radius: 15px;
+                        background-color: #fff;
+                        color: #555;
+                        float: right;
+                        margin: 20px;
+                        line-height: 60px;
+                        text-align: center;
+                        font-size: x-large;
+                        font-weight: 900;
+                    }
+                }
             }
         }
     }
@@ -120,25 +140,63 @@
             data(){
                 return{
                     positionSet : {},
-                    urlClose : ''
+                    urlClose : '',
+                    addToCartBtn: '',
+                    IsAddingToCart: false
                 }
             },
 
             computed:{
-                positionUrlImage : function(){
-                    let url = state.settings.server + state.settings.urlBigImage + this.positionSet.urlImage;
-                    return url;
-                }
+                urlFromParents : function() {return state.settings.server + state.settings.urlBigImage + this.urlImageLarge;},
+                priceFromParent : function () {return this.price;},
+                nameFromParent : function () {return this.name;},
+                descriptionFromParent : function() {return this.description},
+                yacheikaFromParent: function () { return this.yacheika },
+                addingToCartTitle : function(){ return this.IsAddingToCart ? 'Добавление' : 'Выбрать';},
+                addingToCartStyle: function() { return this.IsAddingToCart ? "background:gray" : '';}
+
             },
 
-            props: ["positionId"],
+            props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika'],
 
             methods:{
+                add2cart: function(id){
+                    if (this.IsAddingToCart) return;
+                    var self = this;
+                    this.IsAddingToCart = true;
+                    console.log('Добавляем в корзину товар ' + this.positionId + ' = ' + this.nameFromParent);
+                    let url = 'http://10.10.250.61/menu/hs/model?groups=1&addcart=1&tovar=' + this.positionId;
+                    this.axios.get(url)
+                        .then(function (response) {
+                            if (response.data === 1){
+                                url = state.settings.server + '/menu/hs/model?groups=1&korzina=1';
+                                self.axios.get(url)
+                                .then((response) => {
+                                    console.log('Получили новое состояние корзины');
+                                    state.appState.orders.currentState = response.data;
+                                    self.IsAddingToCart = false;
+                                 })
+                                .catch( (error) => {
+                                    console.log(error);
+                                });
+                        }
+                      })
+                      .catch(function (error) {
+                        console.log(error);
+                        this.IsAddingToCart = false;
+                      });
+
+                },
+
+                showInLamp: function(id){
+                    console.log('Подсвечиваем товар');
+                },
+
                 getData: function(id){
                     let url = '';
                     const self = this;
                     if (state.settings.testMode){
-                    url = './assets/data/category.json'
+                        url = './assets/data/category.json'
                     } else {
                         url = state.settings.server + 'menu/hs/model?groups=1&category=1&tovar=' + id;
                     }
@@ -156,7 +214,7 @@
             },
 
             mounted(){
-                this.getData(this.positionId);
+                //this.getData(this.positionId);
                 this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
             }
     }

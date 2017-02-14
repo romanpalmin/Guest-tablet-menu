@@ -83,7 +83,7 @@
              } else {
                 url = mp.settings.server + '/menu/hs/model?groups=';
              }
-
+            console.log(url);
              if (mp.appState.MenuPoints.length > 0){
                 self.ctgs = mp.appState.MenuPoints;
              }

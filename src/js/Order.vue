@@ -17,18 +17,13 @@
                         <td class="table-cell col-header col2">НАИМЕНОВАНИЕ</td>
                         <td class="table-cell col-header col3"></td>
                     </tr>
-                    <template>
+                    <template v-for="item in positions">
                         <tr class="table-row">
-                            <td class="table-cell col1">1</td>
-                            <td class="table-cell col2">Хрустящие креветки с соусом Терияки</td>
-                            <td class="table-cell col3"><img class="delete" data-code="itemId" @click="deleteOrderById(itemId)"
-                                                             :src="urlClose"></td>
-                        </tr>
-                        <tr class="table-row">
-                            <td class="table-cell col1">1</td>
-                            <td class="table-cell col2">Хрустящие креветки с соусом Терияки</td>
-                            <td class="table-cell col3"><img class="delete" data-code="itemid" @click="deleteOrder"
-                                                             :src="urlClose"></td>
+                            <td class="table-cell col1">{{item.count}}</td>
+                            <td class="table-cell col2">{{item.name}}</td>
+                            <td class="table-cell col3">
+                                <img class="delete" @click="deleteOrderById(item.code, item.stroka)" :src="urlClose">
+                            </td>
                         </tr>
                     </template>
                     <template class="table-footer">
@@ -40,8 +35,8 @@
                     </template>
                     <tr class="table-row ">
                         <td colspan="3" class="footer">
-                            <div class="btn-wrapper">
-                                <div class="btn delete-all">Удалить все выбранное</div>
+                            <div class="btn-wrapper" v-if="showDeleteBtn">
+                                <div class="btn delete-all" @click="deleteAll">Удалить все выбранное</div>
                             </div>
                         </td>
                     </tr>
@@ -117,6 +112,7 @@
                                 font-size: 28px;
                                 border-radius: 15px;
                                 user-select: none;
+                                cursor: pointer;
 
                             }
                         }
@@ -159,46 +155,77 @@
     }
 </style>
 <script>
-    import orders from './components/data/orders';
-    import sets from './components/store/currentStates';
+    import state from './components/store/currentStates';
+    import _ from 'lodash';
+
+    let orderState = state.appState.orders;
+
     export default{
         data(){
             return {
-                positions: orders,
+                positions: [],
                 urlLogo: '',
                 urlClose: '',
-                itemId: [],
-                itemId: 666
+                showDeleteBtn: true
+            }
+        },
+
+        watch:{
+            positions : function(){
+                this.showDeleteBtn = !(this.positions.length === 0);
             }
         },
 
         methods:{
-            deleteOrder: function(evt){
-                console.log(+evt.target.dataset.code);
+            deleteOrderById: function(id, stroka){
+                this.positions = _.without(this.positions, _.find(this.positions, {code:id, stroka:stroka}))
+                orderState.currentState = this.positions;
+                let url = '/menu/hs/model?groups=342020&tovar='+id+'&dellcartitem=' + stroka;
+                this.axios.get(url)
+                        .then((response) => {
+                            console.log(response);
+                            console.log('Удалена строка' + stroka);
+                            })
+                        .catch( (error) => {
+                            console.log(error);
+                        });
             },
-            deleteOrderById: function(id){
-                console.log(id);
+            deleteAll: function() {
+                let url = '/menu/hs/model?groups=1&korzina=1&delcart';
+                this.positions = [];
+            },
+
+            getJson: function(){
+                let url = '';
+                 if (state.settings.testMode){
+                    url = './assets/data/orders.json'
+                 } else {
+                    url = state.settings.server + '/menu/hs/model?groups=1&korzina=1';
+                 }
+
+                this.axios.get(url)
+                        .then((response) => {
+                            this.positions = response.data;
+                            orderState.currentState = response.data;
+                        })
+                        .catch( (error) => {
+                            console.log(error);
+                        });
             }
         },
         mounted(){
-            this.urlLogo = sets.settings.server + sets.settings.urlSmallImage + sets.settings.images.logo;
-            this.urlClose = sets.settings.server + sets.settings.urlSmallImage + sets.settings.images.close;
+            this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
+            this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
+            console.log('Текущее состояние корзины');
+            console.log(orderState);
+            if (orderState.currentState.length===0){
+                this.getJson();
+            } else {
+                this.positions = orderState.currentState;
+            }
+
         }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 

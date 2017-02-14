@@ -50,6 +50,10 @@ export default {
         show: {
             name: 'Развлечения',
             currentState:[]
+        },
+        orders:{
+            name: 'Корзина',
+            currentState:[]
         }
     }
 }

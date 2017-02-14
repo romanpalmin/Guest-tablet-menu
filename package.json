@@ -1,13 +1,13 @@
 {
   "name": "menu2.0",
   "description": "VueMenu",
-  "version": "2.0.1",
+  "version": "1.0.0",
   "author": "r.palmin <roman.palmin@gmail.com>",
   "private": true,
   "scripts": {
     "dev": "cross-env NODE_ENV=development webpack-dev-server --open --inline --hot",
-    "build2": "cross-env NODE_ENV=production webpack --progress --hide-modules",
-    "build": "npm run build && gulp release"
+    "build": "cross-env NODE_ENV=production webpack --progress --hide-modules",
+    "deploy": "npm run build && gulp release"
   },
   "dependencies": {
     "vue": "^2.1.0",

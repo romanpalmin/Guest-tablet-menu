@@ -3,7 +3,7 @@
         <div clas="div-overlay">
             <div v-if="positionslist.tovar">
                 <ul class="products">
-                    <li class="product" v-for="item in positionsWithProps" @click="toggleDetails" @click="toggleDetailsItem(item)">
+                    <li class="product" v-for="item in positionsWithProps" @click="toggleDetails">
                         <div class="product-inner">
                             <div class="product-top-block" :data-Code="item.code" :style="item.style">
                                 <div class="product-top-block-price" :data-Code="item.code">
@@ -11,7 +11,7 @@
                                 </div>
                             </div>
                             <div class="product-inner-label" :data-Code="item.code">
-                                {{ item.name | deleteQuotes}}
+                                {{ item.name }}
                             </div>
                         </div>
                     </li>
@@ -20,41 +20,25 @@
             <div v-else>
                 <ul class="products">
                     <li v-for="item in positionslist" class="product-group product-group-level-1">
-                        <div class="product-group-level-1-descr">{{item.name | deleteQuotes}}</div>
-                        <div v-if="item.groups1.length === 1">
+                        <div class="product-group-level-1-descr">{{item.name}}</div>
+                        <div v-if="item.groups.length === 0">
                             <ul class="products">
-                                <div v-show="item.type === 'ИКОНКАМИ'">
-                                    <div v-if="item.groups1[0].tovar">
-                                        <li class="product" v-for="subitem in item.groups1[0].tovar"
-                                            @click="toggleDetails" @click="toggleDetailsItem(subitem)">
-                                            <div class="product-inner">
-                                                <div class="product-top-block" :style="getStyle(subitem)"
-                                                     :data-Code="subitem.code">
-                                                    <div class="product-top-block-price" :data-Code="subitem.code">
-                                                        {{subitem.price}}
-                                                    </div>
-                                                </div>
-                                                <div class="product-inner-label" :data-Code="subitem.code">
-                                                    {{subitem.name | deleteQuotes}}
-                                                </div>
+                                <div v-show="item.type === 'icons'">
+                                    <li class="product" v-for="subitem in item.items" @click="toggleDetails">
+                                        <div class="product-inner">
+                                            <div class="product-top-block" :style="getStyle(subitem)" :data-Code="subitem.code">
+                                                <div class="product-top-block-price" :data-Code="subitem.code">{{subitem.price}}</div>
                                             </div>
-                                        </li>
-                                    </div>
-                                    <div v-if="1">
-
-                                    </div>
+                                            <div class="product-inner-label" :data-Code="subitem.code">{{subitem.name}}</div>
+                                        </div>
+                                    </li>
                                 </div>
 
-                                <div v-show="item.type === 'СПИСКОМ'">
-                                    <li class="product2" v-for="subitem in item.groups1[0].tovar"
-                                        @click="toggleDetails"  @click="toggleDetailsItem(subitem)">
+                                <div v-show="item.type === 'list'">
+                                    <li class="product2" v-for="subitem in item.items" @click="toggleDetails">
                                         <div class="product-inner2">
-                                            <div class="product-inner-label2" :data-Code="subitem.code">
-                                                {{subitem.name | deleteQuotes}}
-                                            </div>
-                                            <div class="product-top-block-price2" :data-Code="subitem.code">
-                                                {{subitem.price}}
-                                            </div>
+                                            <div class="product-inner-label2" :data-Code="subitem.code">{{subitem.name}}</div>
+                                            <div class="product-top-block-price2" :data-Code="subitem.code">{{subitem.price}}</div>
                                         </div>
                                     </li>
                                 </div>
@@ -63,38 +47,27 @@
                         </div>
                         <div v-else>
                             <ul>
-                                <li v-for="subgroups in item.groups1" class="product-group-level-2">
-                                    <div class="product-group-level-2-descr">{{subgroups.name | deleteQuotes}}</div>
-                                    <div v-if="subgroups.groups2.length === 1">
+                                <li v-for="subgroups in item.groups" class="product-group-level-2">
+                                    <div class="product-group-level-2-descr">{{subgroups.name}}</div>
+                                    <div v-if="subgroups.groups.length === 0">
                                         <ul class="products">
 
-                                            <div v-show="subgroups.type === 'СПИСКОМ'">
-                                                <li class="product2" v-for="subItem in subgroups.groups2[0].tovar"
-                                                    @click="toggleDetails" @click="toggleDetailsItem(subitem)">
+                                            <div v-show="subgroups.type === 'list'">
+                                                <li class="product2" v-for="subItem in subgroups.items" @click="toggleDetails">
                                                     <div class="product-inner2">
-                                                        <div class="product-inner-label2" :data-Code="subItem.code">
-                                                            {{subItem.name | deleteQuotes}}
-                                                        </div>
-                                                        <div class="product-top-block-price2" :data-Code="subItem.code">
-                                                            {{subItem.price}}
-                                                        </div>
+                                                        <div class="product-inner-label2" :data-Code="subItem.code">{{subItem.name}}</div>
+                                                        <div class="product-top-block-price2" :data-Code="subItem.code">{{subItem.price}}</div>
                                                     </div>
                                                 </li>
                                             </div>
 
-                                            <div v-show="subgroups.type === 'ИКОНКАМИ'">
-                                                <li class="product" v-for="subItem in subgroups.groups2[0].tovar"
-                                                    @click="toggleDetails" @click="toggleDetailsItem(subitem)">
+                                            <div v-show="subgroups.type === 'icons'">
+                                                <li class="product" v-for="subItem in subgroups.items" @click="toggleDetails">
                                                     <div class="product-inner">
-                                                        <div class="product-top-block" :style="getStyle(subItem)"
-                                                             :data-Code="subItem.code">
-                                                            <div class="product-top-block-price"
-                                                                 :data-Code="subItem.code">{{subItem.price}}
-                                                            </div>
+                                                        <div class="product-top-block" :style="getStyle(subItem)" :data-Code="subItem.code">
+                                                            <div class="product-top-block-price" :data-Code="subItem.code">{{subItem.price}}</div>
                                                         </div>
-                                                        <div class="product-inner-label" :data-Code="subItem.code">
-                                                            {{subItem.name | deleteQuotes}}
-                                                        </div>
+                                                        <div class="product-inner-label" :data-Code="subItem.code">{{subItem.name}}</div>
                                                     </div>
                                                 </li>
                                             </div>
@@ -104,18 +77,13 @@
                                 </li>
                             </ul>
                             <br/>
+                            <br/>
+                            <br/>
                         </div>
                     </li>
+                    <position v-if="showDetails" :positionId="code"/>
                 </ul>
             </div>
-            <position v-if="showDetails"
-                      :positionId="code"
-                      :urlImageLarge="urlImageLarge"
-                      :price="price"
-                      :name="name"
-                      :description="description"
-                      :yacheika="yacheika"
-            />
         </div>
     </div>
 </template>
@@ -292,13 +260,9 @@
             return{
                     positionslist: [],
                     newList: {},
+                    catName: 'burger',
                     showDetails: false,
                     code:0,
-                    urlImageLarge:'',
-                    price:0,
-                    name:'',
-                    description:'',
-                    yacheika:'',
                     currentId: this.$route.params.id
                 }
         },
@@ -308,17 +272,17 @@
             deleteQuotes: function (value) {
               if (!value) return '';
               value = value.toString();
-              return value.replace(/@/g, '"');
+              return value.replace(/&quot/g, '*');
             }
         },
         computed: {
+            headTitle: function () {
+                return this.title + ' Список товаров';
+            },
             positionsWithProps: function () {
                 var self = this;
                 var res = this.positionslist['tovar'].map(function (item) {
                     item.style = 'background-image: url(' + state.settings.server + state.settings.urlBackImage + item.urlImage + ');';
-                    if (item.vitrina === '1') {
-                        item.style += ';box-shadow: 0px 0px 30px #CCDDFF;'
-                    }
                     return item;
                 });
                 return res;
@@ -330,7 +294,6 @@
             },
             currentId: function(){
                 console.log(this.currentId);
-
             }
         },
 
@@ -338,59 +301,109 @@
             getStyle: function(item){
                 var self = this;
                 var res = 'background-image: url(' + state.settings.server + state.settings.urlBackImage + item.urlImage  + ');';
-                if (item.vitrina === '1') {
-                    res += ';box-shadow: 0px 0px 30px #CCDDFF;'
-                }
                 return res;
             },
 
             toggleDetails: function(evt){
+
                 var el = evt.target;
                 this.code = el.dataset.code;
+                console.log(this.code);
                 this.showDetails = true;
-           },
-
-            toggleDetailsItem: function(item){
-               console.log('--------');
-               console.log(item);
-               this.urlImageLarge = item.urlImageLarge;
-               this.price = item.price,
-               this.name = item.name,
-               this.description = item.description,
-               this.yacheika = item.yacheika
-               console.log('Текущая ячейка из родеителя '  + this.yacheika);
            },
 
             getJson: function (catId) {
                 var self = this;
                 var testSet = {};
-                var url = state.settings.server + 'menu/hs/model?groups='+catId+'&category=' + catId;
-                console.log(state.appState);
+                var url = '';
+                 if (state.settings.testMode){
+                    url = './assets/data/category.json'
+                 } else {
+                    url = state.settings.server + 'menu/hs/model?groups='+catId+'&category=' + catId;
+                 }
                 if (state.appState.Category[catId].currentState.length > 0){
-                    this.positionslist = state.appState.Category[catId].currentState;
-                } else {
-                    this.axios.get(url)
-                            .then(function (response) {
-                                self.formatJson(response.data, catId);
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
-                    }
+                this.positionslist = state.appState.Category[catId].currentState;
+                }
+                this.axios.get(url)
+                        .then(function (response) {
+                            console.log(response);
+                             console.log('+++++');
+                            self.formatJson(response.data, catId);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
             },
             formatJson: function (resp, code) {
-                    var cur;
-                    var curO = [];
-                    if (resp.length === 1){
-                        this.positionslist = resp[0];
-                    } else {
-                        this.positionslist = resp;
-                        }
+                var cur;
+                var curO = [];
+                console.log('----');
+                console.log(resp);
+                if ('tovar' in resp) {
+                    this.newList = resp;
+                    this.positionslist = resp;
                     state.appState.Category[this.$route.params.id].currentState = this.positionslist;
-                    console.log(this.positionslist);
                 }
+                else {
+                    for (var item in resp) {
+                        var newO = {};
+                        cur = resp[item];
+                        for (var subitem in cur) {
+                            var curSubItem = cur[subitem];
+                            if (curSubItem === 'ИКОНКАМИ' || curSubItem === 'СПИСКОМ') {
+                                if (curSubItem === 'ИКОНКАМИ') {
+                                    newO.type = 'icons';
+                                }
+                                if (curSubItem === 'СПИСКОМ') {
+                                    newO.type = 'list';
+                                }
+                            } else {
+                                newO.name = subitem;
+                                if ('tovar' in curSubItem) {
+                                    newO.items = curSubItem['tovar'];
+                                    newO.groups = [];
+                                } else {
+                                    var groups = [];
+                                    for (var it in curSubItem) {
+                                        var newSO = {};
+                                        var curSubItemIt = curSubItem[it]
+                                        for (var nso in curSubItemIt) {
+                                            var curSubItemItNso = curSubItemIt[nso];
+                                            if (curSubItemItNso === 'ИКОНКАМИ' || curSubItemItNso === 'СПИСКОМ') {
+                                                if (curSubItemItNso === 'ИКОНКАМИ') {
+                                                    newSO.type = 'icons';
+                                                }
+                                                if (curSubItemItNso === 'СПИСКОМ') {
+                                                    newSO.type = 'list';
+                                                }
+                                            }
+                                            else {
+                                                newSO.name = nso;
+                                                if ('tovar' in curSubItemItNso) {
+                                                    newSO.items = curSubItemItNso['tovar'];
+                                                    newSO.groups = [];
+                                                }
+                                                else {
+                                                    //todo в худшем случае
+                                                }
+                                            }
+                                        }
+                                        groups.push(newSO);
+                                    }
+                                    newO.groups = groups;
+                                }
+                            }
+                        }
+                        curO.push(newO);
+                    }
+                    this.positionslist = curO;
+                    console.log(curO);
+                    state.appState.Category[this.$route.params.id].currentState = this.positionslist;
+                }
+            }
         },
         mounted(){
+            console.log('From Store');
             this.currentId = this.$route.params.id;
             this.getJson(this.currentId);
         },
@@ -398,7 +411,5 @@
             'position' : Position
         }
     }
-
-
 
 </script>
