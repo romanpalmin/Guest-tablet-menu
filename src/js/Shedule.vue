@@ -115,7 +115,6 @@
                 this.axios.get(url)
                         .then(function (response) {
                             if (response.data.length > 0){
-                                console.log(response.data);
                                 self.rasp = response.data;
                             }
                         })

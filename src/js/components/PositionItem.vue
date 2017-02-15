@@ -13,7 +13,7 @@
                     <div class="item-price">{{priceFromParent}} P</div>
                         <div class="item-bottom-buttons">
                             <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle"> {{addingToCartTitle}} </div>
-                            <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp()"> Показать </div>
+                            <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp(yacheikaFromParent)"> Показать </div>
                         </div>
                 </div>
 
@@ -162,17 +162,15 @@
             methods:{
                 add2cart: function(id){
                     if (this.IsAddingToCart) return;
-                    var self = this;
+                    let self = this;
                     this.IsAddingToCart = true;
-                    console.log('Добавляем в корзину товар ' + this.positionId + ' = ' + this.nameFromParent);
-                    let url = 'http://10.10.250.61/menu/hs/model?groups=1&addcart=1&tovar=' + this.positionId;
+                    let url = state.settings.server + '/menu/hs/model?groups=1&addcart=1&tovar=' + this.positionId;
                     this.axios.get(url)
                         .then(function (response) {
                             if (response.data === 1){
                                 url = state.settings.server + '/menu/hs/model?groups=1&korzina=1';
                                 self.axios.get(url)
                                 .then((response) => {
-                                    console.log('Получили новое состояние корзины');
                                     state.appState.orders.currentState = response.data;
                                     self.IsAddingToCart = false;
                                  })
@@ -183,23 +181,20 @@
                       })
                       .catch(function (error) {
                         console.log(error);
-                        this.IsAddingToCart = false;
+                        self.IsAddingToCart = false;
                       });
 
                 },
 
                 showInLamp: function(id){
-                    console.log('Подсвечиваем товар');
+                    console.log('Подсвечиваем товар и шлем обратно');
+                    console.log(state.settings.server + 'menu/hs/model?groups=1&tovar=1&yacheika=' + id );
                 },
 
                 getData: function(id){
                     let url = '';
                     const self = this;
-                    if (state.settings.testMode){
-                        url = './assets/data/category.json'
-                    } else {
-                        url = state.settings.server + 'menu/hs/model?groups=1&category=1&tovar=' + id;
-                    }
+                    url = state.settings.server + 'menu/hs/model?groups=1&category=1&tovar=' + id;
                     this.axios.get(url)
                         .then( (response) => {
                             console.log(response.data);

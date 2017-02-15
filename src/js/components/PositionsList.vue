@@ -3,7 +3,7 @@
         <div clas="div-overlay">
             <div v-if="positionslist.tovar">
                 <ul class="products">
-                    <li class="product" v-for="item in positionsWithProps" @click="toggleDetails" @click="toggleDetailsItem(item)">
+                    <li class="product" v-for="item in positionsWithProps"  @click="toggleDetailsItem(item)">
                         <div class="product-inner">
                             <div class="product-top-block" :data-Code="item.code" :style="item.style">
                                 <div class="product-top-block-price" :data-Code="item.code">
@@ -26,7 +26,7 @@
                                 <div v-show="item.type === 'ИКОНКАМИ'">
                                     <div v-if="item.groups1[0].tovar">
                                         <li class="product" v-for="subitem in item.groups1[0].tovar"
-                                            @click="toggleDetails" @click="toggleDetailsItem(subitem)">
+                                             @click="toggleDetailsItem(subitem)">
                                             <div class="product-inner">
                                                 <div class="product-top-block" :style="getStyle(subitem)"
                                                      :data-Code="subitem.code">
@@ -47,7 +47,7 @@
 
                                 <div v-show="item.type === 'СПИСКОМ'">
                                     <li class="product2" v-for="subitem in item.groups1[0].tovar"
-                                        @click="toggleDetails"  @click="toggleDetailsItem(subitem)">
+                                          @click="toggleDetailsItem(subitem)">
                                         <div class="product-inner2">
                                             <div class="product-inner-label2" :data-Code="subitem.code">
                                                 {{subitem.name | deleteQuotes}}
@@ -70,7 +70,7 @@
 
                                             <div v-show="subgroups.type === 'СПИСКОМ'">
                                                 <li class="product2" v-for="subItem in subgroups.groups2[0].tovar"
-                                                    @click="toggleDetails" @click="toggleDetailsItem(subitem)">
+                                                     @click="toggleDetailsItem(subitem)">
                                                     <div class="product-inner2">
                                                         <div class="product-inner-label2" :data-Code="subItem.code">
                                                             {{subItem.name | deleteQuotes}}
@@ -84,7 +84,7 @@
 
                                             <div v-show="subgroups.type === 'ИКОНКАМИ'">
                                                 <li class="product" v-for="subItem in subgroups.groups2[0].tovar"
-                                                    @click="toggleDetails" @click="toggleDetailsItem(subitem)">
+                                                     @click="toggleDetailsItem(subItem)">
                                                     <div class="product-inner">
                                                         <div class="product-top-block" :style="getStyle(subItem)"
                                                              :data-Code="subItem.code">
@@ -327,10 +327,6 @@
         watch: {
             categoryId: function(){
                 this.getJson(this.categoryId);
-            },
-            currentId: function(){
-                console.log(this.currentId);
-
             }
         },
 
@@ -344,28 +340,20 @@
                 return res;
             },
 
-            toggleDetails: function(evt){
-                var el = evt.target;
-                this.code = el.dataset.code;
-                this.showDetails = true;
-           },
-
             toggleDetailsItem: function(item){
-               console.log('--------');
-               console.log(item);
+               this.code = item.code;
                this.urlImageLarge = item.urlImageLarge;
                this.price = item.price,
                this.name = item.name,
                this.description = item.description,
                this.yacheika = item.yacheika
-               console.log('Текущая ячейка из родеителя '  + this.yacheika);
+               this.showDetails = true;
            },
 
             getJson: function (catId) {
                 var self = this;
                 var testSet = {};
                 var url = state.settings.server + 'menu/hs/model?groups='+catId+'&category=' + catId;
-                console.log(state.appState);
                 if (state.appState.Category[catId].currentState.length > 0){
                     this.positionslist = state.appState.Category[catId].currentState;
                 } else {
@@ -387,7 +375,6 @@
                         this.positionslist = resp;
                         }
                     state.appState.Category[this.$route.params.id].currentState = this.positionslist;
-                    console.log(this.positionslist);
                 }
         },
         mounted(){

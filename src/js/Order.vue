@@ -166,13 +166,14 @@
                 positions: [],
                 urlLogo: '',
                 urlClose: '',
-                showDeleteBtn: true
+                showDeleteBtn: false
             }
         },
 
         watch:{
             positions : function(){
-                this.showDeleteBtn = !(this.positions.length === 0);
+                this.showDeleteBtn = this.positions.length && this.positions.length > 0;
+
             }
         },
 
@@ -183,25 +184,25 @@
                 let url = '/menu/hs/model?groups=342020&tovar='+id+'&dellcartitem=' + stroka;
                 this.axios.get(url)
                         .then((response) => {
-                            console.log(response);
-                            console.log('Удалена строка' + stroka);
                             })
                         .catch( (error) => {
                             console.log(error);
                         });
             },
             deleteAll: function() {
-                let url = '/menu/hs/model?groups=1&korzina=1&delcart';
+                let url = '/menu/hs/model?groups=342020&delcart=1&tovar=1';
                 this.positions = [];
+                this.axios.get(url)
+                        .then((response) => {
+                            this.showDeleteBtn = false;
+                            })
+                        .catch( (error) => {
+                            console.log(error);
+                        });
             },
 
             getJson: function(){
-                let url = '';
-                 if (state.settings.testMode){
-                    url = './assets/data/orders.json'
-                 } else {
-                    url = state.settings.server + '/menu/hs/model?groups=1&korzina=1';
-                 }
+                let url = state.settings.server + '/menu/hs/model?groups=1&korzina=1';
 
                 this.axios.get(url)
                         .then((response) => {
@@ -216,9 +217,7 @@
         mounted(){
             this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
             this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
-            console.log('Текущее состояние корзины');
-            console.log(orderState);
-            if (orderState.currentState.length===0){
+            if (orderState.currentState.length === 0){
                 this.getJson();
             } else {
                 this.positions = orderState.currentState;
