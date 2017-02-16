@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import menu from './js/Menu.vue';
-import sidebar from './js/components/sidebar.vue';
+import plainmenu from './js/components/PlainMenu.vue';
+import sidebar from './js/components/SideBarLeft.vue';
+import userorder from './js/components/UserOrder.vue';
 import order from './js/Order.vue';
 import shedule from './js/Shedule.vue';
 import fishki from './js/Fishki.vue';
@@ -33,7 +35,9 @@ const routes = [
     {name: 'fishki', path: '/:lang/fishki', component: fishki},
     {name: 'actions', path: '/:lang/actions', component: actions},
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
-    {name: 'sidebar', path: '/:lang/menu/:id', component: sidebar}
+    {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
+    {name: 'test2', path: '/:lang/ord', component: userorder},
+    {name: 'test', path: '/:lang/test', component: sidebar}
 ];
 
 var router = new VueRouter({

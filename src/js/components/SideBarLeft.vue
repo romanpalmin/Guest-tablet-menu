@@ -16,7 +16,7 @@
                                        :data-code="item.code"
                                        :class="item.newClass"
                                        :style="item.style"
-                                       @click="getData">
+                                       >
                                         {{ item.name }}
                                     </a>
                                 </router-link>
@@ -27,16 +27,9 @@
 
             </div>
         </div>
-        <div class="list">
-            <positionslist :categoryId="currentCategoryId"/>
-        </div>
     </div>
 </template>
 <style scoped lang="less">
-    .list {
-        padding-left: 300px;
-    }
-
     .white-panel {
         position: absolute;
         top: 0;
@@ -174,25 +167,23 @@
             }
         }
     }
-
 </style>
 <script>
-    import positionslist from './PositionsList.vue';
-    import mp from './store/currentStates';
-
+    import state from './store/currentStates';
+    import ajax from './helpers/ajax.js';
     export default{
         data(){
             return{
-                ctgs: [],
-                urlLogo: '',
-                currentSelectedId: this.$route.params.id
+                msg:'hello vue',
+                ctgs: []
             }
         },
         computed: {
             ctgs_with_params: function() {
                 var self = this;
+                console.log(6666);
                 var res = this.ctgs.map(function(item) {
-                    item.style = 'background-image: url(' + mp.settings.server + mp.settings.urlBigImage + item.urlSmallImage + ');';
+                    item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
                     item.route = '/ru/menu/'+ item.code;
 
                     if (+item.code ===+self.$route.params.id){
@@ -203,40 +194,22 @@
                     return item;
                 });
                 return res;
-            },
-            currentCategoryId: function(){
-                let newVal = this.$route.params.id;
-                return newVal;
             }
-        },
-        methods: {
-            getData: function(){
-                //this.currentSelectedId = this.$route.params.id;
-            }
-
-        },
-        components:{
-            positionslist
         },
         mounted(){
-            var self = this;
-             var url = mp.settings.server + 'menu/hs/model?groups=';
-             this.urlLogo = mp.settings.server +  mp.settings.urlSmallImage + mp.settings.images.logo;
-             if (mp && mp.appState.MenuPoints && mp.appState.MenuPoints !== 0){
-                self.ctgs = mp.appState.MenuPoints;
+        console.log(1234);
+             var self = this;
+             this.urlLogo = state.settings.server +  state.settings.urlSmallImage + state.settings.images.logo;
+             const operation = {};
+             if (state.appState.MenuPoints.length > 0){
+                 self.ctgs = state.appState.MenuPoints;
+                 } else {
+                    operation.name = 'categories';
+                    ajax.exec(operation, function(resp){
+                        self.ctgs = resp.data;
+                        state.appState.MenuPoints = resp.data;
+                 });
              }
-             else {
-                 this.axios.get(url)
-                            .then(function (response) {
-                                self.ctgs = response.data;
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
-                        }
         }
-
-
     }
-
 </script>
