@@ -2,6 +2,7 @@
     <div>
         <div class="container">
             <div class="content" id="content">
+                <div class="header-title">Вы выбрали:</div>
                 <div class="overflow-content">
                     <table class="main-table">
                         <tr class="table-row ">
@@ -44,25 +45,19 @@
 </template>
 <style scoped lang="less">
     .container {
-        .logo-style {
-            width: 240px;
-            padding-left: 30px;
-            padding-right: 30px;
-            padding-top: 60px;
-        }
-
-        .logo {
-            display: block;
-            width: 300px;
-            height: 100vh;
-            background-color: #F7F7F7;
-            top: 60px;
-            left: 0;
-            position: absolute;
-        }
         .content {
-            padding-top: 60px;
+            padding-top: 30px;
             padding-left: 301px;
+
+            .header-title{
+                color: #fff;
+                font-family: sans-serif;
+                font-size: 60px;
+                width: -211vw;
+                height: 99px;
+                top: 0;
+                margin-left: 30px;
+            }
 
             .overflow-content{
                 height: 600px;
