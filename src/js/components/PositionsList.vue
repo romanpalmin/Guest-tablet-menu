@@ -353,15 +353,16 @@
 
             getJson: function (catId) {
                 var self = this;
-                var testSet = {};
+                const operation = {};
                 if (state.appState.Category[catId].currentState.length > 0){
                     this.positionslist = state.appState.Category[catId].currentState;
                 } else {
-                    let cUrl = `groups=${catId}&category=${catId}`;
-                    ajax.getPositions(cUrl, function (response) {
+                    operation.name = 'positions';
+                    operation.catId = catId;
+                    ajax.exec(operation, function (response) {
                          self.formatJson(response.data);
-                       });
-                    }
+                    })
+                }
             },
             formatJson: function (resp) {
                     if (resp.length === 1){

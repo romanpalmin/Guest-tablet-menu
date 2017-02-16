@@ -114,10 +114,10 @@
                 var self = this;
                 const operation = {name: 'show'};
                 ajax.exec(operation, function (response) {
-                            if (response.data.length > 0){
-                                self.rasp = response.data;
-                            }
-                        });
+                     if (response.data.length > 0){
+                         self.rasp = response.data;
+                     }
+                });
             }
         },
 

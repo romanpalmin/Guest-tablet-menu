@@ -188,21 +188,25 @@
             deleteOrderById: function(id, stroka){
                 this.positions = _.without(this.positions, _.find(this.positions, {code:id, stroka:stroka}))
                 orderState.currentState = this.positions;
-                let cUrl = `groups=342020&tovar=${id}&dellcartitem=${stroka}`;
-                ajax.deleteFromOrder(cUrl);
+                const operation = {};
+                operation.name = 'deleteFromOrder';
+                operation.id = id;
+                operation.stroka = stroka;
+                ajax.exec(operation);
             },
             deleteAll: function() {
-                let url = 'groups=342020&delcart=1&tovar=1';
                 this.positions = [];
                 orderState.currentState = this.positions;
-                ajax.clearOrder(url);
+                const operation = {name:'clearOrder'};
+                ajax.exec(operation);
             },
 
             getJson: function(){
                 const self = this;
+                const operation = {};
                 if (orderState.currentState.length === 0){
-                    let cUrl = 'groups=1&korzina=1';
-                    ajax.getOrders(cUrl, function(response){
+                    operation.name = 'order';
+                    ajax.exec(operation, function(response){
                         self.positions = response.data;
                         orderState.currentState = response.data;
                     });

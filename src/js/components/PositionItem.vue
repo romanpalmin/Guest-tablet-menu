@@ -178,13 +178,16 @@
                     let self = this;
                     this.IsAddingToCart = true;
                     let cUrl = `groups=1&addcart=1&tovar=${this.positionId}`;
-                    ajax.addToOrder(cUrl, function (response) {
+                    const options = {};
+                    options.name = 'addToOrder';
+                    options.positionId = this.positionId;
+                    ajax.exec(options, function (response) {
                             if (response.data === 1){
-                                url = 'groups=1&korzina=1';
-                                ajax.getOrders(url, function(response){
+                                options.name = 'order';
+                                ajax.exec(options, function(response){
                                     state.appState.orders.currentState = response.data;
                                     self.IsAddingToCart = false;
-                                });
+                                })
                             } else {
                                 this.IsAddingToCart = false;
                             }
@@ -194,12 +197,19 @@
                 showInLamp: function(id){
                     console.log('Подсвечиваем товар и шлем обратно');
                     console.log(state.settings.server + 'menu/hs/model?groups=1&tovar=1&yacheika=' + id );
+                    const operation = {};
+                    operation.name = 'showLamp';
+                    operation.id = id;
+                    ajax.exec(operation);
                 },
 
                 getData: function(id){
                     let url = '';
                     const self = this;
+                    const operations = {};
                     url = state.settings.server + 'menu/hs/model?groups=1&category=1&tovar=' + id;
+                    operation.name = ''
+
                     this.axios.get(url)
                         .then( (response) => {
                             console.log(response.data);
