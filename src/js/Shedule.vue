@@ -95,6 +95,7 @@
 </style>
 <script>
     import state from './components/store/currentStates'
+    import ajax from './components/helpers/ajax.js';
 
     export default{
         data(){
@@ -111,15 +112,11 @@
         methods:{
            getShow: function(){
                 var self = this;
-                var url = state.settings.server + 'menu/hs/model?groups=1&shows=1';
-                this.axios.get(url)
-                        .then(function (response) {
+                var url = 'groups=1&shows=1';
+                ajax.getShow(url, function (response) {
                             if (response.data.length > 0){
                                 self.rasp = response.data;
                             }
-                        })
-                        .catch(function (error) {
-                            console.log(error);
                         });
             }
         },

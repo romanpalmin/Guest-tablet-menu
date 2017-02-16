@@ -71,7 +71,7 @@
 
             .overflow-content{
                 height: 600px;
-                overflow: scroll;
+                overflow-y: scroll;
             }
 
             .main-table {
@@ -162,6 +162,7 @@
 </style>
 <script>
     import state from './components/store/currentStates';
+    import ajax from './components/helpers/ajax';
     import _ from 'lodash';
 
     let orderState = state.appState.orders;
@@ -187,48 +188,34 @@
             deleteOrderById: function(id, stroka){
                 this.positions = _.without(this.positions, _.find(this.positions, {code:id, stroka:stroka}))
                 orderState.currentState = this.positions;
-                let url = '/menu/hs/model?groups=342020&tovar='+id+'&dellcartitem=' + stroka;
-                this.axios.get(url)
-                        .then((response) => {
-                            })
-                        .catch( (error) => {
-                            console.log(error);
-                        });
+                let cUrl = `groups=342020&tovar=${id}&dellcartitem=${stroka}`;
+                ajax.deleteFromOrder(cUrl);
             },
             deleteAll: function() {
-                let url = '/menu/hs/model?groups=342020&delcart=1&tovar=1';
+                let url = 'groups=342020&delcart=1&tovar=1';
                 this.positions = [];
-                this.axios.get(url)
-                        .then((response) => {
-                            this.showDeleteBtn = false;
-                            })
-                        .catch( (error) => {
-                            console.log(error);
-                        });
+                orderState.currentState = this.positions;
+                ajax.clearOrder(url);
             },
 
             getJson: function(){
-                let url = state.settings.server + '/menu/hs/model?groups=1&korzina=1';
+                const self = this;
+                if (orderState.currentState.length === 0){
+                    let cUrl = 'groups=1&korzina=1';
+                    ajax.getOrders(cUrl, function(response){
+                        self.positions = response.data;
+                        orderState.currentState = response.data;
+                    });
+                } else {
+                    this.positions = orderState.currentState;
+                }
 
-                this.axios.get(url)
-                        .then((response) => {
-                            this.positions = response.data;
-                            orderState.currentState = response.data;
-                        })
-                        .catch( (error) => {
-                            console.log(error);
-                        });
             }
         },
         mounted(){
             this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
             this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
-            if (orderState.currentState.length === 0){
-                this.getJson();
-            } else {
-                this.positions = orderState.currentState;
-            }
-
+            this.getJson();
         }
 }
 

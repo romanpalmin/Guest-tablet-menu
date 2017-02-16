@@ -380,7 +380,4 @@
             'position' : Position
         }
     }
-
-
-
 </script>
