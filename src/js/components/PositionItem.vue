@@ -135,6 +135,7 @@
 </style>
 <script>
     import state from './store/currentStates';
+    import ajax from './helpers/ajax'
 
     export default {
             data(){
@@ -177,25 +178,18 @@
                     let self = this;
                     this.IsAddingToCart = true;
                     let url = state.settings.server + '/menu/hs/model?groups=1&addcart=1&tovar=' + this.positionId;
-                    this.axios.get(url)
-                        .then(function (response) {
+                    let cUrl = `groups=1&addcart=1&tovar=${this.positionId}`;
+                    ajax.addToOrder(cUrl, function (response) {
                             if (response.data === 1){
-                                url = state.settings.server + '/menu/hs/model?groups=1&korzina=1';
-                                self.axios.get(url)
-                                .then((response) => {
+                                url = 'groups=1&korzina=1';
+                                ajax.getOrders(url, function(response){
                                     state.appState.orders.currentState = response.data;
                                     self.IsAddingToCart = false;
-                                 })
-                                .catch( (error) => {
-                                    console.log(error);
                                 });
-                        }
+                            } else {
+                                this.IsAddingToCart = false;
+                            }
                       })
-                      .catch(function (error) {
-                        console.log(error);
-                        self.IsAddingToCart = false;
-                      });
-
                 },
 
                 showInLamp: function(id){
