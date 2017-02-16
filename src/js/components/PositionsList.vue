@@ -70,7 +70,7 @@
 
                                             <div v-show="subgroups.type === 'СПИСКОМ'">
                                                 <li class="product2" v-for="subItem in subgroups.groups2[0].tovar"
-                                                     @click="toggleDetailsItem(subitem)">
+                                                     @click="toggleDetailsItem(subItem)">
                                                     <div class="product-inner2">
                                                         <div class="product-inner-label2" :data-Code="subItem.code">
                                                             {{subItem.name | deleteQuotes}}
@@ -286,6 +286,7 @@
 <script>
     import Position from './PositionItem.vue';
     import state from './store/currentStates';
+    import ajax from './helpers/ajax'
 
      export default{
         data(){
@@ -353,27 +354,21 @@
             getJson: function (catId) {
                 var self = this;
                 var testSet = {};
-                var url = state.settings.server + 'menu/hs/model?groups='+catId+'&category=' + catId;
                 if (state.appState.Category[catId].currentState.length > 0){
                     this.positionslist = state.appState.Category[catId].currentState;
                 } else {
-                    this.axios.get(url)
-                            .then(function (response) {
-                                self.formatJson(response.data, catId);
-                            })
-                            .catch(function (error) {
-                                console.log(error);
-                            });
+                    let cUrl = `groups=${catId}&category=${catId}`;
+                    ajax.getPositions(cUrl, function (response) {
+                         self.formatJson(response.data);
+                       });
                     }
             },
-            formatJson: function (resp, code) {
-                    var cur;
-                    var curO = [];
+            formatJson: function (resp) {
                     if (resp.length === 1){
                         this.positionslist = resp[0];
                     } else {
                         this.positionslist = resp;
-                        }
+                    }
                     state.appState.Category[this.$route.params.id].currentState = this.positionslist;
                 }
         },

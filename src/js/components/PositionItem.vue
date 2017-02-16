@@ -8,9 +8,9 @@
                      <img :src="urlFromParents" class="item-image">
                 </div>
                 <div class="item-column-data">
-                    <div class="h1-item">{{nameFromParent}}</div>
-                    <div class="p-item">{{descriptionFromParent}}</div>
-                    <div class="item-price">{{priceFromParent}} P</div>
+                    <div class="h1-item">{{nameFromParent | deleteQuotes | deleteNewLines}}</div>
+                    <div class="p-item">{{descriptionFromParent | deleteQuotes | deleteNewLines}}</div>
+                    <div class="item-price">{{priceFromParent | deleteQuotes | deleteNewLines}} P</div>
                         <div class="item-bottom-buttons">
                             <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle"> {{addingToCartTitle}} </div>
                             <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp(yacheikaFromParent)"> Показать </div>
@@ -143,6 +143,18 @@
                     urlClose : '',
                     addToCartBtn: '',
                     IsAddingToCart: false
+                }
+            },
+            filters:{
+                deleteQuotes: function (value) {
+                  if (!value) return '';
+                  value = value.toString();
+                  return value.replace(/@/g, '"');
+                },
+                deleteNewLines: function (value) {
+                  if (!value) return '';
+                  value = value.toString();
+                  return value.replace(/#/g, ' ');
                 }
             },
 

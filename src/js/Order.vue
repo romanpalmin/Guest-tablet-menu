@@ -7,41 +7,42 @@
             </div>
 
             <div class="content" id="content">
-
-                <table class="main-table">
-                    <tr class="table-row ">
-                        <td colspan="3" class="table-header">Вы выбрали:</td>
-                    </tr>
-                    <tr class="table-row">
-                        <td class="table-cell col-header col1">КОЛ-ВО</td>
-                        <td class="table-cell col-header col2">НАИМЕНОВАНИЕ</td>
-                        <td class="table-cell col-header col3"></td>
-                    </tr>
-                    <template v-for="item in positions">
+                <div class="overflow-content">
+                    <table class="main-table">
+                        <tr class="table-row ">
+                            <td colspan="3" class="table-header">Вы выбрали:</td>
+                        </tr>
                         <tr class="table-row">
-                            <td class="table-cell col1">{{item.count}}</td>
-                            <td class="table-cell col2">{{item.name}}</td>
-                            <td class="table-cell col3">
-                                <img class="delete" @click="deleteOrderById(item.code, item.stroka)" :src="urlClose">
+                            <td class="table-cell col-header col1">КОЛ-ВО</td>
+                            <td class="table-cell col-header col2">НАИМЕНОВАНИЕ</td>
+                            <td class="table-cell col-header col3"></td>
+                        </tr>
+                        <template v-for="item in positions">
+                            <tr class="table-row">
+                                <td class="table-cell col1">{{item.count}}</td>
+                                <td class="table-cell col2">{{item.name}}</td>
+                                <td class="table-cell col3">
+                                    <img class="delete" @click="deleteOrderById(item.code, item.stroka)"
+                                         :src="urlClose">
+                                </td>
+                            </tr>
+                        </template>
+                        <template class="table-footer">
+                            <tr>
+                                <td class="table-header"></td>
+                                <td class="table-header"></td>
+                                <td class="table-header"></td>
+                            </tr>
+                        </template>
+                        <tr class="table-row ">
+                            <td colspan="3" class="footer">
+                                <div class="btn-wrapper" v-if="showDeleteBtn">
+                                    <div class="btn delete-all" @click="deleteAll">Удалить все выбранное</div>
+                                </div>
                             </td>
                         </tr>
-                    </template>
-                    <template class="table-footer">
-                        <tr>
-                            <td class="table-header"></td>
-                            <td class="table-header"></td>
-                            <td class="table-header"></td>
-                        </tr>
-                    </template>
-                    <tr class="table-row ">
-                        <td colspan="3" class="footer">
-                            <div class="btn-wrapper" v-if="showDeleteBtn">
-                                <div class="btn delete-all" @click="deleteAll">Удалить все выбранное</div>
-                            </div>
-                        </td>
-                    </tr>
-                </table>
-
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -67,6 +68,11 @@
         .content {
             padding-top: 60px;
             padding-left: 301px;
+
+            .overflow-content{
+                height: 600px;
+                overflow: scroll;
+            }
 
             .main-table {
                 border-collapse: collapse;
@@ -225,6 +231,7 @@
 
         }
 }
+
 
 
 

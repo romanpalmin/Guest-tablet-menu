@@ -59,6 +59,7 @@
 </style>
 <script>
     import mp from './store/currentStates';
+    import ajax from './helpers/ajax.js';
     export default{
         data(){
             return {
@@ -77,24 +78,15 @@
         },
         mounted(){
              var self = this;
-             var url = '';
-             if (mp.settings.testMode){
-                url = './assets/data/category.json'
-             } else {
-                url = mp.settings.server + '/menu/hs/model?groups=';
-             }
              if (mp.appState.MenuPoints.length > 0){
-                self.ctgs = mp.appState.MenuPoints;
+                 self.ctgs = mp.appState.MenuPoints;
+                 } else {
+                    ajax.getCategories('groups=', function(resp){
+                        self.ctgs = resp.data;
+                        mp.appState.MenuPoints = resp.data;
+                 });
              }
 
-             this.axios.get(url)
-                        .then(function (response) {
-                            self.ctgs = response.data;
-                            mp.appState.MenuPoints = response.data;
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
         }
     }
 
