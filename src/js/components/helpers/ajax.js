@@ -20,7 +20,50 @@ function executeSimpleRequest(url, callback) {
         });
 }
 
+function getUrl(operation){
+    let url = '';
+    switch (operation.name){
+        case 'categories':
+            console.log(operation);
+            url = 'groups=';
+            break;
+        case 'positions':
+            console.log(operation);
+            url = `groups=${operation.catId}&category=${operation.catId}`;
+            break;
+        case 'show':
+            console.log(operation);
+            url = 'groups=1&shows=1';
+            break;
+        case 'order':
+            console.log(operation);
+            url = 'groups=1&korzina=1';
+            break;
+        case 'clearOrder':
+            console.log(operation);
+            url = 'groups=342020&delcart=1&tovar=1';
+            break;
+        case 'deleteFromOrder':
+            console.log(operation);
+            url = `groups=342020&tovar=${operation.id}&dellcartitem=${operation.stroka}`;
+            break;
+        case 'addToOrder':
+            console.log(operation);
+            url = `groups=1&addcart=1&tovar=${operation.positionId}`;
+            break;
+        default:
+            url = '';
+            break;
+    }
+    return url;
+}
+
 export default {
+    exec: function(operation, callback){
+        let url = getUrl(operation);
+        return executeSimpleRequest(url, callback);
+    },
+
     getCategories: function(url, callback){
         return executeSimpleRequest(url, callback);
     },
@@ -39,6 +82,10 @@ export default {
     },
     
     clearOrder: function(url, callback){
+        return executeSimpleRequest(url, callback);
+    },
+    
+    addToOrder: function(url, callback){
         return executeSimpleRequest(url, callback);
     }
 };

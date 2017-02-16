@@ -78,15 +78,16 @@
         },
         mounted(){
              var self = this;
+             const operation = {};
              if (mp.appState.MenuPoints.length > 0){
                  self.ctgs = mp.appState.MenuPoints;
                  } else {
-                    ajax.getCategories('groups=', function(resp){
+                    operation.name = 'categories';
+                    ajax.exec(operation, function(resp){
                         self.ctgs = resp.data;
                         mp.appState.MenuPoints = resp.data;
                  });
              }
-
         }
     }
 

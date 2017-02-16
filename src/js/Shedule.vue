@@ -112,8 +112,8 @@
         methods:{
            getShow: function(){
                 var self = this;
-                var url = 'groups=1&shows=1';
-                ajax.getShow(url, function (response) {
+                const operation = {name: 'show'};
+                ajax.exec(operation, function (response) {
                             if (response.data.length > 0){
                                 self.rasp = response.data;
                             }

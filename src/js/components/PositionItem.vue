@@ -177,7 +177,6 @@
                     if (this.IsAddingToCart) return;
                     let self = this;
                     this.IsAddingToCart = true;
-                    let url = state.settings.server + '/menu/hs/model?groups=1&addcart=1&tovar=' + this.positionId;
                     let cUrl = `groups=1&addcart=1&tovar=${this.positionId}`;
                     ajax.addToOrder(cUrl, function (response) {
                             if (response.data === 1){
