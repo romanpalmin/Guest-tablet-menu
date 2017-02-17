@@ -223,21 +223,18 @@
             },
 
             minus: function(id){
-                let positionsCodesArray;
-                positionsCodesArray = _.find(this.positions, {code:id});
+                let positionsCodesArray = _.find(this.positions, {code:id});
                 if (positionsCodesArray.length === 0){
                     return 0;
                 }
-                this.deleteOrderById(id, positionsCodesArray[0].stroka);
+                this.deleteOrderById(id, positionsCodesArray.stroka);
             },
 
             deleteFullPositions: function(id){
-                positionsCodesArray = _.filter(this.positions, {code:id});
-                console.log(positionsCodesArray);
-                console.log('Последовательно вызываем удаление по id и строке');
-                for (let i = 0; i< positionsCodesArray; i++){
+                let positionsCodesArray = _.filter(this.positions, {code:id});
+                for (let i = 0; i< positionsCodesArray.length; i++){
                     let stroka = positionsCodesArray[i].stroka;
-                    console.log(`code: ${id}, stroka: ${stroka}`);
+                    this.deleteOrderById(id, stroka);
                 }
             },
 
