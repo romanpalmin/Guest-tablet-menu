@@ -5,20 +5,21 @@
                 <div class="header-title">Вы выбрали:</div>
                 <div class="overflow-content">
                     <table class="main-table">
-                        <tr class="table-row ">
-                            <td colspan="3" class="table-header">Вы выбрали:</td>
-                        </tr>
                         <tr class="table-row">
                             <td class="table-cell col-header col1">КОЛ-ВО</td>
                             <td class="table-cell col-header col2">НАИМЕНОВАНИЕ</td>
                             <td class="table-cell col-header col3"></td>
                         </tr>
-                        <template v-for="item in positions">
+                        <template v-for="item in unionStrings">
                             <tr class="table-row">
-                                <td class="table-cell col1">{{item.count}}</td>
-                                <td class="table-cell col2">{{item.name}}</td>
+                                <td class="table-cell col1">
+                                    <div class="btn-plus_minus minus left" @click="minus(item.code)">-</div>
+                                    {{item.stroka.length}}
+                                    <div class="btn-plus_minus plus right" @click="plus(item.code)">+</div>
+                                </td>
+                                <td class="table-cell col2">{{item.name | deleteQuotes}}</td>
                                 <td class="table-cell col3">
-                                    <img class="delete" @click="deleteOrderById(item.code, item.stroka)"
+                                    <img class="delete" @click="deleteFullPositions(item.code)"
                                          :src="urlClose">
                                 </td>
                             </tr>
@@ -38,6 +39,7 @@
                             </td>
                         </tr>
                     </table>
+
                 </div>
             </div>
         </div>
@@ -49,17 +51,16 @@
             padding-top: 30px;
             padding-left: 301px;
 
-            .header-title{
+            .header-title {
                 color: #fff;
                 font-family: sans-serif;
                 font-size: 60px;
                 width: -211vw;
-                height: 99px;
                 top: 0;
                 margin-left: 30px;
             }
 
-            .overflow-content{
+            .overflow-content {
                 height: 600px;
                 overflow-y: scroll;
             }
@@ -92,7 +93,6 @@
                     text-align: left;
                     padding-top: 10px;
                     padding-bottom: 10px;
-
                     height: 24px;
                     .footer {
                         .btn-wrapper {
@@ -113,9 +113,22 @@
                             }
                         }
                         border-bottom: none;
-
                     }
-
+                    .btn-plus_minus {
+                        width: 22px;
+                        height: 22px;
+                        border-radius: 6px;
+                        line-height: 22px;
+                        background-color: gray;
+                        &.plus {
+                            float: right;
+                            margin-right: 20px;
+                        }
+                        &.minus {
+                            float: left;
+                            margin-left: 20px;
+                        }
+                    }
                 }
                 .table-cell {
                     border-bottom: #8A8A8A 1px solid;
@@ -167,21 +180,75 @@
             }
         },
 
-        watch:{
-            positions : function(){
-                this.showDeleteBtn = this.positions.length && this.positions.length > 0;
-
+        computed:{
+            unionStrings: function(){
+                let res = [];
+                _.forEach(_.groupBy(this.positions, 'code'), function(item){
+                    let strArray = [];
+                    let row = {};
+                    _.forEach(item, function(str){
+                        if (str.stroka){
+                            strArray.push(str.stroka);
+                        }
+                    });
+                    row = {
+                        client: item[0].client,
+                        code: item[0].code,
+                        name: item[0].name,
+                        stroka: strArray
+                    }
+                    res.push(row)
+                });
+                return res;
             }
         },
 
+        watch:{
+            positions : function(){
+                this.showDeleteBtn = this.positions.length && this.positions.length > 0;
+            }
+        },
+
+        filters:{
+                deleteQuotes: function (value) {
+                  if (!value) return '';
+                  value = value.toString();
+                  return value.replace(/&QUOT/g, '"');
+                }
+         },
+
         methods:{
+            plus: function(id){
+                console.log(id);
+            },
+
+            minus: function(id){
+                let positionsCodesArray;
+                positionsCodesArray = _.find(this.positions, {code:id});
+                if (positionsCodesArray.length === 0){
+                    return 0;
+                }
+                this.deleteOrderById(id, positionsCodesArray[0].stroka);
+            },
+
+            deleteFullPositions: function(id){
+                positionsCodesArray = _.filter(this.positions, {code:id});
+                console.log(positionsCodesArray);
+                console.log('Последовательно вызываем удаление по id и строке');
+                for (let i = 0; i< positionsCodesArray; i++){
+                    let stroka = positionsCodesArray[i].stroka;
+                    console.log(`code: ${id}, stroka: ${stroka}`);
+                }
+            },
+
             deleteOrderById: function(id, stroka){
                 this.positions = _.without(this.positions, _.find(this.positions, {code:id, stroka:stroka}))
                 orderState.currentState = this.positions;
-                const operation = {};
-                operation.name = 'deleteFromOrder';
-                operation.id = id;
-                operation.stroka = stroka;
+                const operation = {
+                    name: 'deleteFromOrder',
+                    id: id,
+                    stroka: stroka
+                };
                 ajax.exec(operation);
             },
             deleteAll: function() {
@@ -203,8 +270,8 @@
                 } else {
                     this.positions = orderState.currentState;
                 }
-
             }
+
         },
         mounted(){
             this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
@@ -212,5 +279,6 @@
             this.getJson();
         }
 }
+
 
 </script>
