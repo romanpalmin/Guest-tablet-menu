@@ -166,7 +166,7 @@
                 descriptionFromParent : function() {return this.description},
                 yacheikaFromParent: function () { return this.yacheika },
                 addingToCartTitle : function(){ return this.IsAddingToCart ? 'Добавление' : 'Выбрать';},
-                addingToCartStyle: function() { return this.IsAddingToCart ? "background:gray" : '';}
+                addingToCartStyle: function() { return this.IsAddingToCart ? "background:#dbdbd7" : '';}
 
             },
 
@@ -177,10 +177,10 @@
                     if (this.IsAddingToCart) return;
                     let self = this;
                     this.IsAddingToCart = true;
-                    let cUrl = `groups=1&addcart=1&tovar=${this.positionId}`;
-                    const options = {};
-                    options.name = 'addToOrder';
-                    options.positionId = this.positionId;
+                    const options = {
+                        name: 'addToOrder',
+                        positionId: this.positionId
+                    };
                     ajax.exec(options, function (response) {
                             if (response.data === 1){
                                 options.name = 'order';
@@ -196,10 +196,10 @@
 
                 showInLamp: function(id){
                     console.log('Подсвечиваем товар и шлем обратно');
-                    console.log(state.settings.server + 'menu/hs/model?groups=1&tovar=1&yacheika=' + id );
-                    const operation = {};
-                    operation.name = 'showLamp';
-                    operation.id = id;
+                    const operation = {
+                        name: 'showLamp',
+                        id: id
+                    };
                     ajax.exec(operation);
                 },
 

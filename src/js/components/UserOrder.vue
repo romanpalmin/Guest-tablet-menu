@@ -3,6 +3,8 @@
         <div class="container">
             <div class="content" id="content">
                 <div class="header-title">Вы выбрали:</div>
+                <button @click="showState">Показать текущее состояние</button>
+                <button @click="showArr">Показать текущее состояние массива</button>
                 <div class="overflow-content">
                     <table class="main-table">
                         <tr class="table-row">
@@ -13,9 +15,18 @@
                         <template v-for="item in unionStrings">
                             <tr class="table-row">
                                 <td class="table-cell col1">
-                                    <div class="btn-plus_minus minus left" @click="minus(item.code)">-</div>
+                                    <div class="btn-plus_minus minus" @click="minus(item.code)">-</div>
                                     {{item.stroka.length}}
-                                    <div class="btn-plus_minus plus right" @click="plus(item.code)">+</div>
+                                    <template v-if="isAdding && isInArray(item.code)">
+                                        <div class="btn-plus_minus plus" :style="addingToCartStyle" :data-code="item.code"
+                                             @click="setCurrentPressedPlus" @click="plus(item.code)">+
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <div class="btn-plus_minus plus" :data-code="item.code"
+                                             @click="setCurrentPressedPlus" @click="plus(item.code)">+
+                                        </div>
+                                    </template>
                                 </td>
                                 <td class="table-cell col2">{{item.name | deleteQuotes}}</td>
                                 <td class="table-cell col3">
@@ -176,7 +187,9 @@
                 positions: [],
                 urlLogo: '',
                 urlClose: '',
-                showDeleteBtn: false
+                showDeleteBtn: false,
+                isAdding: false,
+                currentPressedKey:[]
             }
         },
 
@@ -200,7 +213,8 @@
                     res.push(row)
                 });
                 return res;
-            }
+            },
+            addingToCartStyle: function() { return this.isAdding ? "color:darkgrey" : '';}
         },
 
         watch:{
@@ -218,8 +232,56 @@
          },
 
         methods:{
-            plus: function(id){
+            showState: function() {
+                console.log(orderState);
+            },
+
+             showArr: function() {
+                console.log(this.currentPressedKey);
+            },
+
+            isInArray: function(id){
+                console.log(this.currentPressedKey);
                 console.log(id);
+                for (let i = 0; i< this.currentPressedKey.length; i++){
+                    if (this.currentPressedKey[i] === id){
+                        console.log('bingo')
+                        return true;
+                    }
+                }
+                console.log('ooops')
+                return false;
+            },
+
+            setCurrentPressedPlus: function(evt){
+                this.currentPressedKey.push(evt.target.dataset.code);
+            },
+
+            plus: function(id) {
+                if (this.isAdding) return;
+                this.isAdding = true;
+                let self = this;
+                const options = {
+                    name: 'addToOrder',
+                    positionId: id
+                };
+                ajax.exec(options, function (response) {
+                            if (response.data === 1){
+                                options.name = 'order';
+                                ajax.exec(options, function(response){
+                                    orderState.currentState = response.data;
+                                    self.positions = response.data;
+                                    self.isAdding = false;
+                                    let idx = self.currentPressedKey.indexOf(id);
+                                    console.log('Index: ' + idx);
+                                    self.currentPressedKey.splice(idx, 1);
+                            })
+                        }
+                        else {
+                          self.isAdding = false;
+
+                        }
+                 })
             },
 
             minus: function(id){
@@ -248,6 +310,7 @@
                 };
                 ajax.exec(operation);
             },
+
             deleteAll: function() {
                 this.positions = [];
                 orderState.currentState = this.positions;
