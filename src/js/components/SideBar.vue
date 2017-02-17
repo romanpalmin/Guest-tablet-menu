@@ -181,7 +181,6 @@
         computed: {
             ctgs_with_params: function() {
                 var self = this;
-                console.log(6666);
                 var res = this.ctgs.map(function(item) {
                     item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
                     item.route = '/ru/menu/'+ item.code;
@@ -197,7 +196,6 @@
             }
         },
         mounted(){
-        console.log(1234);
              var self = this;
              this.urlLogo = state.settings.server +  state.settings.urlSmallImage + state.settings.images.logo;
              const operation = {};
