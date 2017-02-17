@@ -58,7 +58,7 @@
 
 </style>
 <script>
-    import mp from './store/currentStates';
+    import state from './store/currentStates';
     import ajax from './helpers/ajax.js';
     export default{
         data(){
@@ -69,7 +69,7 @@
         computed: {
             ctgs_with_params: function () {
                 var res = this.ctgs.map(function (item) {
-                    item.style = 'background-image: url(' +  mp.settings.server + mp.settings.urlBigImage + item.urlBigImage + ');';
+                    item.style = 'background-image: url(' +  state.settings.server + state.settings.urlBigImage + item.urlBigImage + ');';
                     item.route = 'menu/'+item.code;
                     return item;
                 });
@@ -79,13 +79,13 @@
         mounted(){
              var self = this;
              const operation = {};
-             if (mp.appState.MenuPoints.length > 0){
-                 self.ctgs = mp.appState.MenuPoints;
+             if (state.appState.MenuPoints.length > 0){
+                 self.ctgs = state.appState.MenuPoints;
                  } else {
                     operation.name = 'categories';
                     ajax.exec(operation, function(resp){
                         self.ctgs = resp.data;
-                        mp.appState.MenuPoints = resp.data;
+                        state.appState.MenuPoints = resp.data;
                  });
              }
         }
