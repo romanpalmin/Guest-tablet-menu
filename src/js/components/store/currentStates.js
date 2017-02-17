@@ -1,7 +1,7 @@
 export default {
     settings:{
-        server:'http://tab01:01@10.10.250.91/',
-        ip: '10.10.250.91',
+        server:'http://tab01:01@10.10.250.61/',
+        ip: '10.10.250.61',
        /* server:'http://10.10.182.11/',*/
         urlSmallImage:'img/',
         urlBigImage:'images/',
