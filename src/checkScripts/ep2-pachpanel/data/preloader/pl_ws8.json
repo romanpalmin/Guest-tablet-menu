@@ -1,0 +1,38 @@
+[
+  {
+    "id": "111",
+    "Name": "-",
+    "ImageUrl": "/images/tovar.jpg",
+    "DiscountWasChanged": true,
+    "CurrentDiscount": 0,
+    "TotalItemsSold": 7,
+    "RemainToDiscount": 13,
+    "DisplayCoinsNow": 7,
+    "DisplayCoinsOf": 20,
+    "DisplayBadaBoom": false
+  },
+  {
+    "id": "222",
+    "Name": "-",
+    "ImageUrl": "/images/tovar.jpg",
+    "DiscountWasChanged": true,
+    "CurrentDiscount": 0,
+    "TotalItemsSold": 7,
+    "RemainToDiscount": 13,
+    "DisplayCoinsNow": 7,
+    "DisplayCoinsOf": 20,
+    "DisplayBadaBoom": false
+  },
+  {
+    "id": "333",
+    "Name": "-",
+    "ImageUrl": "/images/tovar.jpg",
+    "DiscountWasChanged": true,
+    "CurrentDiscount": 0,
+    "TotalItemsSold": 7,
+    "RemainToDiscount": 13,
+    "DisplayCoinsNow": 7,
+    "DisplayCoinsOf": 20,
+    "DisplayBadaBoom": false
+  }
+]

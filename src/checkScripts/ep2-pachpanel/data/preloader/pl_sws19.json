@@ -1,0 +1,14 @@
+[
+  {
+    "id": "444",
+    "Name": "-",
+    "ImageUrl": "/images/tovar.jpg",
+    "DiscountWasChanged": true,
+    "CurrentDiscount": 90,
+    "TotalItemsSold": 0,
+    "RemainToDiscount": 10,
+    "DisplayCoinsNow": 18,
+    "DisplayCoinsOf": 20,
+    "DisplayBadaBoom": false
+  }
+]
