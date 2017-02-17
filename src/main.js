@@ -45,7 +45,13 @@ var router = new VueRouter({
     linkActiveClass: 'menu__link--current'
 });
 
-
+/*
+ row.client = item[index].client;
+ row.code = item[index].code;
+ row.name = item[index].name;
+ row.stroka = strArray;
+ res.push(row);
+ */
 const app = new Vue({
     router,
     template: `
