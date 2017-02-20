@@ -11,7 +11,7 @@
                     <div class="h1-item">{{nameFromParent | deleteQuotes | deleteNewLines}}</div>
                     <div class="p-item">{{descriptionFromParent | deleteQuotes | deleteNewLines}}</div>
                     <div class="item-price">{{priceFromParent | deleteQuotes | deleteNewLines}} P</div>
-                        <div class="item-bottom-buttons">
+                        <div class="item-bottom-buttons" v-if="!showButtons">
                             <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle"> {{addingToCartTitle}} </div>
                             <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp(yacheikaFromParent)"> Показать </div>
                         </div>
@@ -143,7 +143,8 @@
                     positionSet : {},
                     urlClose : '',
                     addToCartBtn: '',
-                    IsAddingToCart: false
+                    IsAddingToCart: false,
+                    showButtons: state.settings.panelView
                 }
             },
             filters:{

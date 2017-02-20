@@ -1,7 +1,7 @@
 export default {
     settings:{
-        server:'http://tab01:01@10.10.250.61/',
-        ip: '10.10.250.61',
+        server:'http://tab01:01@10.10.250.100/',
+        ip: '10.10.250.100',
        /* server:'http://10.10.182.11/',*/
         urlSmallImage:'img/',
         urlBigImage:'images/',
@@ -10,7 +10,8 @@ export default {
             logo: 'beer-zha.png',
             close: 'close.png'
         },
-        testMode:false
+        testMode:false,
+        panelView: false
     },
     appState:{
         MenuPoints:[],
