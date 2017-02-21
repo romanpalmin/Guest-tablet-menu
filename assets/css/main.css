@@ -95,18 +95,18 @@ a {
 }
 
 body {
-    background: #1d1e21 url('http://10.10.250.91/img/background.jpg');
+    background: #1d1e21 url('http://10.10.250.100/img/background.jpg');
 }
 
 .inner-item-container{
-    background-image: url("http://10.10.250.91/img/background.jpg");
+    background-image: url("http://10.10.250.100/img/background.jpg");
 }
 
 .product-top-block-price{
-    background-image: url("http://10.10.250.91/img/price.png");
+    background-image: url("http://10.10.250.100/img/price.png");
 }
 .product-top-block-price2 {
-    background-image: url('http://10.10.250.91/img/price.png');
+    background-image: url('http://10.10.250.100/img/price.png');
 }
 
 

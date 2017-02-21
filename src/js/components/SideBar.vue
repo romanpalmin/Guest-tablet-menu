@@ -153,7 +153,7 @@
             .menu__breadcrumbs {
                 font-size: 0.65em;
                 line-height: 1;
-                padding: 6.3em 3.75em 1.5em 2.5em;
+                padding: 1.3em 3.75em 1.5em 2.5em;
                 background-color: white;
                 a {
                     font-weight: bold;

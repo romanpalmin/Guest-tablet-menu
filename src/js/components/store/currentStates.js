@@ -1,7 +1,7 @@
 export default {
     settings:{
-        server:'http://scr01:01@10.10.250.100/',
-        ip: '10.10.250.100',
+        server:'http://scr01:01@10.10.182.11/',
+        ip: '10.10.182.11',
         userName: 'scr01',
         password:'01',
        /* server:'http://10.10.182.11/',*/

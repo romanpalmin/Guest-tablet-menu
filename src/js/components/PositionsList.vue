@@ -3,7 +3,7 @@
         <div clas="div-overlay">
             <div v-if="positionslist.tovar">
                 <ul class="products">
-                    <li class="product" v-for="item in positionsWithProps"  @click="toggleDetailsItem(item)">
+                    <li class="product" v-for="item in positionsWithProps" @click="toggleDetailsItem(item)">
                         <div class="product-inner">
                             <div class="product-top-block" :data-Code="item.code" :style="item.style">
                                 <div class="product-top-block-price" :data-Code="item.code">
@@ -21,12 +21,12 @@
                 <ul class="products">
                     <li v-for="item in positionslist" class="product-group product-group-level-1">
                         <div class="product-group-level-1-descr">{{item.name | deleteQuotes}}</div>
-                        <div v-if="item.groups1.length === 1">
+                        <div v-if="item.groups1 && item.groups1.length === 1">
                             <ul class="products">
                                 <div v-show="item.type === 'ИКОНКАМИ'">
                                     <div v-if="item.groups1[0].tovar">
                                         <li class="product" v-for="subitem in item.groups1[0].tovar"
-                                             @click="toggleDetailsItem(subitem)">
+                                            @click="toggleDetailsItem(subitem)">
                                             <div class="product-inner">
                                                 <div class="product-top-block" :style="getStyle(subitem)"
                                                      :data-Code="subitem.code">
@@ -40,37 +40,36 @@
                                             </div>
                                         </li>
                                     </div>
-                                    <div v-if="1">
-
-                                    </div>
                                 </div>
 
                                 <div v-show="item.type === 'СПИСКОМ'">
-                                    <li class="product2" v-for="subitem in item.groups1[0].tovar"
-                                          @click="toggleDetailsItem(subitem)">
-                                        <div class="product-inner2">
-                                            <div class="product-inner-label2" :data-Code="subitem.code">
-                                                {{subitem.name | deleteQuotes}}
+                                    <div v-if="item.groups1[0].tovar">
+                                        <li class="product2" v-for="subitem in item.groups1[0].tovar"
+                                            @click="toggleDetailsItem(subitem)">
+                                            <div class="product-inner2">
+                                                <div class="product-inner-label2" :data-Code="subitem.code">
+                                                    {{subitem.name | deleteQuotes}}
+                                                </div>
+                                                <div class="product-top-block-price2" :data-Code="subitem.code">
+                                                    {{subitem.price}}
+                                                </div>
                                             </div>
-                                            <div class="product-top-block-price2" :data-Code="subitem.code">
-                                                {{subitem.price}}
-                                            </div>
-                                        </div>
-                                    </li>
+                                        </li>
+                                    </div>
                                 </div>
 
                             </ul>
                         </div>
-                        <div v-else>
+                        <div>
                             <ul>
-                                <li v-for="subgroups in item.groups1" class="product-group-level-2">
-                                    <div class="product-group-level-2-descr">{{subgroups.name | deleteQuotes}}</div>
-                                    <div v-if="subgroups.groups2.length === 1">
-                                        <ul class="products">
+                                <li v-for="subgroups in item.groups1" class="product-group-level-2" v-if="subgroups">
+                                    <div v-if="subgroups.groups2 && subgroups.groups2.length === 1">
+                                        <div class="product-group-level-2-descr" v-show="subgroups.name!=='' || subgroups">{{subgroups.name | deleteQuotes}}</div>
 
+                                        <ul class="products">
                                             <div v-show="subgroups.type === 'СПИСКОМ'">
                                                 <li class="product2" v-for="subItem in subgroups.groups2[0].tovar"
-                                                     @click="toggleDetailsItem(subItem)">
+                                                    @click="toggleDetailsItem(subItem)">
                                                     <div class="product-inner2">
                                                         <div class="product-inner-label2" :data-Code="subItem.code">
                                                             {{subItem.name | deleteQuotes}}
@@ -84,7 +83,7 @@
 
                                             <div v-show="subgroups.type === 'ИКОНКАМИ'">
                                                 <li class="product" v-for="subItem in subgroups.groups2[0].tovar"
-                                                     @click="toggleDetailsItem(subItem)">
+                                                    @click="toggleDetailsItem(subItem)">
                                                     <div class="product-inner">
                                                         <div class="product-top-block" :style="getStyle(subItem)"
                                                              :data-Code="subItem.code">
@@ -354,7 +353,7 @@
             getJson: function (catId) {
                 var self = this;
                 const operation = {};
-                if (state.appState.Category[catId].currentState.length > 0){
+                if (state && state.appState && state.appState.Category[catId] && state.appState.Category[catId].currentState.length > 0){
                     this.positionslist = state.appState.Category[catId].currentState;
                 } else {
                     operation.name = 'positions';
@@ -366,7 +365,12 @@
             },
             formatJson: function (resp) {
                     if (resp.length === 1){
-                        this.positionslist = resp[0];
+                        if (resp[0].tovar){
+                            this.positionslist = resp[0];
+                        }
+                        else{
+                            this.positionslist = resp;
+                        }
                     } else {
                         this.positionslist = resp;
                     }
@@ -381,4 +385,5 @@
             'position' : Position
         }
     }
+
 </script>
