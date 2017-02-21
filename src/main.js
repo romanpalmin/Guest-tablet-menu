@@ -58,11 +58,10 @@ const app = new Vue({
     <div id="app-menu">
     <div class="header">
         <nav class="pages-nav">
-            <div class="pages-nav__item "><router-link to="/ru/fishki" class="link-page link">Фишки</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/actions" class="link-page link">Акции</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
-            <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы выбрали</router-link></div>
+          
         </nav>
       </div>
       <div class="content">

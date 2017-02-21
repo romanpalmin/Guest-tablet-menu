@@ -1,7 +1,9 @@
 export default {
     settings:{
-        server:'http://tab01:01@10.10.250.100/',
+        server:'http://scr01:01@10.10.250.100/',
         ip: '10.10.250.100',
+        userName: 'scr01',
+        password:'01',
        /* server:'http://10.10.182.11/',*/
         urlSmallImage:'img/',
         urlBigImage:'images/',
@@ -11,7 +13,7 @@ export default {
             close: 'close.png'
         },
         testMode:false,
-        panelView: false
+        isTablet: false
     },
     appState:{
         MenuPoints:[],
@@ -47,7 +49,16 @@ export default {
             "462020":{
                 name: 'ПИВО',
                 currentState:[]
+            },
+            "472020":{
+                name:"ЗАВТРАКИ",
+                currentState:[]
+            },
+            "482020":{
+                name:"БИЗНЕС ЛАНЧ",
+                currentState:[]
             }
+
         },
         show: {
             name: 'Развлечения',

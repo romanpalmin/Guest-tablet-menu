@@ -3,8 +3,8 @@ import axios from 'axios';
 
 const ip = state.settings.ip;
 const server = `${ip}/`;
-const user = 'tab01';
-const password = '01';
+const user =  state.settings.userName;
+const password = state.settings.password;
 const baseUrl = '/menu/hs/model?';
 let ajaxServerUrlShort = `http://${user}:${password}@${server}${baseUrl}`;
 
