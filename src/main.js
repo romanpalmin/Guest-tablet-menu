@@ -17,16 +17,16 @@ Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
 /*Vue.axios.get('settings.json')
-    .then(function (response) {
-        console.log(response);
-        cs.server = response.data.server;
-        cs.urlSmallImage = response.data.server + response.data.smallImagesUrl;
-        cs.urlBigImage = response.data.server + response.data.bigImagesUrl;
-        console.log(cs);
-    })
-    .catch(function (error) {
-        console.log(error);
-    });*/
+ .then(function (response) {
+ console.log(response);
+ cs.server = response.data.server;
+ cs.urlSmallImage = response.data.server + response.data.smallImagesUrl;
+ cs.urlBigImage = response.data.server + response.data.bigImagesUrl;
+ console.log(cs);
+ })
+ .catch(function (error) {
+ console.log(error);
+ });*/
 
 
 const routes = [
@@ -44,7 +44,7 @@ var router = new VueRouter({
     routes,
     linkActiveClass: 'menu__link--current'
 });
-
+router.replace('/:lang/menu');
 /*
  row.client = item[index].client;
  row.code = item[index].code;
@@ -69,3 +69,33 @@ const app = new Vue({
       </div>
     </div>`
 }).$mount('#app');
+
+
+var no_active_delay = 100000;
+var now_no_active = 0;
+var interval = setInterval(function () {
+    now_no_active++;
+    if (now_no_active >= 100) {
+        now_no_active = no_active_delay + 1;
+    }
+}, 1000);
+
+setInterval(function () {
+    checkForActivity()
+}, 1000); // Запускаем функцию updateChat() через определённый интервал
+
+document.onmousemove = UserActions; // Ставим обработчик на движение курсора мыши
+
+function UserActions() {
+    now_no_active = 0; // Обнуляем счётчик простоя секунд
+}
+function checkForActivity() {
+    if (now_no_active >= no_active_delay) { // Проверяем не превышен ли "предел активности" пользователя
+        console.log('Система не активна более ' + no_active_delay + ' секунд, скрываем приложение');
+        document.getElementById('app-menu').style.display = 'none';
+    }
+    if (document.getElementById('app-menu').style.display === 'none' && now_no_active < no_active_delay) {
+        document.getElementById('app-menu').style.display = 'block';
+        router.replace('/:lang/menu');
+    }
+}

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="main-menu" v-if="isTablet">
+        <div class="main-menu" v-if="count_of_ctgs === 8">
             <ul class="root-icons">
                 <li class="root-icon" v-for="item in ctgs_with_params">
                     <router-link :to="item.route">
@@ -137,10 +137,16 @@
         data(){
             return {
                 ctgs: [],
-                main: []
+                main: [],
+                count: 8
             }
         },
         computed: {
+            count_of_ctgs: function(){
+                console.log(this.ctgs.length);
+                return this.ctgs.length;
+            },
+
             ctgs_with_params: function () {
                 var res = this.ctgs.map(function (item) {
                     item.style = 'background-image: url(' +  state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
@@ -159,12 +165,10 @@
                 return res;
             },
             main_position: function(){
-                console.log(this.main[0]);
                 return this.main[0]
             },
 
             isTablet: function(){
-                console.log(state.settings.isTablet);
                 return state.settings.isTablet;
             }
         },

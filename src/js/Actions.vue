@@ -1,12 +1,12 @@
 <template>
     <div class="content">
-        <div content="inner-content">Здесь будут описания акций {{msg}}</div>
+        <iframe src="http://10.10.182.11/menutitle/" width="100%" height="100%"></iframe>
     </div>
 </template>
 <style scoped lang="less">
     .content {
         width: 100%;
-        padding-top: 100px;
+        height: 100%;
         text-align: center;
         .inner-content {
         }

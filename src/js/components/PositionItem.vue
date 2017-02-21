@@ -167,7 +167,7 @@
                 yacheikaFromParent: function () { return this.yacheika },
                 addingToCartTitle : function(){ return this.IsAddingToCart ? 'Добавление' : 'Выбрать';},
                 addingToCartStyle: function() { return this.IsAddingToCart ? "background:#dbdbd7" : '';},
-                showButtons: function(){return state.settings.isTablet;}
+                showButtons: function(){return state.settings.showButtons;}
 
             },
 

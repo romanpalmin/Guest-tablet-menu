@@ -1,7 +1,7 @@
 export default {
     settings:{
-        server:'http://scr01:01@10.10.182.11/',
-        ip: '10.10.182.11',
+        server:'http://scr01:01@10.10.250.100/',
+        ip: '10.10.250.100',
         userName: 'scr01',
         password:'01',
        /* server:'http://10.10.182.11/',*/
@@ -13,7 +13,8 @@ export default {
             close: 'close.png'
         },
         testMode:false,
-        isTablet: false
+        isTablet: false,
+        showButtons: false
     },
     appState:{
         MenuPoints:[],
