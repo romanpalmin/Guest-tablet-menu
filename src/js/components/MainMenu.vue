@@ -41,7 +41,9 @@
                             <router-link :to="item.route">
                                 <a :root-data-code="item.code">
                                     <div class="root-icon-image-bottom">
-                                        <img :src="getImageSrc(item)">
+                                        <div class="img-wrapper">
+                                            <img :src="getImageSrcBig(item)">
+                                        </div>
                                         <div class="root-icon-descr">
                                             {{ item.name }}
                                         </div>
@@ -58,6 +60,15 @@
 </template>
 
 <style scoped lang="less">
+    .current-cell {
+        .img-wrapper {
+            width: 200px;
+            img {
+                width: 100%;
+            }
+        }
+    }
+
     .main-table {
         .img-wrapper {
             max-width: 500px;
@@ -81,59 +92,55 @@
             height: 100%;
         }
         .top-row {
-            height: 800px;
+            height: 730px;
             vertical-align: middle;
         }
 
-        .root-icon-image-bottom {
-        }
-    }
-
-    .main-menu {
-        margin-left: 35px;
-
-        .root-icon-descr {
-            color: #FFFFFF;
-            position: relative;
-            height: 35px;
-            top: 280px;
-            text-align: center;
-            padding-top: 5px;
-        }
-
-        .current-cell {
-            width: 20%;
-        }
-
-        .root-icon-image {
-            background-size: cover;
-            width: 280px;
-            height: 280px;
-        }
-
-        .root-icons {
-            display: inline;
-            align-items: center;
-            text-align: center;
-            padding: 0;
-        }
-
-        .root-icon {
-            display: inline-block;
-            width: 280px;
-            height: 315px;
-            margin-top: 35px;
-            margin-right: 35px;
+        .main-menu {
             margin-left: 35px;
-        }
 
-        a {
-            text-decoration: none;
-            color: #000;
-            outline: none;
+            .root-icon-descr {
+                color: #FFFFFF;
+                position: relative;
+                height: 35px;
+                top: 280px;
+                text-align: center;
+                padding-top: 5px;
+            }
+
+            .current-cell {
+                width: 20%;
+            }
+
+            .root-icon-image {
+                background-size: cover;
+                width: 280px;
+                height: 280px;
+            }
+
+            .root-icons {
+                display: inline;
+                align-items: center;
+                text-align: center;
+                padding: 0;
+            }
+
+            .root-icon {
+                display: inline-block;
+                width: 280px;
+                height: 315px;
+                margin-top: 35px;
+                margin-right: 35px;
+                margin-left: 35px;
+            }
+
+            a {
+                text-decoration: none;
+                color: #000;
+                outline: none;
+            }
         }
     }
-
 </style>
 <script>
 import state from './store/currentStates';
@@ -238,5 +245,7 @@ export default {
         }, 15000);
     }
 }
+
+
 
 </script>

@@ -60,7 +60,6 @@ const app = new Vue({
     <div id="app-menu">
     <div class="header">
         <nav class="pages-nav">
-            <div class="pages-nav__item "><router-link to="/ru/actions" class="link-page link">Акции</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
           
@@ -73,5 +72,5 @@ const app = new Vue({
 }).$mount('#app');
 
 let updateInterval = setInterval(function(){
-    upState();
+    //upState();
 }, state.settings.updateStatePeriod);

@@ -1,19 +1,10 @@
 <template>
     <div class="content">
-
+        <iframe src="http://10.10.182.11/menutitle/" frameborder="0" marginwidth="0" marginheight="0"  allowtransparency="false"></iframe>
     </div>
+
 </template>
 <style scoped lang="less">
-    .content {
-        width: 100%;
-        height: 100%;
-        text-align: center;
-        .frame-content{
-            width: 145%;
-            height: 1100px;
-            transform: scale(0.95);
-        }
-    }
 </style>
 <script>
     export default{
