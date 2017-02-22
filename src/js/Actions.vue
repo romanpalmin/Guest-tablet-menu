@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <iframe src="http://10.10.182.11/menutitle/" width="100%" height="100%"></iframe>
+
     </div>
 </template>
 <style scoped lang="less">
@@ -8,7 +8,10 @@
         width: 100%;
         height: 100%;
         text-align: center;
-        .inner-content {
+        .frame-content{
+            width: 145%;
+            height: 1100px;
+            transform: scale(0.95);
         }
     }
 </style>

@@ -9,8 +9,10 @@ import fishki from './js/Fishki.vue';
 import actions from './js/Actions.vue';
 import VueRouter from 'vue-router'
 import ajax from 'vue-resource';
-import axios from 'axios'
-import VueAxios from 'vue-axios'
+import axios from 'axios';
+import VueAxios from 'vue-axios';
+import upState from './js/components/helpers/updateState';
+import state from './js/components/store/currentStates';
 
 Vue.use(ajax);
 Vue.use(VueRouter);
@@ -70,32 +72,6 @@ const app = new Vue({
     </div>`
 }).$mount('#app');
 
-
-var no_active_delay = 100000;
-var now_no_active = 0;
-var interval = setInterval(function () {
-    now_no_active++;
-    if (now_no_active >= 100) {
-        now_no_active = no_active_delay + 1;
-    }
-}, 1000);
-
-setInterval(function () {
-    checkForActivity()
-}, 1000); // Запускаем функцию updateChat() через определённый интервал
-
-document.onmousemove = UserActions; // Ставим обработчик на движение курсора мыши
-
-function UserActions() {
-    now_no_active = 0; // Обнуляем счётчик простоя секунд
-}
-function checkForActivity() {
-    if (now_no_active >= no_active_delay) { // Проверяем не превышен ли "предел активности" пользователя
-        console.log('Система не активна более ' + no_active_delay + ' секунд, скрываем приложение');
-        document.getElementById('app-menu').style.display = 'none';
-    }
-    if (document.getElementById('app-menu').style.display === 'none' && now_no_active < no_active_delay) {
-        document.getElementById('app-menu').style.display = 'block';
-        router.replace('/:lang/menu');
-    }
-}
+let updateInterval = setInterval(function(){
+    upState();
+}, state.settings.updateStatePeriod);

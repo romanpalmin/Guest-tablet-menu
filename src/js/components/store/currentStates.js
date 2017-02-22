@@ -1,7 +1,7 @@
 export default {
     settings:{
-        server:'http://scr01:01@10.10.250.100/',
-        ip: '10.10.250.100',
+        server:'http://scr01:01@10.10.182.11/',
+        ip: '10.10.182.11',
         userName: 'scr01',
         password:'01',
        /* server:'http://10.10.182.11/',*/
@@ -14,7 +14,8 @@ export default {
         },
         testMode:false,
         isTablet: false,
-        showButtons: false
+        showButtons: false,
+        updateStatePeriod: 1000*60*5  // время обновления меню секунда * кол-во секунд * кол-во минут
     },
     appState:{
         MenuPoints:[],

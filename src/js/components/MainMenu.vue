@@ -143,7 +143,6 @@
         },
         computed: {
             count_of_ctgs: function(){
-                console.log(this.ctgs.length);
                 return this.ctgs.length;
             },
 
@@ -191,7 +190,6 @@
                 var ret = _.remove(res, function(item){
                     return item !== undefined;
                 });
-                console.log(ret);
                 return ret;
                 }
             },
