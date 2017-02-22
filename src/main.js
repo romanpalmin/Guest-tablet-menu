@@ -46,7 +46,7 @@ var router = new VueRouter({
     routes,
     linkActiveClass: 'menu__link--current'
 });
-router.replace('/:lang/menu');
+router.replace('/ru/menu');
 /*
  row.client = item[index].client;
  row.code = item[index].code;

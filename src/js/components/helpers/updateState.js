@@ -2,24 +2,19 @@ import ajax from './ajax'
 import state from '../store/currentStates';
 
 export default function updateState() {
-    console.log('Обновляем состояние категорий, а затем и их составляющих');
+    console.log('Обновляеются данные');
     const operation = {};
     let menu = [];
     operation.name = 'categories';
     ajax.exec(operation, function (resp) {
         state.appState.MenuPoints = [];
         state.appState.MenuPoints = resp.data;
-        console.log('Меню обновлено');
-        console.log(state.appState.MenuPoints);
         menu = state.appState.MenuPoints;
         menu.forEach(function (item) {
             operation.name = 'positions';
             operation.catId = item.code;
             ajax.exec(operation, function (resp) {
-                console.log(resp.data);
                 formatJson(resp.data, item.code);
-                console.log(`${item.code} категория обновлена:`);
-                console.log(state.appState.Category[item.code]);
             });
         });
 
