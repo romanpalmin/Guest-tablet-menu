@@ -79,8 +79,7 @@ let updateInterval = setInterval(function(){
 
 
 (function(){
-    console.log(router);
-    let no_active_delay = 100;
+    let no_active_delay = 75;
     let now_no_active = 0;
     let interval = setInterval(function () {
         if (router.currentRoute.name === 'menu'

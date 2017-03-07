@@ -16,7 +16,6 @@
             </ul>
         </div>
         <div v-else class="main-table">
-            !!!
             <table class="inner-table">
                 <tr class="top-row">
                     <td :colspan="ctg_bottom_count">
@@ -57,7 +56,6 @@
             </table>
         </div>
     </div>
-
 </template>
 
 <style scoped lang="less">
@@ -145,6 +143,7 @@
     }
 </style>
 <script>
+
 import state from './store/currentStates';
 import ajax from './helpers/ajax.js';
 import _ from 'lodash';
@@ -164,10 +163,6 @@ export default {
         showTabletView: function () {
             let res = _.filter(this.ctgs, function(o){return o.breakfast !== '0' || o.lanhc !== '0'});
             return !(res.length > 0);
-        },
-
-        countOfMainDish(){
-            return this.getCurrentMainDish().length;
         },
 
         tabView: function () {
@@ -228,7 +223,7 @@ export default {
         },
 
         middlewareTest(resp){
-            const debug = true;
+            const debug = false;
             const checkBreakfastAndLunch = false;
             const checkNoMainPosition = !checkBreakfastAndLunch;
             let retTestData =  resp.data;
@@ -237,9 +232,6 @@ export default {
             }
             else {
                 console.log('Проводим изменения полученных данных для тестирования');
-            }
-            for (let i = 0; i< retTestData.length; i++){
-                console.log(retTestData[i].activeTime + ' ::: ' + retTestData[i].lanhc  + ' ::: ' + retTestData[i].breakfast + ' :::: ' + retTestData[i].code);
             }
 
             if (debug && checkBreakfastAndLunch){
@@ -290,11 +282,5 @@ export default {
         }, 35000);
     }
 }
-
-
-
-
-
-
 
 </script>
