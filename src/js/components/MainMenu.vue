@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="main-menu" v-if="!count_of_main">
+        <div class="main-menu" v-if="count_of_main">
             <ul class="root-icons">
                 <li class="root-icon" v-for="item in tabView">
                     <router-link :to="item.route">
@@ -161,7 +161,8 @@ export default {
     computed: {
         count_of_main: function () {
             let res = _.filter(this.ctgs, {activeTime: '1'});
-            return res.length > 0;
+            console.log(!(res.length > 0));
+            return true;
         },
 
         countOfMainDish(){
@@ -174,29 +175,22 @@ export default {
                 item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
                 return item;
             });
+            console.log('Текущее');
+            console.log(res);
+
             return res;
         },
         mainDish: function() {
             return this.getCurrentMainDish()[0];
         },
 
-        mainView: function () {
-            console.log('Большой патч:');
-            console.log(this.getCurrentMainDish()[0]);
-
-        },
-
         ctgs_bottom: function () {
             let mainDish = this.getCurrentMainDish()[0];
-            console.log('Текущеее основное блюдо:');
-            console.log(mainDish.code);
             let res = this.ctgs.map(function (item) {
                 item.route = 'menu/' + item.code;
                 return item;
             });
             res = _.filter(res, function(item){return item.code !== mainDish.code});
-            console.log('патчи внизу:');
-            console.log(res);
             return res;
         },
 
@@ -229,53 +223,17 @@ export default {
             }
             return result;
         },
-        getCurrentMainDish2() {
-            let listOfTitlePatches =  ['472020', '482020'];
-            let result = [];
-            let tmpBigPatch = {};
-            var res = [];
-            var bigPatches = [];
-            var res = this.ctgs.map(function (item) {
-                if (item.activeTime && item.activeTime === '1') {
-                    item.route = 'menu/' + item.code;
-                    return item;
-                }
-            });
-            var ret = _.remove(res, function (item) {
-                return item !== undefined;
-            });
-
-            listOfTitlePatches.forEach(function(item, ){
-                tmpBigPatch = _.find(ret, {code: item, activeTime: '1'});
-                    if (tmpBigPatch !== undefined) {
-                        bigPatches.push(tmpBigPatch);
-                    }
-                }
-            );
-
-            console.log('Большой патч!!!!');
-            console.log(bigPatches);
-            if (bigPatches.length > 0){
-                result.push(bigPatches[0]);
-            }
-            return result;
-        },
 
         getImageSrc(item){
             return state.settings.server + state.settings.urlBigImage + item.urlSmallImage;
         },
-        getImageSrcBig(item){
-            return state.settings.server + state.settings.urlBigImage + item.urlBigImage;
-        },
+
         getResponce(){
             var self = this;
             const operation = {};
-            console.log('тест');
-            console.log(operation);
             operation.name = 'categories';
             ajax.exec(operation, function (resp) {
                 self.ctgs = resp.data;
-                //_.find(self.ctgs, {code: '472020'}).activeTime = '1';
                 state.appState.MenuPoints = self.ctgs;
             });
         }
