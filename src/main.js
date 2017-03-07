@@ -79,15 +79,19 @@ let updateInterval = setInterval(function(){
 
 
 (function(){
-    let no_active_delay = 300;
+    console.log(router);
+    let no_active_delay = 100;
     let now_no_active = 0;
     let interval = setInterval(function () {
-        if (router.currentRoute.name === 'menu' || router.currentRoute.name === 'shedule') {
+        if (router.currentRoute.name === 'menu'
+            || router.currentRoute.name === 'shedule'
+            || router.currentRoute.name === 'plainmenu'){
             now_no_active++;
         }
         if (now_no_active >= 100) {
             now_no_active = no_active_delay + 1;
         }
+
     }, 1000);
 
     setInterval(function () {

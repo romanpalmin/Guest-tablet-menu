@@ -20,13 +20,13 @@
                 <tr class="top-row">
                     <td :colspan="ctg_bottom_count">
                         <template>
-                            <div class="img-wrapper" v-for="item in mainView">
-                                <router-link :to="item.route">
+                            <div class="img-wrapper">
+                                <router-link :to="mainDish.route">
                                     <a>
                                         <div class="root-icon-image-bottom">
-                                            <img :src="getImageSrcBig(item)">
+                                            <img :src="mainDish.img">
                                             <div class="root-icon-descr">
-                                                {{ item.name }}
+                                                {{ mainDish.name }}
                                             </div>
                                         </div>
                                     </a>
@@ -164,6 +164,10 @@ export default {
             return res.length > 0;
         },
 
+        countOfMainDish(){
+            return this.getCurrentMainDish().length;
+        },
+
         tabView: function () {
             let res = this.ctgs.map(function (item) {
                 item.route = 'menu/' + item.code;
@@ -172,10 +176,65 @@ export default {
             });
             return res;
         },
+        mainDish: function() {
+            return this.getCurrentMainDish()[0];
+        },
 
         mainView: function () {
+            console.log('Большой патч:');
+            console.log(this.getCurrentMainDish()[0]);
+
+        },
+
+        ctgs_bottom: function () {
+            let mainDish = this.getCurrentMainDish()[0];
+            console.log('Текущеее основное блюдо:');
+            console.log(mainDish.code);
+            let res = this.ctgs.map(function (item) {
+                item.route = 'menu/' + item.code;
+                return item;
+            });
+            res = _.filter(res, function(item){return item.code !== mainDish.code});
+            console.log('патчи внизу:');
+            console.log(res);
+            return res;
+        },
+
+        ctg_bottom_count: function () {
+            let res = _.without(this.ctgs, this.getCurrentMainDish()[0]);
+            console.log(res);
+            return res.length;
+        }
+    },
+
+    methods: {
+        getCurrentMainDish() {
+            let listOfTitlePatches =  ['472020', '482020'];
             let result = [];
+            let tmpBigPatch = {};
+            let self = this;
+            let bigPatches = [];
+
+            listOfTitlePatches.forEach(function(item){
+                tmpBigPatch = _.find(self.ctgs, {code: item, activeTime: '1'});
+                    if (tmpBigPatch !== undefined) {
+                        bigPatches.push(tmpBigPatch);
+                    }
+                }
+            );
+            if (bigPatches.length > 0){
+                bigPatches[0].route = 'menu/' + bigPatches[0].code;
+                bigPatches[0].img = state.settings.server + state.settings.urlBigImage + bigPatches[0].urlBigImage;
+                result.push(bigPatches[0]);
+            }
+            return result;
+        },
+        getCurrentMainDish2() {
+            let listOfTitlePatches =  ['472020', '482020'];
+            let result = [];
+            let tmpBigPatch = {};
             var res = [];
+            var bigPatches = [];
             var res = this.ctgs.map(function (item) {
                 if (item.activeTime && item.activeTime === '1') {
                     item.route = 'menu/' + item.code;
@@ -185,27 +244,23 @@ export default {
             var ret = _.remove(res, function (item) {
                 return item !== undefined;
             });
-            result.push(ret[0])
+
+            listOfTitlePatches.forEach(function(item, ){
+                tmpBigPatch = _.find(ret, {code: item, activeTime: '1'});
+                    if (tmpBigPatch !== undefined) {
+                        bigPatches.push(tmpBigPatch);
+                    }
+                }
+            );
+
+            console.log('Большой патч!!!!');
+            console.log(bigPatches);
+            if (bigPatches.length > 0){
+                result.push(bigPatches[0]);
+            }
             return result;
         },
 
-        ctgs_bottom: function () {
-            var res = this.ctgs.map(function (item) {
-                item.route = 'menu/' + item.code;
-                return item;
-            });
-
-            res = _.without(res, _.find(res, {activeTime: '1'}));
-            return res;
-        },
-
-        ctg_bottom_count: function () {
-            let res = _.without(this.ctgs, _.find(this.ctgs, {activeTime: '1'}));
-            return res.length;
-        }
-    },
-
-    methods: {
         getImageSrc(item){
             return state.settings.server + state.settings.urlBigImage + item.urlSmallImage;
         },
@@ -215,10 +270,12 @@ export default {
         getResponce(){
             var self = this;
             const operation = {};
+            console.log('тест');
+            console.log(operation);
             operation.name = 'categories';
             ajax.exec(operation, function (resp) {
                 self.ctgs = resp.data;
-                _.find(self.ctgs, {code: '482020'}).activeTime = '1';
+                //_.find(self.ctgs, {code: '472020'}).activeTime = '1';
                 state.appState.MenuPoints = self.ctgs;
             });
         }
@@ -245,6 +302,10 @@ export default {
         }, 15000);
     }
 }
+
+
+
+
 
 
 

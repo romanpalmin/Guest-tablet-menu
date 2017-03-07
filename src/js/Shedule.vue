@@ -3,7 +3,7 @@
         <div class="watch-container">
             <div class="watch-content" v-for="dayItem in fixedShedule">
                 <div class="day-date">{{ dayItem.daydate }}</div>
-                <div class="day-descr">{{ dayItem.daydescr }}</div>
+                <div class="day-descr">{{ dayItem.daydescr | deleteQuotes}}</div>
                 <div class="day-content" v-for="contentItem in dayItem.daycontent">
                     <div class="event-header">
                         <div class="event-time">
@@ -12,7 +12,7 @@
                         <div class="event-type">{{ contentItem.event.eventtype }}</div>
                     </div>
                     <div class="event-descr-row">
-                        <div class="event-descr-cell">{{ contentItem.event.description }}</div>
+                        <div class="event-descr-cell">{{ contentItem.event.description | deleteQuotes}}</div>
                     </div>
                 </div>
             </div>
@@ -120,6 +120,13 @@
                 });
             }
         },
+        filters:{
+                deleteQuotes: function (value) {
+                  if (!value) return '';
+                  value = value.toString();
+                  return value.replace(/&quot/g, '"');
+                }
+         },
 
         mounted() {
             this.getShow();
