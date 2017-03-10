@@ -150,22 +150,31 @@ import _ from 'lodash';
 export default {
     data(){
         return {
-            ctgs: state.appState.MenuPoints
+            ctgs: []
         }
     },
 
     watch: {
         ctgs: function (val) {
+            console.log('Данные изменились, перерисовываем');
         }
 
     },
     computed: {
         showTabletView: function () {
-            let res = _.filter(this.ctgs, function(o){return o.breakfast !== '0' || o.lanhc !== '0'});
-            return !(res.length > 0);
+            let notActive = _.filter(this.ctgs, {activeTime: '0'});
+            console.log(notActive);
+            console.log(notActive.length);
+            console.log(this.ctgs);
+            console.log('что то');
+            console.log(this.ctgs.length);
+
+            return !(this.ctgs.length > 0);
+
         },
 
         tabView: function () {
+        console.log('Перерисовываем, если нужно, в виде таблицы');
             let res = this.ctgs.map(function (item) {
                 item.route = 'menu/' + item.code;
                 item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
@@ -189,8 +198,9 @@ export default {
         },
 
         ctg_bottom_count: function () {
-            let res = _.without(this.ctgs, this.getCurrentMainDish()[0]);
-            return res.length;
+        //console.log(this.getCurrentMainDish());
+           // let res = _.without(this.ctgs, this.getCurrentMainDish()[0]);
+            return 10;//res.length;
         }
     },
 
@@ -200,8 +210,11 @@ export default {
              if (res.length > 0) {
                 res[0].route = 'menu/' + res[0].code;
                 res[0].img = state.settings.server + state.settings.urlBigImage + res[0].urlBigImage;
+                return res[0];
              }
-             return res[0];
+             else {
+                return this.ctgs;
+             }
         },
 
         getImageSrc(item){
@@ -213,6 +226,7 @@ export default {
         },
 
         getResponce(){
+            console.log(777);
             var self = this;
             const operation = {};
             operation.name = 'categories';
@@ -223,7 +237,7 @@ export default {
         },
 
         middlewareTest(resp){
-            const debug = false;
+            const debug = true;
             const checkBreakfastAndLunch = false;
             const checkNoMainPosition = !checkBreakfastAndLunch;
             let retTestData =  resp.data;
@@ -266,16 +280,28 @@ export default {
         }
     },
 
-    mounted(){
-        const self = this;
-        let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
-        console.log(title);
+    beforeMount(){
+        console.log('Начало работы2 - Заполняем массив');
+        console.log(this.ctgs);
 
         if (state.appState.MenuPoints.length > 0) {
             self.ctgs = state.appState.MenuPoints;
         } else {
             this.getResponce();
+            console.log(this.ctgs);
         }
+
+    },
+
+    created(){
+        console.log('Заполняем массив');
+    },
+
+    mounted(){
+        console.log(666666);
+        const self = this;
+        let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
+        console.log(title);
 
         let upTimer = setInterval(function () {
             self.getResponce();
