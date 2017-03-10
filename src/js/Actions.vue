@@ -1,6 +1,6 @@
 <template>
     <div class="content" @click="gotoMenu">
-        <iframe src="http://10.10.182.11/ept/menu/menutitle/" frameborder="0" marginwidth="0" marginheight="0"  class="myframe" allowtransparency="false" @click="GoToMenu"></iframe>
+        <iframe src="http://10.10.182.11/ept/menu/menutitle2/" frameborder="0" marginwidth="0" marginheight="0"  class="myframe" allowtransparency="false" @click="GoToMenu"></iframe>
         <div class="modal" @click="GoToMenu"></div>
     </div>
 

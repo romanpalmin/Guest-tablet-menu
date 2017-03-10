@@ -155,7 +155,7 @@ export default {
             ctgs: [],
             showTabletView: true,
             mainPosition: {},
-            isDebug:true
+            isDebug:false
         }
     },
 
@@ -253,7 +253,7 @@ export default {
         }
 
         let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
-        console.log(title);
+        //console.log(title);
 
         let upTimer = setInterval(function () {
              self.getData();

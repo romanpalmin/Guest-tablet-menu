@@ -87,9 +87,6 @@ let updateInterval = setInterval(function(){
             || router.currentRoute.name === 'plainmenu'){
             now_no_active++;
         }
-        if (now_no_active >= 100) {
-            now_no_active = no_active_delay + 1;
-        }
 
     }, 1000);
 
