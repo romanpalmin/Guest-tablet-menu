@@ -16,8 +16,6 @@
             </ul>
         </div>
         <div v-else class="main-table">
-            <br />
-            <button @click="testButton">Изменить</button>
             <table class="inner-table">
                 <tr class="top-row">
                     <td colspan=9>
@@ -149,19 +147,20 @@
 
 import state from './store/currentStates';
 import ajax from './helpers/ajax.js';
+import axios from 'axios';
 import _ from 'lodash';
 export default {
     data(){
         return {
             ctgs: [],
             showTabletView: true,
-            mainPosition: {}
+            mainPosition: {},
+            isDebug:true
         }
     },
 
     watch:{
         ctgs: function(){
-            console.log('Изменились исходные данные');
             this.showTabletView = this.defineView();
             if (!this.showTabletView){
                 this.mainPosition = this.populateMainPosition();
@@ -171,7 +170,6 @@ export default {
 
     computed: {
         tabView: function () {
-
             let res = this.ctgs.map(function (item) {
                 item.route = 'menu/' + item.code;
                 item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
@@ -201,11 +199,27 @@ export default {
                 state.appState.MenuPoints = self.ctgs;
             });
         },
-
-        testButton(){
-            this.showTabletView = true;
+        getJsonCtgs(){
+            var self = this;
+            const operation = {};
+            this.axios.get('./ctgs.js')
+                .then(function (response) {
+                   self.ctgs = response.data;
+                   state.appState.MenuPoints = self.ctgs;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
 
+        getData(){
+            if (this.isDebug){
+                this.getJsonCtgs();
+            }
+            else {
+                this.getResponce();
+            }
+        },
 
         defineView(){
             let notActive = _.filter(this.ctgs, {activeTime: '0'});
@@ -215,7 +229,7 @@ export default {
         populateMainPosition(){
             let ret = {};
             ret = _.filter(this.ctgs, function(o){return o.activeTime === '1' && (o.breakfast === '1' || o.lanhc === '1')});
-             if (ret.length === 1) {
+             if (ret.length > 0) {
                 ret[0].route = 'menu/' + ret[0].code;
                 ret[0].img = state.settings.server + state.settings.urlBigImage + ret[0].urlBigImage;
                 return ret[0];
@@ -235,14 +249,14 @@ export default {
         if (state.appState.MenuPoints.length > 0) {
             self.ctgs = state.appState.MenuPoints;
         } else {
-            this.getResponce();
+           this.getData();
         }
 
         let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
         console.log(title);
 
         let upTimer = setInterval(function () {
-            self.getResponce();
+             self.getData();
         }, 15000);
     }
 }
