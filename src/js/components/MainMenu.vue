@@ -16,17 +16,19 @@
             </ul>
         </div>
         <div v-else class="main-table">
+            <br />
+            <button @click="testButton">Изменить</button>
             <table class="inner-table">
                 <tr class="top-row">
-                    <td :colspan="ctg_bottom_count">
+                    <td colspan=9>
                         <template>
                             <div class="img-wrapper">
-                                <router-link :to="mainDish.route">
+                                <router-link :to="mainPosition.route">
                                     <a>
                                         <div class="root-icon-image-bottom">
-                                            <img :src="mainDish.img">
+                                            <img :src="mainPosition.img">
                                             <div class="root-icon-descr">
-                                                {{ mainDish.name }}
+                                                {{ mainPosition.name }}
                                             </div>
                                         </div>
                                     </a>
@@ -55,6 +57,7 @@
                 </tr>
             </table>
         </div>
+
     </div>
 </template>
 
@@ -67,6 +70,7 @@
             }
         }
     }
+
     .main-menu {
         margin-left: 35px;
 
@@ -139,7 +143,6 @@
             vertical-align: middle;
         }
 
-
     }
 </style>
 <script>
@@ -150,31 +153,25 @@ import _ from 'lodash';
 export default {
     data(){
         return {
-            ctgs: []
+            ctgs: [],
+            showTabletView: true,
+            mainPosition: {}
         }
     },
 
-    watch: {
-        ctgs: function (val) {
-            console.log('Данные изменились, перерисовываем');
+    watch:{
+        ctgs: function(){
+            console.log('Изменились исходные данные');
+            this.showTabletView = this.defineView();
+            if (!this.showTabletView){
+                this.mainPosition = this.populateMainPosition();
+            }
         }
-
     },
+
     computed: {
-        showTabletView: function () {
-            let notActive = _.filter(this.ctgs, {activeTime: '0'});
-            console.log(notActive);
-            console.log(notActive.length);
-            console.log(this.ctgs);
-            console.log('что то');
-            console.log(this.ctgs.length);
-
-            return !(this.ctgs.length > 0);
-
-        },
-
         tabView: function () {
-        console.log('Перерисовываем, если нужно, в виде таблицы');
+
             let res = this.ctgs.map(function (item) {
                 item.route = 'menu/' + item.code;
                 item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
@@ -182,13 +179,9 @@ export default {
             });
             return res;
         },
-        mainDish: function() {
-            let md =  this.getCurrentMainDish();
-            return md;
-        },
 
         ctgs_bottom: function () {
-            let mainDish = this.getCurrentMainDish();
+            let mainDish = this.populateMainPosition();
             let res = this.ctgs.map(function (item) {
                 item.route = 'menu/' + item.code;
                 return item;
@@ -196,27 +189,38 @@ export default {
             res = _.filter(res, function(item){return item.code !== mainDish.code});
             return res;
         },
-
-        ctg_bottom_count: function () {
-        //console.log(this.getCurrentMainDish());
-           // let res = _.without(this.ctgs, this.getCurrentMainDish()[0]);
-            return 10;//res.length;
-        }
     },
 
     methods: {
-        getCurrentMainDish() {
-             let res = _.filter(this.ctgs, function(o){return o.activeTime === '1' && (o.breakfast === '1' || o.lanhc === '1')});
-             if (res.length > 0) {
-                res[0].route = 'menu/' + res[0].code;
-                res[0].img = state.settings.server + state.settings.urlBigImage + res[0].urlBigImage;
-                return res[0];
-             }
-             else {
-                return this.ctgs;
-             }
+        getResponce(){
+            var self = this;
+            const operation = {};
+            operation.name = 'categories';
+            ajax.exec(operation, function (resp) {
+                self.ctgs = resp.data;
+                state.appState.MenuPoints = self.ctgs;
+            });
         },
 
+        testButton(){
+            this.showTabletView = true;
+        },
+
+
+        defineView(){
+            let notActive = _.filter(this.ctgs, {activeTime: '0'});
+            return (notActive.length === 2);
+        },
+
+        populateMainPosition(){
+            let ret = {};
+            ret = _.filter(this.ctgs, function(o){return o.activeTime === '1' && (o.breakfast === '1' || o.lanhc === '1')});
+             if (ret.length === 1) {
+                ret[0].route = 'menu/' + ret[0].code;
+                ret[0].img = state.settings.server + state.settings.urlBigImage + ret[0].urlBigImage;
+                return ret[0];
+             }
+        },
         getImageSrc(item){
             return state.settings.server + state.settings.urlBigImage + item.urlSmallImage;
         },
@@ -224,89 +228,24 @@ export default {
         getImageSrcBig(item){
             return state.settings.server + state.settings.urlBigImage + item.urlBigImage;
         },
-
-        getResponce(){
-            console.log(777);
-            var self = this;
-            const operation = {};
-            operation.name = 'categories';
-            ajax.exec(operation, function (resp) {
-                self.ctgs = self.middlewareTest(resp);
-                state.appState.MenuPoints = self.ctgs;
-            });
-        },
-
-        middlewareTest(resp){
-            const debug = true;
-            const checkBreakfastAndLunch = false;
-            const checkNoMainPosition = !checkBreakfastAndLunch;
-            let retTestData =  resp.data;
-            if (!debug){
-                return retTestData;
-            }
-            else {
-                console.log('Проводим изменения полученных данных для тестирования');
-            }
-
-            if (debug && checkBreakfastAndLunch){
-                for (let i = 0; i< retTestData.length; i++){
-                    if (retTestData[i].code === '472020') {
-                        retTestData[i].activeTime = '1';
-                        retTestData[i].lanhc = '0';
-                        retTestData[i].breakfast = '1';
-                    }
-                    if (retTestData[i].code === '482020') {
-                        retTestData[i].activeTime = '0';
-                        retTestData[i].lanhc = '0';
-                        retTestData[i].breakfast = '1';
-                    }
-                    if (i === retTestData.length - 1){
-                        return retTestData;
-                    }
-                }
-            }
-            if (debug && checkNoMainPosition){
-                for (let i = 0; i< retTestData.length; i++){
-                    if (retTestData[i].code === '472020' || retTestData[i].code === '482020') {
-                        retTestData[i].activeTime = '0';
-                        retTestData[i].lanhc = '0';
-                        retTestData[i].breakfast = '0';
-                    }
-                     if (i === retTestData.length - 1){
-                        return retTestData;
-                    }
-                }
-            }
-        }
     },
 
-    beforeMount(){
-        console.log('Начало работы2 - Заполняем массив');
-        console.log(this.ctgs);
-
+    mounted(){
+        const self = this;
         if (state.appState.MenuPoints.length > 0) {
             self.ctgs = state.appState.MenuPoints;
         } else {
             this.getResponce();
-            console.log(this.ctgs);
         }
 
-    },
-
-    created(){
-        console.log('Заполняем массив');
-    },
-
-    mounted(){
-        console.log(666666);
-        const self = this;
         let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
         console.log(title);
 
         let upTimer = setInterval(function () {
             self.getResponce();
-        }, 35000);
+        }, 15000);
     }
 }
+
 
 </script>
