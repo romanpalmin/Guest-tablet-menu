@@ -13,18 +13,13 @@
                         <template v-for="item in unionStrings">
                             <tr class="table-row">
                                 <td class="table-cell col1">
-                                    <div class="btn-plus_minus minus" @click="minus(item.code)">-</div>
+                                    <div class="btn-plus_minus minus" :style="addingToCartStyle"
+                                         @click="minus(item.code)">-
+                                    </div>
                                     {{item.stroka.length}}
-                                    <template v-if="isAdding && isInArray(item.code)">
-                                        <div class="btn-plus_minus plus" :style="addingToCartStyle" :data-code="item.code"
-                                             @click="setCurrentPressedPlus" @click="plus(item.code)">+
-                                        </div>
-                                    </template>
-                                    <template v-else>
-                                        <div class="btn-plus_minus plus" :data-code="item.code"
-                                             @click="setCurrentPressedPlus" @click="plus(item.code)">+
-                                        </div>
-                                    </template>
+                                    <div class="btn-plus_minus plus" :style="addingToCartStyle" :data-code="item.code"
+                                         @click="setCurrentPressedPlus" @click="plus(item.code)">+
+                                    </div>
                                 </td>
                                 <td class="table-cell col2">{{item.name | deleteQuotes}}</td>
                                 <td class="table-cell col3">
@@ -271,7 +266,6 @@
                                     self.positions = response.data;
                                     self.isAdding = false;
                                     let idx = self.currentPressedKey.indexOf(id);
-                                    console.log('Index: ' + idx);
                                     self.currentPressedKey.splice(idx, 1);
                             })
                         }
@@ -283,6 +277,7 @@
             },
 
             minus: function(id){
+                if (this.isAdding) return;
                 let positionsCodesArray = _.find(this.positions, {code:id});
                 if (positionsCodesArray.length === 0){
                     return 0;
@@ -337,6 +332,7 @@
             this.getJson();
         }
 }
+
 
 
 </script>
