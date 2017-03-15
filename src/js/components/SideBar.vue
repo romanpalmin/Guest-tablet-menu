@@ -85,7 +85,7 @@
                 width: 100%;
                 padding-left: 10%;
                 padding-right: 10%;
-                padding-top: 60px;
+                padding-top: 20px;
             }
         }
 

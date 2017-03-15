@@ -60,6 +60,11 @@
 </template>
 
 <style scoped lang="less">
+    .frame{
+        width:600px;
+        height: 500px;
+    }
+
     .current-cell {
         .img-wrapper {
             width: 200px;
