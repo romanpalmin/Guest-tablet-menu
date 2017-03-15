@@ -3,8 +3,6 @@
         <div class="container">
             <div class="content" id="content">
                 <div class="header-title">Вы выбрали:</div>
-                <button @click="showState">Показать текущее состояние</button>
-                <button @click="showArr">Показать текущее состояние массива</button>
                 <div class="overflow-content">
                     <table class="main-table">
                         <tr class="table-row">
