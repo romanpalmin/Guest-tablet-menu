@@ -24,7 +24,7 @@
                                 <router-link :to="mainPosition.route">
                                     <a>
                                         <div class="root-icon-image-bottom">
-                                            <img :src="mainPosition.img">
+                                            <iframe class='frame' src="http://10.10.182.11/ept/svg/1.html" frameborder="0" marginwidth="0" marginheight="0"  allowtransparency="false"></iframe>
                                             <div class="root-icon-descr">
                                                 {{ mainPosition.name }}
                                             </div>
