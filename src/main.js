@@ -47,19 +47,14 @@ var router = new VueRouter({
     linkActiveClass: 'menu__link--current'
 });
 router.replace('/ru/menu');
-/*
- row.client = item[index].client;
- row.code = item[index].code;
- row.name = item[index].name;
- row.stroka = strArray;
- res.push(row);
- */
+
 const app = new Vue({
     router,
     template: `
     <div id="app-menu">
     <div class="header">
         <nav class="pages-nav">
+            <div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
@@ -75,39 +70,4 @@ const app = new Vue({
 let updateInterval = setInterval(function(){
     //upState();
 }, state.settings.updateStatePeriod);
-
-
-
-(function(){
-    let no_active_delay = 300;
-    let now_no_active = 0;
-    let interval = setInterval(function () {
-        if (router.currentRoute.name === 'menu'
-            || router.currentRoute.name === 'shedule'
-            || router.currentRoute.name === 'plainmenu'){
-            now_no_active++;
-        }
-
-    }, 1000);
-
-    setInterval(function () {
-        checkForActivity()
-    }, 1000);
-
-
-    document.onmouseclick = UserActions;
-    document.onmousemove = UserActions;
-
-    function UserActions() {
-        now_no_active = 0;
-    }
-    function checkForActivity() {
-        if (now_no_active >= no_active_delay) {
-            now_no_active = 0;
-            //router.replace('/ru/actions');
-        }
-    }
-})();
-
-
 

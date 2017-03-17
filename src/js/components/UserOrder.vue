@@ -234,15 +234,11 @@
             },
 
             isInArray: function(id){
-                console.log(this.currentPressedKey);
-                console.log(id);
                 for (let i = 0; i< this.currentPressedKey.length; i++){
                     if (this.currentPressedKey[i] === id){
-                        console.log('bingo')
                         return true;
                     }
                 }
-                console.log('ooops')
                 return false;
             },
 

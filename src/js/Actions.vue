@@ -1,21 +1,11 @@
 <template>
     <div class="content" @click="gotoMenu">
-        <iframe src="http://10.10.182.11/ept/menu/menutitle2/" frameborder="0" marginwidth="0" marginheight="0"  class="myframe" allowtransparency="false" @click="GoToMenu"></iframe>
-        <div class="modal" @click="GoToMenu"></div>
+        <iframe :src="anketaUrl" frameborder="0" marginwidth="0" marginheight="0"  class="myframe" allowtransparency="false" ></iframe>
     </div>
 
 </template>
 <style scoped lang="less">
     .content{
-        .modal{
-            width:100%;
-            height:100vh;
-            display: block;
-            z-index: 9999;
-            position: fixed;
-            top:0;
-            left:0;
-        }
 
         width: 100%;
         height:100%;
@@ -28,20 +18,21 @@
             height:100vh;
             overflow: hidden;
             transform: scale(0.98);
+            margin-top: 65px;
+            margin-left: -30px;
         }
     }
 </style>
 <script>
+import state from './components/store/currentStates';
     export default{
         data(){
             return{
                 msg:'Стрит фуд бар'
             }
         },
-        methods:{
-            gotoMenu: function(){
-                this.$router.replace('/ru/menu');
-            }
+        computed: {
+            anketaUrl: function(){ return 'http://tab01:01@10.10.182.11' + '/menu/hs/ank1/display';}
         }
     }
 

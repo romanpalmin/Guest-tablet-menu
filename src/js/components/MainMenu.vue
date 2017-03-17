@@ -76,12 +76,13 @@
 
     .main-menu {
         margin-left: 35px;
+        margin-top: 55px;
 
         .root-icon-descr {
             color: #FFFFFF;
             position: relative;
             height: 35px;
-            top: 280px;
+            top: 200px;
             text-align: center;
             padding-top: 5px;
         }
@@ -92,8 +93,8 @@
 
         .root-icon-image {
             background-size: cover;
-            width: 280px;
-            height: 280px;
+            width: 200px;
+            height: 200px;
         }
 
         .root-icons {
@@ -105,11 +106,11 @@
 
         .root-icon {
             display: inline-block;
-            width: 280px;
+            width: 200px;
             height: 315px;
-            margin-top: 35px;
-            margin-right: 35px;
-            margin-left: 35px;
+            margin-top: 20px;
+            margin-right: 20px;
+            margin-left: 20px;
         }
 
         a {
@@ -160,13 +161,16 @@ export default {
             ctgs: [],
             showTabletView: true,
             mainPosition: {},
-            isDebug:false
+            isDebug:false,
+            isTablet: state.settings.isTablet
         }
     },
 
     watch:{
         ctgs: function(){
-            this.showTabletView = this.defineView();
+            if(!this.isTablet){
+                this.showTabletView = this.defineView();
+            }
             if (!this.showTabletView){
                 this.mainPosition = this.populateMainPosition();
             }

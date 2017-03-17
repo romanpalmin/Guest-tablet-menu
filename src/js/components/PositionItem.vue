@@ -25,7 +25,7 @@
     .content-item-container {
         width: 100%;
         height: 100%;
-        top: 58px;
+        top: 56px;
         left: 0;
         display: block;
         z-index: 999;
@@ -167,11 +167,15 @@
                 yacheikaFromParent: function () { return this.yacheika },
                 addingToCartTitle : function(){ return this.IsAddingToCart ? 'Добавление' : 'Выбрать';},
                 addingToCartStyle: function() { return this.IsAddingToCart ? "background:#dbdbd7" : '';},
-                showButtons: function(){return state.settings.showButtons;}
-
+                showButtons: function(){
+                    console.log(state.settings.showButtons);
+                    console.log(this.activeTime);
+                    console.log(state.settings.showButtons && this.activeTime);
+                    return state.settings.showButtons && this.activeTime
+                }
             },
 
-            props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika'],
+            props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika', 'activeTime'],
 
             methods:{
                 add2cart: function(id){

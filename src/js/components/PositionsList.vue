@@ -114,6 +114,7 @@
                       :name="name"
                       :description="description"
                       :yacheika="yacheika"
+                      :activeTime="activeTime"
             />
         </div>
     </div>
@@ -299,7 +300,8 @@
                     name:'',
                     description:'',
                     yacheika:'',
-                    currentId: this.$route.params.id
+                    currentId: this.$route.params.id,
+                    activeTime: ''
                 }
         },
         props: ["categoryId"],
@@ -348,6 +350,8 @@
                this.description = item.description,
                this.yacheika = item.yacheika
                this.showDetails = true;
+               console.log('item.activeTime = ' + item.activeTime);
+               this.activeTime = item.activeTime === '1';
            },
 
             getJson: function (catId) {
