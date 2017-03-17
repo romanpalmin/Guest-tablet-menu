@@ -307,10 +307,10 @@
                 ajax.exec(operation);
             },
 
-            getJson: function(){
+            getJson: function(isUpdate){
                 const self = this;
                 const operation = {};
-                if (orderState.currentState.length === 0){
+                if (orderState.currentState.length === 0 || isUpdate){
                     operation.name = 'order';
                     ajax.exec(operation, function(response){
                         self.positions = response.data;
@@ -323,9 +323,13 @@
 
         },
         mounted(){
+            const self = this;
             this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
             this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
             this.getJson();
+            let upTimer = setInterval(function () {
+                self.getJson(true);
+            }, state.settings.updateOrderFrequency);
         }
 }
 

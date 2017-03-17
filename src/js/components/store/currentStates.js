@@ -15,7 +15,8 @@ export default {
         testMode:false,
         isTablet: true,
         showButtons: true,
-        updateStatePeriod: 1000*60*5  // время обновления меню секунда * кол-во секунд * кол-во минут
+        updateStatePeriod: 1000*60*5,  // время обновления меню секунда * кол-во секунд * кол-во минут
+        updateOrderFrequency: 1000*15 // время обновления состояния корзины
     },
     appState:{
         MenuPoints:[],
