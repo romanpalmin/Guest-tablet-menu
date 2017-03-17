@@ -1,8 +1,8 @@
 export default {
     settings:{
-        server:'http://scr01:01@10.10.250.93/',
-        ip: '10.10.250.93',
-        userName: 'scr01',
+        server:'http://tab01:01@10.100.50.248/',
+        ip: '10.100.50.248',
+        userName: 'tab01',
         password:'01',
        /* server:'http://10.10.182.11/',*/
         urlSmallImage:'img/',

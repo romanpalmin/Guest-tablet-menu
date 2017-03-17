@@ -60,7 +60,6 @@ const app = new Vue({
     <div id="app-menu">
     <div class="header">
         <nav class="pages-nav">
-            <div class="pages-nav__item "><router-link to="/ru/actions" class="link-page link">Акции</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
           
@@ -104,7 +103,7 @@ let updateInterval = setInterval(function(){
     function checkForActivity() {
         if (now_no_active >= no_active_delay) {
             now_no_active = 0;
-            router.replace('/ru/actions');
+            //router.replace('/ru/actions');
         }
     }
 })();

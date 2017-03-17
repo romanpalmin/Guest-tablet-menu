@@ -25,6 +25,7 @@
                                     <a>
                                         <div class="root-icon-image-bottom">
                                             <img :src="mainPosition.img">
+                                            <div id="svg"></div>
                                             <div class="root-icon-descr">
                                                 {{ mainPosition.name }}
                                             </div>
@@ -149,13 +150,22 @@ import state from './store/currentStates';
 import ajax from './helpers/ajax.js';
 import axios from 'axios';
 import _ from 'lodash';
+require ('../vendor/snap.svg-min.js');
+require ('../vendor/SnapSVGAnimator.min.js');
 export default {
     data(){
         return {
             ctgs: [],
             showTabletView: true,
             mainPosition: {},
-            isDebug:false
+            isDebug:true,
+            svg: {
+                jsonfile : '',
+                fps : 24,
+                width : 200,
+                height : 200,
+                AJAX_req : ''
+            }
         }
     },
 
@@ -206,6 +216,7 @@ export default {
                 .then(function (response) {
                    self.ctgs = response.data;
                    state.appState.MenuPoints = self.ctgs;
+                   console.log(self.ctgs[9])
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -242,6 +253,35 @@ export default {
         getImageSrcBig(item){
             return state.settings.server + state.settings.urlBigImage + item.urlBigImage;
         },
+
+        handle_AJAX_Complete() {
+            if( AJAX_req.readyState == 4 && AJAX_req.status == 200 )
+            {
+                json = JSON.parse(AJAX_req.responseText);
+                var container = document.getElementById("svg");
+                comp = new SVGAnim(
+                               this.svg.json,
+                               this.svg.width,
+                               this.svg.height,
+                               this.svg.fps
+                               );
+
+                console.log(comp.s);
+                container.appendChild(comp.s.node);
+
+            }
+        },
+
+        AJAX_JSON_Req( url )
+        {
+            this.svg.AJAX_req = new XMLHttpRequest();
+            this.svg.AJAX_req.open("GET", url, true);
+            this.svg.AJAX_req.setRequestHeader("Content-type", "application/json");
+
+            this.svg.AJAX_req.onreadystatechange = handle_AJAX_Complete;
+            this.svg.AJAX_req.send();
+        }
+
     },
 
     mounted(){

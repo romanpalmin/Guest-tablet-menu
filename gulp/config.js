@@ -37,6 +37,11 @@ module.exports = {
         src:  './*.html',
         dest: dist
     },
+
+    svg: {
+        src: './assets/svg/**/*',
+        dest: distAssets + '/svg'
+    },
     
     settings: {
         src: './assets/settings.json',
