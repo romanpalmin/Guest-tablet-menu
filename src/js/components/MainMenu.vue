@@ -24,7 +24,6 @@
                                 <router-link :to="mainPosition.route">
                                     <a>
                                         <div class="root-icon-image-bottom">
-                                            <img :src="mainPosition.img">
                                             <div id="svg"></div>
                                             <div class="root-icon-descr">
                                                 {{ mainPosition.name }}
@@ -150,8 +149,8 @@ import state from './store/currentStates';
 import ajax from './helpers/ajax.js';
 import axios from 'axios';
 import _ from 'lodash';
-require ('../vendor/snap.svg-min.js');
-require ('../vendor/SnapSVGAnimator.min.js');
+//require ('../vendor/snap.svg-min.js');
+//require ('../vendor/SnapSVGAnimator.min.js');
 export default {
     data(){
         return {
@@ -165,7 +164,9 @@ export default {
                 width : 200,
                 height : 200,
                 AJAX_req : ''
-            }
+            },
+            svgUrl: '',
+            showSvg: true
         }
     },
 
@@ -216,7 +217,6 @@ export default {
                 .then(function (response) {
                    self.ctgs = response.data;
                    state.appState.MenuPoints = self.ctgs;
-                   console.log(self.ctgs[9])
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -243,6 +243,12 @@ export default {
              if (ret.length > 0) {
                 ret[0].route = 'menu/' + ret[0].code;
                 ret[0].img = state.settings.server + state.settings.urlBigImage + ret[0].urlBigImage;
+                this.svgUrl = 'assets/svg/' + ret[0].code + '.json';
+                if (this.svgUrl !== this.svg.json) {
+                    this.showSvg = true;
+                }
+                this.svg.json = this.svgUrl;
+                this.AJAX_JSON_Req(this.svg.json);
                 return ret[0];
              }
         },
@@ -255,20 +261,25 @@ export default {
         },
 
         handle_AJAX_Complete() {
-            if( AJAX_req.readyState == 4 && AJAX_req.status == 200 )
+            if( this.svg.AJAX_req.readyState === 4 && this.svg.AJAX_req.status === 200 )
             {
-                json = JSON.parse(AJAX_req.responseText);
-                var container = document.getElementById("svg");
-                comp = new SVGAnim(
-                               this.svg.json,
+                if (this.showSvg){
+                    const json = JSON.parse(this.svg.AJAX_req.responseText);
+                    var container = document.getElementById("svg");
+                    container.innerHTML = '';
+
+                    const comp = new SVGAnim(
+                               json,
                                this.svg.width,
                                this.svg.height,
                                this.svg.fps
                                );
 
-                console.log(comp.s);
-                container.appendChild(comp.s.node);
 
+                    container.appendChild(comp.s.node);
+                    this.showSvg = false;
+                } else {
+                }
             }
         },
 
@@ -278,7 +289,7 @@ export default {
             this.svg.AJAX_req.open("GET", url, true);
             this.svg.AJAX_req.setRequestHeader("Content-type", "application/json");
 
-            this.svg.AJAX_req.onreadystatechange = handle_AJAX_Complete;
+            this.svg.AJAX_req.onreadystatechange = this.handle_AJAX_Complete;
             this.svg.AJAX_req.send();
         }
 
@@ -291,6 +302,7 @@ export default {
         } else {
            this.getData();
         }
+
 
         let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
         //console.log(title);

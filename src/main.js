@@ -94,8 +94,8 @@ let updateInterval = setInterval(function(){
     }, 1000);
 
 
-    document.onmouseclick = UserActions;
-    document.onmousemove = UserActions;
+    //document.onmouseclick = UserActions;
+    //document.onmousemove = UserActions;
 
     function UserActions() {
         now_no_active = 0;

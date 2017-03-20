@@ -2,7 +2,7 @@
 var project = '/';
 var src = './src' + project;
 var dist = './build' + project;
-var deploy = './deploy'
+var deploy = './deploy';
 var assets = 'assets';
 var srcAssets = src + assets;
 var distAssets = dist + assets;
@@ -10,8 +10,13 @@ var distAssets = dist + assets;
 
 module.exports = {
     js: {
-        src: ['./assets/js/*'],
+        src: ['./assets/js/**/*'],
         dest: distAssets+'/js'
+    },
+
+    vendor: {
+        src: [],
+        dest: distAssets+'/js/vendor'
     },
 
     css: {
