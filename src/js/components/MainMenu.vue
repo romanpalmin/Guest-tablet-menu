@@ -157,7 +157,7 @@ export default {
             ctgs: [],
             showTabletView: true,
             mainPosition: {},
-            isDebug:true,
+            isDebug:false,
             svg: {
                 jsonfile : '',
                 fps : 24,
