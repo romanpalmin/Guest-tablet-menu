@@ -1,5 +1,6 @@
 import state from '../store/currentStates';
 import axios from 'axios';
+import crypt from './encryption.js';
 
 const ip = state.settings.ip;
 const server = `${ip}/`;
@@ -53,7 +54,7 @@ function getUrl(operation){
             url = '';
             break;
     }
-    return url;
+    return url !== '' ? url + '&uuid=' + crypt('101010') : '';
 }
 
 export default {

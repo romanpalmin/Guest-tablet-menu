@@ -204,4 +204,6 @@ let updateInterval = setInterval(function () {
     // This calls onDeviceReady when Cordova has loaded everything.
     document.addEventListener('deviceready', onDeviceReady, false);
 
+
+
 })(); // End of closure.
