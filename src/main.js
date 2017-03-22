@@ -14,6 +14,7 @@ import VueAxios from 'vue-axios';
 import upState from './js/components/helpers/updateState';
 import state from './js/components/store/currentStates';
 import crypt from './js/components/helpers/encryption.js';
+import scan from './js/components/helpers/scancode.js';
 
 Vue.use(ajax);
 Vue.use(VueRouter);
@@ -207,3 +208,6 @@ let updateInterval = setInterval(function () {
 
 
 })(); // End of closure.
+
+// Сканирование QR-кода
+scan();
