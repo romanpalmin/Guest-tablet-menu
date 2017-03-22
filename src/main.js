@@ -13,11 +13,14 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import upState from './js/components/helpers/updateState';
 import state from './js/components/store/currentStates';
+import crypt from './js/components/helpers/encryption.js';
 
 Vue.use(ajax);
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
+
+//console.log(crypt('test'));
 //var uuid = device.uuid;
 //alert(uuid);
 
