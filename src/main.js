@@ -18,6 +18,9 @@ Vue.use(ajax);
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
+//var uuid = device.uuid;
+//alert(uuid);
+
 /*Vue.axios.get('settings.json')
  .then(function (response) {
  console.log(response);
@@ -42,7 +45,7 @@ const routes = [
     {name: 'test', path: '/:lang/test', component: sidebar}
 ];
 
-var router = new VueRouter({
+let router = new VueRouter({
     routes,
     linkActiveClass: 'menu__link--current'
 });
@@ -67,7 +70,135 @@ const app = new Vue({
     </div>`
 }).$mount('#app');
 
-let updateInterval = setInterval(function(){
+let updateInterval = setInterval(function () {
     //upState();
 }, state.settings.updateStatePeriod);
 
+
+/*
+(function () {
+    let url = state.settings.server + 'menu/hs/track/send/';
+    /!*axios.post(url, {
+        "data": 'BLUETOOTH=' + 'Тестовые данные'
+    })
+        .then(function (response) {
+            alert('Тестовый запрос');
+        })
+        .catch(function (error) {
+            console.log(error);
+        });*!/
+    var request = new XMLHttpRequest();
+    request.open('POST', url, true);
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    request.send('BLUETOOTH=Тестовые данные');
+})();
+*/
+
+
+// Application code starts here. The code is wrapped in a
+// function closure to prevent overwriting global objects.
+;(function () {
+    // Dictionary of devices.
+    let devices = {};
+
+    // Timer that displays list of devices.
+    let timer = null;
+
+    function onDeviceReady() {
+        // Start tracking devices!
+        setTimeout(startScan, 1000);
+
+        // Timer that refreshes the display.
+        timer = setInterval(updateDeviceList, 500);
+    }
+    function startScan() {
+        //showMessage('Scan in progress')
+        evothings.ble.startScan(
+            function (device) {
+
+                // Update device data.
+                device.timeStamp = Date.now();
+                devices[device.address] = device;
+            },
+            function (error) {
+                alert('BLE scan error: ' + error);
+            })
+    }
+
+    // Map the RSSI value to a value between 1 and 100.
+    function mapDeviceRSSI(rssi) {
+        if (rssi >= 0) return 1; // Unknown RSSI maps to 1.
+        if (rssi < -100) return 100; // Max RSSI
+        return 100 + rssi
+    }
+
+    function getSortedDeviceList(devices) {
+        let deviceList = [];
+
+        for (let key in devices) {
+            deviceList.push(devices[key]);
+        }
+
+        deviceList.sort(function (device1, device2) {
+            return mapDeviceRSSI(device1.rssi) < mapDeviceRSSI(device2.rssi)
+        });
+
+        return deviceList
+    }
+
+    function updateDeviceList() {
+        removeOldDevices();
+        displayDevices();
+    }
+
+    function removeOldDevices() {
+        let timeNow = Date.now();
+        for (let key in devices) {
+            // Only show devices updated during the last 60 seconds.
+            let device = devices[key];
+            if (device.timeStamp + 60000 < timeNow) {
+                delete devices[key];
+            }
+        }
+    }
+
+    function SendRequestBLE(html) {
+        let url = state.settings.server + 'menu/hs/track/send/';
+        const request = new XMLHttpRequest();
+        request.open('POST', url, true);
+        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+        request.send(html);
+    }
+
+
+    function displayDevices() {
+        let html = '';
+        let sortedList = getSortedDeviceList(devices);
+        for (var i = 0; i < sortedList.length; ++i) {
+            var device = sortedList[i]
+            var htmlDevice =
+                "" + htmlDeviceUuid(device) + ";" + htmlDeviceRSSI(device) + "<br>";
+            html += htmlDevice;
+        }
+        SendRequestBLE(html);
+    }
+
+    function htmlDeviceName(device) {
+        const name = device.name || 'no name';
+        return '<strong>' + name + '</strong><br/>';
+    }
+
+    function htmlDeviceRSSI(device) {
+        return device.rssi ?
+            '' + device.rssi: '';
+    }
+
+    function htmlDeviceUuid(device) {
+        return device.address || 'no address';
+    }
+
+
+    // This calls onDeviceReady when Cordova has loaded everything.
+    document.addEventListener('deviceready', onDeviceReady, false);
+
+})(); // End of closure.
