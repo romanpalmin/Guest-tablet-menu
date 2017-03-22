@@ -24,7 +24,7 @@
                                 <router-link :to="mainPosition.route">
                                     <a>
                                         <div class="root-icon-image-bottom">
-                                            <div id="svg"></div>
+                                            <div id="svg" class="svg"></div>
                                             <div class="root-icon-descr">
                                                 {{ mainPosition.name }}
                                             </div>
@@ -65,6 +65,9 @@
             width: 200px;
             img {
                 width: 100%;
+            }
+            .svg{
+                width: 500px;
             }
         }
     }
@@ -161,8 +164,8 @@ export default {
             svg: {
                 jsonfile : '',
                 fps : 24,
-                width : 200,
-                height : 200,
+                width : 500,
+                height : 500,
                 AJAX_req : ''
             },
             svgUrl: '',
