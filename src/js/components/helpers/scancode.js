@@ -3,7 +3,7 @@ export default function scanQrCode() {
     let isPressedBack = false;
     let interval = 200;
     let maxInterval = 4000;
-    const isDebug = true;
+    const isDebug = false;
 
     addEventListener("keydown", function (event) {
             let cnt = 0;
@@ -46,12 +46,13 @@ export default function scanQrCode() {
         let timerId = setInterval(function () {
             cnt += 1000;
             if (isPressedBack) {
-                if (isDebug) {
+                /*if (isDebug) {
                     startTestScan();
                 }
                 else {
                     startScan();
-                }
+                }*/
+                startScan();
                 stopWaiting();
             }
             if (cnt === maxInterval) {
