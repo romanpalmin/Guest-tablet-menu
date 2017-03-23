@@ -15,7 +15,8 @@ export default {
         testMode:false,
         isTablet: false,
         showButtons: false,
-        updateStatePeriod: 1000*60*5  // время обновления меню секунда * кол-во секунд * кол-во минут
+        updateStatePeriod: 1000*60*5,  // время обновления меню секунда * кол-во секунд * кол-во минут
+        cryptoword: '101010'
     },
     appState:{
         MenuPoints:[],
