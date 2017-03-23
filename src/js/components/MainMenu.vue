@@ -164,8 +164,8 @@ export default {
             svg: {
                 jsonfile : '',
                 fps : 24,
-                width : 500,
-                height : 500,
+                width : 200,
+                height : 200,
                 AJAX_req : ''
             },
             svgUrl: '',
