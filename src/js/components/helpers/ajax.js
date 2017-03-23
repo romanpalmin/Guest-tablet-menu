@@ -54,7 +54,7 @@ function getUrl(operation){
             url = '';
             break;
     }
-    return url !== '' ? url + '&uuid=' + crypt('101010') : '';
+    return url !== '' ? url + '&uuid=' + crypt(state.settings.cryptoword) : '';
 }
 
 export default {
