@@ -9,6 +9,13 @@ const password = state.settings.password;
 const baseUrl = '/menu/hs/model?';
 let ajaxServerUrlShort = `http://${user}:${password}@${server}${baseUrl}`;
 
+let uuid = '';
+if (typeof device !== 'undefined') {
+    uuid = device.uuid;
+} else {
+    uuid = '10e00be6a70f0bcc'
+}
+
 function executeRequest(url, callback) {
     axios.get(ajaxServerUrlShort + url)
         .then(function (response) {
@@ -54,7 +61,7 @@ function getUrl(operation){
             url = '';
             break;
     }
-    return url !== '' ? url + '&uuid=' + crypt(state.settings.cryptoword) : '';
+    return url !== '' ? url + '&uuid=' + crypt(uuid) : '';
 }
 
 export default {

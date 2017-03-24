@@ -1,7 +1,7 @@
 export default {
     settings:{
-        server:'http://tab01:01@10.100.50.248/',
-        ip: '10.100.50.248',
+        server:'http://tab01:01@10.10.250.63/',
+        ip: '10.10.250.63',
         userName: 'tab01',
         password:'01',
        /* server:'http://10.10.182.11/',*/
@@ -15,7 +15,7 @@ export default {
         testMode:false,
         isTablet: true,
         showButtons: true,
-        updateStatePeriod: 1000*60*5,  // время обновления меню секунда * кол-во секунд * кол-во минут
+        updateStatePeriod: 1000*60*15,  // время обновления меню секунда * кол-во секунд * кол-во минут
         updateOrderFrequency: 1000*15, // время обновления состояния корзины
         cryptoword: '101010'
     },

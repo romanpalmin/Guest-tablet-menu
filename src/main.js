@@ -75,7 +75,7 @@ const app = new Vue({
 }).$mount('#app');
 
 let updateInterval = setInterval(function () {
-    //upState();
+    upState();
 }, state.settings.updateStatePeriod);
 
 
