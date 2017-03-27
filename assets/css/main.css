@@ -8,6 +8,20 @@ body {
     user-select: none;
 }
 
+.tabletNumber{
+    width: 63px;
+    height: 63px;
+    display: block;
+    background-color: #555;
+    color: #FFF;
+    z-index: 99999;
+    position: absolute;
+    right: 0;
+    text-align: center;
+    line-height: 63px;
+    font-size: xx-large;
+}
+
 .header {
     position: fixed;
     width: 100%;

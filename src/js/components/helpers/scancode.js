@@ -4,6 +4,8 @@ export default function scanQrCode(router) {
     let isPressedBack = false;
     let interval = 200;
     let maxInterval = 4000;
+    const isDebug = false;
+    const self = this;
 
     addEventListener("keydown", function (event) {
             let cnt = 0;
@@ -65,6 +67,12 @@ export default function scanQrCode(router) {
         let timerId = setInterval(function () {
             cnt += 1000;
             if (isPressedBack) {
+                /*if (isDebug) {
+                    startTestScan();
+                }
+                else {
+                    startScan();
+                }*/
                 startScan();
                 stopWaiting();
             }
@@ -86,7 +94,7 @@ export default function scanQrCode(router) {
         let timerId = setInterval(function () {
             cnt += 1000;
             if (isPressedBack) {
-                goToTables();
+                got
                 stopWaiting();
             }
             if (cnt === maxInterval) {
@@ -113,6 +121,9 @@ export default function scanQrCode(router) {
         }, interval);
     }, false);
 
+    function startTestScan() {
+        alert('Запускаем тестовое сканирование');
+    }
 
     function goToTables() {
         router.replace('/ru/tables');

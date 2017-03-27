@@ -52,6 +52,12 @@ function getUrl(operation){
         case 'addToOrder':
             url = `groups=1&addcart=1&tovar=${operation.positionId}`;
             break;
+        case 'getTabletNumber':
+            url = `groups=&usr=1`;
+            break;
+        case 'getBle':
+            url = `groups=&ble=1`;
+            break;
         case 'showLamp':
             console.log(operation);
             console.warn('Для работы заменить no_groups на groups');

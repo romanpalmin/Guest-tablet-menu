@@ -21,6 +21,7 @@ export default {
     },
     appState:{
         TableNumber: '',
+        TabletNumber: '',
         BleLabel: '',
         MenuPoints:[],
         Category:{

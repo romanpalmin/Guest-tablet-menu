@@ -50,7 +50,7 @@
         methods:{
             getTableNumber( num ){
                 state.appState.TableNumber = num;
-                alert(`Стол №${state.appState.TableNumber} выбран вручную.`);
+                this.$router.replace('/ru/menu');
             }
         }
     }

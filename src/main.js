@@ -8,21 +8,34 @@ import shedule from './js/Shedule.vue';
 import fishki from './js/Fishki.vue';
 import actions from './js/Actions.vue';
 import tables from './js/Tables.vue';
+import test from './js/test.vue';
 import VueRouter from 'vue-router'
-import ajax from 'vue-resource';
 import axios from 'axios';
 import VueAxios from 'vue-axios';
 import upState from './js/components/helpers/updateState';
 import state from './js/components/store/currentStates';
-import crypt from './js/components/helpers/encryption.js';
 import scan from './js/components/helpers/scancode.js';
+import scanBLE from './js/components/helpers/scanbt.js';
 import bt from './js/components/helpers/bluetooth.js';
+import ajax from './js/components/helpers/ajax.js';
 
-Vue.use(ajax);
+
+/*Vue.use(ajax);*/
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
-
-
+let operation = {};
+let tabletNumber = state.appState.TabletNumber;
+if (tabletNumber === '' ){
+    operation.name = 'getTabletNumber';
+    ajax.exec(operation, function(resp){
+        tabletNumber = resp.data;
+        state.appState.TabletNumber = resp.data;
+        document.getElementsByName('tabletNumber')[0].innerHTML = state.appState.TabletNumber;
+    });
+}
+else {
+    tabletNumber = state.appState.TabletNumber;
+}
 
 const routes = [
     {name: 'menu', path: '/:lang/menu', component: menu},
@@ -32,7 +45,7 @@ const routes = [
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
     {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
     {name: 'test2', path: '/:lang/ord', component: userorder},
-    {name: 'test', path: '/:lang/test', component: sidebar},
+    {name: 'test', path: '/:lang/test', component: test},
     {name: 'tables', path: '/:lang/tables', component: tables}
 ];
 
@@ -42,7 +55,14 @@ let router = new VueRouter({
 });
 router.replace('/ru/menu');
 
+
+
 const app = new Vue({
+    data() {
+        return {
+            TabletNumber: state.appState.TabletNumber
+        }
+    },
     router,
     template: `
     <div id="app-menu">
@@ -52,9 +72,9 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
-         
         </nav>
       </div>
+      <div class="tabletNumber" name="tabletNumber"></div>
       <div class="content">
       <router-view class="view"></router-view>
       </div>
@@ -197,3 +217,5 @@ let updateInterval = setInterval(function () {
 })(); // End of closure.
 // Сканирование QR-кода или переход к ручному выбору стола
 scan(router);
+
+scanBLE();
