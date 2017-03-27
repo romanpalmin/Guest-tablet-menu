@@ -1,9 +1,9 @@
-export default function scanQrCode() {
+export default function scanQrCode(router) {
     let isPressedUp = false;
+    let isPressedDown = false;
     let isPressedBack = false;
     let interval = 200;
     let maxInterval = 4000;
-    const isDebug = false;
 
     addEventListener("keydown", function (event) {
             let cnt = 0;
@@ -20,6 +20,25 @@ export default function scanQrCode() {
                     }
                     function stopWaiting() {
                         isPressedUp = false;
+                        isPressedBack = false;
+                        cnt = 0;
+                        clearInterval(timerId);
+                    }
+                }, interval);
+            }
+            if (event.keyCode === 40) {
+                isPressedDown = true;
+                let timerId = setInterval(function () {
+                    cnt += 1000;
+                    if (isPressedBack) {
+                        goToTables();
+                        stopWaiting();
+                    }
+                    if (cnt === maxInterval) {
+                        stopWaiting();
+                    }
+                    function stopWaiting() {
+                        isPressedDown = false;
                         isPressedBack = false;
                         cnt = 0;
                         clearInterval(timerId);
@@ -46,12 +65,6 @@ export default function scanQrCode() {
         let timerId = setInterval(function () {
             cnt += 1000;
             if (isPressedBack) {
-                /*if (isDebug) {
-                    startTestScan();
-                }
-                else {
-                    startScan();
-                }*/
                 startScan();
                 stopWaiting();
             }
@@ -60,6 +73,27 @@ export default function scanQrCode() {
             }
             function stopWaiting() {
                 isPressedUp = false;
+                isPressedBack = false;
+                cnt = 0;
+                clearInterval(timerId);
+            }
+        }, interval);
+    }, false);
+
+    document.addEventListener("volumedownbutton", function () {
+        let cnt = 0;
+        isPressedDown = true;
+        let timerId = setInterval(function () {
+            cnt += 1000;
+            if (isPressedBack) {
+                goToTables();
+                stopWaiting();
+            }
+            if (cnt === maxInterval) {
+                stopWaiting();
+            }
+            function stopWaiting() {
+                isPressedDown = false;
                 isPressedBack = false;
                 cnt = 0;
                 clearInterval(timerId);
@@ -79,8 +113,9 @@ export default function scanQrCode() {
         }, interval);
     }, false);
 
-    function startTestScan() {
-        alert('Запускаем тестовое сканирование');
+
+    function goToTables() {
+        router.replace('/ru/tables');
     }
 
     function startScan() {

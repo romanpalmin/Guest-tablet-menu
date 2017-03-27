@@ -52,8 +52,7 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
-            <div class="pages-nav__item "><router-link to="/ru/tables" class="link-page link">Выбор стола</router-link></div>
-          
+         
         </nav>
       </div>
       <div class="content">
@@ -196,5 +195,5 @@ let updateInterval = setInterval(function () {
 
 
 })(); // End of closure.
-// Сканирование QR-кода
-scan();
+// Сканирование QR-кода или переход к ручному выбору стола
+scan(router);
