@@ -7,6 +7,7 @@ import order from './js/Order.vue';
 import shedule from './js/Shedule.vue';
 import fishki from './js/Fishki.vue';
 import actions from './js/Actions.vue';
+import tables from './js/Tables.vue';
 import VueRouter from 'vue-router'
 import ajax from 'vue-resource';
 import axios from 'axios';
@@ -15,27 +16,12 @@ import upState from './js/components/helpers/updateState';
 import state from './js/components/store/currentStates';
 import crypt from './js/components/helpers/encryption.js';
 import scan from './js/components/helpers/scancode.js';
+import bt from './js/components/helpers/bluetooth.js';
 
 Vue.use(ajax);
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
-
-//console.log(crypt('test'));
-//var uuid = device.uuid;
-//alert(uuid);
-
-/*Vue.axios.get('settings.json')
- .then(function (response) {
- console.log(response);
- cs.server = response.data.server;
- cs.urlSmallImage = response.data.server + response.data.smallImagesUrl;
- cs.urlBigImage = response.data.server + response.data.bigImagesUrl;
- console.log(cs);
- })
- .catch(function (error) {
- console.log(error);
- });*/
 
 
 const routes = [
@@ -46,7 +32,8 @@ const routes = [
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
     {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
     {name: 'test2', path: '/:lang/ord', component: userorder},
-    {name: 'test', path: '/:lang/test', component: sidebar}
+    {name: 'test', path: '/:lang/test', component: sidebar},
+    {name: 'tables', path: '/:lang/tables', component: tables}
 ];
 
 let router = new VueRouter({
@@ -65,6 +52,7 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
+            <div class="pages-nav__item "><router-link to="/ru/tables" class="link-page link">Выбор стола</router-link></div>
           
         </nav>
       </div>
@@ -208,6 +196,5 @@ let updateInterval = setInterval(function () {
 
 
 })(); // End of closure.
-
 // Сканирование QR-кода
 scan();

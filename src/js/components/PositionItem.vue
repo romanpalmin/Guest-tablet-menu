@@ -168,9 +168,6 @@
                 addingToCartTitle : function(){ return this.IsAddingToCart ? 'Добавление' : 'Выбрать';},
                 addingToCartStyle: function() { return this.IsAddingToCart ? "background:#dbdbd7" : '';},
                 showButtons: function(){
-                    console.log(state.settings.showButtons);
-                    console.log(this.activeTime);
-                    console.log(state.settings.showButtons && this.activeTime);
                     return state.settings.showButtons && this.activeTime
                 }
             },
