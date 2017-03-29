@@ -9,6 +9,7 @@ import fishki from './js/Fishki.vue';
 import actions from './js/Actions.vue';
 import tables from './js/Tables.vue';
 import modal from './js/Modal.vue';
+import tablenumber from './js/TableNumber.vue';
 import VueRouter from 'vue-router'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -18,6 +19,7 @@ import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
 import bt from './js/components/helpers/bluetooth.js';
 import ajax from './js/components/helpers/ajax.js';
+import _ from 'lodash';
 
 
 /*Vue.use(ajax);*/
@@ -25,9 +27,9 @@ Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 let operation = {};
 let tabletNumber = state.appState.TabletNumber;
-if (tabletNumber === '' ){
+if (tabletNumber === '') {
     operation.name = 'getTabletNumber';
-    ajax.exec(operation, function(resp){
+    ajax.exec(operation, function (resp) {
         tabletNumber = resp.data;
         state.appState.TabletNumber = resp.data;
         document.getElementsByName('tabletNumber')[0].innerHTML = state.appState.TabletNumber;
@@ -36,6 +38,14 @@ if (tabletNumber === '' ){
 else {
     tabletNumber = state.appState.TabletNumber;
 }
+
+// получение списка допустимых меток
+operation = {name: 'getBle'};
+ajax.exec(operation, function (resp) {
+    state.appState.BleLabels = resp.data;
+    console.log(state.appState.BleLabels);
+});
+
 
 const routes = [
     {name: 'menu', path: '/:lang/menu', component: menu},
@@ -46,7 +56,8 @@ const routes = [
     {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
     {name: 'test2', path: '/:lang/ord', component: userorder},
     {name: 'modal', path: '/:lang/modal', component: modal},
-    {name: 'tables', path: '/:lang/tables', component: tables}
+    {name: 'tables', path: '/:lang/tables', component: tables},
+    {name: 'tablenumber', path: '/:lang/tablenumber', component: tablenumber}
 ];
 
 let router = new VueRouter({
@@ -54,7 +65,6 @@ let router = new VueRouter({
     linkActiveClass: 'menu__link--current'
 });
 router.replace('/ru/menu');
-
 
 
 const app = new Vue({
@@ -71,6 +81,7 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
+            <div class="pages-nav__item "><router-link to="/ru/tablenumber" class="link-page link">Стол</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
         </nav>
       </div>
@@ -87,23 +98,23 @@ let updateInterval = setInterval(function () {
 
 
 /*
-(function () {
-    let url = state.settings.server + 'menu/hs/track/send/';
-    /!*axios.post(url, {
-        "data": 'BLUETOOTH=' + 'Тестовые данные'
-    })
-        .then(function (response) {
-            alert('Тестовый запрос');
-        })
-        .catch(function (error) {
-            console.log(error);
-        });*!/
-    var request = new XMLHttpRequest();
-    request.open('POST', url, true);
-    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-    request.send('BLUETOOTH=Тестовые данные');
-})();
-*/
+ (function () {
+ let url = state.settings.server + 'menu/hs/track/send/';
+ /!*axios.post(url, {
+ "data": 'BLUETOOTH=' + 'Тестовые данные'
+ })
+ .then(function (response) {
+ alert('Тестовый запрос');
+ })
+ .catch(function (error) {
+ console.log(error);
+ });*!/
+ var request = new XMLHttpRequest();
+ request.open('POST', url, true);
+ request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+ request.send('BLUETOOTH=Тестовые данные');
+ })();
+ */
 
 
 // Application code starts here. The code is wrapped in a
@@ -111,7 +122,7 @@ let updateInterval = setInterval(function () {
 ;(function () {
     // Dictionary of devices.
     let devices = {};
-
+    let cntDevArr = [];
     // Timer that displays list of devices.
     let timer = null;
 
@@ -122,6 +133,7 @@ let updateInterval = setInterval(function () {
         // Timer that refreshes the display.
         timer = setInterval(updateDeviceList, 500);
     }
+
     function startScan() {
         //showMessage('Scan in progress')
         evothings.ble.startScan(
@@ -185,14 +197,66 @@ let updateInterval = setInterval(function () {
 
     function displayDevices() {
         let html = '';
+
+        let devArr = [];
         let sortedList = getSortedDeviceList(devices);
         for (var i = 0; i < sortedList.length; ++i) {
             var device = sortedList[i];
             var htmlDevice =
                 "" + htmlDeviceUuid(device) + ";" + htmlDeviceRSSI(device) + "<br>";
             html += htmlDevice;
+            let dev = {BLE: htmlDeviceUuid(device), rssi: htmlDeviceRSSI(device)};
+            devArr.push(dev);
+            if (i === sortedList.length - 1) {
+                if (cntDevArr.length < 5) {
+                    cntDevArr.push(devArr);
+                } else {
+                    cntDevArr.unshift((devArr));
+                    cntDevArr.pop();
+                }
+
+                if (cntDevArr.length === 5) {
+                    DefineTableNumber(cntDevArr);
+                }
+            }
         }
+
+
         SendRequestBLE(html);
+    }
+
+    function DefineTableNumber(arr) {
+        let tableNumber;
+        let resultObjArr = [];
+        let currentAvailablesArrays = [];
+        let curArray = [];
+        let result;
+        for (let i = 0; i < arr.length; i++) {
+            for (let k = 0; k < arr[i].length; k++) {
+                curArray.push({'BLE': arr[i][k].BLE, 'rssi': arr[i][k].rssi});
+            }
+            currentAvailablesArrays.push(intersectionArray(curArray));
+        }
+        currentAvailablesArrays.forEach(function(item){
+            let currentMax = _.max(item, 'rssi');
+            resultObjArr.push(currentMax);
+        });
+
+        result = _.uniqBy(resultObjArr, 'rssi' && 'BLE');
+        result =_.max(result, 'rssi');
+
+        tableNumber = (_.find(state.appState.BleLabels, {'BLE' : result.BLE})).table;
+        //alert(tableNumber);
+        state.appState.TableNumberPrimary = tableNumber;
+        if (tableNumber !== state.appState.TableNumberPrimary) {
+            //alert(state.appState.TableNumberPrimary);
+        }
+
+    }
+
+    function intersectionArray(arr) {
+        return _.intersectionBy(arr, state.appState.BleLabels, 'BLE');
+
     }
 
     function htmlDeviceName(device) {
@@ -202,7 +266,7 @@ let updateInterval = setInterval(function () {
 
     function htmlDeviceRSSI(device) {
         return device.rssi ?
-            '' + device.rssi: '';
+            '' + device.rssi : '';
     }
 
     function htmlDeviceUuid(device) {
@@ -212,7 +276,6 @@ let updateInterval = setInterval(function () {
 
     // This calls onDeviceReady when Cordova has loaded everything.
     document.addEventListener('deviceready', onDeviceReady, false);
-
 
 
 })(); // End of closure.

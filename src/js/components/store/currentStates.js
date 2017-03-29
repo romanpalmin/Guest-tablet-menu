@@ -20,9 +20,10 @@ export default {
         cryptoword: '101010',
     },
     appState:{
-        TableNumber: '',
+        TableNumberPrimary: '123',
+        TableNumberAdditional:'',
         TabletNumber: '',
-        BleLabel: '',
+        BleLabels: [],
         MenuPoints:[],
         Category:{
             "332020":{

@@ -27,11 +27,11 @@
 
         },
         mounted(){
-            //let operation = {};
-            //operation.name = 'getBle';
-            //ajax.exec(operation, function(resp){
-            //    console.log(resp.data);
-            //});
+           // let operation = {};
+           // operation.name = 'getBle';
+           // ajax.exec(operation, function(resp){
+           //     console.log(resp.data);
+           // });
         },
         components:{
             modal
