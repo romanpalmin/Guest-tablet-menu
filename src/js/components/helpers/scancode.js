@@ -94,7 +94,7 @@ export default function scanQrCode(router) {
         let timerId = setInterval(function () {
             cnt += 1000;
             if (isPressedBack) {
-                got
+                goToTables();
                 stopWaiting();
             }
             if (cnt === maxInterval) {

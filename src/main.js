@@ -8,7 +8,7 @@ import shedule from './js/Shedule.vue';
 import fishki from './js/Fishki.vue';
 import actions from './js/Actions.vue';
 import tables from './js/Tables.vue';
-import test from './js/test.vue';
+import modal from './js/Modal.vue';
 import VueRouter from 'vue-router'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -45,7 +45,7 @@ const routes = [
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
     {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
     {name: 'test2', path: '/:lang/ord', component: userorder},
-    {name: 'test', path: '/:lang/test', component: test},
+    {name: 'modal', path: '/:lang/modal', component: modal},
     {name: 'tables', path: '/:lang/tables', component: tables}
 ];
 
@@ -174,6 +174,7 @@ let updateInterval = setInterval(function () {
     }
 
     function SendRequestBLE(html) {
+        console.log(html);
         let url = state.settings.server + 'menu/hs/track/send/';
         const request = new XMLHttpRequest();
         request.open('POST', url, true);
@@ -186,7 +187,7 @@ let updateInterval = setInterval(function () {
         let html = '';
         let sortedList = getSortedDeviceList(devices);
         for (var i = 0; i < sortedList.length; ++i) {
-            var device = sortedList[i]
+            var device = sortedList[i];
             var htmlDevice =
                 "" + htmlDeviceUuid(device) + ";" + htmlDeviceRSSI(device) + "<br>";
             html += htmlDevice;

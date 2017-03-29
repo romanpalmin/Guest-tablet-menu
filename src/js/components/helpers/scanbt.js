@@ -1,8 +1,8 @@
 export default function scanBLE() {
     let isPressedUp = false;
 
-    let interval = 1000;
-    let maxInterval = 5000;
+    let interval = 1200;
+    let maxInterval = 3000;
     let maxClicks = 4;
     let clicks = 0;
 
@@ -15,7 +15,7 @@ export default function scanBLE() {
             let timerId = setInterval(function () {
                 cnt += 1000;
                 console.log(`clicks= ${clicks} : ${maxClicks}`);
-                if (clicks === maxClicks) {
+                if (clicks >= maxClicks) {
                     startBLE();
                     stopWaiting();
                 }
