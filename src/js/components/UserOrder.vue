@@ -2,12 +2,12 @@
     <div>
         <div class="container">
             <div class="content" id="content">
-                <div class="header-title">Вы выбрали:</div>
+                <div class="header-title">{{words.title}}</div>
                 <div class="overflow-content">
                     <table class="main-table">
                         <tr class="table-row">
-                            <td class="table-cell col-header col1">КОЛ-ВО</td>
-                            <td class="table-cell col-header col2">НАИМЕНОВАНИЕ</td>
+                            <td class="table-cell col-header col1">{{words.qty}}</td>
+                            <td class="table-cell col-header col2">{{words.name}}</td>
                             <td class="table-cell col-header col3"></td>
                         </tr>
                         <template v-for="item in unionStrings">
@@ -38,7 +38,7 @@
                         <tr class="table-row ">
                             <td colspan="3" class="footer">
                                 <div class="btn-wrapper" v-if="showDeleteBtn">
-                                    <div class="btn delete-all" @click="deleteAll">Удалить все выбранное</div>
+                                    <div class="btn delete-all" @click="deleteAll">{{words.delete}}</div>
                                 </div>
                             </td>
                         </tr>
@@ -207,7 +207,24 @@
                 });
                 return res;
             },
-            addingToCartStyle: function() { return this.isAdding ? "color:darkgrey" : '';}
+            addingToCartStyle: function() { return this.isAdding ? "color:darkgrey" : '';},
+            words: function(){
+                let words = {};
+                if (state.settings.language === 'ru'){
+                    words.title = 'Вы выбрали:';
+                    words.qty='КОЛ-ВО';
+                    words.name='НАИМЕНОВАНИЕ';
+                    words.delete = 'Удалить все выбранное'
+                }
+                else {
+                    words.title = 'Your order:';
+                    words.qty='Q-ty';
+                    words.name='NAME';
+                    words.delete = 'Delete all'
+                }
+                return words;
+            }
+
         },
 
         watch:{
