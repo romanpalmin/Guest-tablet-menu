@@ -78,26 +78,34 @@ const app = new Vue({
     },
     methods :{
         changeLanguage(){
-            if (this.language === 'ru'){
-                state.settings.language = 'en';
-            }
-            state.settings.language = this.language === 'ru' ? ''
+            console.log('Смена языка');
+            state.settings.language = this.language === 'ru' ? 'en' : 'ru';
+            this.language = state.settings.language;
+            upState();
         }
     },
     router,
     template: `
     <div id="app-menu">
     <div class="header">
-        <nav class="pages-nav">
+    
+        <nav v-if= "language === 'ru'" class="pages-nav">
             <div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/tablenumber" class="link-page link">Стол</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
         </nav>
+         <nav v-else class="pages-nav">
+            <div class="pages-nav__item "><router-link to="/en/Actions" class="link-page link">Questionnaire</router-link></div>
+            <div class="pages-nav__item "><router-link to="/en/shedule" class="link-page link">Shedule</router-link></div>
+            <div class="pages-nav__item "><router-link to="/en/menu" class="link-page link">Menu</router-link></div>
+            <div class="pages-nav__item "><router-link to="/en/tablenumber" class="link-page link">Table</router-link></div>
+            <div class="pages-nav__item "><router-link to="/en/order" class="link-page link">Your order</router-link></div>
+        </nav>
       </div>
       <div class="tabletNumber" name="tabletNumber"></div>
-      <div class="language" name="tabletNumber" @click="changeLanguage()"></div>
+      <div class="language" name="language" @click="changeLanguage()">{{language}}</div>
       <div class="content">
       <router-view class="view"></router-view>
       </div>
