@@ -58,6 +58,9 @@ function getUrl(operation) {
         case 'getBle':
             url = `groups=&ble=1`;
             break;
+        case 'whereTablets':
+            url = `tablets=1`;
+            break;
         case 'showLamp':
             console.log(operation);
             console.warn('Для работы заменить no_groups на groups');

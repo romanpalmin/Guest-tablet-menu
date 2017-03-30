@@ -74,12 +74,10 @@ const app = new Vue({
         }
     },
     mounted(){
-      console.log('Язык:' + this.language);
     },
     methods :{
         changeLanguage(){
             let path;
-            console.log('Смена языка');
             state.settings.language = this.language === 'ru' ? 'en' : 'ru';
             this.language = state.settings.language;
             path = `/${state.settings.language}/menu`
@@ -217,7 +215,6 @@ let updateInterval = setInterval(function () {
     }
 
     function SendRequestBLE(html) {
-        console.log(html);
         let url = state.settings.server + 'menu/hs/track/send/';
         const request = new XMLHttpRequest();
         request.open('POST', url, true);

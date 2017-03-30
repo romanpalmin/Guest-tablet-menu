@@ -21,7 +21,7 @@ export default {
         language: 'ru'
     },
     appState:{
-        TableNumberPrimary: '123',
+        TableNumberPrimary: '666',
         TableNumberAdditional:'',
         TabletNumber: '',
         BleLabels: [],

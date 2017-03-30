@@ -11,10 +11,8 @@ export default function scanBLE() {
 
         if (event.keyCode === 38) {
             clicks++;
-            console.log(clicks);
             let timerId = setInterval(function () {
                 cnt += 1000;
-                console.log(`clicks= ${clicks} : ${maxClicks}`);
                 if (clicks >= maxClicks) {
                     startBLE();
                     stopWaiting();

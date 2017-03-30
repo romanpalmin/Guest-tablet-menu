@@ -350,7 +350,6 @@
                this.description = item.description,
                this.yacheika = item.yacheika
                this.showDetails = true;
-               console.log('item.activeTime = ' + item.activeTime);
                this.activeTime = item.activeTime === '1';
            },
 

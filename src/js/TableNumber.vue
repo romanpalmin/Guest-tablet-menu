@@ -38,7 +38,6 @@
         mounted(){
             let self = this;
             setInterval(function(){
-                console.log(state.appState.TableNumberPrimary);
                 self.table = state.appState.TableNumberPrimary;
              }, 1000)
         }
