@@ -4,11 +4,10 @@ import crypt from './encryption.js';
 
 const ip = state.settings.ip;
 const server = `${ip}/`;
-const user =  state.settings.userName;
+const user = state.settings.userName;
 const password = state.settings.password;
 const baseUrl = '/menu/hs/model?';
 let ajaxServerUrlShort = `http://${user}:${password}@${server}${baseUrl}`;
-
 let uuid = '';
 if (typeof device !== 'undefined') {
     uuid = device.uuid;
@@ -19,7 +18,7 @@ if (typeof device !== 'undefined') {
 function executeRequest(url, callback) {
     axios.get(ajaxServerUrlShort + url)
         .then(function (response) {
-            if (callback && typeof(callback) === "function"){
+            if (callback && typeof(callback) === "function") {
                 callback(response);
             }
         })
@@ -28,9 +27,10 @@ function executeRequest(url, callback) {
         });
 }
 
-function getUrl(operation){
+function getUrl(operation) {
     let url = '';
-    switch (operation.name){
+    let language = state.settings.language === 'en' ? '&lang=en' : '';
+    switch (operation.name) {
         case 'categories':
             url = 'groups=';
             break;
@@ -67,11 +67,11 @@ function getUrl(operation){
             url = '';
             break;
     }
-    return url !== '' ? url + '&uuid=' + crypt(uuid) : '';
+    return url !== '' ? url + '&uuid=' + crypt(uuid) + language : '';
 }
 
 export default {
-    exec: function(operation, callback){
+    exec: function (operation, callback) {
         let url = getUrl(operation);
         return executeRequest(url, callback);
     }

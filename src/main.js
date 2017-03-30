@@ -78,10 +78,21 @@ const app = new Vue({
     },
     methods :{
         changeLanguage(){
+            let path;
             console.log('Смена языка');
             state.settings.language = this.language === 'ru' ? 'en' : 'ru';
             this.language = state.settings.language;
-            upState();
+            path = `/${state.settings.language}/menu`
+            this.emptyCache();
+            this.$router.replace(path);
+        },
+
+        emptyCache(){
+            state.appState.MenuPoints.length = 0;
+            //Array.from(state.appState.Category).forEach(function(item){
+            for (let item in state.appState.Category){
+                state.appState.Category[item+''].currentState.length = 0;
+            }
         }
     },
     router,

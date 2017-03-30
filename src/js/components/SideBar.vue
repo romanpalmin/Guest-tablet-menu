@@ -183,7 +183,7 @@
                 var self = this;
                 var res = this.ctgs.map(function(item) {
                     item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
-                    item.route = '/ru/menu/'+ item.code;
+                    item.route = '/' + state.settings.language + '/menu/'+ item.code;
 
                     if (+item.code ===+self.$route.params.id){
                         item.newClass = 'menu__link--current';

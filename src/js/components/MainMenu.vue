@@ -161,7 +161,8 @@ export default {
             showTabletView: true,
             mainPosition: {},
             isDebug:false,
-            isTablet: state.settings.isTablet
+            isTablet: state.settings.isTablet,
+            currentLanguage: state.settings.language
         }
     },
 
@@ -173,6 +174,9 @@ export default {
             if (!this.showTabletView){
                 this.mainPosition = this.populateMainPosition();
             }
+        },
+        $route: function(){
+            this.getData();
         }
     },
 
@@ -254,11 +258,14 @@ export default {
 
     mounted(){
         const self = this;
+        this.currentLanguage = state.settings.language;
         if (state.appState.MenuPoints.length > 0) {
             self.ctgs = state.appState.MenuPoints;
         } else {
            this.getData();
         }
+
+        this.$on()
 
         let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
         //console.log(title);
@@ -266,6 +273,15 @@ export default {
         let upTimer = setInterval(function () {
              self.getData();
         }, 15000);
+    },
+    beforeRouteUpdate (to, from, next) {
+    // вызывается когда маршрут, что рендерит этот компонент изменился,
+    // но этот компонент будет повторно использован в новом маршруте.
+    // Например, для маршрута с динамическими параметрами /foo/:id, когда мы
+    // перемещаемся между /foo/1 и /foo/2, экземпляр того же компонента Foo
+    // будет использован повторно, и этот хук будет вызван когда это случится.
+    // Также имеется доступ в `this` к экземпляру компонента.
+    console.log('Что то делаем тут');
     }
 }
 
