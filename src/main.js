@@ -197,13 +197,11 @@ let updateInterval = setInterval(function () {
 
     function displayDevices() {
         let html = '';
-
         let devArr = [];
         let sortedList = getSortedDeviceList(devices);
-        for (var i = 0; i < sortedList.length; ++i) {
-            var device = sortedList[i];
-            var htmlDevice =
-                "" + htmlDeviceUuid(device) + ";" + htmlDeviceRSSI(device) + "<br>";
+        for (let i = 0; i < sortedList.length; ++i) {
+            let device = sortedList[i];
+            let htmlDevice = "" + htmlDeviceUuid(device) + ";" + htmlDeviceRSSI(device) + "<br>";
             html += htmlDevice;
             let dev = {BLE: htmlDeviceUuid(device), rssi: htmlDeviceRSSI(device)};
             devArr.push(dev);
@@ -220,8 +218,6 @@ let updateInterval = setInterval(function () {
                 }
             }
         }
-
-
         SendRequestBLE(html);
     }
 
@@ -246,12 +242,7 @@ let updateInterval = setInterval(function () {
         result =_.max(result, 'rssi');
 
         tableNumber = (_.find(state.appState.BleLabels, {'BLE' : result.BLE})).table;
-        //alert(tableNumber);
         state.appState.TableNumberPrimary = tableNumber;
-        if (tableNumber !== state.appState.TableNumberPrimary) {
-            //alert(state.appState.TableNumberPrimary);
-        }
-
     }
 
     function intersectionArray(arr) {
