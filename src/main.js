@@ -43,7 +43,6 @@ else {
 operation = {name: 'getBle'};
 ajax.exec(operation, function (resp) {
     state.appState.BleLabels = resp.data;
-    console.log(state.appState.BleLabels);
 });
 
 
@@ -70,7 +69,19 @@ router.replace('/ru/menu');
 const app = new Vue({
     data() {
         return {
-            TabletNumber: state.appState.TabletNumber
+            TabletNumber: state.appState.TabletNumber,
+            language: state.settings.language
+        }
+    },
+    mounted(){
+      console.log('Язык:' + this.language);
+    },
+    methods :{
+        changeLanguage(){
+            if (this.language === 'ru'){
+                state.settings.language = 'en';
+            }
+            state.settings.language = this.language === 'ru' ? ''
         }
     },
     router,
@@ -86,6 +97,7 @@ const app = new Vue({
         </nav>
       </div>
       <div class="tabletNumber" name="tabletNumber"></div>
+      <div class="language" name="tabletNumber" @click="changeLanguage()"></div>
       <div class="content">
       <router-view class="view"></router-view>
       </div>

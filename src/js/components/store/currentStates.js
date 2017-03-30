@@ -18,6 +18,7 @@ export default {
         updateStatePeriod: 1000*60*15,  // время обновления меню секунда * кол-во секунд * кол-во минут
         updateOrderFrequency: 1000*15, // время обновления состояния корзины
         cryptoword: '101010',
+        language: 'ru'
     },
     appState:{
         TableNumberPrimary: '123',
