@@ -10,6 +10,7 @@ import actions from './js/Actions.vue';
 import tables from './js/Tables.vue';
 import modal from './js/Modal.vue';
 import tablenumber from './js/TableNumber.vue';
+import wheretablet from './js/WhereTablet.vue';
 import VueRouter from 'vue-router'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
@@ -56,7 +57,8 @@ const routes = [
     {name: 'test2', path: '/:lang/ord', component: userorder},
     {name: 'modal', path: '/:lang/modal', component: modal},
     {name: 'tables', path: '/:lang/tables', component: tables},
-    {name: 'tablenumber', path: '/:lang/tablenumber', component: tablenumber}
+    {name: 'tablenumber', path: '/:lang/tablenumber', component: tablenumber},
+    {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet}
 ];
 
 let router = new VueRouter({
@@ -70,17 +72,19 @@ const app = new Vue({
     data() {
         return {
             TabletNumber: state.appState.TabletNumber,
-            language: state.settings.language
+            language: state.settings.language,
+            showMenu: true
         }
     },
     mounted(){
+        console.log(this.$route);
     },
     methods :{
         changeLanguage(){
             let path;
             state.settings.language = this.language === 'ru' ? 'en' : 'ru';
             this.language = state.settings.language;
-            path = `/${state.settings.language}/menu`
+            path = `/${state.settings.language}/menu`;
             this.emptyCache();
             this.$router.replace(path);
         },
@@ -95,9 +99,9 @@ const app = new Vue({
     },
     router,
     template: `
-    <div id="app-menu">
-    <div class="header">
-    
+    <div id="app-menu" >
+    <div class="head" v-show="showMenu">
+    <div class="header" >
         <nav v-if= "language === 'ru'" class="pages-nav">
             <div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
@@ -112,10 +116,13 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/en/tablenumber" class="link-page link">Table</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/order" class="link-page link">Your order</router-link></div>
         </nav>
+        
       </div>
       <div class="tabletNumber" name="tabletNumber"></div>
       <div class="language" name="language" @click="changeLanguage()">{{language}}</div>
+      </div>
       <div class="content">
+      
       <router-view class="view"></router-view>
       </div>
     </div>`

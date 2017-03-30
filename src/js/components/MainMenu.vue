@@ -265,6 +265,8 @@ export default {
            this.getData();
         }
 
+        this.$on()
+
         let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
 
         let upTimer = setInterval(function () {
