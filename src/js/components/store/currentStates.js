@@ -67,6 +67,7 @@ export default {
                 name:"БИЗНЕС ЛАНЧ",
                 currentState:[]
             }
+
         },
         show: {
             name: 'Развлечения',
