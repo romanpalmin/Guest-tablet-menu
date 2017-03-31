@@ -33,7 +33,7 @@ export default {
             ajax.exec(options, function (response) {
                 console.log('------');
                 console.log(response.data);
-                if (response.data === '1'){
+                if (response.data == '1'){
                     console.log(item.positionId + ' добавлен.')
                 }
             });
