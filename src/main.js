@@ -77,7 +77,10 @@ const app = new Vue({
         }
     },
     mounted(){
-        console.log(this.$route);
+        // заполним исходное состояние корзины
+        ajax.exec({name : 'order'}, function(response){
+            state.appState.orders.currentState = response.data;
+        });
     },
     methods :{
         changeLanguage(){

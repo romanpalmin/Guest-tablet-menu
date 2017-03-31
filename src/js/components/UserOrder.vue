@@ -340,6 +340,7 @@
 
         },
         mounted(){
+            console.log(state.appState.orders.currentState);
             const self = this;
             this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
             this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
