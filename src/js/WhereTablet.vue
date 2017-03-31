@@ -1,22 +1,18 @@
 <template>
     <div>
         <div class="main-frame">
-            <button @click="getData">Обновить данные по столам и планшетам</button>
+            <button class="btn-refresh" @click="getData">{{words.button}}</button>
             <table class="main-table">
                 <tr>
-                    <th>Планшет</th>
-                    <th>Стол</th>
+                    <th>{{words.tablet}}</th>
+                    <th>{{words.table}}</th>
                 </tr>
-              <!--  <template>-->
+                <template v-for="item in list">
                     <tr>
-                        <td>2</td>
-                        <td>1</td>
+                        <td>{{item.planshet}}</td>
+                        <td>{{item.table}}</td>
                     </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>4</td>
-                    </tr>
-               <!-- </template>-->
+                </template>
             </table>
         </div>
     </div>
@@ -25,12 +21,20 @@
     .main-frame{
         width: 100%;
         text-align: center;
+        .btn-refresh{
+            width: 297px;
+            height: 40px;
+            margin-bottom: 30px;
+        }
         .main-table{
             text-align: center;
             background-color: #cecece;
             border-collapse: collapse;
-            td{
-                border: 1px;
+            margin: 0 auto;
+            color: black;
+            width: 300px;
+            td,th{
+                border: 1px solid;
             }
         }
     }
@@ -42,21 +46,40 @@
         data(){
             return{
                 msg:'',
-                list:{}
+                list:[]
+            }
+        },
+        computed:{
+            words: function(){
+                let words = {};
+                if (state.settings.language === 'ru'){
+                    words.button = 'Обновить данные по столам и планшетам';
+                    words.tablet='Планшет';
+                    words.table='Стол';
+                }
+                else {
+                    words.button = 'Refresh data';
+                    words.tablet='Tablet';
+                    words.table='Table';
+                }
+                return words;
             }
         },
         mounted(){
             this.$parent.showMenu = false;
-
+            this.getData();
+            setTimeout(function(){
+                this.getData();
+            }, state.settings.whereTabletFrequency);
         },
         methods:{
             getData(){
                 const self = this;
-                let options = {'name':'whereTablets'};
-                ajax.exec(operation, function (resp) {
+                ajax.exec({'name':'whereTablets'}, function (resp) {
                     self.list = resp.data;
                 });
-            }
+            },
+
         }
     }
 </script>

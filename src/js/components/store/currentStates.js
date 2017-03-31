@@ -17,6 +17,7 @@ export default {
         showButtons: true,
         updateStatePeriod: 1000*60*15,  // время обновления меню секунда * кол-во секунд * кол-во минут
         updateOrderFrequency: 1000*15, // время обновления состояния корзины
+        whereTabletFrequency: 1000*60, // определение положения планшета
         cryptoword: '101010',
         language: 'ru'
     },
