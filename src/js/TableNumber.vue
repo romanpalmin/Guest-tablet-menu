@@ -9,8 +9,9 @@
 <style scoped lang="less">
 .tableNameTitle{
     width: 100%;
-    height: 780px;
-    background-color: #000;
+    height: 93vh;
+
+
     color: #fff;
     font-size: xx-large;;
     text-align: center;
@@ -28,11 +29,6 @@
         computed:{
             tableNumber: function(){
                 return this.table;
-            }
-        },
-        watched: {
-            table : function(){
-                console.log('Данные изменились');
             }
         },
         mounted(){
