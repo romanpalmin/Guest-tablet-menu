@@ -4,6 +4,7 @@ export default {
     rebind: function (tableId) {
         state.appState.orders.currentState = [{positionId: 1, tableId: 555}, {positionId: 2, tableId: 555}];
         const order = state.appState.orders.currentState;
+        state.appState.TableNumberPrimary = tableId;
         console.log('Новый стол: ' + tableId);
         console.log(JSON.stringify(state.appState.orders.currentState));
         this.ajaxWorker(tableId, order);
@@ -18,7 +19,6 @@ export default {
             item.tableId = tabId;
             if (index === cntMax-1) {
                 state.appState.orders.currentState = order;
-                console.log(order);
                 self.addNewOrder(order);
             }
         });
@@ -39,6 +39,7 @@ export default {
             });*/
             if (index === cntMax-1) {
                 console.log(state.appState.orders.currentState);
+                console.log(state.appState.TableNumberPrimary);
             }
         });
 
