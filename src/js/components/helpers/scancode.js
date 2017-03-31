@@ -1,3 +1,4 @@
+import rebind from './rebindTable.js';
 export default function scanQrCode(router) {
     let isPressedUp = false;
     let isPressedDown = false;
@@ -132,10 +133,11 @@ export default function scanQrCode(router) {
     function startScan() {
         cordova.plugins.barcodeScanner.scan(
             function (result) {
-                alert("Получен штрих код: \n" +
+                rebind.rebind(result.text);
+                /*alert("Получен штрих код: \n" +
                     "Значение: " + result.text + "\n" +
                     "Формат: " + result.format + "\n" +
-                    "Отменен: " + result.cancelled);
+                    "Отменен: " + result.cancelled);*/
             },
             function (error) {
                 alert("Ошибка сканирования: " + error);

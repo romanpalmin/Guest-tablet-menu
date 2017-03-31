@@ -181,7 +181,8 @@
                     this.IsAddingToCart = true;
                     const options = {
                         name: 'addToOrder',
-                        positionId: this.positionId
+                        positionId: this.positionId,
+                        tableId: state.appState.TableNumberPrimary
                     };
                     ajax.exec(options, function (response) {
                             if (response.data === 1){
@@ -191,7 +192,7 @@
                                     self.IsAddingToCart = false;
                                 })
                             } else {
-                                this.IsAddingToCart = false;
+                                self.IsAddingToCart = false;
                             }
                       })
                 },

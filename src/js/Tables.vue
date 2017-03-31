@@ -41,6 +41,7 @@
 </style>
 <script>
     import state from './components/store/currentStates';
+    import rb from './components/helpers/rebindTable';
     export default{
         data(){
             return{
@@ -50,6 +51,7 @@
         methods:{
             getTableNumber( num ){
                 state.appState.TableNumber = num;
+                rb.rebind(state.appState.TableNumber);
                 this.$router.replace('/ru/menu');
             }
         }
