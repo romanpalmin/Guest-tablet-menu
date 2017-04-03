@@ -133,11 +133,13 @@ export default function scanQrCode(router) {
     function startScan() {
         cordova.plugins.barcodeScanner.scan(
             function (result) {
-                rebind.rebind(result.text);
-                /*alert("Получен штрих код: \n" +
+                if (!result.cancelled && result.format == 'CODE_93') {
+                    rebind.rebind(result.text);
+                }
+                alert("Получен штрих код: \n" +
                     "Значение: " + result.text + "\n" +
                     "Формат: " + result.format + "\n" +
-                    "Отменен: " + result.cancelled);*/
+                    "Отменен: " + result.cancelled);
             },
             function (error) {
                 alert("Ошибка сканирования: " + error);

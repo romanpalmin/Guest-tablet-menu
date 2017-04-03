@@ -52,6 +52,9 @@ function getUrl(operation) {
         case 'addToOrder':
             url = `groups=1&addcart=1&tovar=${operation.positionId}&table=${operation.tableId}`;
             break;
+        case 'rebuildTable':
+            url = `groups=1&addcart=1&rebuildtable=${operation.stringOfCodes}`;
+            break;
         case 'getTabletNumber':
             url = `groups=&usr=1`;
             break;

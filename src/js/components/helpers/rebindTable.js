@@ -10,20 +10,34 @@ export default {
     },
     ajaxWorker: function (tabId, order) {
         let cntMax = order.length;
+        let currCode = tabId + ';';
         const self = this;
         const operation = {name: 'clearOrder'};
-        ajax.exec(operation);
+        //ajax.exec(operation);
         order.forEach(function (item, index) {
             item.tableId = tabId;
+            currCode += item.code + ';';
             if (index === cntMax-1) {
                 state.appState.orders.currentState = order;
-                self.addNewOrder(order);
+                //self.addNewOrder(order);
+                self.addNewOrder(currCode);
             }
         });
     },
     addNewOrder: function (order) {
-        let options = {};
-        let cntMax = order.length;
+        console.log(order);
+        let options = {'name': 'rebuildTable', 'stringOfCodes': order};
+        console.log(options);
+        ajax.exec(options, function (response) {
+            console.log(response.data);
+            if (response.data == '1'){
+                console.log(order + ' добавлены.')
+            } else {
+                this.addNewOrder(order);
+            }
+        });
+
+        /*let cntMax = order.length;
         order.forEach(function (item, index) {
             let test = item.code;
             options = {
@@ -42,7 +56,7 @@ export default {
                 console.log(state.appState.orders.currentState);
                 console.log(state.appState.TableNumberPrimary);
             }
-        });
+        });*/
 
     }
 }
