@@ -25,6 +25,7 @@ export default {
         let options = {};
         let cntMax = order.length;
         order.forEach(function (item, index) {
+            let test = item.code;
             options = {
                 name: 'addToOrder',
                 positionId: item.code,
@@ -34,7 +35,7 @@ export default {
                 console.log('------');
                 console.log(response.data);
                 if (response.data == '1'){
-                    console.log(item.positionId + ' добавлен.')
+                    console.log(test + ' добавлен.')
                 }
             });
             if (index === cntMax-1) {
