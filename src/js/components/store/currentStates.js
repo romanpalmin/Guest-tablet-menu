@@ -1,9 +1,9 @@
 export default {
     settings:{
-        server:'http://tab02:02@10.100.50.248/',
+        server:'',
         ip: '10.100.50.248',
-        userName: 'tab02',
-        password:'02',
+        userName: '',
+        password:'',
        /* server:'http://10.10.182.11/',*/
         urlSmallImage:'img/',
         urlBigImage:'images/',

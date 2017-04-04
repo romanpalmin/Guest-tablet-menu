@@ -23,13 +23,7 @@ import bleLabels from  './js/components/helpers/defineBtLabel';
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 
-// выбираем номер планшета
-const tabletName = '01';
-//const tabletName = '02';
 
-state.settings.server = `http://tab${tabletName}:${tabletName}@10.100.50.248/`;
-state.settings.userName = `tab${tabletName}`;
-state.settings.password =`${tabletName}`;
 
 
 const routes = [

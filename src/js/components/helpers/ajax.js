@@ -2,11 +2,20 @@ import state from '../store/currentStates';
 import axios from 'axios';
 import crypt from './encryption.js';
 
+// выбираем номер планшета
+
+//const tabletName = '01';
+const tabletName = '02';
+state.settings.server = `http://tab${tabletName}:${tabletName}@${state.settings.ip}/`;
+state.settings.userName = `tab${tabletName}`;
+state.settings.password =`${tabletName}`;
+//-------------------------------
+
 const ip = state.settings.ip;
 const server = `${ip}/`;
 const user = state.settings.userName;
 const password = state.settings.password;
-const baseUrl = '/menu/hs/model?';
+const baseUrl = 'menu/hs/model?';
 let ajaxServerUrlShort = `http://${user}:${password}@${server}${baseUrl}`;
 let uuid = '';
 if (typeof device !== 'undefined') {
@@ -15,6 +24,7 @@ if (typeof device !== 'undefined') {
 } else {
     uuid = '10e00be6a70f0bcc'
 }
+console.log(ajaxServerUrlShort);
 function executeRequest(url, callback) {
     axios.get(ajaxServerUrlShort + url)
         .then(function (response) {
