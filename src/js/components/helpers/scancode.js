@@ -5,8 +5,6 @@ export default function scanQrCode(router) {
     let isPressedBack = false;
     let interval = 200;
     let maxInterval = 4000;
-    const isDebug = false;
-    const self = this;
 
     addEventListener("keydown", function (event) {
             let cnt = 0;
@@ -68,12 +66,6 @@ export default function scanQrCode(router) {
         let timerId = setInterval(function () {
             cnt += 1000;
             if (isPressedBack) {
-                /*if (isDebug) {
-                    startTestScan();
-                }
-                else {
-                    startScan();
-                }*/
                 startScan();
                 stopWaiting();
             }
@@ -133,13 +125,10 @@ export default function scanQrCode(router) {
     function startScan() {
         cordova.plugins.barcodeScanner.scan(
             function (result) {
-                if (!result.cancelled && result.format == 'CODE_93') {
+                if (!result.cancelled && result.format === 'CODE_93') {
                     rebind.rebind(result.text);
                 }
-                alert("Получен штрих код: \n" +
-                    "Значение: " + result.text + "\n" +
-                    "Формат: " + result.format + "\n" +
-                    "Отменен: " + result.cancelled);
+
             },
             function (error) {
                 alert("Ошибка сканирования: " + error);

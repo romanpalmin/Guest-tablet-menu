@@ -11,7 +11,7 @@ let ajaxServerUrlShort = `http://${user}:${password}@${server}${baseUrl}`;
 let uuid = '';
 if (typeof device !== 'undefined') {
     uuid = device.uuid;
-    alert(device.uuid);
+    //alert(device.uuid);
 } else {
     uuid = '10e00be6a70f0bcc'
 }
