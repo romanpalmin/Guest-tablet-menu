@@ -39,6 +39,11 @@ if (tabletNumber === '') {
 else {
     tabletNumber = state.appState.TabletNumber;
 }
+const tabletName = '02';
+
+state.settings.server = `http://tab${tabletName}:${tabletName}@10.100.50.248/`;
+state.settings.userName = `tab${tabletName}`;
+state.settings.password =`${tabletName}`;
 
 // получение списка допустимых меток
 operation = {name: 'getBle'};

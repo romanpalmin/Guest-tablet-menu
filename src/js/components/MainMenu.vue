@@ -154,6 +154,8 @@ import state from './store/currentStates';
 import ajax from './helpers/ajax.js';
 import axios from 'axios';
 import _ from 'lodash';
+
+
 export default {
     data(){
         return {
@@ -184,7 +186,7 @@ export default {
         tabView: function () {
             let res = this.ctgs.map(function (item) {
                 item.route = 'menu/' + item.code;
-                item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
+                item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlBigImage + ');';
                 return item;
             });
             return res;
