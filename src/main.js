@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import menu from './js/Menu.vue';
 import plainmenu from './js/components/PlainMenu.vue';
-import sidebar from './js/components/SideBar.vue';
 import userorder from './js/components/UserOrder.vue';
 import order from './js/Order.vue';
 import shedule from './js/Shedule.vue';
@@ -18,38 +17,19 @@ import upState from './js/components/helpers/updateState';
 import state from './js/components/store/currentStates';
 import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
-import bt from './js/components/helpers/bluetooth.js';
 import ajax from './js/components/helpers/ajax.js';
-import _ from 'lodash';
+import bleLabels from  './js/components/helpers/defineBtLabel';
 
-
-/*Vue.use(ajax);*/
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
-let operation = {};
-let tabletNumber = state.appState.TabletNumber;
-if (tabletNumber === '') {
-    operation.name = 'getTabletNumber';
-    ajax.exec(operation, function (resp) {
-        tabletNumber = resp.data;
-        state.appState.TabletNumber = resp.data;
-        document.getElementsByName('tabletNumber')[0].innerHTML = state.appState.TabletNumber;
-    });
-}
-else {
-    tabletNumber = state.appState.TabletNumber;
-}
-const tabletName = '02';
+
+// выбираем номер планшета
+const tabletName = '01';
+//const tabletName = '02';
 
 state.settings.server = `http://tab${tabletName}:${tabletName}@10.100.50.248/`;
 state.settings.userName = `tab${tabletName}`;
 state.settings.password =`${tabletName}`;
-
-// получение списка допустимых меток
-operation = {name: 'getBle'};
-ajax.exec(operation, function (resp) {
-    state.appState.BleLabels = resp.data;
-});
 
 
 const routes = [
@@ -78,14 +58,17 @@ const app = new Vue({
         return {
             TabletNumber: state.appState.TabletNumber,
             language: state.settings.language,
-            showMenu: true
+            showMenu: true,
         }
     },
     mounted(){
-        // заполним исходное состояние корзины
-        ajax.exec({name : 'order'}, function(response){
-            state.appState.orders.currentState = response.data;
-        });
+        this.initApp();
+        // определение меток для определения стола
+        bleLabels();
+        // сканирование QR-кода
+        scan(router);
+        //
+        scanBLE();
     },
     methods :{
         changeLanguage(){
@@ -102,6 +85,31 @@ const app = new Vue({
             //Array.from(state.appState.Category).forEach(function(item){
             for (let item in state.appState.Category){
                 state.appState.Category[item+''].currentState.length = 0;
+            }
+        },
+
+        initApp(){
+            let tabletNumber = state.appState.TabletNumber;
+            const self = this;
+            // заполним исходное состояние корзины
+            ajax.exec({name : 'order'}, function(response){
+                state.appState.orders.currentState = response.data;
+            });
+
+            // заполним исходноеколичество меток
+            ajax.exec({name: 'getBle'}, function (resp) {
+                state.appState.BleLabels = resp.data;
+            });
+
+            // получим номер планшета
+            if (tabletNumber === '') {
+                ajax.exec({name : 'getTabletNumber'}, function (resp) {
+                    self.TabletNumber = resp.data;
+                    state.appState.TabletNumber = resp.data;
+                });
+            }
+            else {
+                tabletNumber = state.appState.TabletNumber;
             }
         }
     },
@@ -126,7 +134,7 @@ const app = new Vue({
         </nav>
         
       </div>
-      <div class="tabletNumber" name="tabletNumber"></div>
+      <div class="tabletNumber" name="tabletNumber">{{TabletNumber}}</div>
       <div class="language" name="language" @click="changeLanguage()">{{language}}</div>
       </div>
       <div class="content">
@@ -141,179 +149,5 @@ let updateInterval = setInterval(function () {
 }, state.settings.updateStatePeriod);
 
 
-/*
- (function () {
- let url = state.settings.server + 'menu/hs/track/send/';
- /!*axios.post(url, {
- "data": 'BLUETOOTH=' + 'Тестовые данные'
- })
- .then(function (response) {
- alert('Тестовый запрос');
- })
- .catch(function (error) {
- console.log(error);
- });*!/
- var request = new XMLHttpRequest();
- request.open('POST', url, true);
- request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
- request.send('BLUETOOTH=Тестовые данные');
- })();
- */
 
 
-// Application code starts here. The code is wrapped in a
-// function closure to prevent overwriting global objects.
-;(function () {
-    // Dictionary of devices.
-    let devices = {};
-    let cntDevArr = [];
-    // Timer that displays list of devices.
-    let timer = null;
-
-    function onDeviceReady() {
-        // Start tracking devices!
-        setTimeout(startScan, 1000);
-
-        // Timer that refreshes the display.
-        timer = setInterval(updateDeviceList, 500);
-    }
-
-    function startScan() {
-        //showMessage('Scan in progress')
-        evothings.ble.startScan(
-            function (device) {
-
-                // Update device data.
-                device.timeStamp = Date.now();
-                devices[device.address] = device;
-            },
-            function (error) {
-                alert('BLE scan error: ' + error);
-            })
-    }
-
-    // Map the RSSI value to a value between 1 and 100.
-    function mapDeviceRSSI(rssi) {
-        if (rssi >= 0) return 1; // Unknown RSSI maps to 1.
-        if (rssi < -100) return 100; // Max RSSI
-        return 100 + rssi
-    }
-
-    function getSortedDeviceList(devices) {
-        let deviceList = [];
-
-        for (let key in devices) {
-            deviceList.push(devices[key]);
-        }
-
-        deviceList.sort(function (device1, device2) {
-            return mapDeviceRSSI(device1.rssi) < mapDeviceRSSI(device2.rssi)
-        });
-
-        return deviceList
-    }
-
-    function updateDeviceList() {
-        removeOldDevices();
-        displayDevices();
-    }
-
-    function removeOldDevices() {
-        let timeNow = Date.now();
-        for (let key in devices) {
-            // Only show devices updated during the last 60 seconds.
-            let device = devices[key];
-            if (device.timeStamp + 60000 < timeNow) {
-                delete devices[key];
-            }
-        }
-    }
-
-    function SendRequestBLE(html) {
-        let url = state.settings.server + 'menu/hs/track/send/';
-        const request = new XMLHttpRequest();
-        request.open('POST', url, true);
-        request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-        request.send(html);
-    }
-
-
-    function displayDevices() {
-        let html = '';
-        let devArr = [];
-        let sortedList = getSortedDeviceList(devices);
-        for (let i = 0; i < sortedList.length; ++i) {
-            let device = sortedList[i];
-            let htmlDevice = "" + htmlDeviceUuid(device) + ";" + htmlDeviceRSSI(device) + "<br>";
-            html += htmlDevice;
-            let dev = {BLE: htmlDeviceUuid(device), rssi: htmlDeviceRSSI(device)};
-            devArr.push(dev);
-            if (i === sortedList.length - 1) {
-                if (cntDevArr.length < 5) {
-                    cntDevArr.push(devArr);
-                } else {
-                    cntDevArr.unshift((devArr));
-                    cntDevArr.pop();
-                }
-
-                if (cntDevArr.length === 5) {
-                    DefineTableNumber(cntDevArr);
-                }
-            }
-        }
-        SendRequestBLE(html);
-    }
-
-    function DefineTableNumber(arr) {
-        let tableNumber;
-        let resultObjArr = [];
-        let currentAvailablesArrays = [];
-        let curArray = [];
-        let result;
-        for (let i = 0; i < arr.length; i++) {
-            for (let k = 0; k < arr[i].length; k++) {
-                curArray.push({'BLE': arr[i][k].BLE, 'rssi': arr[i][k].rssi});
-            }
-            currentAvailablesArrays.push(intersectionArray(curArray));
-        }
-        currentAvailablesArrays.forEach(function(item){
-            let currentMax = _.max(item, 'rssi');
-            resultObjArr.push(currentMax);
-        });
-
-        result = _.uniqBy(resultObjArr, 'rssi' && 'BLE');
-        result =_.max(result, 'rssi');
-
-        tableNumber = (_.find(state.appState.BleLabels, {'BLE' : result.BLE})).table;
-        state.appState.TableNumberPrimary = tableNumber;
-    }
-
-    function intersectionArray(arr) {
-        return _.intersectionBy(arr, state.appState.BleLabels, 'BLE');
-
-    }
-
-    function htmlDeviceName(device) {
-        const name = device.name || 'no name';
-        return '<strong>' + name + '</strong><br/>';
-    }
-
-    function htmlDeviceRSSI(device) {
-        return device.rssi ?
-            '' + device.rssi : '';
-    }
-
-    function htmlDeviceUuid(device) {
-        return device.address || 'no address';
-    }
-
-
-    // This calls onDeviceReady when Cordova has loaded everything.
-    document.addEventListener('deviceready', onDeviceReady, false);
-
-
-})(); // End of closure.
-// Сканирование QR-кода или переход к ручному выбору стола
-scan(router);
-
-scanBLE();
