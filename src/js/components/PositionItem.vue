@@ -243,10 +243,28 @@
                     }
                 },
                 infoMessageBreakfast: function(){
-                    return 'Завтраки подаются с 8.00 до 12.00';
+                    let msg = '';
+                    let language = state.settings.language;
+                    switch (language){
+                        case 'ru':
+                            msg = 'Завтраки подаются с 8.00 до 12.00';
+                            break;
+                        case 'en':
+                            msg = 'Breakfast are served from 8.00 to 12.00';
+                    }
+                    return msg;
                 },
                 infoMessageLunch: function(){
-                    return 'Ланчи подаются по будним дням с 12.00 до 16.00';
+                    let msg = '';
+                    let language = state.settings.language;
+                    switch (language){
+                        case 'ru':
+                            msg = 'Ланчи подаются по будним дням с 12.00 до 16.00';
+                            break;
+                        case 'en':
+                            msg = 'Lunches are served on weekdays from 12.00 to 16.00';
+                    }
+                    return msg;
                 }
             },
 
