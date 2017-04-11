@@ -1,21 +1,44 @@
 <template>
     <div>
         <div class="content-item-container">
-            <div class="item-close"><img class="item-image" :src = "urlClose" @click="$parent.showDetails=false">
+            <div class="item-close"><img class="item-image" :src="urlClose" @click="$parent.showDetails=false">
             </div>
             <div class="inner-item-container">
                 <div class="item-column-image">
-                     <img :src="urlFromParents" class="item-image">
+                    <img :src="urlFromParents" class="item-image" :style="lighting">
+                    <div class="current-vitrina" v-if="yacheikaFromParent!==''">
+                        <span>Витрина: {{vitrinaFromParent}}</span>
+                        <span>Ячейка: {{yacheikaFromParent*1}}</span>
+                    </div>
                 </div>
                 <div class="item-column-data">
                     <div class="h1-item">{{nameFromParent | deleteQuotes | deleteNewLines}}</div>
                     <div class="p-item">{{descriptionFromParent | deleteQuotes | deleteNewLines}}</div>
                     <div class="item-price">{{priceFromParent | deleteQuotes | deleteNewLines}} P</div>
-                        <div class="item-bottom-buttons" v-if="showButtons">
-                            <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle"> {{addingToCartTitle}} </div>
-                            <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp(yacheikaFromParent)"> Показать </div>
+
+                    <div class="related-items" v-if="codeFromParent === '472020' && !isActive">{{infoMessageBreakfast}}</div>
+                    <div class="related-items" v-if="codeFromParent === '482020' && !isActive">{{infoMessageLunch}}</div>
+
+                    <div class="item-bottom-buttons" v-if="showButtons">
+                        <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle">
+                            {{addingToCartTitle}}
                         </div>
+                        <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp(yacheikaFromParent)">
+                            Показать
+                        </div>
+
+                    <div class="related-items" v-if="relatedFromParent.length!==0">
+                        <div v-for="rel in relatedFromParent" :data-Code="rel.code" @click="add2CartAdditional(rel.code)" :style="addingToCartStyleAdditional">
+                            <div :style="getRelatedStyle(rel)" class="related-item">
+                                <div class="related-item-price product-top-block-price" :data-Code="rel.code">
+                                    {{rel.price}}
+                                </div>
+                                <div class="related-item-title">{{rel.name | deleteQuotes}}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+
 
             </div>
         </div>
@@ -33,7 +56,10 @@
         opacity: 0.99;
         position: fixed;
 
-
+        .current-vitrina {
+            width: 90%;
+            text-align: center;
+        }
 
         .item-close {
             top: 6%;
@@ -49,6 +75,7 @@
             }
         }
         .inner-item-container {
+
             width: 90%;
             height: 70%;
             top: 5%;
@@ -70,6 +97,42 @@
                 }
             }
             .item-column-data {
+                .related-items {
+                    float: left;
+                    width: 100%;
+                    .related-item {
+                        min-width: 100px;
+                        min-height: 100px;
+                        padding: 10px;
+                        float: right;
+                        margin: 20px;
+                        background-size: cover;
+                        border-radius: 30px;
+                        position: relative;
+                        .related-item-price {
+                            display: table-cell;
+                            width: 80px;
+                            height: 80px;
+                            background-size: cover;
+                            color: #000;
+                            /* background-color: #965c5c; */
+                            position: absolute;
+                            right: -25px;
+                            top: -20px;
+                            line-height: 55px;
+                            text-align: center;
+                            padding-left: 8px;
+                            padding-top: -20px;
+                            margin-bottom: 10px;
+                        }
+                        .related-item-title{
+                            position: absolute;
+                            bottom: -70px;
+                            text-align: center;
+                            min-height: 70px;
+                        }
+                    }
+                }
                 display: inline-block;
                 padding-left: 30px;
                 padding-top: 15px;
@@ -143,7 +206,8 @@
                     positionSet : {},
                     urlClose : '',
                     addToCartBtn: '',
-                    IsAddingToCart: false
+                    IsAddingToCart: false,
+                    IsAddingAdditonal: false
                 }
             },
             filters:{
@@ -160,19 +224,33 @@
             },
 
             computed:{
+                codeFromParent: function() {return this.code},
+                isActive: function() {return this.activeTime},
                 urlFromParents : function() {return state.settings.server + state.settings.urlBigImage + this.urlImageLarge;},
                 priceFromParent : function () {return this.price;},
                 nameFromParent : function () {return this.name;},
                 descriptionFromParent : function() {return this.description},
                 yacheikaFromParent: function () { return this.yacheika },
-                addingToCartTitle : function(){ return this.IsAddingToCart ? 'Добавление' : 'Выбрать';},
-                addingToCartStyle: function() { return this.IsAddingToCart ? "background:#dbdbd7" : '';},
-                showButtons: function(){
-                    return state.settings.showButtons && this.activeTime
+                addingToCartTitle : function(){ return this.IsAddingToCart  ? 'Добавление' : 'Выбрать';},
+                addingToCartStyle: function() { return this.IsAddingToCart  ? "background:#dbdbd7" : '';},
+                addingToCartStyleAdditional: function() { return this.IsAddingAdditonal ? "opacity:0.5" : '1';},
+                showButtons: function(){ return state.settings.showButtons && this.activeTime ;},
+                vitrinaFromParent: function(){ return this.vitrina ;},
+                relatedFromParent: function(){ return this.related ;},
+                lighting: function(){
+                    if (this.yacheika!==''){
+                        return ';box-shadow: 0px 0px 30px #CCDDFF;';
+                    }
+                },
+                infoMessageBreakfast: function(){
+                    return 'Завтраки подаются с 8.00 до 12.00';
+                },
+                infoMessageLunch: function(){
+                    return 'Ланчи подаются по будним дням с 12.00 до 16.00';
                 }
             },
 
-            props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika', 'activeTime'],
+            props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika', 'activeTime', 'vitrina', "related", "code"],
 
             methods:{
                 add2cart: function(id){
@@ -197,6 +275,28 @@
                       })
                 },
 
+                add2CartAdditional: function(id){
+                    if (this.IsAddingAdditonal) return;
+                    let self = this;
+                    this.IsAddingAdditonal = true;
+                    const options = {
+                        name: 'addToOrder',
+                        positionId: id,
+                        tableId: state.appState.TableNumberPrimary
+                    };
+                    ajax.exec(options, function (response) {
+                            if (response.data === 1){
+                                options.name = 'order';
+                                ajax.exec(options, function(response){
+                                    state.appState.orders.currentState = response.data;
+                                    self.IsAddingAdditonal = false;
+                                })
+                            } else {
+                                self.IsAddingAdditonal = false;
+                            }
+                      })
+                },
+
                 showInLamp: function(id){
                     console.log('Подсвечиваем товар и шлем обратно');
                     const operation = {
@@ -215,7 +315,6 @@
 
                     this.axios.get(url)
                         .then( (response) => {
-                            console.log(response.data);
                             this.positionSet = response.data;
                         })
                         .catch(function (error) {
@@ -223,6 +322,9 @@
                         });
 
                 },
+                getRelatedStyle: function(item){
+                    return 'background-image: url(' + state.settings.server + state.settings.urlBackImage + item.urlImage + ');';
+                }
 
             },
 
@@ -231,4 +333,5 @@
                 this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
             }
     }
+
 </script>
