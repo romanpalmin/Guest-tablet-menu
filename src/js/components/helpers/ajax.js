@@ -8,6 +8,7 @@ const user =  state.settings.userName;
 const password = state.settings.password;
 const baseUrl = '/menu/hs/model?';
 let ajaxServerUrlShort = `http://${user}:${password}@${server}${baseUrl}`;
+let uuid = '';
 
 function executeRequest(url, callback) {
     axios.get(ajaxServerUrlShort + url)
@@ -61,7 +62,8 @@ function getUrl(operation){
             url = '';
             break;
     }
-    return url !== '' ? url + '&uuid=' + crypt(state.settings.cryptoword) : '';
+    return url !== '' ? url + '&uuid=' + crypt(uuid) : '';
+    //return url !== '' ? url : '';
 }
 
 export default {
