@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import menu from './js/Menu.vue';
 import plainmenu from './js/components/PlainMenu.vue';
 import userorder from './js/components/UserOrder.vue';
@@ -22,7 +23,9 @@ import bleLabels from  './js/components/helpers/defineBtLabel';
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
+Vue.use(Vuex);
 
+import store from './store';
 
 
 
@@ -55,6 +58,7 @@ const app = new Vue({
             showMenu: true,
         }
     },
+    store,
     mounted(){
         this.initApp();
         // определение меток для определения стола
