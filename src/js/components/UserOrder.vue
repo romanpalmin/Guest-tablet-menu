@@ -243,11 +243,11 @@
 
         methods:{
             showState: function() {
-                console.log(orderState);
+                //console.log(orderState);
             },
 
              showArr: function() {
-                console.log(this.currentPressedKey);
+                //console.log(this.currentPressedKey);
             },
 
             isInArray: function(id){

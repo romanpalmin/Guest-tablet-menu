@@ -175,13 +175,20 @@
         data(){
             return{
                 msg:'hello vue',
-                ctgs: []
+                ctgs: state.appState.MenuPoints
+            }
+        },
+
+        watched:{
+            state: function(){
+                console.log('Что-то изменилось');
             }
         },
         computed: {
             ctgs_with_params: function() {
                 var self = this;
-                var res = this.ctgs.map(function(item) {
+                console.log(state.appState.MenuPoints);
+                this.ctgs = this.ctgs.map(function(item) {
                     item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
                     item.route = '/' + state.settings.language + '/menu/'+ item.code;
 
@@ -192,21 +199,22 @@
                     }
                     return item;
                 });
-                return res;
+                return this.ctgs;
             }
         },
         mounted(){
              var self = this;
              this.urlLogo = state.settings.server +  state.settings.urlSmallImage + state.settings.images.logo;
              const operation = {};
+             console.log('сайд ' + state.appState.MenuPoints.length);
              if (state.appState.MenuPoints.length > 0){
                  self.ctgs = state.appState.MenuPoints;
-                 } else {
+                /* } else {
                     operation.name = 'categories';
                     ajax.exec(operation, function(resp){
                         self.ctgs = resp.data;
                         state.appState.MenuPoints = resp.data;
-                 });
+                 });*/
              }
         }
     }
