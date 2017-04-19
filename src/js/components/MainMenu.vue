@@ -8,6 +8,7 @@
                             <div class="root-icon-image" :style="item.style">
                                 <div class="root-icon-descr">
                                     {{ item.name }}
+
                                 </div>
                             </div>
                         </a>
@@ -26,6 +27,7 @@
                                         <div class="root-icon-image-bottom">
                                             <div class="root-icon-descr">
                                                 {{ mainPosition.name }}
+
                                             </div>
                                         </div>
                                     </a>
@@ -45,6 +47,7 @@
                                         </div>
                                         <div class="root-icon-descr">
                                             {{ item.name }}
+
                                         </div>
                                     </div>
                                 </a>
@@ -59,8 +62,8 @@
 </template>
 
 <style scoped lang="less">
-    .frame{
-        width:600px;
+    .frame {
+        width: 600px;
         height: 500px;
     }
 
@@ -150,132 +153,142 @@
 </style>
 <script>
 
-import state from './store/currentStates';
-import ajax from './helpers/ajax.js';
-import axios from 'axios';
-import _ from 'lodash';
+    import state from './store/currentStates';
+    import ajax from './helpers/ajax.js';
+    import axios from 'axios';
+    import _ from 'lodash';
 
 
-export default {
-    data(){
-        return {
-            ctgs: [],
-            showTabletView: true,
-            mainPosition: {},
-            isDebug:false,
-            isTablet: state.settings.isTablet,
-            currentLanguage: state.settings.language
-        }
-    },
-
-    watch:{
-        ctgs: function(){
-            if(!this.isTablet){
-                this.showTabletView = this.defineView();
-            }
-            if (!this.showTabletView){
-                this.mainPosition = this.populateMainPosition();
+    export default {
+        data(){
+            return {
+                ctgs: [],
+                showTabletView: true,
+                mainPosition: {},
+                isDebug: false,
+                isTablet: state.settings.isTablet,
+                currentLanguage: state.settings.language,
+                test: true
             }
         },
-        $route: function(){
-            this.getData();
-        }
-    },
 
-    computed: {
-        tabView: function () {
-            let res = this.ctgs.map(function (item) {
-                item.route = 'menu/' + item.code;
-                item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlBigImage + ');';
-                return item;
-            });
-            return res;
+        watch: {
+            ctgs: function () {
+                if (!this.isTablet) {
+                    this.showTabletView = this.defineView();
+                }
+                if (!this.showTabletView) {
+                    this.mainPosition = this.populateMainPosition();
+                }
+            },
+            $route: function () {
+                this.getData();
+            }
         },
 
-        ctgs_bottom: function () {
-            let mainDish = this.populateMainPosition();
-            let res = this.ctgs.map(function (item) {
-                item.route = 'menu/' + item.code;
-                return item;
-            });
-            res = _.filter(res, function(item){return item.code !== mainDish.code});
-            return res;
-        },
-    },
-
-    methods: {
-        getResponce(){
-            var self = this;
-            const operation = {};
-            operation.name = 'categories';
-            ajax.exec(operation, function (resp) {
-                self.ctgs = resp.data;
-                state.appState.MenuPoints = self.ctgs;
-            });
-        },
-        getJsonCtgs(){
-            var self = this;
-            const operation = {};
-            this.axios.get('./ctgs.js')
-                .then(function (response) {
-                   self.ctgs = response.data;
-                   state.appState.MenuPoints = self.ctgs;
-                })
-                .catch(function (error) {
-                    console.log(error);
+        computed: {
+            tabView: function () {
+                let res = this.ctgs.map(function (item) {
+                    item.route = 'menu/' + item.code;
+                    item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlBigImage + ');';
+                    return item;
                 });
+                return res;
+            },
+
+            ctgs_bottom: function () {
+                let mainDish = this.populateMainPosition();
+                let res = this.ctgs.map(function (item) {
+                    item.route = 'menu/' + item.code;
+                    return item;
+                });
+                res = _.filter(res, function (item) {
+                    return item.code !== mainDish.code
+                });
+                return res;
+            },
         },
 
-        getData(){
-            if (this.isDebug){
-                this.getJsonCtgs();
+        methods: {
+            getResponce(){
+                var self = this;
+                self.test = !self.test;
+                const operation = {};
+                operation.name = 'categories';
+                ajax.exec(operation, function (resp) {
+                    if (self.test) {
+                        self.ctgs = resp.data;
+                    } else {
+                        self.ctgs = _.reverse(resp.data)
+                    }
+                    state.appState.MenuPoints = [];
+                    state.appState.MenuPoints =  self.ctgs;
+                });
+            },
+            getJsonCtgs(){
+                let self = this;
+                const operation = {};
+                this.axios.get('./ctgs.js')
+                    .then(function (response) {
+                        self.ctgs = response.data;
+                        state.appState.MenuPoints = self.ctgs;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+
+            getData(){
+                if (this.isDebug) {
+                    this.getJsonCtgs();
+                }
+                else {
+                    this.getResponce();
+                }
+            },
+
+            defineView(){
+                let notActive = _.filter(this.ctgs, {activeTime: '0'});
+                return (notActive.length === 2);
+            },
+
+            populateMainPosition(){
+                let ret = {};
+                ret = _.filter(this.ctgs, function (o) {
+                    return o.activeTime === '1' && (o.breakfast === '1' || o.lanhc === '1')
+                });
+                if (ret.length > 0) {
+                    ret[0].route = 'menu/' + ret[0].code;
+                    ret[0].img = state.settings.server + state.settings.urlBigImage + ret[0].urlBigImage;
+                    return ret[0];
+                }
+            },
+            getImageSrc(item){
+                return state.settings.server + state.settings.urlBigImage + item.urlSmallImage;
+            },
+
+            getImageSrcBig(item){
+                return state.settings.server + state.settings.urlBigImage + item.urlBigImage;
+            },
+        },
+
+        mounted(){
+            const self = this;
+            this.currentLanguage = state.settings.language;
+            if (state.appState.MenuPoints.length > 0) {
+                self.ctgs = state.appState.MenuPoints;
+            } else {
+                this.getData();
             }
-            else {
-                this.getResponce();
-            }
-        },
 
-        defineView(){
-            let notActive = _.filter(this.ctgs, {activeTime: '0'});
-            return (notActive.length === 2);
-        },
+            let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
 
-        populateMainPosition(){
-            let ret = {};
-            ret = _.filter(this.ctgs, function(o){return o.activeTime === '1' && (o.breakfast === '1' || o.lanhc === '1')});
-             if (ret.length > 0) {
-                ret[0].route = 'menu/' + ret[0].code;
-                ret[0].img = state.settings.server + state.settings.urlBigImage + ret[0].urlBigImage;
-                return ret[0];
-             }
-        },
-        getImageSrc(item){
-            return state.settings.server + state.settings.urlBigImage + item.urlSmallImage;
-        },
-
-        getImageSrcBig(item){
-            return state.settings.server + state.settings.urlBigImage + item.urlBigImage;
-        },
-    },
-
-    mounted(){
-        const self = this;
-        this.currentLanguage = state.settings.language;
-        if (state.appState.MenuPoints.length > 0) {
-            self.ctgs = state.appState.MenuPoints;
-        } else {
-           this.getData();
+            let upTimer = setInterval(function () {
+                console.log('получение данных');
+                self.getData();
+            }, 15000);
         }
-
-        this.$on()
-
-        let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
-
-        let upTimer = setInterval(function () {
-             self.getData();
-        }, 15000);
     }
-}
 
 
 </script>
