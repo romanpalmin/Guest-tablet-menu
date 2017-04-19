@@ -4,14 +4,20 @@ import _ from 'lodash';
 Vue.use(Vuex);
 import * as m_types from './mutations-types'
 import * as a_types from './actions-types'
-//import ajax from '/src/js/components/helpers/ajax.js'
-import ajax from './../js/components/helpers/ajax.js'
+import ajax from '/js/components/helpers/ajax.js';
 const operation = {};
 let test = true;
 const store = new Vuex.Store({
-    /*strict: process.env.NODE_ENV !== 'production',*/
     state: {
         app: {
+            server: '',
+            urlSmallImage: 'img/',
+            urlBigImage: 'images/',
+            urlBackImage: 'images',
+            images: {
+                logo: 'beer-zha.png',
+                close: 'close.png'
+            },
             MenuPoints: []
         }
     },
@@ -21,11 +27,10 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        [a_types.GET_CATEGORY]({ commit, state }){
+        [a_types.GET_CATEGORY](state){
             let res = [];
             operation.name = 'categories';
             test = !test;
-            let self = this;
             ajax.exec(operation, function (resp) {
                 if (test) {
                     //state.appState.MenuPoints = _.reverse(resp.data);

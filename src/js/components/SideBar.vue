@@ -16,7 +16,7 @@
                                        :data-code="item.code"
                                        :class="item.newClass"
                                        :style="item.style"
-                                       >
+                                    >
                                         {{ item.name }}
                                     </a>
                                 </router-link>
@@ -173,26 +173,21 @@
     import ajax from './helpers/ajax.js';
     export default{
         data(){
-            return{
-                msg:'hello vue',
-                ctgs: state.appState.MenuPoints
+            return {
+                msg: 'hello vue',
+                ctgs: this.$store.state.app.MenuPoints,
+                storeSettings: this.$store.state.settings
             }
         },
 
-        watched:{
-            state: function(){
-                console.log('Что-то изменилось');
-            }
-        },
         computed: {
-            ctgs_with_params: function() {
+            ctgs_with_params: function () {
                 var self = this;
-                console.log(state.appState.MenuPoints);
-                this.ctgs = this.ctgs.map(function(item) {
+                this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
                     item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
-                    item.route = '/' + state.settings.language + '/menu/'+ item.code;
+                    item.route = '/' + state.settings.language + '/menu/' + item.code;
 
-                    if (+item.code ===+self.$route.params.id){
+                    if (+item.code === +self.$route.params.id) {
                         item.newClass = 'menu__link--current';
                     } else {
                         item.newClass = '';
@@ -200,22 +195,18 @@
                     return item;
                 });
                 return this.ctgs;
+            },
+            urlLogo:function(){
+                return state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
             }
         },
         mounted(){
-             var self = this;
-             this.urlLogo = state.settings.server +  state.settings.urlSmallImage + state.settings.images.logo;
-             const operation = {};
-             console.log('сайд ' + state.appState.MenuPoints.length);
-             if (state.appState.MenuPoints.length > 0){
-                 self.ctgs = state.appState.MenuPoints;
-                /* } else {
-                    operation.name = 'categories';
-                    ajax.exec(operation, function(resp){
-                        self.ctgs = resp.data;
-                        state.appState.MenuPoints = resp.data;
-                 });*/
-             }
+            //this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
+            console.log('сайд ' + state.appState.MenuPoints.length);
+            if (this.$store.state.app.MenuPoints.length === 0) {
+                this.ctgs = this.$store.dispatch('GET_CATEGORY');
+            }
         }
+
     }
 </script>

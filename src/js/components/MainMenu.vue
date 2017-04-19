@@ -81,7 +81,6 @@
                 test: true
             }
         },
-
         watch: {
             ctgs: function () {
             },
@@ -92,7 +91,7 @@
 
         computed: {
             tabView: function () {
-                this.ctgs = this.ctgs.map(function (item) {
+                this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
                     item.route = 'menu/' + item.code;
                     item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlBigImage + ');';
                     return item;
@@ -103,24 +102,8 @@
 
         methods: {
             getResponce(){
-                let self = this;
-                self.test = !self.test;
-                const operation = {};
-                operation.name = 'categories';
-                ajax.exec(operation, function (resp) {
-                    if (self.test) {
-                        state.appState.MenuPoints = _.reverse(resp.data);
-                    }
-                    else {
-                        state.appState.MenuPoints = resp.data;
-                    }
-                    console.log(666);
-                    console.log(state.appState.MenuPoints);
-                    self.ctgs = state.appState.MenuPoints.filter(function(item){
-                        return item;
-                    })
-                });
-            },
+                this.$store.dispatch('GET_CATEGORY');
+             },
             getJsonCtgs(){
                 let self = this;
                 this.axios.get('./ctgs.js')
@@ -159,6 +142,8 @@
             } else {
                 this.getData();
             }
+
+            console.log(this.$store.state);
 
             let upTimer = setInterval(function () {
                 self.getData();
