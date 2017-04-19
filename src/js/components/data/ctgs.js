@@ -1,12 +1,12 @@
 export default [
     {
-        "name": "Майское меню",
+        "name": "Сеты",
         "code": "222222",
         "activeTime": "1",
         "breakfast": "0",
         "lanhc": "0",
         "urlSmallImage": "/b9b42dfa-b53a-11e6-80c0-0cc47ac6971c-sm.png",
-        "urlBigImage": "/b9b42dfa-b53a-11e6-80c0-0cc47ac6971c-big.png"
+        "urlBigImage": "/newpatch6-b426-11e6-80be-0cc47ac6971c-big.png"
     },
     {
         "name": "БУРГЕРЫ",

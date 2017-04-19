@@ -83,7 +83,7 @@
             color: #FFFFFF;
             position: relative;
             height: 35px;
-            top: 280px;
+            top: 230px;
             text-align: center;
             padding-top: 5px;
         }
@@ -211,7 +211,7 @@
 
         methods: {
             getResponce(){
-                var self = this;
+                let self = this;
                 const operation = {};
                 operation.name = 'categories';
                 ajax.exec(operation, function (resp) {
