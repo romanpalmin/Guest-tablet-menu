@@ -9,6 +9,8 @@
                                 <div class="root-icon-descr">
                                     {{ item.name }}
 
+
+
                                 </div>
                             </div>
                         </a>
@@ -27,6 +29,8 @@
                                         <div class="root-icon-image-bottom">
                                             <div class="root-icon-descr">
                                                 {{ mainPosition.name }}
+
+
 
                                             </div>
                                         </div>
@@ -47,6 +51,8 @@
                                         </div>
                                         <div class="root-icon-descr">
                                             {{ item.name }}
+
+
 
                                         </div>
                                     </div>
@@ -167,8 +173,7 @@
                 mainPosition: {},
                 isDebug: false,
                 isTablet: state.settings.isTablet,
-                currentLanguage: state.settings.language,
-                test: true
+                currentLanguage: state.settings.language
             }
         },
 
@@ -211,23 +216,17 @@
 
         methods: {
             getResponce(){
-                var self = this;
-                self.test = !self.test;
+                let self = this;
                 const operation = {};
                 operation.name = 'categories';
                 ajax.exec(operation, function (resp) {
-                    if (self.test) {
-                        self.ctgs = resp.data;
-                    } else {
-                        self.ctgs = _.reverse(resp.data)
-                    }
+                    self.ctgs = resp.data;
                     state.appState.MenuPoints = [];
-                    state.appState.MenuPoints =  self.ctgs;
+                    state.appState.MenuPoints = self.ctgs;
                 });
             },
             getJsonCtgs(){
                 let self = this;
-                const operation = {};
                 this.axios.get('./ctgs.js')
                     .then(function (response) {
                         self.ctgs = response.data;
@@ -284,7 +283,6 @@
             let title = state.settings.isTablet ? 'Планшет' : 'Уличный стенд';
 
             let upTimer = setInterval(function () {
-                console.log('получение данных');
                 self.getData();
             }, 15000);
         }
