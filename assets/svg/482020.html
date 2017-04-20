@@ -2,26 +2,18 @@
         <html>
         <head>
         <style>
-        .svg{
-				background-color: green;
+        svg{
+            background-color: #FFFFFF;
         }
-		.bottom{
-			position: absolute;
-			bottom: 0px;
-			height:300px;
-			width:300px;
-			background-color:red;
-		}
         </style>
         </head> 
         
         <body> 
-		<div class="bottom" id="svg"></div>
     <script src="snap.svg-min.js"></script>
     <script src="SnapSVGAnimator.min.js"></script>
 
     <script type="text/javascript"> 
-        var jsonfile = "1.json",
+        var jsonfile = "482020.json",
             fps = 24,
             width = 500,
             height = 500,
@@ -33,16 +25,12 @@
         if( AJAX_req.readyState == 4 && AJAX_req.status == 200 )
         {
             json = JSON.parse(AJAX_req.responseText);
-			var container = document.getElementById("svg");
             comp = new SVGAnim(
                            json,
                            width,
                            height,
                            fps
                            );
-						   
-			console.log(comp.s);
-			container.appendChild(comp.s.node); 			   
             
         }
     }

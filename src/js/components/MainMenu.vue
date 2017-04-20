@@ -168,8 +168,8 @@
                 svg: {
                     jsonfile: '',
                     fps: 24,
-                    width: 200,
-                    height: 200,
+                    width: 500,
+                    height: 500,
                     AJAX_req: ''
                 },
                 svgUrl: '',
