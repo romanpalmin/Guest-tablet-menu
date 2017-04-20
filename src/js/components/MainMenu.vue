@@ -255,8 +255,6 @@
                 ret = _.filter(this.ctgs, function (o) {
                     return o.activeTime === '1' && (o.zavtrak === '1' || o.lunch === '1')
                 });
-                console.log('Проверка завтраков/ланчей');
-                console.log(ret);
 
                 if (ret.length > 0) {
                     ret[0].route = 'menu/' + ret[0].code;
