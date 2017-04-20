@@ -14,7 +14,9 @@ const store = new Vuex.Store({
             MenuPoints: [],
             TabletNumber: 0,
             BleLabels: [],
-            orders: []
+            orders: [],
+            Category: {},
+            show: []
         }
     },
     mutations: {
@@ -23,6 +25,13 @@ const store = new Vuex.Store({
         },
         [m_types.SET_SETTINGS](state, payload){
             state.settings = payload;
+        },
+        [m_types.SET_CATEGORY_POSITIONS](state, payload){
+            state.app.Category = payload;
+        },
+        [m_types.POPULATE_CATEGORY](state, payload){
+            state.app.Category[payload.currentId].currentState = payload.currentData;
+            console.log();
         },
         [m_types.SET_TABLET_NUMBER](state, payload){
             state.app.TabletNumber = payload;
@@ -52,24 +61,40 @@ const store = new Vuex.Store({
         },
         [a_types.GET_TABLET_NUMBER]({commit}){
             ajax.exec({name: 'getTabletNumber'}, function (resp) {
-                console.log('Номер планшета ' + resp.data);
                 commit('SET_TABLET_NUMBER', resp.data);
             });
         },
         [a_types.GET_BLE]({commit}){
             ajax.exec({name: 'getBle'}, function (resp) {
-                //state.appState.BleLabels = resp.data;
-                console.log('Метки:');
-                console.log(resp.data);
                 commit('SET_BLE_LABEL', resp.data);
             });
         },
         [a_types.GET_ORDERS]({commit}){
             ajax.exec({name: 'order'}, function (resp) {
-                console.log('Заказ:');
-                console.log(resp.data);
-                commit('SET_ORDERS');
+                commit('SET_ORDERS', resp.data);
             });
+        },
+        [a_types.GET_POSITIONS]({commit}, payload){
+            let positionsList = [];
+            operation.name = 'positions';
+            operation.catId = payload;
+            ajax.exec(operation, function (response) {
+                formatJson(response.data);
+            });
+
+            function formatJson(resp) {
+                if (resp.length === 1) {
+                    if (resp[0].tovar) {
+                        positionsList = resp[0];
+                    }
+                    else {
+                        positionsList = resp;
+                    }
+                } else {
+                    positionsList = resp;
+                }
+                commit('POPULATE_CATEGORY', {currentId: payload, currentData: positionsList});
+            }
         }
     }
 });

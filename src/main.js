@@ -18,16 +18,14 @@ import upState from './js/components/helpers/updateState';
 import state from './js/components/store/currentStates';
 import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
-import ajax from './js/components/helpers/ajax.js';
 import bleLabels from  './js/components/helpers/defineBtLabel';
-import settings from './settings.js';
+import settings from './store/structures/settings.js';
+import categoryPositions from './store/structures/categoryPositions';
+import store from './store';
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
-
-import store from './store';
-
 
 const routes = [
     {name: 'menu', path: '/:lang/menu', component: menu},
@@ -60,8 +58,6 @@ const app = new Vue({
     },
     store,
     mounted(){
-        this.initApp();
-
         this.init();
 
         // определение меток для определения стола
@@ -86,14 +82,16 @@ const app = new Vue({
 
         emptyCache(){
             state.appState.MenuPoints.length = 0;
+            this.$store.state.app.MenuPoints.length = 0;
             //Array.from(state.appState.Category).forEach(function(item){
-            for (let item in state.appState.Category) {
-                state.appState.Category[item + ''].currentState.length = 0;
+            for (let item in this.$store.state.app.Category) {
+                this.$store.state.app.Category[item + ''].currentState.length = 0;
             }
         },
 
         init(){
             this.$store.commit('SET_SETTINGS', settings);
+            this.$store.commit('SET_CATEGORY_POSITIONS', categoryPositions);
             this.$store.dispatch('GET_TABLET_NUMBER');
             this.$store.dispatch('GET_BLE');
             this.$store.dispatch('GET_ORDERS');

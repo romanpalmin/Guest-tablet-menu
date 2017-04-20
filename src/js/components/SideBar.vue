@@ -169,7 +169,6 @@
     }
 </style>
 <script>
-    import ajax from './helpers/ajax.js';
     export default{
         data(){
             return {
@@ -201,9 +200,9 @@
             }
         },
         mounted(){
-            //this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
-            if (this.$store.state.app.MenuPoints.length === 0) {
-                this.ctgs = this.$store.dispatch('GET_CATEGORY');
+            if ( this.$store.state.app.MenuPoints.length === 0) {
+                 this.$store.dispatch('GET_CATEGORY');
+                 this.ctgs = this.$store.state.app.MenuPoints;
             }
         }
 

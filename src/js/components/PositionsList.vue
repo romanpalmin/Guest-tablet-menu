@@ -361,6 +361,27 @@
            },
 
             getJson: function (catId) {
+            console.log('#####');
+            console.log(this.$store.state.app.Category[catId].currentState);
+            if (this.$store.state.app.Category[catId+''].currentState.length === 0){
+                this.$store.dispatch('GET_POSITIONS', catId);
+                this.positionslist = this.$store.state.app.Category[catId+''].currentState;
+                console.log(6666);
+                console.log(this.positionslist);
+            } else {
+                console.log(7777);
+                this.positionslist = this.$store.state.app.Category[catId+''].currentState;
+                console.log(this.positionslist);
+            }
+
+            /*console.log(this.$store.state.app.Category[catId+'']);
+            console.log(this.$store.state.app.Category);
+                if (this.$store.state.app.Category[catId+''].length === 0){
+                    this.$store.dispatch('GET_POSITIONS', catId);
+                }
+                console.log(this.$store.state.app.Category[catId+'']);
+                this.positionslist = this.$store.state.app.Category[catId+''];*/
+            /*}
                 var self = this;
                 const operation = {};
                 if (state && state.appState && state.appState.Category[catId] && state.appState.Category[catId].currentState.length > 0){
@@ -385,7 +406,7 @@
                         this.positionslist = resp;
                     }
                     state.appState.Category[this.$route.params.id].currentState = this.positionslist;
-                }
+                }*/
         },
         mounted(){
             this.currentId = this.$route.params.id;
@@ -395,5 +416,6 @@
             'position' : Position
         }
     }
+  }
 
 </script>

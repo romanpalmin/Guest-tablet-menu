@@ -11,11 +11,6 @@
     import sidebar from './components/SideBar.vue'
     import userorder from './components/UserOrder.vue'
     export default{
-        data(){
-            return{
-                msg:'hello vue'
-            }
-        },
         components:{
             sidebar,
             userorder
