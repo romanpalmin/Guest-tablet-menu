@@ -19,7 +19,7 @@
         <div v-else class="main-table">
             <table class="inner-table">
                 <tr class="top-row">
-                    <td colspan=10>
+                    <td :colspan="ctgs_amount">
                         <template>
                             <div class="img-wrapper">
                                 <router-link :to="mainPosition.route">
@@ -164,7 +164,7 @@
                 ctgs: [],
                 showTabletView: true,
                 mainPosition: {},
-                isDebug: true,
+                isDebug: false,
                 svg: {
                     jsonfile: '',
                     fps: 24,
@@ -207,6 +207,10 @@
                 });
                 return res;
             },
+            ctgs_amount: function(){
+                console.log(this.ctgs.length);
+                return this.ctgs.length;
+            }
         },
 
         methods: {
@@ -249,8 +253,10 @@
             populateMainPosition(){
                 let ret = {};
                 ret = _.filter(this.ctgs, function (o) {
-                    return o.activeTime === '1' && (o.breakfast === '1' || o.lanhc === '1')
+                    return o.activeTime === '1' && (o.zavtrak === '1' || o.lunch === '1')
                 });
+                console.log('Проверка завтраков/ланчей');
+                console.log(ret);
 
                 if (ret.length > 0) {
                     ret[0].route = 'menu/' + ret[0].code;
