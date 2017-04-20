@@ -208,7 +208,6 @@
                 return res;
             },
             ctgs_amount: function(){
-                console.log(this.ctgs.length);
                 return this.ctgs.length;
             }
         },
