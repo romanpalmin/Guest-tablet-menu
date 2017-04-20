@@ -20,6 +20,7 @@ import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
 import ajax from './js/components/helpers/ajax.js';
 import bleLabels from  './js/components/helpers/defineBtLabel';
+import settings from './settings.js';
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
@@ -67,6 +68,8 @@ const app = new Vue({
         scan(router);
         //
         scanBLE();
+
+
     },
     methods :{
         changeLanguage(){
@@ -109,7 +112,10 @@ const app = new Vue({
             else {
                 tabletNumber = state.appState.TabletNumber;
             }
-        }
+        },
+
+        init
+
     },
     router,
     template: `
