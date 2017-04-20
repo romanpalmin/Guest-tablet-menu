@@ -29,7 +29,6 @@ Vue.use(Vuex);
 import store from './store';
 
 
-
 const routes = [
     {name: 'menu', path: '/:lang/menu', component: menu},
     {name: 'order', path: '/:lang/order', component: order},
@@ -54,14 +53,17 @@ router.replace('/ru/menu');
 const app = new Vue({
     data() {
         return {
-            TabletNumber: state.appState.TabletNumber,
-            language: state.settings.language,
+            TabletNumber: '',
+            language: this.$store.state.settings.language,
             showMenu: true,
         }
     },
     store,
     mounted(){
         this.initApp();
+
+        this.init();
+
         // определение меток для определения стола
         bleLabels();
         // сканирование QR-кода
@@ -71,12 +73,13 @@ const app = new Vue({
 
 
     },
-    methods :{
+    methods: {
         changeLanguage(){
             let path;
-            state.settings.language = this.language === 'ru' ? 'en' : 'ru';
-            this.language = state.settings.language;
-            path = `/${state.settings.language}/menu`;
+            let language = this.$store.state.settings.language === 'ru' ? 'en' : 'ru';
+            this.$store.state.settings.language = language;
+            this.language = language;
+            path = `/${this.$store.state.settings.language}/menu`;
             this.emptyCache();
             this.$router.replace(path);
         },
@@ -84,37 +87,17 @@ const app = new Vue({
         emptyCache(){
             state.appState.MenuPoints.length = 0;
             //Array.from(state.appState.Category).forEach(function(item){
-            for (let item in state.appState.Category){
-                state.appState.Category[item+''].currentState.length = 0;
+            for (let item in state.appState.Category) {
+                state.appState.Category[item + ''].currentState.length = 0;
             }
         },
 
-        initApp(){
-            let tabletNumber = state.appState.TabletNumber;
-            const self = this;
-            // заполним исходное состояние корзины
-            ajax.exec({name : 'order'}, function(response){
-                state.appState.orders.currentState = response.data;
-            });
-
-            // заполним исходноеколичество меток
-            ajax.exec({name: 'getBle'}, function (resp) {
-                state.appState.BleLabels = resp.data;
-            });
-
-            // получим номер планшета
-            if (tabletNumber === '') {
-                ajax.exec({name : 'getTabletNumber'}, function (resp) {
-                    self.TabletNumber = resp.data;
-                    state.appState.TabletNumber = resp.data;
-                });
-            }
-            else {
-                tabletNumber = state.appState.TabletNumber;
-            }
-        },
-
-        init
+        init(){
+            this.$store.commit('SET_SETTINGS', settings);
+            this.$store.dispatch('GET_TABLET_NUMBER');
+            this.$store.dispatch('GET_BLE');
+            this.$store.dispatch('GET_ORDERS');
+        }
 
     },
     router,
@@ -122,7 +105,7 @@ const app = new Vue({
     <div id="app-menu" >
     <div class="head" v-show="showMenu">
     <div class="header" >
-        <nav v-if= "language === 'ru'" class="pages-nav">
+        <nav v-if= "$store.state.settings.language === 'ru'" class="pages-nav">
             <div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
@@ -138,8 +121,8 @@ const app = new Vue({
         </nav>
         
       </div>
-      <div class="tabletNumber" name="tabletNumber">{{TabletNumber}}</div>
-      <div class="language" name="language" @click="changeLanguage()">{{language}}</div>
+      <div class="tabletNumber" name="tabletNumber">{{$store.state.app.TabletNumber}}</div>
+      <div class="language" name="language" @click="changeLanguage()">{{$store.state.settings.language}}</div>
       </div>
       <div class="content">
       

@@ -1,6 +1,7 @@
 import state from '../store/currentStates';
 import axios from 'axios';
 import crypt from './encryption.js';
+import store from './../../../store';
 
 // выбираем номер планшета
 
@@ -39,7 +40,7 @@ function executeRequest(url, callback) {
 
 function getUrl(operation) {
     let url = '';
-    let language = state.settings.language === 'en' ? '&lang=en' : '';
+    let language = store.state.settings.language === 'en' ? '&lang=en' : '';
     switch (operation.name) {
         case 'categories':
             url = 'groups=';
@@ -83,6 +84,7 @@ function getUrl(operation) {
             url = '';
             break;
     }
+    console.log(store.state.settings.language);
     return url !== '' ? url + '&uuid=' + crypt(uuid) + language : '';
 }
 

@@ -143,6 +143,7 @@
                 this.getData();
             }
 
+            console.log('Текущее состояние стора:');
             console.log(this.$store.state);
 
             let upTimer = setInterval(function () {

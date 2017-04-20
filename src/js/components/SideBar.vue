@@ -169,14 +169,13 @@
     }
 </style>
 <script>
-    import state from './store/currentStates';
     import ajax from './helpers/ajax.js';
     export default{
         data(){
             return {
                 msg: 'hello vue',
                 ctgs: this.$store.state.app.MenuPoints,
-                storeSettings: this.$store.state.settings
+                settings: this.$store.state.settings
             }
         },
 
@@ -184,8 +183,8 @@
             ctgs_with_params: function () {
                 var self = this;
                 this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
-                    item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
-                    item.route = '/' + state.settings.language + '/menu/' + item.code;
+                    item.style = 'background-image: url(../../../../../' + self.settings.server + self.settings.urlBigImage + item.urlSmallImage + ');';
+                    item.route = '/' + self.settings.language + '/menu/' + item.code;
 
                     if (+item.code === +self.$route.params.id) {
                         item.newClass = 'menu__link--current';
@@ -197,12 +196,12 @@
                 return this.ctgs;
             },
             urlLogo:function(){
-                return state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
+                //let settings = this.$store.state;
+                return '../../../../../' + this.settings.server + this.settings.urlSmallImage + this.settings.images.logo;
             }
         },
         mounted(){
             //this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
-            console.log('сайд ' + state.appState.MenuPoints.length);
             if (this.$store.state.app.MenuPoints.length === 0) {
                 this.ctgs = this.$store.dispatch('GET_CATEGORY');
             }
