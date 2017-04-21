@@ -202,8 +202,8 @@
 
 </style>
 <script>
-    import state from './store/currentStates';
-    import ajax from './helpers/ajax'
+    //import state from './store/currentStates';
+    //import ajax from './helpers/ajax'
 
     export default {
             data(){
@@ -212,7 +212,8 @@
                     urlClose : '',
                     addToCartBtn: '',
                     IsAddingToCart: false,
-                    IsAddingAdditonal: false
+                    IsAddingAdditonal: false,
+                    settings: this.$store.state.settings
                 }
             },
             filters:{
@@ -231,7 +232,7 @@
             computed:{
                 codeFromParent: function() {return this.code},
                 isActive: function() {return this.activeTime},
-                urlFromParents : function() {return state.settings.server + state.settings.urlBigImage + this.urlImageLarge;},
+                urlFromParents : function() {return '../../../../../' + this.settings.server + this.settings.urlBigImage + this.urlImageLarge;},
                 priceFromParent : function () {return this.price;},
                 nameFromParent : function () {return this.name;},
                 descriptionFromParent : function() {return this.description},
@@ -239,7 +240,7 @@
                 addingToCartTitle : function(){ return this.IsAddingToCart  ? 'Добавление' : 'Выбрать';},
                 addingToCartStyle: function() { return this.IsAddingToCart  ? "background:#dbdbd7" : '';},
                 addingToCartStyleAdditional: function() { return this.IsAddingAdditonal ? "opacity:0.5" : '1';},
-                showButtons: function(){ return state.settings.showButtons && this.activeTime ;},
+                showButtons: function(){ return this.settings.showButtons && this.activeTime ;},
                 vitrinaFromParent: function(){ return this.vitrina ;},
                 relatedFromParent: function(){ return this.related ;},
                 lighting: function(){
@@ -249,7 +250,7 @@
                 },
                 infoMessageBreakfast: function(){
                     let msg = '';
-                    let language = state.settings.language;
+                    let language = this.settings.language;
                     switch (language){
                         case 'ru':
                             msg = 'Завтраки подаются с 8.00 до 12.00';
@@ -261,7 +262,7 @@
                 },
                 infoMessageLunch: function(){
                     let msg = '';
-                    let language = state.settings.language;
+                    let language = this.settings.language;
                     switch (language){
                         case 'ru':
                             msg = 'Ланчи подаются по будним дням с 12.00 до 16.00';
@@ -316,13 +317,13 @@
                 },
 
                 getRelatedStyle: function(item){
-                    return 'background-image: url(' + state.settings.server + state.settings.urlBackImage + item.urlImage + ');';
+                    return 'background-image: url(../../../../../' + this.settings.server + this.settings.urlBackImage + item.urlImage + ');';
                 }
 
             },
 
             mounted(){
-                this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
+                this.urlClose = '../../../../../' + this.settings.server + this.settings.urlSmallImage + this.settings.images.close;
             }
     }
 
