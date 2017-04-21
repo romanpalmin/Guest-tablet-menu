@@ -31,7 +31,10 @@ const store = new Vuex.Store({
         },
         [m_types.POPULATE_CATEGORY](state, payload){
             state.app.Category[payload.currentId].currentState = payload.currentData;
-            console.log();
+            if (payload.callback && typeof(payload.callback) === "function") {
+                payload.callback();
+            }
+
         },
         [m_types.SET_TABLET_NUMBER](state, payload){
             state.app.TabletNumber = payload;
@@ -75,26 +78,28 @@ const store = new Vuex.Store({
             });
         },
         [a_types.GET_POSITIONS]({commit}, payload){
-            let positionsList = [];
-            operation.name = 'positions';
-            operation.catId = payload;
-            ajax.exec(operation, function (response) {
-                formatJson(response.data);
-            });
+            return new Promise((resolve, reject) => {
+                let positionsList = [];
+                operation.name = 'positions';
+                operation.catId = payload.id;
+                ajax.exec(operation, function (response) {
+                    formatJson(response.data);
+                });
 
-            function formatJson(resp) {
-                if (resp.length === 1) {
-                    if (resp[0].tovar) {
-                        positionsList = resp[0];
-                    }
-                    else {
+                function formatJson(resp) {
+                    if (resp.length === 1) {
+                        if (resp[0].tovar) {
+                            positionsList = resp[0];
+                        }
+                        else {
+                            positionsList = resp;
+                        }
+                    } else {
                         positionsList = resp;
                     }
-                } else {
-                    positionsList = resp;
+                    commit('POPULATE_CATEGORY', {currentId: payload.id, currentData: positionsList, callback: payload.callback});
                 }
-                commit('POPULATE_CATEGORY', {currentId: payload, currentData: positionsList});
-            }
+            });
         }
     }
 });

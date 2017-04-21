@@ -64,7 +64,9 @@
                             <ul>
                                 <li v-for="subgroups in item.groups1" class="product-group-level-2" v-if="subgroups">
                                     <div v-if="subgroups.groups2 && subgroups.groups2.length === 1">
-                                        <div class="product-group-level-2-descr" v-show="subgroups.name!=='' || subgroups">{{subgroups.name | deleteQuotes}}</div>
+                                        <div class="product-group-level-2-descr"
+                                             v-show="subgroups.name!=='' || subgroups">{{subgroups.name | deleteQuotes}}
+                                        </div>
 
                                         <ul class="products">
                                             <div v-show="subgroups.type === 'СПИСКОМ'">
@@ -294,7 +296,7 @@
      export default{
         data(){
             return{
-                    positionslist: [],
+                    positionslist: this.$store.state.app.Category[this.$route.params.id].currentState,
                     newList: {},
                     showDetails: false,
                     code:0,
@@ -306,7 +308,8 @@
                     currentId: this.$route.params.id,
                     activeTime: '',
                     vitrina: '',
-                    related:[]
+                    related:[],
+                    settings: this.$store.state.settings
                 }
         },
         props: ["categoryId"],
@@ -322,7 +325,7 @@
             positionsWithProps: function () {
                 var self = this;
                 var res = this.positionslist['tovar'].map(function (item) {
-                    item.style = 'background-image: url(' + state.settings.server + state.settings.urlBackImage + item.urlImage + ');';
+                    item.style = 'background-image: url(../../../../../../' + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
                     if (item.vitrina === '1') {
                         item.style += ';box-shadow: 0px 0px 30px #CCDDFF;'
                     }
@@ -336,11 +339,16 @@
                 this.getJson(this.categoryId);
             }
         },
+        mounted(){
+        console.log('Start');
+            this.currentId = this.$route.params.id;
+            this.getJson(this.currentId);
+        },
 
         methods: {
             getStyle: function(item){
                 var self = this;
-                var res = 'background-image: url(' + state.settings.server + state.settings.urlBackImage + item.urlImage  + ');';
+                var res = 'background-image: url(../../../../../../' + self.settings.server + self.settings.urlBackImage + item.urlImage  + ');';
                 if (item.vitrina === '1') {
                     res += ';box-shadow: 0px 0px 30px #CCDDFF;'
                 }
@@ -358,64 +366,30 @@
                this.activeTime = item.activeTime === '1';
                this.vitrina = item.vitrina;
                this.related = item.related;
+               console.log(this.showDetails);
            },
 
             getJson: function (catId) {
-            console.log('#####');
-            console.log(this.$store.state.app.Category[catId].currentState);
-            if (this.$store.state.app.Category[catId+''].currentState.length === 0){
-                this.$store.dispatch('GET_POSITIONS', catId);
-                this.positionslist = this.$store.state.app.Category[catId+''].currentState;
-                console.log(6666);
-                console.log(this.positionslist);
-            } else {
-                console.log(7777);
-                this.positionslist = this.$store.state.app.Category[catId+''].currentState;
-                console.log(this.positionslist);
-            }
+                let self = this;
 
-            /*console.log(this.$store.state.app.Category[catId+'']);
-            console.log(this.$store.state.app.Category);
-                if (this.$store.state.app.Category[catId+''].length === 0){
-                    this.$store.dispatch('GET_POSITIONS', catId);
-                }
-                console.log(this.$store.state.app.Category[catId+'']);
-                this.positionslist = this.$store.state.app.Category[catId+''];*/
-            /*}
-                var self = this;
-                const operation = {};
-                if (state && state.appState && state.appState.Category[catId] && state.appState.Category[catId].currentState.length > 0){
-                    this.positionslist = state.appState.Category[catId].currentState;
+                if (this.$store.state.app.Category[catId+''].currentState.length === 0){
+                        const payload = {'id':catId, 'callback': function(){
+                            self.positionslist = self.$store.state.app.Category[catId].currentState;
+                            }
+                        };
+                    console.log('Загружаем...');
+                    this.$store.dispatch('GET_POSITIONS', payload);
                 } else {
-                    operation.name = 'positions';
-                    operation.catId = catId;
-                    ajax.exec(operation, function (response) {
-                         self.formatJson(response.data);
-                    })
+                    this.positionslist = this.$store.state.app.Category[catId+''].currentState;;
+                    console.log('Из кэша');
                 }
-            },
-            formatJson: function (resp) {
-                    if (resp.length === 1){
-                        if (resp[0].tovar){
-                            this.positionslist = resp[0];
-                        }
-                        else{
-                            this.positionslist = resp;
-                        }
-                    } else {
-                        this.positionslist = resp;
-                    }
-                    state.appState.Category[this.$route.params.id].currentState = this.positionslist;
-                }*/
-        },
-        mounted(){
-            this.currentId = this.$route.params.id;
-            this.getJson(this.currentId);
         },
         components:{
             'position' : Position
         }
     }
   }
+
+
 
 </script>

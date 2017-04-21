@@ -84,7 +84,6 @@ function getUrl(operation) {
             url = '';
             break;
     }
-    console.log(store.state.settings.language);
     return url !== '' ? url + '&uuid=' + crypt(uuid) + language : '';
 }
 

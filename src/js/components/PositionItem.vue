@@ -16,8 +16,11 @@
                     <div class="p-item">{{descriptionFromParent | deleteQuotes | deleteNewLines}}</div>
                     <div class="item-price">{{priceFromParent | deleteQuotes | deleteNewLines}} P</div>
 
-                    <div class="related-items" v-if="codeFromParent === '472020' && !isActive">{{infoMessageBreakfast}}</div>
-                    <div class="related-items" v-if="codeFromParent === '482020' && !isActive">{{infoMessageLunch}}</div>
+                    <div class="related-items" v-if="codeFromParent === '472020' && !isActive">
+                        {{infoMessageBreakfast}}
+                    </div>
+                    <div class="related-items" v-if="codeFromParent === '482020' && !isActive">{{infoMessageLunch}}
+                    </div>
 
                     <div class="item-bottom-buttons" v-if="showButtons">
                         <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle">
@@ -27,19 +30,21 @@
                             Показать
                         </div>
 
-                    <div class="related-items" v-if="relatedFromParent.length!==0">
-                        <div v-for="rel in relatedFromParent" :data-Code="rel.code" @click="add2CartAdditional(rel.code)" :style="addingToCartStyleAdditional">
-                            <div :style="getRelatedStyle(rel)" class="related-item">
-                                <div class="related-item-price product-top-block-price" :data-Code="rel.code">
-                                    {{rel.price}}
+                        <div class="related-items" v-if="relatedFromParent.length!==0">
+                            <div v-for="rel in relatedFromParent" :data-Code="rel.code"
+                                 @click="add2CartAdditional(rel.code)" :style="addingToCartStyleAdditional">
+                                <div :style="getRelatedStyle(rel)" class="related-item">
+                                    <div class="related-item-price product-top-block-price" :data-Code="rel.code">
+                                        {{rel.price}}
+                                    </div>
+                                    <div class="related-item-title">{{rel.name | deleteQuotes}}</div>
                                 </div>
-                                <div class="related-item-title">{{rel.name | deleteQuotes}}</div>
                             </div>
                         </div>
                     </div>
+
+
                 </div>
-
-
             </div>
         </div>
     </div>
@@ -125,7 +130,7 @@
                             padding-top: -20px;
                             margin-bottom: 10px;
                         }
-                        .related-item-title{
+                        .related-item-title {
                             position: absolute;
                             bottom: -70px;
                             text-align: center;
@@ -351,5 +356,6 @@
                 this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
             }
     }
+
 
 </script>
