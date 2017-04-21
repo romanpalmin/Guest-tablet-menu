@@ -1,4 +1,5 @@
-import state from '../store/currentStates';
+//import state from '../store/currentStates';
+import store from '../../../store';
 import _ from 'lodash';
 export default function() {
     // Dictionary of devices.
@@ -67,7 +68,8 @@ export default function() {
     }
 
     function SendRequestBLE(html) {
-        let url = state.settings.server + 'menu/hs/track/send/';
+        let url = store.state.settings.server + 'menu/hs/track/send/';
+        console.log(url);
         const request = new XMLHttpRequest();
         request.open('POST', url, true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -121,12 +123,13 @@ export default function() {
         result = _.uniqBy(resultObjArr, 'rssi' && 'BLE');
         result =_.max(result, 'rssi');
 
-        tableNumber = (_.find(state.appState.BleLabels, {'BLE' : result.BLE})).table;
-        state.appState.TableNumberPrimary = tableNumber;
+        tableNumber = (_.find(store.state.app.BleLabels, {'BLE' : result.BLE})).table;
+        store.commit('SET_PRIMARY_TABLE_NUMBER', tableNumber);
+
     }
 
     function intersectionArray(arr) {
-        return _.intersectionBy(arr, state.appState.BleLabels, 'BLE');
+        return _.intersectionBy(arr, store.state.app.BleLabels, 'BLE');
 
     }
 

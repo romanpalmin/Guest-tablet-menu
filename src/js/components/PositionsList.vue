@@ -290,8 +290,6 @@
 </style>
 <script>
     import Position from './PositionItem.vue';
-    import state from './store/currentStates';
-    import ajax from './helpers/ajax'
 
      export default{
         data(){
@@ -340,9 +338,11 @@
             }
         },
         mounted(){
-        console.log('Start');
             this.currentId = this.$route.params.id;
             this.getJson(this.currentId);
+        },
+        components:{
+            'position' : Position
         },
 
         methods: {
@@ -366,7 +366,7 @@
                this.activeTime = item.activeTime === '1';
                this.vitrina = item.vitrina;
                this.related = item.related;
-               console.log(this.showDetails);
+               this.$store.commit('SET_SELECTED_POSITION', item);
            },
 
             getJson: function (catId) {
@@ -383,9 +383,6 @@
                     this.positionslist = this.$store.state.app.Category[catId+''].currentState;;
                     console.log('Из кэша');
                 }
-        },
-        components:{
-            'position' : Position
         }
     }
   }

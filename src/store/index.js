@@ -16,15 +16,23 @@ const store = new Vuex.Store({
             BleLabels: [],
             orders: [],
             Category: {},
-            show: []
+            show: [],
+            selectedPosition: {},
+            TableNumberPrimary: 333
         }
     },
     mutations: {
         [m_types.SET_CATEGORY](state, payload){
             state.app.MenuPoints = payload;
         },
+        [m_types.SET_SELECTED_POSITION](state, payload){
+            state.app.selectedPosition = payload;
+        },
         [m_types.SET_SETTINGS](state, payload){
             state.settings = payload;
+        },
+        [m_types.SET_PRIMARY_TABLE_NUMBER](state, payload){
+            state.TableNumberPrimary = payload;
         },
         [m_types.SET_CATEGORY_POSITIONS](state, payload){
             state.app.Category = payload;
@@ -34,7 +42,6 @@ const store = new Vuex.Store({
             if (payload.callback && typeof(payload.callback) === "function") {
                 payload.callback();
             }
-
         },
         [m_types.SET_TABLET_NUMBER](state, payload){
             state.app.TabletNumber = payload;
@@ -47,6 +54,12 @@ const store = new Vuex.Store({
         },
         [m_types.SET_ORDERS](state, payload){
             state.app.orders = payload;
+        },
+        [m_types.SET_ORDERS_CALLBACK](state, payload){
+            state.app.orders = payload.data;
+            if (payload.callback && typeof(payload.callback) === "function") {
+                payload.callback();
+            }
         }
     },
     actions: {
@@ -100,7 +113,27 @@ const store = new Vuex.Store({
                     commit('POPULATE_CATEGORY', {currentId: payload.id, currentData: positionsList, callback: payload.callback});
                 }
             });
-        }
+        },
+        [a_types.ADD_TO_CART]({commit}, payload){
+            const options = {
+                name: 'addToOrder',
+                positionId: payload.positionId,
+                tableId: payload.TableNumberPrimary
+            };
+            let cb = {};
+            ajax.exec(options, function (response) {
+                if (response.data === 1){
+                    options.name = 'order';
+                    ajax.exec(options, function(response){
+                        cb.data = response;
+                        cb.callback = payload.callback;
+                        commit('SET_ORDERS_CALLBACK', cb);
+                    })
+                } else {
+                    console.log('Ошибка добавления заказа');
+                }
+            })
+        },
     }
 });
 export default store;

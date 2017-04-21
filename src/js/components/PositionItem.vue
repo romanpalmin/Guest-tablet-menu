@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="content-item-container">
-            <div class="item-close"><img class="item-image" :src="urlClose" @click="$parent.showDetails=false">
+            <div class="item-close"><img class="item-image" :src="urlClose" @click="close()">
             </div>
             <div class="inner-item-container">
                 <div class="item-column-image">
@@ -276,48 +276,40 @@
             props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika', 'activeTime', 'vitrina', "related", "code"],
 
             methods:{
+                close(){
+                    this.$parent.showDetails = false;
+                    this.$store.commit('SET_SELECTED_POSITION', {});
+                },
+
                 add2cart: function(id){
-                    if (this.IsAddingToCart) return;
-                    let self = this;
-                    this.IsAddingToCart = true;
-                    const options = {
-                        name: 'addToOrder',
+                      if (this.IsAddingToCart) return;
+                      let self = this;
+                      this.IsAddingToCart = true;
+                      let payload = {
                         positionId: this.positionId,
-                        tableId: state.appState.TableNumberPrimary
-                    };
-                    ajax.exec(options, function (response) {
-                            if (response.data === 1){
-                                options.name = 'order';
-                                ajax.exec(options, function(response){
-                                    state.appState.orders.currentState = response.data;
-                                    self.IsAddingToCart = false;
-                                })
-                            } else {
-                                self.IsAddingToCart = false;
+                        TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
+                        callback: function(){
+                            console.log('ok');
+                            self.IsAddingToCart = false
                             }
-                      })
+                      };
+                      this.$store.dispatch('ADD_TO_CART', payload);
+
                 },
 
                 add2CartAdditional: function(id){
                     if (this.IsAddingAdditonal) return;
                     let self = this;
                     this.IsAddingAdditonal = true;
-                    const options = {
-                        name: 'addToOrder',
+                      let payload = {
                         positionId: id,
-                        tableId: state.appState.TableNumberPrimary
-                    };
-                    ajax.exec(options, function (response) {
-                            if (response.data === 1){
-                                options.name = 'order';
-                                ajax.exec(options, function(response){
-                                    state.appState.orders.currentState = response.data;
-                                    self.IsAddingAdditonal = false;
-                                })
-                            } else {
-                                self.IsAddingAdditonal = false;
-                            }
-                      })
+                        TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
+                        callback: function(){
+                            console.log('ok add');
+                            self.IsAddingAdditonal = false;
+                         }
+                      };
+                      this.$store.dispatch('ADD_TO_CART', payload);
                 },
 
                 showInLamp: function(id){
@@ -329,22 +321,6 @@
                     ajax.exec(operation);
                 },
 
-                getData: function(id){
-                    let url = '';
-                    const self = this;
-                    const operations = {};
-                    url = state.settings.server + 'menu/hs/model?groups=1&category=1&tovar=' + id;
-                    operation.name = ''
-
-                    this.axios.get(url)
-                        .then( (response) => {
-                            this.positionSet = response.data;
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-
-                },
                 getRelatedStyle: function(item){
                     return 'background-image: url(' + state.settings.server + state.settings.urlBackImage + item.urlImage + ');';
                 }
@@ -352,10 +328,11 @@
             },
 
             mounted(){
-                //this.getData(this.positionId);
+                console.log('Start details');
                 this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
             }
     }
+
 
 
 </script>
