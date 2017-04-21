@@ -289,7 +289,6 @@
                         positionId: this.positionId,
                         TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
                         callback: function(){
-                            console.log('ok');
                             self.IsAddingToCart = false
                             }
                       };
@@ -305,7 +304,6 @@
                         positionId: id,
                         TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
                         callback: function(){
-                            console.log('ok add');
                             self.IsAddingAdditonal = false;
                          }
                       };
@@ -313,12 +311,8 @@
                 },
 
                 showInLamp: function(id){
-                    console.log('Подсвечиваем товар и шлем обратно');
-                    const operation = {
-                        name: 'showLamp',
-                        id: id
-                    };
-                    ajax.exec(operation);
+                    let data = {currentId: +id}
+                    this.$store.dispatch('TURN_ON_LAMP', data);
                 },
 
                 getRelatedStyle: function(item){
@@ -328,7 +322,6 @@
             },
 
             mounted(){
-                console.log('Start details');
                 this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
             }
     }

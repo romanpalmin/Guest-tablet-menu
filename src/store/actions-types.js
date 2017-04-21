@@ -5,4 +5,5 @@ export const GET_ORDERS = 'GET_ORDERS';
 export const GET_SHOW = 'GET_SHOW';
 export const GET_POSITIONS = 'GET_POSITIONS';
 export const ADD_TO_CART = 'ADD_TO_CART';
-export const ADD_TO_CART_ADDITIONAL = 'ADD_TO_CART_ADDITIONAL';
+export const TURN_ON_LAMP = 'TURN_ON_LAMP';
+

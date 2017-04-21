@@ -110,7 +110,11 @@ const store = new Vuex.Store({
                     } else {
                         positionsList = resp;
                     }
-                    commit('POPULATE_CATEGORY', {currentId: payload.id, currentData: positionsList, callback: payload.callback});
+                    commit('POPULATE_CATEGORY', {
+                        currentId: payload.id,
+                        currentData: positionsList,
+                        callback: payload.callback
+                    });
                 }
             });
         },
@@ -122,9 +126,9 @@ const store = new Vuex.Store({
             };
             let cb = {};
             ajax.exec(options, function (response) {
-                if (response.data === 1){
+                if (response.data === 1) {
                     options.name = 'order';
-                    ajax.exec(options, function(response){
+                    ajax.exec(options, function (response) {
                         cb.data = response;
                         cb.callback = payload.callback;
                         commit('SET_ORDERS_CALLBACK', cb);
@@ -133,6 +137,15 @@ const store = new Vuex.Store({
                     console.log('Ошибка добавления заказа');
                 }
             })
+        },
+        [a_types.TURN_ON_LAMP]({commit}, payload){
+            console.log('Подсвечиваем товар и шлем обратно');
+            console.log(payload);
+            const operation = {
+                name: 'showLamp',
+                id: payload.currentId
+            };
+            ajax.exec(operation);
         },
     }
 });

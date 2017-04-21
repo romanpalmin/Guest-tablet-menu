@@ -79,6 +79,7 @@ function getUrl(operation) {
             console.log(operation);
             console.warn('Для работы заменить no_groups на groups');
             url = `no_groups=1&tovar=1&yacheika=${operation.id}`;
+            console.log(url);
             break;
         default:
             url = '';
