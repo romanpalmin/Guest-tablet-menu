@@ -182,7 +182,8 @@
                 urlClose: '',
                 showDeleteBtn: false,
                 isAdding: false,
-                currentPressedKey:[]
+                currentPressedKey:[],
+                store: this.$store.state
             }
         },
 
@@ -271,7 +272,7 @@
                     name: 'addToOrder',
                     positionId: id
                 };
-                ajax.exec(options, function (response) {
+                /*ajax.exec(options, function (response) {
                             if (response.data === 1){
                                 options.name = 'order';
                                 ajax.exec(options, function(response){
@@ -286,7 +287,15 @@
                           self.isAdding = false;
 
                         }
-                 })
+                 })*/
+                 const payload = {
+                    positionId: id,
+                    tableId: this.$store.state.app.TableNumberPrimary,
+                    callback: function(){
+                        console.log('+1');
+                    }
+                 }
+                 this.$store.dispatch('ADD_TO_CART', payload);
             },
 
             minus: function(id){
@@ -309,45 +318,58 @@
             deleteOrderById: function(id, stroka){
                 this.positions = _.without(this.positions, _.find(this.positions, {code:id, stroka:stroka}))
                 orderState.currentState = this.positions;
+                const payload = {
+                    id: id,
+                    stroka: stroka,
+                    callback: function(){
+                        console.log('Удалена');
+                    }
+                };
+                this.$store.dispatch('DELETE_ORDER_BY_ID', payload);
                 const operation = {
                     name: 'deleteFromOrder',
                     id: id,
                     stroka: stroka
                 };
+
                 ajax.exec(operation);
             },
 
             deleteAll: function() {
-                this.positions = [];
-                orderState.currentState = this.positions;
-                const operation = {name:'clearOrder'};
-                ajax.exec(operation);
+                const self = this;
+                const payload = {callback: function(){
+                    console.log('Удаляем локально');
+                    self.positions = [];
+                }};
+                this.$store.dispatch('EMPTY_ORDERS_FULL', payload);
+
             },
 
             getJson: function(isUpdate){
                 const self = this;
-                const operation = {};
-                if (orderState.currentState.length === 0 || isUpdate){
-                    operation.name = 'order';
-                    ajax.exec(operation, function(response){
-                        self.positions = response.data;
-                        orderState.currentState = response.data;
-                    });
+
+                if (this.store.app.orders.length === 0 || isUpdate){
+                    console.log(1);
+                    let payload = {callback: function(){
+                        self.positions = this.store.app.orders;
+                    }}
+                    this.$store.dispatch('GET_ORDERS', payload);
                 } else {
-                    this.positions = orderState.currentState;
+                    console.log(12);
+                    self.positions = this.store.app.orders;
                 }
             }
 
         },
         mounted(){
-            console.log(state.appState.orders.currentState);
+            console.log(this.store.app.orders);
             const self = this;
-            this.urlLogo = state.settings.server + state.settings.urlSmallImage + state.settings.images.logo;
-            this.urlClose = state.settings.server + state.settings.urlSmallImage + state.settings.images.close;
+            this.urlLogo = this.store.settings.server + this.store.settings.urlSmallImage + this.store.settings.images.logo;
+            this.urlClose = '../../../../../' + this.store.settings.server + this.store.settings.urlSmallImage + this.store.settings.images.close;
             this.getJson();
             let upTimer = setInterval(function () {
                 self.getJson(true);
-            }, state.settings.updateOrderFrequency);
+            }, this.store.settings.updateOrderFrequency*10000);
         }
 }
 

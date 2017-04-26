@@ -25,6 +25,12 @@ const store = new Vuex.Store({
         [m_types.SET_CATEGORY](state, payload){
             state.app.MenuPoints = payload;
         },
+        [m_types.EMPTY_ORDER](state, payload){
+            state.app.orders = [];
+            if (payload.callback && typeof(payload.callback) === "function") {
+                payload.callback();
+            }
+        },
         [m_types.SET_SELECTED_POSITION](state, payload){
             state.app.selectedPosition = payload;
         },
@@ -52,8 +58,8 @@ const store = new Vuex.Store({
         [m_types.SET_BLE_LABEL](state, payload){
             state.app.BleLabels = payload;
         },
-        [m_types.SET_ORDERS](state, payload){
-            state.app.orders = payload;
+        [m_types.SET_ORDERS](state){
+            state.app.orders = payload.data;
         },
         [m_types.SET_ORDERS_CALLBACK](state, payload){
             state.app.orders = payload.data;
@@ -63,7 +69,9 @@ const store = new Vuex.Store({
         }
     },
     actions: {
-        [a_types.GET_CATEGORY]({commit}){
+        [a_types.GET_CATEGORY]({commit, state}, payload){
+            let categoryPositions = {};
+            let idx = 0;
             operation.name = 'categories';
             test = !test;
             ajax.exec(operation, function (resp) {
@@ -73,7 +81,24 @@ const store = new Vuex.Store({
                 else {
                     commit('SET_CATEGORY', resp.data);
                 }
+                resp.data.forEach(function (item, i, arr) {
+                    idx++;
+                    categoryPositions[item.code] = {
+                        name: item.name,
+                        currentState: []
+                    };
+                    if (idx === arr.length) {
+                        if (!_.isEqual(state.app.Category, categoryPositions)) {
+                            commit('SET_CATEGORY_POSITIONS', categoryPositions);
+                        }
+
+                        if (payload && payload.callback && typeof(payload.callback) === "function") {
+                            payload.callback();
+                        }
+                    }
+                });
             });
+
         },
         [a_types.GET_TABLET_NUMBER]({commit}){
             ajax.exec({name: 'getTabletNumber'}, function (resp) {
@@ -85,9 +110,14 @@ const store = new Vuex.Store({
                 commit('SET_BLE_LABEL', resp.data);
             });
         },
-        [a_types.GET_ORDERS]({commit}){
+        [a_types.GET_ORDERS]({commit}, payload){
+            let cb = {};
             ajax.exec({name: 'order'}, function (resp) {
-                commit('SET_ORDERS', resp.data);
+                cb.data = resp.data;
+                if (payload && payload.callback) {
+                    cb.callback = payload.callback;
+                }
+                commit('SET_ORDERS_CALLBACK', cb);
             });
         },
         [a_types.GET_POSITIONS]({commit}, payload){
@@ -118,7 +148,16 @@ const store = new Vuex.Store({
                 }
             });
         },
+        [a_types.GET_ALL_POSITIONS]({commit, dispatch, state}){
+            let ctgs = state.app.Category;
+            _.map(ctgs, function(item, idx){
+
+                dispatch('GET_POSITIONS', {id: idx});
+            })
+        },
+
         [a_types.ADD_TO_CART]({commit}, payload){
+            console.log(payload);
             const options = {
                 name: 'addToOrder',
                 positionId: payload.positionId,
@@ -129,7 +168,7 @@ const store = new Vuex.Store({
                 if (response.data === 1) {
                     options.name = 'order';
                     ajax.exec(options, function (response) {
-                        cb.data = response;
+                        cb.data = response.data;
                         cb.callback = payload.callback;
                         commit('SET_ORDERS_CALLBACK', cb);
                     })
@@ -147,6 +186,27 @@ const store = new Vuex.Store({
             };
             ajax.exec(operation);
         },
+        [a_types.EMPTY_ORDERS_FULL]({commit}, payload){
+            console.log('Удаляем из базы');
+            ajax.exec({name: 'clearOrder'}, function () {
+                console.log('Коммитим в сторе');
+                commit('EMPTY_ORDER', payload);
+            });
+        },
+        [a_types.DELETE_ORDER_BY_ID]({commit}, payload){
+            console.log(payload);
+
+            const operation = {
+                name: 'deleteFromOrder',
+                id: id,
+                stroka: stroka
+            };
+
+            ajax.exec(operation, function () {
+                console.log();
+
+            });
+        }
     }
 });
 export default store;

@@ -371,7 +371,6 @@
 
             getJson: function (catId) {
                 let self = this;
-
                 if (this.$store.state.app.Category[catId+''].currentState.length === 0){
                         const payload = {'id':catId, 'callback': function(){
                             self.positionslist = self.$store.state.app.Category[catId].currentState;

@@ -20,7 +20,7 @@ import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
 import bleLabels from  './js/components/helpers/defineBtLabel';
 import settings from './store/structures/settings.js';
-import categoryPositions from './store/structures/categoryPositions';
+//import categoryPositions from './store/structures/categoryPositions';
 import store from './store';
 
 Vue.use(VueRouter);
@@ -91,10 +91,11 @@ const app = new Vue({
 
         init(){
             this.$store.commit('SET_SETTINGS', settings);
-            this.$store.commit('SET_CATEGORY_POSITIONS', categoryPositions);
+            //this.$store.commit('SET_CATEGORY_POSITIONS', categoryPositions);
             this.$store.dispatch('GET_TABLET_NUMBER');
             this.$store.dispatch('GET_BLE');
-            this.$store.dispatch('GET_ORDERS');
+            //this.$store.dispatch('GET_ORDERS');
+            //this.$store.dispatch('GET_CATEGORY');
         }
 
     },

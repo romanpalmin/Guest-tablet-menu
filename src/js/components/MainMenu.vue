@@ -65,19 +65,16 @@
 </style>
 <script>
 
-    import state from './store/currentStates';
-    import ajax from './helpers/ajax.js';
-    import axios from 'axios';
     import _ from 'lodash';
 
 
     export default {
         data(){
             return {
-                ctgs: state.appState.MenuPoints,
+                ctgs: [],
                 mainPosition: {},
                 isDebug: false,
-                currentLanguage: state.settings.language,
+                currentLanguage: this.$store.state.settings.language,
                 test: true
             }
         },
@@ -91,9 +88,10 @@
 
         computed: {
             tabView: function () {
+                var self = this;
                 this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
                     item.route = 'menu/' + item.code;
-                    item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlBigImage + ');';
+                    item.style = 'background-image: url(../../../../../../' + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
                     return item;
                 });
                 return this.ctgs;
@@ -102,43 +100,34 @@
 
         methods: {
             getResponce(){
-                this.$store.dispatch('GET_CATEGORY');
+                const self = this;
+                this.$store.dispatch('GET_CATEGORY', {callback: function(){
+                    self.populatePositions();
+                }});
+
              },
-            getJsonCtgs(){
-                let self = this;
-                this.axios.get('./ctgs.js')
-                    .then(function (response) {
-                        self.ctgs = response.data;
-                        state.appState.MenuPoints = self.ctgs;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-            },
 
             getData(){
-                if (this.isDebug) {
-                    this.getJsonCtgs();
-                }
-                else {
-                    this.getResponce();
-                }
+                this.getResponce();
             },
 
             getImageSrc(item){
-                return state.settings.server + state.settings.urlBigImage + item.urlSmallImage;
+                return '../../../../../../' + this.$store.state.settings.server + this.$store.state.settings.urlBigImage + item.urlSmallImage;
             },
 
             getImageSrcBig(item){
-                return state.settings.server + state.settings.urlBigImage + item.urlBigImage;
+                return '../../../../../../' + this.$store.state.settings.server + this.$store.state.settings.urlBigImage + item.urlBigImage;
             },
+            populatePositions(){
+                this.$store.dispatch('GET_ALL_POSITIONS');
+            }
         },
 
         mounted(){
             const self = this;
-            this.currentLanguage = state.settings.language;
-            if (state.appState.MenuPoints.length > 0) {
-                self.ctgs = state.appState.MenuPoints;
+            this.currentLanguage = this.$store.state.settings.language;
+            if (this.$store.state.app.MenuPoints.length > 0) {
+                self.ctgs = this.$store.state.app.MenuPoints;
             } else {
                 this.getData();
             }
@@ -148,9 +137,11 @@
 
             let upTimer = setInterval(function () {
                 self.getData();
-            }, 15000);
+                console.log(self.$store.state.settings.updateMenu);
+            }, 45000);
         }
     }
+
 
 
 </script>

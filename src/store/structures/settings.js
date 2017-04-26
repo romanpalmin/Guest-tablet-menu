@@ -14,8 +14,9 @@ export default {
     testMode: false,
     isTablet: true,
     showButtons: true,
-    updateStatePeriod: 1000 * 60 * 15,  // время обновления меню секунда * кол-во секунд * кол-во минут
+    updateStatePeriod: 1000 * 60 * 30,  // время обновления меню секунда * кол-во секунд * кол-во минут
     updateOrderFrequency: 1000 * 15, // время обновления состояния корзины
     whereTabletFrequency: 1000 * 60, // определение положения планшета
+    updateMenu: 1000 * 60 * 45,
     language: 'ru'
 }
