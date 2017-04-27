@@ -65,10 +65,11 @@
             }
         },
         mounted(){
+            const self = this;
             this.$parent.showMenu = false;
             this.getData();
             setTimeout(function(){
-                this.getData();
+                self.getData();
             }, this.$store.state.settings.whereTabletFrequency);
         },
         methods:{

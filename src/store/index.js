@@ -90,12 +90,12 @@ const store = new Vuex.Store({
             operation.name = 'categories';
             test = !test;
             ajax.exec(operation, function (resp) {
-                if (test) {
+/*                if (test) {
                     commit('SET_CATEGORY', _.reverse(resp.data));
                 }
-                else {
-                    commit('SET_CATEGORY', resp.data);
-                }
+                else {*/
+                commit('SET_CATEGORY', resp.data);
+                /*                }*/
                 resp.data.forEach(function (item, i, arr) {
                     idx++;
                     categoryPositions[item.code] = {
