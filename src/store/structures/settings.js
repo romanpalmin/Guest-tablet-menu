@@ -19,6 +19,7 @@ export default {
     updateOrderFrequency: 1000 * 15, // время обновления состояния корзины
     whereTabletFrequency: 1000 * 60, // определение положения планшета
     updateMenu: 300000, // Обновление меню и товаров
+    updateShow: 100000*15, // Обновление расписания развлечений (раз в 15 минут)
     language: 'ru',
     showLanguageToggle: false
 }

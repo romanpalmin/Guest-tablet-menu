@@ -72,7 +72,12 @@ const store = new Vuex.Store({
                 code: payload.id,
                 stroka: payload.stroka
             }));
-            console.log(state.app.orders);
+            if (payload.callback && typeof(payload.callback) === "function") {
+                payload.callback();
+            }
+        },
+        [m_types.SET_SHOW](state, payload){
+            state.app.show = payload.data;
             if (payload.callback && typeof(payload.callback) === "function") {
                 payload.callback();
             }
@@ -187,7 +192,6 @@ const store = new Vuex.Store({
         },
         [a_types.TURN_ON_LAMP]({commit}, payload){
             console.log('Подсвечиваем товар и шлем обратно');
-            console.log(payload);
             const operation = {
                 name: 'showLamp',
                 id: payload.currentId
@@ -195,14 +199,11 @@ const store = new Vuex.Store({
             ajax.exec(operation);
         },
         [a_types.EMPTY_ORDERS_FULL]({commit}, payload){
-            console.log('Удаляем из базы');
             ajax.exec({name: 'clearOrder'}, function () {
-                console.log('Коммитим в сторе');
                 commit('EMPTY_ORDER', payload);
             });
         },
         [a_types.DELETE_ORDER_BY_ID]({commit}, payload){
-            console.log(payload);
             const operation = {
                 name: 'deleteFromOrder',
                 id: payload.id,
@@ -210,6 +211,15 @@ const store = new Vuex.Store({
             };
             ajax.exec(operation, function () {
                 commit('DELETE_POSITION_IN_ORDER_BY_ID', payload);
+            });
+        },
+        [a_types.GET_SHOW]({commit}, payload){
+            const operation = {
+                name: 'show'
+            };
+            ajax.exec(operation, function (resp) {
+                payload.data = resp.data;
+                commit('SET_SHOW', payload);
             });
         }
     }

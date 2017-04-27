@@ -124,6 +124,7 @@ export default function() {
         result =_.max(result, 'rssi');
 
         tableNumber = (_.find(store.state.app.BleLabels, {'BLE' : result.BLE})).table;
+        alert(tableNumber);
         store.commit('SET_PRIMARY_TABLE_NUMBER', tableNumber);
 
     }

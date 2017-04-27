@@ -92,7 +92,6 @@
                 this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
                     item.route = 'menu/' + item.code;
                     item.style = 'background-image: url(' + self.$store.state.settings.urlImagesBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
-                    console.log(self.$store.state.settings.urlImagesBase + self.$store.state.settings.urlBigImage + item.urlBigImage);
                     return item;
                 });
                 return this.ctgs;
@@ -138,7 +137,7 @@
 
             let upTimer = setInterval(function () {
                 self.getData();
-                console.log(self.$store.state.settings.updateMenu);
+                console.log('Обновляются меню и товары');
             }, 300000);
         }
     }

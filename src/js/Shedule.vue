@@ -111,12 +111,15 @@
         methods:{
            getShow: function(){
                 var self = this;
-                const operation = {name: 'show'};
-                ajax.exec(operation, function (response) {
-                     if (response.data.length > 0){
-                         self.rasp = response.data;
-                     }
-                });
+                const payload = {
+                    callback: function(){
+                        self.rasp = _.map(self.$store.state.app.show, function(item){
+                            return item;
+                        });
+                    }
+                }
+                this.$store.dispatch('GET_SHOW', payload);
+
             }
         },
         filters:{
@@ -128,7 +131,22 @@
          },
 
         mounted() {
-            this.getShow();
+            const self = this;
+            if (this.$store.state.app.show.length === 0){
+                console.log('Заполняем');
+                this.getShow();
+            } else {
+                console.log('Из кэша');
+                this.rasp = _.map(this.$store.state.app.show, function(item){
+                            return item;
+                });
+            }
+
+            let updateShow = setInterval(function(){
+                console.log('Обновляется список развлечений');
+                self.getShow();
+            }, this.$store.state.settings.updateShow);
+
         }
     }
 </script>
