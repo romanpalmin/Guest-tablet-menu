@@ -69,7 +69,7 @@
             this.getData();
             setTimeout(function(){
                 this.getData();
-            }, state.settings.whereTabletFrequency);
+            }, this.$store.state.settings.whereTabletFrequency);
         },
         methods:{
             getData(){

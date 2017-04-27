@@ -91,7 +91,8 @@
                 var self = this;
                 this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
                     item.route = 'menu/' + item.code;
-                    item.style = 'background-image: url(../../../../../../' + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
+                    item.style = 'background-image: url(' + self.$store.state.settings.urlImagesBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
+                    console.log(self.$store.state.settings.urlImagesBase + self.$store.state.settings.urlBigImage + item.urlBigImage);
                     return item;
                 });
                 return this.ctgs;
@@ -112,11 +113,11 @@
             },
 
             getImageSrc(item){
-                return '../../../../../../' + this.$store.state.settings.server + this.$store.state.settings.urlBigImage + item.urlSmallImage;
+                return this.$store.state.settings.urlImagesBase +  this.$store.state.settings.server + this.$store.state.settings.urlBigImage + item.urlSmallImage;
             },
 
             getImageSrcBig(item){
-                return '../../../../../../' + this.$store.state.settings.server + this.$store.state.settings.urlBigImage + item.urlBigImage;
+                return this.$store.state.settings.urlImagesBase + this.$store.state.settings.server + this.$store.state.settings.urlBigImage + item.urlBigImage;
             },
             populatePositions(){
                 this.$store.dispatch('GET_ALL_POSITIONS');

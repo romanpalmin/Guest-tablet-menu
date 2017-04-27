@@ -4,6 +4,7 @@ export default {
     userName: '',
     password: '',
     /* server:'http://10.10.182.11/',*/
+    urlImagesBase:  'http://10.100.50.248/',
     urlSmallImage: 'img/',
     urlBigImage: 'images/',
     urlBackImage: 'images',
@@ -18,5 +19,6 @@ export default {
     updateOrderFrequency: 1000 * 15, // время обновления состояния корзины
     whereTabletFrequency: 1000 * 60, // определение положения планшета
     updateMenu: 300000, // Обновление меню и товаров
-    language: 'ru'
+    language: 'ru',
+    showLanguageToggle: false
 }

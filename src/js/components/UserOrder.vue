@@ -332,8 +332,8 @@
         },
         mounted(){
             const self = this;
-            this.urlLogo = this.store.settings.server + this.store.settings.urlSmallImage + this.store.settings.images.logo;
-            this.urlClose = '../../../../../' + this.store.settings.server + this.store.settings.urlSmallImage + this.store.settings.images.close;
+            this.urlLogo = this.$store.state.settings.urlImagesBase + this.store.settings.urlSmallImage + this.store.settings.images.logo;
+            this.urlClose = this.$store.state.settings.urlImagesBase + this.store.settings.urlSmallImage + this.store.settings.images.close;
             this.getJson();
             let upTimer = setInterval(function () {
                 self.getJson(true);

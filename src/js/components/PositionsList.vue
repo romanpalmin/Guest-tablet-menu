@@ -323,7 +323,7 @@
             positionsWithProps: function () {
                 var self = this;
                 var res = this.positionslist['tovar'].map(function (item) {
-                    item.style = 'background-image: url(../../../../../../' + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                    item.style = 'background-image: url(' + self.$store.state.settings.urlImagesBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
                     if (item.vitrina === '1') {
                         item.style += ';box-shadow: 0px 0px 30px #CCDDFF;'
                     }
@@ -348,7 +348,7 @@
         methods: {
             getStyle: function(item){
                 var self = this;
-                var res = 'background-image: url(../../../../../../' + self.settings.server + self.settings.urlBackImage + item.urlImage  + ');';
+                var res = 'background-image: url(' + this.$store.state.settings.urlImagesBase + self.settings.urlBackImage + item.urlImage  + ');';
                 if (item.vitrina === '1') {
                     res += ';box-shadow: 0px 0px 30px #CCDDFF;'
                 }

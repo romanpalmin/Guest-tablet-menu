@@ -116,7 +116,7 @@ const app = new Vue({
         
       </div>
       <div class="tabletNumber" name="tabletNumber">{{$store.state.app.TabletNumber}}</div>
-      <div class="language" name="language" @click="changeLanguage()">{{$store.state.settings.language}}</div>
+      <div class="language" name="language" @click="changeLanguage()" v-if="$store.state.settings.showLanguageToggle">{{$store.state.settings.language}}</div>
       </div>
       <div class="content">
       
