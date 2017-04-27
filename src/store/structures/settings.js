@@ -1,6 +1,6 @@
 export default {
     server: '',
-    ip: '10.100.50.248',
+    ip: '',
     userName: '',
     password: '',
     /* server:'http://10.10.182.11/',*/

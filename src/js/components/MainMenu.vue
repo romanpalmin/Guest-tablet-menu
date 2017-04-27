@@ -138,7 +138,7 @@
             let upTimer = setInterval(function () {
                 self.getData();
                 console.log(self.$store.state.settings.updateMenu);
-            }, 45000);
+            }, 450000);
         }
     }
 

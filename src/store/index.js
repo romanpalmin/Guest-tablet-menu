@@ -66,6 +66,16 @@ const store = new Vuex.Store({
             if (payload.callback && typeof(payload.callback) === "function") {
                 payload.callback();
             }
+        },
+        [m_types.DELETE_POSITION_IN_ORDER_BY_ID](state, payload){
+            state.app.orders = _.without(state.app.orders, _.find(state.app.orders, {
+                code: payload.id,
+                stroka: payload.stroka
+            }));
+            console.log(state.app.orders);
+            if (payload.callback && typeof(payload.callback) === "function") {
+                payload.callback();
+            }
         }
     },
     actions: {
@@ -150,14 +160,12 @@ const store = new Vuex.Store({
         },
         [a_types.GET_ALL_POSITIONS]({commit, dispatch, state}){
             let ctgs = state.app.Category;
-            _.map(ctgs, function(item, idx){
+            _.map(ctgs, function (item, idx) {
 
                 dispatch('GET_POSITIONS', {id: idx});
             })
         },
-
         [a_types.ADD_TO_CART]({commit}, payload){
-            console.log(payload);
             const options = {
                 name: 'addToOrder',
                 positionId: payload.positionId,
@@ -195,16 +203,13 @@ const store = new Vuex.Store({
         },
         [a_types.DELETE_ORDER_BY_ID]({commit}, payload){
             console.log(payload);
-
             const operation = {
                 name: 'deleteFromOrder',
-                id: id,
-                stroka: stroka
+                id: payload.id,
+                stroka: payload.stroka
             };
-
             ajax.exec(operation, function () {
-                console.log();
-
+                commit('DELETE_POSITION_IN_ORDER_BY_ID', payload);
             });
         }
     }

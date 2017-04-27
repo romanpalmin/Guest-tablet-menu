@@ -168,11 +168,7 @@
     }
 </style>
 <script>
-    import state from './store/currentStates';
-    import ajax from './helpers/ajax';
     import _ from 'lodash';
-
-    let orderState = state.appState.orders;
 
     export default{
         data(){
@@ -211,7 +207,7 @@
             addingToCartStyle: function() { return this.isAdding ? "color:darkgrey" : '';},
             words: function(){
                 let words = {};
-                if (state.settings.language === 'ru'){
+                if (this.store.settings.language === 'ru'){
                     words.title = 'Вы выбрали:';
                     words.qty='КОЛ-ВО';
                     words.name='НАИМЕНОВАНИЕ';
@@ -268,31 +264,16 @@
                 if (this.isAdding) return;
                 this.isAdding = true;
                 let self = this;
-                const options = {
-                    name: 'addToOrder',
-                    positionId: id
-                };
-                /*ajax.exec(options, function (response) {
-                            if (response.data === 1){
-                                options.name = 'order';
-                                ajax.exec(options, function(response){
-                                    orderState.currentState = response.data;
-                                    self.positions = response.data;
-                                    self.isAdding = false;
-                                    let idx = self.currentPressedKey.indexOf(id);
-                                    self.currentPressedKey.splice(idx, 1);
-                            })
-                        }
-                        else {
-                          self.isAdding = false;
-
-                        }
-                 })*/
-                 const payload = {
+                   const payload = {
                     positionId: id,
-                    tableId: this.$store.state.app.TableNumberPrimary,
+                    tableId: store.app.TableNumberPrimary,
                     callback: function(){
-                        console.log('+1');
+                        self.isAdding = false;
+                        let idx = self.currentPressedKey.indexOf(id);
+                        self.currentPressedKey.splice(idx, 1);
+                        self.positions = _.map(self.$store.state.app.orders, function(item){
+                            return item;
+                        });
                     }
                  }
                  this.$store.dispatch('ADD_TO_CART', payload);
@@ -317,28 +298,18 @@
 
             deleteOrderById: function(id, stroka){
                 this.positions = _.without(this.positions, _.find(this.positions, {code:id, stroka:stroka}))
-                orderState.currentState = this.positions;
                 const payload = {
                     id: id,
                     stroka: stroka,
                     callback: function(){
-                        console.log('Удалена');
                     }
                 };
                 this.$store.dispatch('DELETE_ORDER_BY_ID', payload);
-                const operation = {
-                    name: 'deleteFromOrder',
-                    id: id,
-                    stroka: stroka
-                };
-
-                ajax.exec(operation);
             },
 
             deleteAll: function() {
                 const self = this;
                 const payload = {callback: function(){
-                    console.log('Удаляем локально');
                     self.positions = [];
                 }};
                 this.$store.dispatch('EMPTY_ORDERS_FULL', payload);
@@ -348,31 +319,26 @@
             getJson: function(isUpdate){
                 const self = this;
 
-                if (this.store.app.orders.length === 0 || isUpdate){
-                    console.log(1);
+                if (store.app.orders.length === 0 || isUpdate){
                     let payload = {callback: function(){
-                        self.positions = this.store.app.orders;
+                        self.positions = self.store.app.orders;
                     }}
                     this.$store.dispatch('GET_ORDERS', payload);
                 } else {
-                    console.log(12);
-                    self.positions = this.store.app.orders;
+                    self.positions = store.app.orders;
                 }
             }
 
         },
         mounted(){
-            console.log(this.store.app.orders);
             const self = this;
-            this.urlLogo = this.store.settings.server + this.store.settings.urlSmallImage + this.store.settings.images.logo;
-            this.urlClose = '../../../../../' + this.store.settings.server + this.store.settings.urlSmallImage + this.store.settings.images.close;
+            this.urlLogo = store.settings.server + store.settings.urlSmallImage + store.settings.images.logo;
+            this.urlClose = '../../../../../' + store.settings.server + store.settings.urlSmallImage + store.settings.images.close;
             this.getJson();
             let upTimer = setInterval(function () {
                 self.getJson(true);
-            }, this.store.settings.updateOrderFrequency*10000);
+            }, store.settings.updateOrderFrequency);
         }
 }
-
-
 
 </script>
