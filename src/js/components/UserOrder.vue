@@ -266,7 +266,7 @@
                 let self = this;
                    const payload = {
                     positionId: id,
-                    tableId: store.app.TableNumberPrimary,
+                    tableId: this.store.app.TableNumberPrimary,
                     callback: function(){
                         self.isAdding = false;
                         let idx = self.currentPressedKey.indexOf(id);
@@ -319,25 +319,25 @@
             getJson: function(isUpdate){
                 const self = this;
 
-                if (store.app.orders.length === 0 || isUpdate){
+                if (this.store.app.orders.length === 0 || isUpdate){
                     let payload = {callback: function(){
                         self.positions = self.store.app.orders;
                     }}
                     this.$store.dispatch('GET_ORDERS', payload);
                 } else {
-                    self.positions = store.app.orders;
+                    self.positions = this.store.app.orders;
                 }
             }
 
         },
         mounted(){
             const self = this;
-            this.urlLogo = store.settings.server + store.settings.urlSmallImage + store.settings.images.logo;
-            this.urlClose = '../../../../../' + store.settings.server + store.settings.urlSmallImage + store.settings.images.close;
+            this.urlLogo = this.store.settings.server + this.store.settings.urlSmallImage + this.store.settings.images.logo;
+            this.urlClose = '../../../../../' + this.store.settings.server + this.store.settings.urlSmallImage + this.store.settings.images.close;
             this.getJson();
             let upTimer = setInterval(function () {
                 self.getJson(true);
-            }, store.settings.updateOrderFrequency);
+            }, self.store.settings.updateOrderFrequency);
         }
 }
 

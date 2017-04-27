@@ -40,7 +40,6 @@
     }
 </style>
 <script>
-    import state from './components/store/currentStates';
     import rb from './components/helpers/rebindTable';
     export default{
         data(){
@@ -50,8 +49,8 @@
         },
         methods:{
             getTableNumber( num ){
-                state.appState.TableNumber = num;
-                rb.rebind(state.appState.TableNumber);
+                this.$store.state.app.TableNumberPrimary = num;
+                rb.rebind($store.state.app.TableNumberPrimary);
                 this.$router.replace('/ru/menu');
             }
         }

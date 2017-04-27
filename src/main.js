@@ -14,13 +14,10 @@ import wheretablet from './js/WhereTablet.vue';
 import VueRouter from 'vue-router'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
-import upState from './js/components/helpers/updateState';
-import state from './js/components/store/currentStates';
 import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
 import bleLabels from  './js/components/helpers/defineBtLabel';
 import settings from './store/structures/settings.js';
-//import categoryPositions from './store/structures/categoryPositions';
 import store from './store';
 
 Vue.use(VueRouter);
@@ -81,9 +78,7 @@ const app = new Vue({
         },
 
         emptyCache(){
-            state.appState.MenuPoints.length = 0;
             this.$store.state.app.MenuPoints.length = 0;
-            //Array.from(state.appState.Category).forEach(function(item){
             for (let item in this.$store.state.app.Category) {
                 this.$store.state.app.Category[item + ''].currentState.length = 0;
             }
@@ -130,9 +125,9 @@ const app = new Vue({
     </div>`
 }).$mount('#app');
 
-let updateInterval = setInterval(function () {
+/*let updateInterval = setInterval(function () {
     upState();
-}, state.settings.updateStatePeriod);
+}, state.settings.updateStatePeriod);*/
 
 
 

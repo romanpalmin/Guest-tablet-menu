@@ -31,7 +31,7 @@ export default function scanBLE() {
     });
 
     function startBLE() {
-        alert('BLE. Pressed 4 timed');
+        //alert('BLE. Pressed 4 timed');
     }
 
     document.addEventListener("volumeupbutton", function () {

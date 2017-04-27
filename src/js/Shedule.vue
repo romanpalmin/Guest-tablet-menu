@@ -94,7 +94,6 @@
     }
 </style>
 <script>
-    import state from './components/store/currentStates'
     import ajax from './components/helpers/ajax.js';
 
     export default{

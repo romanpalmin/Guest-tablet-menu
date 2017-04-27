@@ -17,6 +17,6 @@ export default {
     updateStatePeriod: 1000 * 60 * 30,  // время обновления меню секунда * кол-во секунд * кол-во минут
     updateOrderFrequency: 1000 * 15, // время обновления состояния корзины
     whereTabletFrequency: 1000 * 60, // определение положения планшета
-    updateMenu: 1000 * 60 * 45,
+    updateMenu: 300000, // Обновление меню и товаров
     language: 'ru'
 }

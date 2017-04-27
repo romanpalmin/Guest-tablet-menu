@@ -24,7 +24,6 @@
     }
 </style>
 <script>
-import state from './components/store/currentStates';
     export default{
         data(){
             return{

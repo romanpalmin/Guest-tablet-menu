@@ -12,7 +12,6 @@
 <style>
 </style>
 <script>
-    import state from './components/store/currentStates';
     import ajax from './components/helpers/ajax';
     import modal from './components/ModalWindow.vue';
 
@@ -27,11 +26,7 @@
 
         },
         mounted(){
-           // let operation = {};
-           // operation.name = 'getBle';
-           // ajax.exec(operation, function(resp){
-           //     console.log(resp.data);
-           // });
+
         },
         components:{
             modal

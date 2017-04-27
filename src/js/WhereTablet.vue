@@ -40,7 +40,6 @@
     }
 </style>
 <script>
-    import state from './components/store/currentStates';
     import ajax from './components/helpers/ajax.js';
     export default{
         data(){
@@ -52,7 +51,7 @@
         computed:{
             words: function(){
                 let words = {};
-                if (state.settings.language === 'ru'){
+                if (this.$store.state.settings.language === 'ru'){
                     words.button = 'Обновить данные по столам и планшетам';
                     words.tablet='Планшет';
                     words.table='Стол';

@@ -18,12 +18,11 @@
 }
 </style>
 <script>
-    import state from './components/store/currentStates';
     export default{
         data(){
             return{
                 msg:'Номер стола',
-                table: state.appState.TableNumberPrimary
+                table: this.$store.state.app.TableNumberPrimary
             }
         },
         computed:{
@@ -34,7 +33,7 @@
         mounted(){
             let self = this;
             setInterval(function(){
-                self.table = state.appState.TableNumberPrimary;
+                self.table = self.$store.state.app.TableNumberPrimary;
              }, 1000)
         }
     }

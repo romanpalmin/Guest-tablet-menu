@@ -87,7 +87,7 @@ export default function scanQrCode(router) {
         let timerId = setInterval(function () {
             cnt += 1000;
             if (isPressedBack) {
-                goToTables();
+                //goToTables();
                 stopWaiting();
             }
             if (cnt === maxInterval) {
@@ -115,18 +115,18 @@ export default function scanQrCode(router) {
     }, false);
 
     function startTestScan() {
-        alert('Запускаем тестовое сканирование');
+        //alert('Запускаем тестовое сканирование');
     }
 
     function goToTables() {
-        router.replace('/ru/tables');
+        //router.replace('/ru/tables');
     }
 
     function startScan() {
         cordova.plugins.barcodeScanner.scan(
             function (result) {
                 if (!result.cancelled && result.format === 'CODE_93') {
-                    rebind.rebind(result.text);
+                    //rebind.rebind(result.text);
                 }
 
             },
