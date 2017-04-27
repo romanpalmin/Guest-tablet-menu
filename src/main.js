@@ -89,8 +89,6 @@ const app = new Vue({
             //this.$store.commit('SET_CATEGORY_POSITIONS', categoryPositions);
             this.$store.dispatch('GET_TABLET_NUMBER');
             this.$store.dispatch('GET_BLE');
-            //this.$store.dispatch('GET_ORDERS');
-            //this.$store.dispatch('GET_CATEGORY');
         }
 
     },

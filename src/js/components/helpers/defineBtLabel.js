@@ -4,6 +4,7 @@ import _ from 'lodash';
 export default function() {
     // Dictionary of devices.
     let devices = {};
+    let count = 0;
     let cntDevArr = [];
     // Timer that displays list of devices.
     let timer = null;
@@ -68,8 +69,12 @@ export default function() {
     }
 
     function SendRequestBLE(html) {
-        let url = store.state.settings.server + 'menu/hs/track/send/';
-        console.log(url);
+
+        let url = store.state.settings.urlImagesBase + 'menu/hs/track/send/';
+        /*if (count < 3) {
+            alert(url);
+            count++;
+        }*/
         const request = new XMLHttpRequest();
         request.open('POST', url, true);
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
@@ -124,7 +129,6 @@ export default function() {
         result =_.max(result, 'rssi');
 
         tableNumber = (_.find(store.state.app.BleLabels, {'BLE' : result.BLE})).table;
-        //alert(tableNumber);
         store.commit('SET_PRIMARY_TABLE_NUMBER', tableNumber);
         store.state.app.TableNumberPrimary = tableNumber;
 
