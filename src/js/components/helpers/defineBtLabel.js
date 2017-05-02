@@ -70,7 +70,7 @@ export default function() {
 
     function SendRequestBLE(html) {
 
-        let url = store.state.settings.urlImagesBase + 'menu/hs/track/send/';
+        let url = store.state.settings.urlBase + 'menu/hs/track/send/';
         /*if (count < 3) {
             alert(url);
             count++;

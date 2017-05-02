@@ -182,7 +182,7 @@
             ctgs_with_params: function () {
                 var self = this;
                 this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
-                    item.style = 'background-image: url(' + self.$store.state.settings.urlImagesBase + self.settings.server + self.settings.urlBigImage + item.urlSmallImage + ');';
+                    item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBigImage + item.urlSmallImage + ');';
                     item.route = '/' + self.settings.language + '/menu/' + item.code;
 
                     if (+item.code === +self.$route.params.id) {
@@ -196,7 +196,7 @@
             },
             urlLogo:function(){
                 //let settings = this.$store.state;
-                return this.$store.state.settings.urlImagesBase + this.settings.urlSmallImage + this.settings.images.logo;
+                return this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.logo;
             }
         },
         mounted(){

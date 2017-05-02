@@ -232,7 +232,7 @@
             computed:{
                 codeFromParent: function() {return this.code},
                 isActive: function() {return this.activeTime},
-                urlFromParents : function() {return this.$store.state.settings.urlImagesBase + this.settings.urlBigImage + this.urlImageLarge;},
+                urlFromParents : function() {return this.$store.state.settings.urlBase + this.settings.urlBigImage + this.urlImageLarge;},
                 priceFromParent : function () {return this.price;},
                 nameFromParent : function () {return this.name;},
                 descriptionFromParent : function() {return this.description},
@@ -317,13 +317,13 @@
                 },
 
                 getRelatedStyle: function(item){
-                    return 'background-image: url(' + this.$store.state.settings.urlImagesBase + this.settings.urlBackImage + item.urlImage + ');';
+                    return 'background-image: url(' + this.$store.state.settings.urlBase + this.settings.urlBackImage + item.urlImage + ');';
                 }
 
             },
 
             mounted(){
-                this.urlClose = this.$store.state.settings.urlImagesBase + this.settings.urlSmallImage + this.settings.images.close;
+                this.urlClose = this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close;
             }
     }
 

@@ -2,26 +2,42 @@
 import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
-
-//const tabletName = '01';
-const tabletName = '02';
 const ip = '10.100.50.248';
-//const server = `http://tab${tabletName}:${tabletName}@${ip}/`;
-//console.log('server: ' + server);
-const userName = `tab${tabletName}`;
-const password =`${tabletName}`;
-//-------------------------------
-
+let userName = 'planshet';
+let password = 'planshet';
+let ajaxServerUrlShort = '';
 const baseUrl = 'menu/hs/model?';
-let ajaxServerUrlShort = `http://${userName}:${password}@${ip}/${baseUrl}`;
+//-------------------------------
+ajaxServerUrlShort = formAjaxVars();
+
+
 let uuid = '';
 if (typeof device !== 'undefined') {
     uuid = device.uuid;
     //alert(device.uuid);
+    getTabletName(uuid);
 } else {
-    uuid = '10e00be6a70f0bcc'
+    uuid = '10e00be6a70f0bcc';
+    getTabletName(uuid);
 }
-console.log(ajaxServerUrlShort);
+
+
+function getTabletName(uuid) {
+    const operation = {name: 'getUserName', uuid: uuid};
+    let url = getUrl(operation);
+    executeRequest(url, function (resp) {
+        userName = resp.data.login;
+        password = resp.data.pass;
+        formAjaxVars();
+    });
+}
+
+function formAjaxVars(){
+    ajaxServerUrlShort = `http://${userName}:${password}@${ip}/${baseUrl}`;
+    return ajaxServerUrlShort;
+}
+
+
 function executeRequest(url, callback) {
     axios.get(ajaxServerUrlShort + url)
         .then(function (response) {
@@ -76,6 +92,9 @@ function getUrl(operation) {
             console.warn('Для работы заменить no_groups на groups');
             url = `no_groups=1&tovar=1&yacheika=${operation.id}`;
             console.log(url);
+            break;
+        case 'getUserName':
+            url = 'usr=1';
             break;
         default:
             url = '';
