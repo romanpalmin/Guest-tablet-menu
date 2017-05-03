@@ -131,14 +131,25 @@
             } else {
                 this.getData();
             }
-
-            /*console.log('Текущее состояние стора:');
-            console.log(this.$store.state);*/
-
             let upTimer = setInterval(function () {
-                self.getData();
-                console.log('Обновляются меню и товары');
-            }, 900000);
+                  let payload = {};
+                  let lastUpdate = self.$store.state.app.LastTimeUpdate;
+                  console.log(lastUpdate);
+                  let callback = function(){
+                        //console.log('Проверка обновлений');
+                         setTimeout(function(){
+                         //console.log('Старое значчение:' + lastUpdate);
+                         //console.log('Новое значчение:' + self.$store.state.app.LastTimeUpdate);
+                         if (lastUpdate !== self.$store.state.app.LastTimeUpdate){
+                             //console.log('Обновляем номенклатуру');
+                             self.getData();
+                         }
+                          else {
+                              //console.log('Обновление не требуется');
+                          }
+                         }, 1000)};
+                self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
+            }, 20000);
         }
     }
 

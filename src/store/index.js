@@ -27,8 +27,8 @@ const store = new Vuex.Store({
                 state.app.MenuPoints = payload;
             },
             [m_types.SET_LAST_TIME_UPDATE](state, payload){
-                console.log(payload);
                 state.app.LastTimeUpdate = payload.data;
+                //console.log('Обновление из запроса: ' + payload.data);
                 if (payload.callback && typeof(payload.callback) === "function") {
                     payload.callback();
                 }
@@ -231,7 +231,7 @@ const store = new Vuex.Store({
                     commit('SET_SHOW', payload);
                 });
             },
-            [a_types.GET_LAST_UPDATE]({commit, payload}){
+            [a_types.GET_LAST_UPDATE]({commit}, payload){
                 let cb = {};
                 ajax.exec({name: 'getLastTimeUpdate'}, function (resp) {
                     cb.data = resp.data;
