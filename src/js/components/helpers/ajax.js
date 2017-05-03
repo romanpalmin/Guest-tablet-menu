@@ -14,7 +14,7 @@ ajaxServerUrlShort = formAjaxVars();
 let uuid = '';
 if (typeof device !== 'undefined') {
     uuid = device.uuid;
-    //alert(device.uuid);
+    alert(device.uuid);
     getTabletName(uuid);
 } else {
     uuid = '10e00be6a70f0bcc';
@@ -94,6 +94,9 @@ function getUrl(operation) {
             break;
         case 'getUserName':
             url = 'usr=1';
+            break;
+        case 'getLastTimeUpdate':
+            url = 'sync=1';
             break;
         default:
             url = '';
