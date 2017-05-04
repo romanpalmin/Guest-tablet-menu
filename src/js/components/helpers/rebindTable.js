@@ -4,7 +4,7 @@ export default {
     rebind: function (tableId) {
         const order = store.state.app.orders;
         store.state.app.TableNumberPrimary = tableId;
-        console.log('Новый стол: ' + tableId);
+        //console.log('Новый стол: ' + tableId);
         this.ajaxWorker(tableId, order);
 
     },
@@ -24,9 +24,9 @@ export default {
     addNewOrder: function (order) {
         let options = {'name': 'rebuildTable', 'stringOfCodes': order};
         ajax.exec(options, function (response) {
-            console.log(response.data);
+            //console.log(response.data);
             if (response.data == '1'){
-                console.log(order + ' добавлены.')
+                //console.log(order + ' добавлены.')
             } else {
                 this.addNewOrder(order);
             }

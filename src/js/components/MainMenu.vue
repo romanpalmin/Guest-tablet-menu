@@ -134,7 +134,7 @@
             let upTimer = setInterval(function () {
                   let payload = {};
                   let lastUpdate = self.$store.state.app.LastTimeUpdate;
-                  console.log(lastUpdate);
+                  //console.log(lastUpdate);
                   let callback = function(){
                         //console.log('Проверка обновлений');
                          setTimeout(function(){

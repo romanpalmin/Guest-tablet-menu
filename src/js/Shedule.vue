@@ -133,17 +133,17 @@
         mounted() {
             const self = this;
             if (this.$store.state.app.show.length === 0){
-                console.log('Заполняем');
+                //console.log('Заполняем');
                 this.getShow();
             } else {
-                console.log('Из кэша');
+                //console.log('Из кэша');
                 this.rasp = _.map(this.$store.state.app.show, function(item){
                             return item;
                 });
             }
 
             let updateShow = setInterval(function(){
-                console.log('Обновляется список развлечений');
+                //console.log('Обновляется список развлечений');
                 self.getShow();
             }, this.$store.state.settings.updateShow);
 

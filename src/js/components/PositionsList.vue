@@ -376,11 +376,11 @@
                             self.positionslist = self.$store.state.app.Category[catId].currentState;
                             }
                         };
-                    console.log('Загружаем...');
+                    //console.log('Загружаем...');
                     this.$store.dispatch('GET_POSITIONS', payload);
                 } else {
                     this.positionslist = this.$store.state.app.Category[catId+''].currentState;;
-                    console.log('Из кэша');
+                    //console.log('Из кэша');
                 }
         }
     }

@@ -125,7 +125,7 @@ const store = new Vuex.Store({
             },
             [a_types.GET_TABLET_NUMBER]({commit}){
                 ajax.exec({name: 'getTabletNumber'}, function (resp) {
-                    console.log('Устанавливаем номер планшета');
+                    //console.log('Устанавливаем номер планшета');
                     commit('SET_TABLET_NUMBER', resp.data.pass);
                 });
             },
@@ -200,7 +200,7 @@ const store = new Vuex.Store({
                 })
             },
             [a_types.TURN_ON_LAMP]({commit}, payload){
-                console.log('Подсвечиваем товар и шлем обратно');
+                //console.log('Подсвечиваем товар и шлем обратно');
                 const operation = {
                     name: 'showLamp',
                     id: payload.currentId
