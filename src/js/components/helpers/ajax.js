@@ -17,10 +17,10 @@ if (typeof device !== 'undefined') {
     alert(device.uuid);
     getTabletName(uuid);
 } else {
-    uuid = '10e00be6a70f0bcc';
-    //getTabletName(uuid);
-    userName = 'tab01';
-    password = '01';
+    uuid = '8981e83c79f3be00';
+    getTabletName(uuid);
+    //userName = 'tab01';
+    //password = '01';
 }
 
 

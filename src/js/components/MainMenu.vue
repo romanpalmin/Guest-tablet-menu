@@ -134,22 +134,21 @@
             let upTimer = setInterval(function () {
                   let payload = {};
                   let lastUpdate = self.$store.state.app.LastTimeUpdate;
-                  //console.log(lastUpdate);
+                  console.log('Старое знаечение:' + lastUpdate);
                   let callback = function(){
                         //console.log('Проверка обновлений');
                          setTimeout(function(){
-                         //console.log('Старое значчение:' + lastUpdate);
                          //console.log('Новое значчение:' + self.$store.state.app.LastTimeUpdate);
                          if (lastUpdate !== self.$store.state.app.LastTimeUpdate){
-                             //console.log('Обновляем номенклатуру');
+                             console.log('Обновляем номенклатуру');
                              self.getData();
                          }
                           else {
-                              //console.log('Обновление не требуется');
+                              console.log('Обновление не требуется');
                           }
                          }, 1000)};
                 self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
-            }, 20000);
+            }, 7000);
         }
     }
 

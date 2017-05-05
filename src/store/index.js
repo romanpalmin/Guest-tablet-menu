@@ -124,8 +124,7 @@ const store = new Vuex.Store({
 
             },
             [a_types.GET_TABLET_NUMBER]({commit}){
-                ajax.exec({name: 'getTabletNumber'}, function (resp) {
-                    //console.log('Устанавливаем номер планшета');
+                ajax.exec({name: 'getUserName'}, function (resp) {
                     commit('SET_TABLET_NUMBER', resp.data.pass);
                 });
             },
