@@ -312,7 +312,7 @@
                 },
 
                 showInLamp: function(id){
-                    let data = {currentId: +id}
+                    let data = {currentId: id}
                     this.$store.dispatch('TURN_ON_LAMP', data);
                 },
 
