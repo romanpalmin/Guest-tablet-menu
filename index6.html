@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+</head>
+<body>
+
+<script>
+    function createDirectory(rootDirEntry) {
+        rootDirEntry.getDirectory('NewDirInRoot', { create: true }, function (dirEntry) {
+            dirEntry.getDirectory('images', { create: true }, function (subDirEntry) {
+
+                createFile(subDirEntry, "fileInNewSubDir.txt");
+
+            }, function(err){alert('Error 1'); alert(err);});
+        }, function(err){alert('Error 2'); alert(err)});
+    }
+    alert('Скрипт создания директории и записи/получения файла');
+/*
+    function ready(fn) {
+        if (document.readyState != 'loading'){
+            fn();
+        } else {
+            document.addEventListener('DOMContentLoaded', fn);
+        }
+    }
+    ready(createDirectory);*/
+</script>
+</body>
+</html>

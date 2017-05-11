@@ -290,6 +290,8 @@
 </style>
 <script>
     import Position from './PositionItem.vue';
+    import checkFile from './helpers/checkForExist.js';
+    import getImg from './helpers/importImages.js';
 
      export default{
         data(){
@@ -307,7 +309,8 @@
                     activeTime: '',
                     vitrina: '',
                     related:[],
-                    settings: this.$store.state.settings
+                    settings: this.$store.state.settings,
+                    isBrowser: false
                 }
         },
         props: ["categoryId"],
@@ -323,7 +326,22 @@
             positionsWithProps: function () {
                 var self = this;
                 var res = this.positionslist['tovar'].map(function (item) {
-                    item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                    //item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                    //item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/fc43fcde-b53a-11e6-80c0-0cc47ac6971c-20161216143226-big.jpg';
+                    console.log(self.isBrowser);
+                    if (!self.isBrowser)
+                    {
+                        if (checkFile(self.$store.state.settings.localPath + item.urlImage)){
+                            item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlImage + ')';
+                        }
+                        else {
+                            getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage);
+                            item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                        }
+                    } else {
+                        item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                    }
+
                     if (item.vitrina === '1') {
                         item.style += ';box-shadow: 0px 0px 30px #CCDDFF;'
                     }
@@ -348,7 +366,25 @@
         methods: {
             getStyle: function(item){
                 var self = this;
-                var res = 'background-image: url(' + this.$store.state.settings.urlBase + self.settings.urlBackImage + item.urlImage  + ');';
+                var res='';
+                //var res = 'background-image: url(' + this.$store.state.settings.urlBase + self.settings.urlBackImage + item.urlImage  + ');';
+                //var res = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/fc43fcde-b53a-11e6-80c0-0cc47ac6971c-20161216143226-big.jpg';
+                console.log(self.isBrowser);
+                 if (!self.isBrowser)
+                    {
+                        if (checkFile(self.$store.state.settings.localPath + item.urlImage)){
+                                res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlImage + ')';
+                            }
+                            else {
+                                getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage);
+                                 res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                            }
+                    } else {
+                        res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                    }
+
+
+
                 if (item.vitrina === '1') {
                     res += ';box-shadow: 0px 0px 30px #CCDDFF;'
                 }

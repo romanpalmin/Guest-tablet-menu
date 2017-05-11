@@ -89,6 +89,9 @@ const store = new Vuex.Store({
                 if (payload.callback && typeof(payload.callback) === "function") {
                     payload.callback();
                 }
+            },
+            [m_types.SET_LOCAL_PATH](state, payload){
+
             }
         },
         actions: {

@@ -17,6 +17,8 @@ import VueAxios from 'vue-axios';
 import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
 import bleLabels from  './js/components/helpers/defineBtLabel';
+import checkFile from './js/components/helpers/checkForExist.js';
+import check from './js/components/helpers/checkFieldList';
 import settings from './store/structures/settings.js';
 import store from './store';
 
@@ -64,6 +66,12 @@ const app = new Vue({
         //
         scanBLE();
 
+        //
+       /* checkFile('StreetFoodBar/images/group.jpg', function(res){
+            alert(res);
+        });*/
+
+       //check();
 
     },
     methods: {

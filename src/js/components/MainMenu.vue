@@ -66,6 +66,12 @@
 <script>
 
     import _ from 'lodash';
+    import checkFile from './helpers/checkForExist.js';
+    //import check from './helpers/checkFieldList.js';
+    import getImg from './helpers/importImages.js';
+    import axios from 'axios';
+    import VueAxios from 'vue-axios';
+
 
 
     export default {
@@ -75,7 +81,8 @@
                 mainPosition: {},
                 isDebug: false,
                 currentLanguage: this.$store.state.settings.language,
-                test: true
+                test: true,
+                isBrowser: false
             }
         },
         watch: {
@@ -91,11 +98,38 @@
                 var self = this;
                 this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
                     item.route = 'menu/' + item.code;
-                    item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
+                    //item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/group.jpg );';
+                    item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage + ')';
+                    //item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
+                    //console.log(self.isBrowser);
+                    /*if (!self.isBrowser){
+                               var img = new Image();
+                               alert('Текущая строка: file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage);
+                               img.src = 'file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage;
+                               img.onload = function(){
+                                   alert('Есть');
+                                   item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage + ')';
+                               }
+                               img.onerror = function(){
+                                    alert('Нет');
+                                    getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage);
+                                    item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
+                               };
+                        }
+
+                    else {
+                            console.log('Browser');
+/*                            var img = new Image();
+                            img.src = 'http://lol111111.ru/ololoshka.png';
+                            img.onload = function(){console.log('картинка существует')};
+                            img.onerror = function(){console.log('картинка не существует')};
+
+                            item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ')';
+                        }*/
                     return item;
                 });
                 return this.ctgs;
-            },
+            }
         },
 
         methods: {
@@ -111,13 +145,6 @@
                 this.getResponce();
             },
 
-            getImageSrc(item){
-                return this.$store.state.settings.urlBase +  this.$store.state.settings.server + this.$store.state.settings.urlBigImage + item.urlSmallImage;
-            },
-
-            getImageSrcBig(item){
-                return this.$store.state.settings.urlBase + this.$store.state.settings.server + this.$store.state.settings.urlBigImage + item.urlBigImage;
-            },
             populatePositions(){
                 this.$store.dispatch('GET_ALL_POSITIONS');
             }
