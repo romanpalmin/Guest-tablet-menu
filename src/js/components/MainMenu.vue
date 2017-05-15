@@ -190,7 +190,7 @@
             tabView: function () {
                 let res = this.ctgs.map(function (item) {
                     item.route = 'menu/' + item.code;
-                    item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlSmallImage + ');';
+                    item.style = 'background-image: url(' + state.settings.server + state.settings.urlBigImage + item.urlBigImage + ');';
                     return item;
                 });
                 return res;
