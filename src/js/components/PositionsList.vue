@@ -292,7 +292,7 @@
     import Position from './PositionItem.vue';
     import checkFile from './helpers/checkForExist.js';
     import getImg from './helpers/importImages.js';
-
+    import LsPut from './helpers/lsPut.js';
      export default{
         data(){
             return{
@@ -309,8 +309,7 @@
                     activeTime: '',
                     vitrina: '',
                     related:[],
-                    settings: this.$store.state.settings,
-                    isBrowser: false
+                    settings: this.$store.state.settings
                 }
         },
         props: ["categoryId"],
@@ -324,26 +323,36 @@
         },
         computed: {
             positionsWithProps: function () {
+                var updateLocalStorage = false;
                 var self = this;
-                var res = this.positionslist['tovar'].map(function (item) {
-                    //item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
-                    //item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/fc43fcde-b53a-11e6-80c0-0cc47ac6971c-20161216143226-big.jpg';
-                    console.log(self.isBrowser);
-                    if (!self.isBrowser)
+                var payload = {};
+                var res = this.positionslist['tovar'].map(function (item, index, arr) {
+                    if (!self.$store.state.settings.isBrowser)
                     {
-                        if (checkFile(self.$store.state.settings.localPath + item.urlImage)){
-                            item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlImage + ')';
-                        }
-                        else {
-                            getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage);
-                            item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
-                        }
-                    } else {
+                         updateLocalStorage = true;
+                         if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
+                             item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                             getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(res){
+                                    payload = {
+                                                type: 'positions',
+                                                name: item.code,
+                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res
+                                           };
+                                    self.$store.commit('SET_LOCAL_PATH', payload);
+                                   });
+                         }
+                         else {
+                              item.style = 'background-image: url(' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
+                         }
+                     } else
+                    {
                         item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
                     }
 
                     if (item.vitrina === '1') {
-                        item.style += ';box-shadow: 0px 0px 30px #CCDDFF;'
+                        item.style += ';box-shadow: 0px 0px 30px #CCDDFF;';
+                    }
+                    if (index+1 === arr.length){
                     }
                     return item;
                 });
@@ -358,6 +367,7 @@
         mounted(){
             this.currentId = this.$route.params.id;
             this.getJson(this.currentId);
+            //alert(JSON.stringify(this.$store.state.app.LocalPaths.Category2));
         },
         components:{
             'position' : Position
@@ -365,28 +375,35 @@
 
         methods: {
             getStyle: function(item){
+                var updateLocalStorage = false;
                 var self = this;
                 var res='';
-                //var res = 'background-image: url(' + this.$store.state.settings.urlBase + self.settings.urlBackImage + item.urlImage  + ');';
-                //var res = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/fc43fcde-b53a-11e6-80c0-0cc47ac6971c-20161216143226-big.jpg';
-                console.log(self.isBrowser);
-                 if (!self.isBrowser)
+                var payload = {};
+                 if (!self.$store.state.settings.isBrowser)
                     {
-                        if (checkFile(self.$store.state.settings.localPath + item.urlImage)){
-                                res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlImage + ')';
-                            }
-                            else {
-                                getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage);
-                                 res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
-                            }
+                        if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
+                             updateLocalStorage = true;
+                             res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                             getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(res){
+                                   payload = {
+                                                type: 'positions',
+                                                name: item.code,
+                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res
+                                           }
+                                    self.$store.commit('SET_LOCAL_PATH', payload);
+                                   });
+                         }
+                         else {
+                              res += 'background-image: url(' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
+                         }
                     } else {
                         res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
                     }
-
-
-
                 if (item.vitrina === '1') {
                     res += ';box-shadow: 0px 0px 30px #CCDDFF;'
+                }
+                if (updateLocalStorage){
+
                 }
                 return res;
             },

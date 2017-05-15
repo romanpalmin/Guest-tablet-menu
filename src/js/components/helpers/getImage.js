@@ -1,4 +1,4 @@
-export default function getImage(fileName) {
+export default function getImage(fileName, callback) {
     document.addEventListener('deviceready', onDeviceReady, false);
 
     function readFromFile(fileName, cb) {

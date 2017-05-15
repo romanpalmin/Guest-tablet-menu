@@ -71,7 +71,7 @@
     import getImg from './helpers/importImages.js';
     import axios from 'axios';
     import VueAxios from 'vue-axios';
-
+    import LsPut from './helpers/lsPut.js';
 
 
     export default {
@@ -81,8 +81,7 @@
                 mainPosition: {},
                 isDebug: false,
                 currentLanguage: this.$store.state.settings.language,
-                test: true,
-                isBrowser: false
+                test: true
             }
         },
         watch: {
@@ -96,37 +95,40 @@
         computed: {
             tabView: function () {
                 var self = this;
-                this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
+                var payload = {};
+                var updateLocalStorage = false;
+                this.ctgs = this.$store.state.app.MenuPoints.map(function (item, index, arr) {
                     item.route = 'menu/' + item.code;
-                    //item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/group.jpg );';
-                    item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage + ')';
-                    //item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
-                    //console.log(self.isBrowser);
-                    /*if (!self.isBrowser){
-                               var img = new Image();
-                               alert('Текущая строка: file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage);
-                               img.src = 'file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage;
-                               img.onload = function(){
-                                   alert('Есть');
-                                   item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage + ')';
-                               }
-                               img.onerror = function(){
-                                    alert('Нет');
-                                    getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage);
-                                    item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
-                               };
-                        }
+                    //item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage + ')';
+                    if (!self.$store.state.settings.isBrowser){
+                    alert(self.$store.state.app.LocalPaths.Category);
+                                   if (self.$store.state.app.LocalPaths.Category[item.code] === void 1){
+                                        updateLocalStorage = true;
+                                        item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
+                                        getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage, function(res){
+                                           payload = {
+                                                type: 'category',
+                                                name: item.code,
+                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res
+                                           }
+                                           self.$store.commit('SET_LOCAL_PATH', payload);
+                                       });
+                                   }
+                                   else {
+                                        alert('Уже загружено');
+                                       item.style = 'background-image: url(' +  self.$store.state.app.LocalPaths.Category[item.code] + ')';
+                                   }
 
-                    else {
-                            console.log('Browser');
-/*                            var img = new Image();
-                            img.src = 'http://lol111111.ru/ololoshka.png';
-                            img.onload = function(){console.log('картинка существует')};
-                            img.onerror = function(){console.log('картинка не существует')};
-
+                    } else
+                    {
                             item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ')';
-                        }*/
+
+                    }
+                    if (index+1 === arr.length){
+
+                    }
                     return item;
+
                 });
                 return this.ctgs;
             }
@@ -175,7 +177,12 @@
                           }
                          }, 1000)};
                 self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
-            }, 7000);
+            }, 7000000);
+        },
+        destroyed(){
+            alert('By...');
+            let jsCategory = JSON.stringify(this.$store.state.app.LocalPaths.Category);
+            LsPut('category', jsCategory);
         }
     }
 

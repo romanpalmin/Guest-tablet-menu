@@ -7,7 +7,7 @@
             <div class="dummy-logo">
                 <img :src="urlLogo">
                 <nav class="menu">
-                    <nav class="menu__breadcrumbs"><a>Разделы</a></nav>
+                    <nav class="menu__breadcrumbs"><a @click="getStore">Разделы</a></nav>
                     <div class="menu__wrap">
                         <ul class="menu__level menu__level--current" v-for="item in ctgs_with_params">
                             <li class="menu__item">
@@ -169,20 +169,52 @@
     }
 </style>
 <script>
+    import getImg from './helpers/importImages.js';
     export default{
         data(){
             return {
-                msg: 'hello vue',
                 ctgs: this.$store.state.app.MenuPoints,
                 settings: this.$store.state.settings
             }
         },
+        methods:{
+            getStore(){
+                console.log(this.$store.state.app);
+                alert('Small: ' + JSON.stringify(this.$store.state.app.LocalPaths.Small));
+                alert('Positions: ' + JSON.stringify(this.$store.state.app.LocalPaths.Positions));
+                alert('Category: ' + JSON.stringify(this.$store.state.app.LocalPaths.Category));
+            }
+        },
 
         computed: {
+
             ctgs_with_params: function () {
                 var self = this;
+                var payload = {};
                 this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
                     item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBigImage + item.urlSmallImage + ');';
+                    if (!self.$store.state.settings.isBrowser){
+                                   if (self.$store.state.app.LocalPaths.Small[item.code] === void 1){
+                                        item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlSmallImage + ');';
+                                        getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlSmallImage, function(res){
+                                           //self.$store.state.app.LocalPaths.Small[item.code] = 'file:///storage/emulated/0/StreetFoodBar/images/'+res;
+                                            payload = {
+                                                type: 'small',
+                                                name: item.code,
+                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res
+                                           }
+                                           self.$store.commit('SET_LOCAL_PATH', payload);
+                                       });
+                                   }
+                                   else {
+                                       item.style = 'background-image: url(' +  self.$store.state.app.LocalPaths.Small[item.code] + ')';
+                                   }
+                    } else
+                    {
+                            item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ')';
+                    }
+
+
                     item.route = '/' + self.settings.language + '/menu/' + item.code;
 
                     if (+item.code === +self.$route.params.id) {

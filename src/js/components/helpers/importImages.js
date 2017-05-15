@@ -1,4 +1,4 @@
-export default function createDirectory(fullPath) {
+export default function createDirectory(fullPath, callback) {
     var filePath = fullPath;
     var fileArr= filePath.split('/');
     var fileName = fileArr[fileArr.length-1];
@@ -40,6 +40,9 @@ export default function createDirectory(fullPath) {
 
         dirEntry.getFile(fileName, { create: true, exclusive: false }, function (fileEntry) {
             writeFile(fileEntry, fileData);
+            if (callback && typeof(callback) === "function") {
+                callback(fileName);
+            }
         }, function(err){
                 alert(err.message);
         });

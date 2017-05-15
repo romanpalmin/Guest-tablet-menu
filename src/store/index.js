@@ -6,7 +6,6 @@ import * as m_types from './mutations-types'
 import * as a_types from './actions-types'
 import ajax from './../js/components/helpers/ajax.js'
 const operation = {};
-let test = true;
 const store = new Vuex.Store({
         state: {
             settings: {},
@@ -19,7 +18,8 @@ const store = new Vuex.Store({
                 show: [],
                 selectedPosition: {},
                 TableNumberPrimary: 333,
-                LastTimeUpdate: ''
+                LastTimeUpdate: '',
+                LocalPaths: {Positions: {}, Small: {}, Category: {}}
             }
         },
         mutations: {
@@ -91,7 +91,43 @@ const store = new Vuex.Store({
                 }
             },
             [m_types.SET_LOCAL_PATH](state, payload){
+                switch (payload.type) {
+                    case 'empty':
+                        state.app.LocalPaths[payload.name] = payload.value;
+                        break;
+                    case 'positions':
+                        state.app.LocalPaths.Positions[payload.name] = payload.value;
+                        break;
+                    case 'category':
+                        state.app.LocalPaths.Category[payload.name] = payload.value;
+                        break;
+                    case 'small':
+                        state.app.LocalPaths.Small[payload.name] = payload.value;
+                        break;
 
+                    default:
+                        break;
+                }
+                //alert(JSON.stringify(state.app.LocalPaths));
+            },
+            [m_types.SET_LOCAL_PATH_FULL](state, payload){
+                switch (payload.type) {
+                    case 'positions':
+
+                        state.app.LocalPaths.Positions = payload.value;
+                        break;
+                    case 'category':
+                        alert('!!!!');
+                        state.app.LocalPaths.Category = payload.value;
+                        break;
+                    case 'small':
+                        state.app.LocalPaths.Small = payload.value;
+                        break;
+
+                    default:
+                        break;
+                }
+                //alert(JSON.stringify(state.app.LocalPaths));
             }
         },
         actions: {
@@ -99,14 +135,8 @@ const store = new Vuex.Store({
                 let categoryPositions = {};
                 let idx = 0;
                 operation.name = 'categories';
-                test = !test;
                 ajax.exec(operation, function (resp) {
-                    /*                if (test) {
-                     commit('SET_CATEGORY', _.reverse(resp.data));
-                     }
-                     else {*/
                     commit('SET_CATEGORY', resp.data);
-                    /*                }*/
                     resp.data.forEach(function (item, i, arr) {
                         idx++;
                         categoryPositions[item.code] = {

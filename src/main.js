@@ -19,6 +19,7 @@ import scanBLE from './js/components/helpers/scanbt.js';
 import bleLabels from  './js/components/helpers/defineBtLabel';
 import checkFile from './js/components/helpers/checkForExist.js';
 import check from './js/components/helpers/checkFieldList';
+import LsGet from './js/components/helpers/lsGet';
 import settings from './store/structures/settings.js';
 import store from './store';
 
@@ -96,6 +97,15 @@ const app = new Vue({
             this.$store.commit('SET_SETTINGS', settings);
             this.$store.dispatch('GET_TABLET_NUMBER');
             this.$store.dispatch('GET_BLE');
+
+            let category = LsGet('category');
+            //alert(category);
+            let payload = {
+                type: 'category',
+                value: category
+            };
+            this.$store.commit('SET_LOCAL_PATH_FULL', payload);
+            //console.log(this.$store.state.app.LocalPaths.Category);
         }
 
     },
