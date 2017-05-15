@@ -1,11 +1,12 @@
-export default function GetData(key){
+export default function GetData(key, callback){
     var res = '';
 
     document.addEventListener('deviceready', onDeviceReady, false);
 
     function onDeviceReady () {
        res = window.localStorage.getItem(key);
-       alert('Результат: ' + res);
-       return res;
+        if (callback && typeof(callback) === "function") {
+            callback(res);
+        }
     }
 }

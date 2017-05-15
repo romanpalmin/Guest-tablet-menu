@@ -100,6 +100,10 @@ const store = new Vuex.Store({
                         break;
                     case 'category':
                         state.app.LocalPaths.Category[payload.name] = payload.value;
+                        if (payload.callback && typeof(payload.callback) === "function") {
+                            //alert('заполняем');
+                            payload.callback();
+                        }
                         break;
                     case 'small':
                         state.app.LocalPaths.Small[payload.name] = payload.value;
@@ -117,7 +121,6 @@ const store = new Vuex.Store({
                         state.app.LocalPaths.Positions = payload.value;
                         break;
                     case 'category':
-                        alert('!!!!');
                         state.app.LocalPaths.Category = payload.value;
                         break;
                     case 'small':

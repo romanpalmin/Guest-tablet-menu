@@ -2,10 +2,40 @@ export default function createDirectory(fullPath, callback) {
     var filePath = fullPath;
     var fileArr= filePath.split('/');
     var fileName = fileArr[fileArr.length-1];
-    function createDirectoryMain() {
+    /*function createDirectoryMain() {
         let path = cordova.file.externalRootDirectory;
         try {
                 window.resolveLocalFileSystemURL(path, function(dir) {
+                dir.getDirectory("StreetFoodBar", {create:true}, function(subDir) {
+                    subDir.getDirectory("images", {create:true}, function(secSubDir) {
+                        getImgFile(secSubDir);
+                    });
+                });
+            });
+        }
+        catch (e) {
+            alert(e.message);
+        }
+    }*/
+
+    function createDirectoryMain() {
+        let path = cordova.file.externalRootDirectory;
+        path = path + 'StreetFoodBar/images/' + fileName;
+        window.resolveLocalFileSystemURL(path, fileExist, fileNotExist);
+    }
+
+    function fileExist(){
+
+        if (callback && typeof(callback) === "function") {
+            callback(fileName, true);
+        }
+    }
+
+    function fileNotExist(){
+        let path = cordova.file.externalRootDirectory;
+        //alert(fileName + ' is NOT exist!');
+        try {
+            window.resolveLocalFileSystemURL(path, function(dir) {
                 dir.getDirectory("StreetFoodBar", {create:true}, function(subDir) {
                     subDir.getDirectory("images", {create:true}, function(secSubDir) {
                         getImgFile(secSubDir);
@@ -27,6 +57,7 @@ export default function createDirectory(fullPath, callback) {
                 if (this.status == 200) {
                     let blob = new Blob([this.response], {type: 'image/jpg'});
                     saveFile(dirEntry, blob, fileName);
+
                 }
             };
             xhr.send();
@@ -41,7 +72,7 @@ export default function createDirectory(fullPath, callback) {
         dirEntry.getFile(fileName, { create: true, exclusive: false }, function (fileEntry) {
             writeFile(fileEntry, fileData);
             if (callback && typeof(callback) === "function") {
-                callback(fileName);
+                callback(fileName, true);
             }
         }, function(err){
                 alert(err.message);

@@ -67,11 +67,11 @@
 
     import _ from 'lodash';
     import checkFile from './helpers/checkForExist.js';
-    //import check from './helpers/checkFieldList.js';
     import getImg from './helpers/importImages.js';
     import axios from 'axios';
     import VueAxios from 'vue-axios';
     import LsPut from './helpers/lsPut.js';
+    import LsGet from './helpers/lsGet.js';
 
 
     export default {
@@ -95,38 +95,42 @@
         computed: {
             tabView: function () {
                 var self = this;
+                var cnt = 0;
                 var payload = {};
                 var updateLocalStorage = false;
                 this.ctgs = this.$store.state.app.MenuPoints.map(function (item, index, arr) {
                     item.route = 'menu/' + item.code;
-                    //item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images'+item.urlBigImage + ')';
                     if (!self.$store.state.settings.isBrowser){
-                    alert(self.$store.state.app.LocalPaths.Category);
                                    if (self.$store.state.app.LocalPaths.Category[item.code] === void 1){
                                         updateLocalStorage = true;
-                                        item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ');';
-                                        getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage, function(res){
+                                        getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage, function(res, isExist){
+                                           if (isExist)
+                                           {
+                                                cnt++;
+                                                if (cnt == arr.length){
+                                                    alert('Update');
+                                                    self.ctgs = _.map(self.ctgs,(item)=>{return item;});
+                                                }
+                                           }
                                            payload = {
                                                 type: 'category',
                                                 name: item.code,
-                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res
+                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res,
+                                                callback: function(){
+                                                }
                                            }
                                            self.$store.commit('SET_LOCAL_PATH', payload);
                                        });
                                    }
                                    else {
-                                        alert('Уже загружено');
                                        item.style = 'background-image: url(' +  self.$store.state.app.LocalPaths.Category[item.code] + ')';
                                    }
 
                     } else
                     {
                             item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ')';
-
                     }
-                    if (index+1 === arr.length){
 
-                    }
                     return item;
 
                 });
@@ -153,6 +157,17 @@
         },
 
         mounted(){
+            LsGet("category",(data)=>{
+                //alert('data from LS: ' + data);
+                alert(JSON.parse(data));
+                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
+                    self.$store.state.app.LocalPaths.Category = JSON.parse(data);
+                }
+
+            });
+
+            //var test2 = JSON.parse(test);
+            //console.log(test);
             const self = this;
             this.currentLanguage = this.$store.state.settings.language;
             if (this.$store.state.app.MenuPoints.length > 0) {
@@ -165,9 +180,7 @@
                   let lastUpdate = self.$store.state.app.LastTimeUpdate;
                   console.log('Старое знаечение:' + lastUpdate);
                   let callback = function(){
-                        //console.log('Проверка обновлений');
                          setTimeout(function(){
-                         //console.log('Новое значчение:' + self.$store.state.app.LastTimeUpdate);
                          if (lastUpdate !== self.$store.state.app.LastTimeUpdate){
                              console.log('Обновляем номенклатуру');
                              self.getData();
@@ -180,9 +193,8 @@
             }, 7000000);
         },
         destroyed(){
-            alert('By...');
-            let jsCategory = JSON.stringify(this.$store.state.app.LocalPaths.Category);
-            LsPut('category', jsCategory);
+            var category = JSON.stringify(this.$store.state.app.LocalPaths.Category);
+            LsPut("category", category);
         }
     }
 

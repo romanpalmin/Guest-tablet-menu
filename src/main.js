@@ -100,11 +100,11 @@ const app = new Vue({
 
             let category = LsGet('category');
             //alert(category);
-            let payload = {
+            /*let payload = {
                 type: 'category',
                 value: category
             };
-            this.$store.commit('SET_LOCAL_PATH_FULL', payload);
+            this.$store.commit('SET_LOCAL_PATH_FULL', payload);*/
             //console.log(this.$store.state.app.LocalPaths.Category);
         }
 

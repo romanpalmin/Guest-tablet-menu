@@ -15,7 +15,7 @@ ajaxServerUrlShort = formAjaxVars();
 let uuid = '';
 if (typeof device !== 'undefined') {
     uuid = device.uuid;
-    alert(device.uuid);
+    //alert(device.uuid);
     getTabletName(uuid);
 } else {
     uuid = '8981e83c79f3be00';
