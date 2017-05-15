@@ -27,7 +27,7 @@ if (typeof device !== 'undefined') {
     //alert(device.uuid);
 } else {
     //uuid = '10e00be6a70f0bcc';
-    uuid = '204c9d71d1e6';
+    uuid = '01';
 }
 
 function getUrl(operation){
