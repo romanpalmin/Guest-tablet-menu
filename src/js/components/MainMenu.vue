@@ -94,6 +94,7 @@
 
         computed: {
             tabView: function () {
+                //LsGet("small",(data)=>{alert("Данные из локалстоража Small: " + data)});
                 var self = this;
                 var cnt = 0;
                 var payload = {};
@@ -101,21 +102,22 @@
                 this.ctgs = this.$store.state.app.MenuPoints.map(function (item, index, arr) {
                     item.route = 'menu/' + item.code;
                     if (!self.$store.state.settings.isBrowser){
+                                   //todo сюда проверку на соответствие картинки
+                                   //alert("Old: " + self.$store.state.app.LocalPaths.Category[item.code] + "\nNew: " + item.urlBigImage);
                                    if (self.$store.state.app.LocalPaths.Category[item.code] === void 1){
-                                        updateLocalStorage = true;
                                         getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage, function(res, isExist){
                                            if (isExist)
                                            {
                                                 cnt++;
                                                 if (cnt == arr.length){
-                                                    alert('Update');
+                                                    //alert('Update main menu');
                                                     self.ctgs = _.map(self.ctgs,(item)=>{return item;});
                                                 }
                                            }
                                            payload = {
                                                 type: 'category',
                                                 name: item.code,
-                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res,
+                                                value: res,
                                                 callback: function(){
                                                 }
                                            }
@@ -123,7 +125,7 @@
                                        });
                                    }
                                    else {
-                                       item.style = 'background-image: url(' +  self.$store.state.app.LocalPaths.Category[item.code] + ')';
+                                       item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Category[item.code] + ')';
                                    }
 
                     } else
@@ -158,23 +160,53 @@
 
         mounted(){
             LsGet("category",(data)=>{
-                //alert('data from LS: ' + data);
-                alert(JSON.parse(data));
                 if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
-                    self.$store.state.app.LocalPaths.Category = JSON.parse(data);
+                if (JSON.stringify(this.$store.state.app.LocalPaths.Category) === '{}'){
+                        //alert('Данные из LS1');
+                        try{
+                                var payload = {
+                                       type: 'category',
+                                       value: JSON.parse(data)
+                                     }
+                                self.$store.commit('SET_LOCAL_PATH_FULL', payload);
+                            }
+                        catch(err){
+                            alert(err);
+                        }
+                    }
                 }
 
             });
-
-            //var test2 = JSON.parse(test);
-            //console.log(test);
             const self = this;
             this.currentLanguage = this.$store.state.settings.language;
-            if (this.$store.state.app.MenuPoints.length > 0) {
+
+            /*if (this.$store.state.app.MenuPoints.length > 0) {
                 self.ctgs = this.$store.state.app.MenuPoints;
             } else {
                 this.getData();
-            }
+            }*/
+             if (this.$store.state.app.MenuPoints.length > 0) {
+                self.ctgs = this.$store.state.app.MenuPoints;
+            } else {
+                LsGet("MenuPoints", (data)=>{
+                    let arr = [];
+                    if (data !== null){
+                            try{
+                                let payload = JSON.parse(data);
+                                self.$store.commit('SET_CATEGORY', payload);
+                                self.ctgs = payload;
+                            }
+                            catch(err){
+                                alert(err);
+                            }
+                    } else{
+                        this.getData();
+                    }
+                });
+            };
+
+
+
             let upTimer = setInterval(function () {
                   let payload = {};
                   let lastUpdate = self.$store.state.app.LastTimeUpdate;

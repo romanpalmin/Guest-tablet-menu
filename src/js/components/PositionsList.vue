@@ -293,6 +293,7 @@
     import checkFile from './helpers/checkForExist.js';
     import getImg from './helpers/importImages.js';
     import LsPut from './helpers/lsPut.js';
+    import LsGet from './helpers/lsGet.js';
      export default{
         data(){
             return{
@@ -326,23 +327,33 @@
                 var updateLocalStorage = false;
                 var self = this;
                 var payload = {};
+                var cnt = 0;
                 var res = this.positionslist['tovar'].map(function (item, index, arr) {
                     if (!self.$store.state.settings.isBrowser)
                     {
                          updateLocalStorage = true;
+                         //todo сюда проверку на соответствие картинки
                          if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
-                             item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                             //item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
                              getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(res){
+                                    if (isExist)
+                                           {
+                                                cnt++;
+                                                if (cnt == arr.length){
+                                                    alert('Update current menu:' + this.$route.params.id);
+                                                    self.positionslist = _.map(self.positionslist,(item)=>{return item;});
+                                                }
+                                           }
                                     payload = {
                                                 type: 'positions',
                                                 name: item.code,
-                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res
+                                                value: /*'file:///storage/emulated/0/StreetFoodBar/images/'+*/res
                                            };
                                     self.$store.commit('SET_LOCAL_PATH', payload);
                                    });
                          }
                          else {
-                              item.style = 'background-image: url(' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
+                              item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
                          }
                      } else
                     {
@@ -364,11 +375,6 @@
                 this.getJson(this.categoryId);
             }
         },
-        mounted(){
-            this.currentId = this.$route.params.id;
-            this.getJson(this.currentId);
-            //alert(JSON.stringify(this.$store.state.app.LocalPaths.Category2));
-        },
         components:{
             'position' : Position
         },
@@ -381,20 +387,21 @@
                 var payload = {};
                  if (!self.$store.state.settings.isBrowser)
                     {
+                        //todo сюда проверку на соответствие картинки
                         if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
                              updateLocalStorage = true;
-                             res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                             //res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
                              getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(res){
                                    payload = {
                                                 type: 'positions',
                                                 name: item.code,
-                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res
+                                                value: /*'file:///storage/emulated/0/StreetFoodBar/images/'+*/res
                                            }
                                     self.$store.commit('SET_LOCAL_PATH', payload);
                                    });
                          }
                          else {
-                              res += 'background-image: url(' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
+                              res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
                          }
                     } else {
                         res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
@@ -435,6 +442,27 @@
                     this.positionslist = this.$store.state.app.Category[catId+''].currentState;;
                     //console.log('Из кэша');
                 }
+        },
+        mounted(){
+            this.currentId = this.$route.params.id;
+            this.getJson(this.currentId);
+            //alert(JSON.stringify(this.$store.state.app.LocalPaths.Category2));
+            LsGet("positions",(data)=>{
+                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
+                    try{
+                        this.$store.state.app.LocalPaths.Category = JSON.parse(data);
+                        alert(JSON.stringify(this.$store.state.app.LocalPaths));
+                        }
+                    catch(err){
+                        alert(err);
+                    }
+                }
+
+            });
+        },
+        destroyed(){
+            var positions = JSON.stringify(this.$store.state.app.LocalPaths.Positions);
+            LsPut("positions", positions);
         }
     }
   }

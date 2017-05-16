@@ -5,6 +5,8 @@ Vue.use(Vuex);
 import * as m_types from './mutations-types'
 import * as a_types from './actions-types'
 import ajax from './../js/components/helpers/ajax.js'
+import LsPut from './../js/components/helpers/lsPut.js';
+//import LsGet from './../js/components/lsGet.js';
 const operation = {};
 const store = new Vuex.Store({
         state: {
@@ -25,6 +27,7 @@ const store = new Vuex.Store({
         mutations: {
             [m_types.SET_CATEGORY](state, payload){
                 state.app.MenuPoints = payload;
+                LsPut('MenuPoints', JSON.stringify(payload));
             },
             [m_types.SET_LAST_TIME_UPDATE](state, payload){
                 state.app.LastTimeUpdate = payload.data;

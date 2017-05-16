@@ -170,6 +170,8 @@
 </style>
 <script>
     import getImg from './helpers/importImages.js';
+    import LsPut from './helpers/lsPut.js';
+    import LsGet from './helpers/lsGet.js';
     export default{
         data(){
             return {
@@ -190,24 +192,43 @@
 
             ctgs_with_params: function () {
                 var self = this;
+                var updateStorage = false;
+                var cnt = 0;
                 var payload = {};
-                this.ctgs = this.$store.state.app.MenuPoints.map(function (item) {
-                    item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBigImage + item.urlSmallImage + ');';
+                //LsGet("small",(data)=>{alert("Данные из локалстоража Small 2: " + data)});
+                //alert(self.$store.state.app.LocalPaths);
+                //alert('Текущее значение ' + JSON.stringify(this.$store.state.app.LocalPaths.Small))
+                this.ctgs = this.$store.state.app.MenuPoints.map(function (item, index, arr) {
+                    //item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBigImage + item.urlSmallImage + ');';
                     if (!self.$store.state.settings.isBrowser){
+                                   //todo сюда проверку на соответствие картинки
+                                   //alert("Old: " + self.$store.state.app.LocalPaths.Small[item.code] + "\nNew: " + item.urlSmallImage);
+                                   //alert(self.$store.state.app.LocalPaths.Small[item.code]);
+                                   //alert(JSON.stringify(self.$store.state.app.LocalPaths.Small));
                                    if (self.$store.state.app.LocalPaths.Small[item.code] === void 1){
-                                        item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlSmallImage + ');';
-                                        getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlSmallImage, function(res){
+                                        updateStorage = true;
+                                        //item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlSmallImage + ');';
+                                        getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlSmallImage, function(res, isExist){
                                            //self.$store.state.app.LocalPaths.Small[item.code] = 'file:///storage/emulated/0/StreetFoodBar/images/'+res;
+                                           if (isExist)
+                                           {
+                                                cnt++;
+                                                if (cnt == arr.length){
+                                                    alert('Update sidebar');
+                                                    self.ctgs = _.map(self.ctgs,(item)=>{return item;});
+                                                }
+                                           }
                                             payload = {
                                                 type: 'small',
                                                 name: item.code,
-                                                value: 'file:///storage/emulated/0/StreetFoodBar/images/'+res
+                                                value: res
                                            }
                                            self.$store.commit('SET_LOCAL_PATH', payload);
                                        });
                                    }
                                    else {
-                                       item.style = 'background-image: url(' +  self.$store.state.app.LocalPaths.Small[item.code] + ')';
+                                       item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Small[item.code] + ')';
+
                                    }
                     } else
                     {
@@ -236,6 +257,35 @@
                  this.$store.dispatch('GET_CATEGORY');
                  this.ctgs = this.$store.state.app.MenuPoints;
             }
+            var self = this;
+            /*LsGet("small",(data)=>{
+                alert('Текущие данные для маленьких картинок: ' + data);
+                if (JSON.parse(data) !== null){
+                    alert('Текущая оперативка: ' + JSON.stringify(this.$store.state.app.LocalPaths.Small));
+                }
+            });*/
+            //alert('Test: ' + JSON.stringify(this.$store.state.app.LocalPaths.Small));
+            /*LsGet("small",(data)=>{
+              if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
+              if (JSON.stringify(this.$store.state.app.LocalPaths.Small)==='{}'){
+                  alert('Данные из LS2');
+                    try{
+                       var payload = {
+                                       type: 'small',
+                                       value: JSON.parse(data)
+                                     }
+                       self.$store.commit('SET_LOCAL_PATH_FULL', payload);
+                       }
+                        catch(err){
+                            alert(err);
+                        }
+                    }
+                }
+            });*/
+        },
+        destroyed(){
+            var small = JSON.stringify(this.$store.state.app.LocalPaths.Small);
+            LsPut("small", small);
         }
 
     }
