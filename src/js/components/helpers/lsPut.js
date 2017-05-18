@@ -6,6 +6,7 @@ export default function InsertData(key, value){
         /*if (key==='small'){
             alert('Перед сохранением ' + value);
         }*/
+        //alert('Ключ: ' + key);
         window.localStorage.setItem(key, value);
     }
 }

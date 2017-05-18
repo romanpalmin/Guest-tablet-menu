@@ -22,6 +22,7 @@ import check from './js/components/helpers/checkFieldList';
 import LsPut from './js/components/helpers/lsPut.js';
 import LsGet from './js/components/helpers/lsGet.js';
 import settings from './store/structures/settings.js';
+import catPositions from './store/structures/categoryPositions.js';
 import store from './store';
 
 Vue.use(VueRouter);
@@ -91,8 +92,9 @@ const app = new Vue({
         },
 
         init(){
-            var self = this;
+            const self = this;
             this.$store.commit('SET_SETTINGS', settings);
+            this.$store.commit('SET_CATEGORY_POSITIONS', catPositions);
             this.$store.dispatch('GET_TABLET_NUMBER');
             this.$store.dispatch('GET_BLE');
 
@@ -103,6 +105,24 @@ const app = new Vue({
                         try{
                             let payload = {
                                 type: 'small',
+                                value: JSON.parse(data)
+                            };
+                            self.$store.commit('SET_LOCAL_PATH_FULL', payload);
+                        }
+                        catch(err){
+                            alert(err);
+                        }
+                    }
+                }
+            });
+
+            LsGet("positions",(data)=>{
+                alert('Data for Positions:' + data);
+                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
+                    if (JSON.stringify(this.$store.state.app.LocalPaths.Positions) === '{}'){
+                        try{
+                            let payload = {
+                                type: 'positions',
                                 value: JSON.parse(data)
                             };
                             self.$store.commit('SET_LOCAL_PATH_FULL', payload);

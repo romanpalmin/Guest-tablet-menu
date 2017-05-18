@@ -1,6 +1,6 @@
 <template>
     <div>
-        <sidebar/>
+        <sidebar :categoryId="currentCategoryId" />
         <div class="list">
             <positionslist :categoryId="currentCategoryId"/>
         </div>
@@ -32,6 +32,9 @@
             positionslist,
             sidebar
         },
+        mounted(){
+            //alert(this.$route.params.id);
+        }
     }
 
 

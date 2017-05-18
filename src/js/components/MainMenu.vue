@@ -7,7 +7,8 @@
                         <a :root-data-code="item.code">
                             <div class="root-icon-image" :style="item.style">
                                 <div class="root-icon-descr">
-                                    {{ item.name }}
+                                    {{ item.name }}<br />
+                                    {{item.route}}
 
                                 </div>
                             </div>
@@ -103,6 +104,9 @@
                     item.route = 'menu/' + item.code;
                     if (!self.$store.state.settings.isBrowser){
                                    //todo сюда проверку на соответствие картинки
+                                   if (self.$store.state.app.LocalPaths.Category[item.code] && item.urlBigImage != self.$store.state.app.LocalPaths.Category[item.code]){
+                                        self.$store.state.app.LocalPaths.Category[item.code] = void 1;
+                                   }
                                    //alert("Old: " + self.$store.state.app.LocalPaths.Category[item.code] + "\nNew: " + item.urlBigImage);
                                    if (self.$store.state.app.LocalPaths.Category[item.code] === void 1){
                                         getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage, function(res, isExist){
@@ -195,6 +199,20 @@
                                 let payload = JSON.parse(data);
                                 self.$store.commit('SET_CATEGORY', payload);
                                 self.ctgs = payload;
+                                //alert('Test');
+                                let key='';
+                                let innerPayload={};//[payload.currentId].currentState = payload.currentData;
+                                payload.forEach(function(item){
+                                    //alert(JSON.stringify(item));
+                                    key = 'cat' + item.code;
+                                    //alert(JSON.stringify(self.$store.state.app));
+                                    LsGet(key,(data)=>{
+                                        innerPayload.currentId = item.code;
+                                        innerPayload.currentData = JSON.parse(data);
+                                        self.$store.commit('POPULATE_CATEGORY', innerPayload);
+                                            //alert('commit ' + item.code);
+                                    });
+                                });
                             }
                             catch(err){
                                 alert(err);

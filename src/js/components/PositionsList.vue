@@ -328,26 +328,31 @@
                 var self = this;
                 var payload = {};
                 var cnt = 0;
-                var res = this.positionslist['tovar'].map(function (item, index, arr) {
+                var len = this.positionslist['tovar'].length;
+                var result = this.positionslist['tovar'].map(function (item, index, arr) {
                     if (!self.$store.state.settings.isBrowser)
                     {
-                         updateLocalStorage = true;
                          //todo сюда проверку на соответствие картинки
+                         if (self.$store.state.app.LocalPaths.Category[item.code] && item.urlBigImage != self.$store.state.app.LocalPaths.Category[item.code]){
+                                        self.$store.state.app.LocalPaths.Category[item.code] = void 1;
+                                   }
                          if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
-                             //item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
-                             getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(res){
+                             getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(res, isExist){
                                     if (isExist)
                                            {
-                                                cnt++;
-                                                if (cnt == arr.length){
-                                                    alert('Update current menu:' + this.$route.params.id);
-                                                    self.positionslist = _.map(self.positionslist,(item)=>{return item;});
-                                                }
                                            }
                                     payload = {
                                                 type: 'positions',
                                                 name: item.code,
-                                                value: /*'file:///storage/emulated/0/StreetFoodBar/images/'+*/res
+                                                value: res,
+                                                callback: function(){
+                                                    cnt++;
+                                                    if (len === cnt){
+                                                        //alert('Update current menu:' + self.$route.params.id);
+                                                        //self.positionslist = _.map(self.positionslist,(item)=>{return item;});
+                                                        //self.refreshComponent();
+                                                    }
+                                                }
                                            };
                                     self.$store.commit('SET_LOCAL_PATH', payload);
                                    });
@@ -363,16 +368,27 @@
                     if (item.vitrina === '1') {
                         item.style += ';box-shadow: 0px 0px 30px #CCDDFF;';
                     }
-                    if (index+1 === arr.length){
-                    }
                     return item;
                 });
-                return res;
+                return result;
             }
         },
         watch: {
             categoryId: function(){
                 this.getJson(this.categoryId);
+                /*let key = 'cat' + this.categoryId;
+                LsGet(key,(data)=>{
+                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
+                    try{
+                        this.$store.state.app.LocalPaths.Category = JSON.parse(data);
+                        alert(JSON.stringify(this.$store.state.app.LocalPaths));
+                        }
+                    catch(err){
+                        alert(err);
+                    }
+                }
+                alert(data);
+            });*/
             }
         },
         components:{
@@ -382,37 +398,50 @@
         methods: {
             getStyle: function(item){
                 var updateLocalStorage = false;
+                var isLoaded = false;
                 var self = this;
                 var res='';
                 var payload = {};
+                if (item.vitrina === '1') {
+                    res += ';box-shadow: 0px 0px 30px #CCDDFF;'
+                }
                  if (!self.$store.state.settings.isBrowser)
                     {
                         //todo сюда проверку на соответствие картинки
+                        if (self.$store.state.app.LocalPaths.Category[item.code] && item.urlBigImage != self.$store.state.app.LocalPaths.Category[item.code]){
+                                        self.$store.state.app.LocalPaths.Category[item.code] = void 1;
+                                   }
                         if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
                              updateLocalStorage = true;
                              //res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
-                             getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(res){
+                             getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(img, isTrue){
                                    payload = {
                                                 type: 'positions',
                                                 name: item.code,
-                                                value: /*'file:///storage/emulated/0/StreetFoodBar/images/'+*/res
+                                                value: img,
+                                                callback: function(){
+                                                    res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' + img;
+                                                    //alert('Картинка добавлена');
+                                                    isLoaded = true;
+                                                    //alert ('Загружаемые: ' + res);
+                                                    return res;
+                                                }
                                            }
                                     self.$store.commit('SET_LOCAL_PATH', payload);
                                    });
                          }
                          else {
                               res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
+                              //alert ('Существующие: ' + res);
+                              return res;
                          }
                     } else {
-                        res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
-                    }
-                if (item.vitrina === '1') {
-                    res += ';box-shadow: 0px 0px 30px #CCDDFF;'
-                }
-                if (updateLocalStorage){
+                        //res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
 
-                }
-                return res;
+                    }
+
+
+
             },
 
             toggleDetailsItem: function(item){
@@ -439,16 +468,26 @@
                     //console.log('Загружаем...');
                     this.$store.dispatch('GET_POSITIONS', payload);
                 } else {
-                    this.positionslist = this.$store.state.app.Category[catId+''].currentState;;
+                    this.positionslist = this.$store.state.app.Category[catId+''].currentState;
                     //console.log('Из кэша');
                 }
+            },
+            refreshComponent(){
+                alert('refresh');
+                setTimeout(function(){
+                    this.positionslist = _.map(this.positionslist);
+                    alert('refresh2');
+                }, 2000);
+             }
         },
         mounted(){
+            this.categoryId = this.$route.params.id;
             this.currentId = this.$route.params.id;
             this.getJson(this.currentId);
             //alert(JSON.stringify(this.$store.state.app.LocalPaths.Category2));
-            LsGet("positions",(data)=>{
-                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
+            let key = 'cat' + this.currentId;
+            LsGet(key,(data)=>{
+                /*if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
                     try{
                         this.$store.state.app.LocalPaths.Category = JSON.parse(data);
                         alert(JSON.stringify(this.$store.state.app.LocalPaths));
@@ -456,17 +495,13 @@
                     catch(err){
                         alert(err);
                     }
-                }
-
+                }*/
+                //alert(data);
             });
         },
         destroyed(){
-            var positions = JSON.stringify(this.$store.state.app.LocalPaths.Positions);
-            LsPut("positions", positions);
+            //var positions = JSON.stringify(this.$store.state.app.LocalPaths.Positions);
+            //LsPut("positions", positions);
         }
     }
-  }
-
-
-
-</script>
+  </script>

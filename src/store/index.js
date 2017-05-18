@@ -55,7 +55,10 @@ const store = new Vuex.Store({
                 state.app.Category = payload;
             },
             [m_types.POPULATE_CATEGORY](state, payload){
+                //alert(JSON.stringify(payload));
                 state.app.Category[payload.currentId].currentState = payload.currentData;
+                let key = 'cat'+payload.currentId;
+                LsPut(key, JSON.stringify(payload.currentData));
                 if (payload.callback && typeof(payload.callback) === "function") {
                     payload.callback();
                 }
@@ -100,11 +103,14 @@ const store = new Vuex.Store({
                         break;
                     case 'positions':
                         state.app.LocalPaths.Positions[payload.name] = payload.value;
+                        LsPut('positions', JSON.stringify(state.app.LocalPaths.Positions));
+                        if (payload && payload.callback && typeof(payload.callback) === "function") {
+                            payload.callback();
+                        }
                         break;
                     case 'category':
                         state.app.LocalPaths.Category[payload.name] = payload.value;
                         if (payload.callback && typeof(payload.callback) === "function") {
-                            //alert('заполняем');
                             payload.callback();
                         }
                         break;
@@ -120,7 +126,6 @@ const store = new Vuex.Store({
             [m_types.SET_LOCAL_PATH_FULL](state, payload){
                 switch (payload.type) {
                     case 'positions':
-
                         state.app.LocalPaths.Positions = payload.value;
                         break;
                     case 'category':
