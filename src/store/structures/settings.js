@@ -25,5 +25,5 @@ export default {
     language: 'ru',
     showLanguageToggle: false,
     localPath:'StreetFoodBar/images',
-    isBrowser: true
+    isBrowser: false
 }
