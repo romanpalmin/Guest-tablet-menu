@@ -5,7 +5,7 @@ import store from './../../../store';
 
 //const tabletName = '01';
 const tabletName = '02';
-const ip = '10.100.50.248';
+const ip = '192.168.10.101';
 //const server = `http://tab${tabletName}:${tabletName}@${ip}/`;
 //console.log('server: ' + server);
 const userName = `tab${tabletName}`;
