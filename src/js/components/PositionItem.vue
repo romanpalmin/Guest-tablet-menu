@@ -12,9 +12,17 @@
                     </div>
                 </div>
                 <div class="item-column-data">
-                    <div class="h1-item">{{nameFromParent | deleteQuotes | deleteNewLines}}</div>
-                    <div class="p-item">{{descriptionFromParent | deleteQuotes | deleteNewLines}}</div>
-                    <div class="item-price">{{priceFromParent | deleteQuotes | deleteNewLines}} P</div>
+                    <div class="h1-item capital">{{nameFromParent | deleteQuotes | deleteNewLines}}</div>
+                    <div class="p-item">{{descriptionFromParent | deleteQuotes | deleteNewLines | addNewLine}}</div>
+                    <div class="price-row">
+                        <div class="charset-wrapper">
+                            <template class="charset" v-for="(chr, index) in charset"><img :src="getCharset(chr)"><span class="span-plus" v-if="index+1 < charset.length">+</span>
+                            </template>
+                        </div>
+                        <div class="price-wrapper">
+                            <div class="item-price">{{priceFromParent | deleteQuotes | deleteNewLines}} P</div>
+                        </div>
+                    </div>
 
                     <div class="related-items" v-if="codeFromParent === '472020' && !isActive">
                         {{infoMessageBreakfast}}
@@ -154,6 +162,20 @@
                     border-bottom-width: medium;
                     border-bottom-style: solid;
                 }
+                .capital {
+                    text-transform: uppercase;
+                }
+                .price-wrapper{
+                    /*float: right;*/
+                }
+                .charset-wrapper{
+                    float: left;
+                    line-height: 125px;
+                }
+                .span-plus{
+                    position: relative;
+                    bottom: 12px;
+                }
                 .p-item {
                     display: block;
                     font-size: 20px;
@@ -181,7 +203,7 @@
 
                 }
                 .item-bottom-buttons {
-                    display: inline-block;
+                    display: block;
                     .btn {
                         width: 200px;
                         height: 60px;
@@ -189,11 +211,11 @@
                         background-color: #fff;
                         color: #555;
                         float: right;
-                        margin: 20px;
                         line-height: 60px;
                         text-align: center;
                         font-size: x-large;
                         font-weight: 900;
+                        margin: 20px 0px 20px 20px;
                     }
                 }
             }
@@ -202,8 +224,6 @@
 
 </style>
 <script>
-    //import state from './store/currentStates';
-    //import ajax from './helpers/ajax'
 
     export default {
             data(){
@@ -213,7 +233,8 @@
                     addToCartBtn: '',
                     IsAddingToCart: false,
                     IsAddingAdditonal: false,
-                    settings: this.$store.state.settings
+                    settings: this.$store.state.settings,
+                    countOfCharset: 0
                 }
             },
             filters:{
@@ -226,6 +247,11 @@
                   if (!value) return '';
                   value = value.toString();
                   return value.replace(/#/g, ' ');
+                },
+                addNewLine: function(value){
+                  if (!value) return '';
+                  value = value.toString();
+                  return value.replace(/,/g, ',\n');
                 }
             },
 
@@ -274,12 +300,16 @@
                 }
             },
 
-            props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika', 'activeTime', 'vitrina', "related", "code"],
+            props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika', 'activeTime', 'vitrina', "related", "code", "charset"],
 
             methods:{
                 close(){
                     this.$parent.showDetails = false;
                     this.$store.commit('SET_SELECTED_POSITION', {});
+                },
+
+                getCharset(chr){
+                    return chr.urlImage;
                 },
 
                 add2cart: function(id){
@@ -326,6 +356,9 @@
                 this.urlClose = this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close;
             }
     }
+
+
+
 
 
 

@@ -7,9 +7,7 @@
                         <a :root-data-code="item.code">
                             <div class="root-icon-image" :style="item.style">
                                 <div class="root-icon-descr">
-                                    {{ item.name }}<br />
-                                    {{item.route}}
-
+                                    {{ item.name }}
                                 </div>
                             </div>
                         </a>
@@ -22,7 +20,7 @@
 
 <style scoped lang="less">
     .main-menu {
-        margin-top: 55px;
+        margin-top: 110px;
         text-align: center;
 
         .root-icon-descr {
@@ -32,6 +30,8 @@
             top: 200px;
             text-align: center;
             padding-top: 5px;
+            font-size: larger;
+            font-weight: bold;
         }
 
         .root-icon-image {

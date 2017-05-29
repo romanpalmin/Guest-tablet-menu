@@ -44,14 +44,21 @@
 
                                 <div v-show="item.type === 'СПИСКОМ'">
                                     <div v-if="item.groups1[0].tovar">
-                                        <li class="product2" v-for="subitem in item.groups1[0].tovar"
-                                            @click="toggleDetailsItem(subitem)">
+                                        <li class="product2" v-for="subitem in item.groups1[0].tovar">
                                             <div class="product-inner2">
                                                 <div class="product-inner-label2" :data-Code="subitem.code">
+                                                    <!-- @click="toggleDetailsItem(subitem)"-->
                                                     {{subitem.name | deleteQuotes}}
                                                 </div>
                                                 <div class="product-top-block-price2" :data-Code="subitem.code">
+                                                    <!-- @click="toggleDetailsItem(subitem)"-->
                                                     {{subitem.price}}
+                                                </div>
+                                                <div class="wrapper-for-add-btn">
+                                                    <div class="btn-add-to-cart" @click="add2cart(subitem.code)"
+                                                         :style="addingToCartStyle">
+                                                        {{addingToCartTitle}}
+                                                    </div>
                                                 </div>
                                             </div>
                                         </li>
@@ -70,14 +77,21 @@
 
                                         <ul class="products">
                                             <div v-show="subgroups.type === 'СПИСКОМ'">
-                                                <li class="product2" v-for="subItem in subgroups.groups2[0].tovar"
-                                                    @click="toggleDetailsItem(subItem)">
+                                                <li class="product2" v-for="subItem in subgroups.groups2[0].tovar">
                                                     <div class="product-inner2">
                                                         <div class="product-inner-label2" :data-Code="subItem.code">
+                                                            <!--@click="toggleDetailsItem(subItem)">-->
                                                             {{subItem.name | deleteQuotes}}
                                                         </div>
                                                         <div class="product-top-block-price2" :data-Code="subItem.code">
+                                                            <!-- @click="toggleDetailsItem(subItem)">-->
                                                             {{subItem.price}}
+                                                        </div>
+                                                        <div class="wrapper-for-add-btn">
+                                                            <div class="btn-add-to-cart" @click="add2cart(subItem.code)"
+                                                                 :style="addingToCartStyle">
+                                                                {{addingToCartTitle}}
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -120,11 +134,27 @@
                       :vitrina="vitrina"
                       :related="related"
                       :code="categoryId"
+                      :charset="charset"
             />
         </div>
     </div>
 </template>
 <style scoped lang="less">
+    .btn-add-to-cart {
+        border-radius: 15px;
+        background-color: #fff;
+        color: #555;
+        line-height: 30px;
+        font-weight: 900;
+        text-align: center;
+        width: 150px;
+        margin: 0 auto;
+        margin-right: 20px;
+    }
+    .wrapper-for-add-btn{
+        width: 100%;
+    }
+
     .rolling {
         overflow-y: scroll;
         height: 100vh;
@@ -152,6 +182,12 @@
         padding-left: 15px;
         padding-right: 15px;
         overflow: hidden;
+        text-align: left;
+        max-width: 130px;
+    }
+
+    .product-inner-select {
+        padding-left: 5px;
         text-align: left;
     }
 
@@ -310,7 +346,9 @@
                     activeTime: '',
                     vitrina: '',
                     related:[],
-                    settings: this.$store.state.settings
+                    settings: this.$store.state.settings,
+                    IsAddingToCart: false,
+                    charset:[]
                 }
         },
         props: ["categoryId"],
@@ -323,6 +361,8 @@
             }
         },
         computed: {
+            addingToCartTitle : function(){ return this.IsAddingToCart  ? 'Добавление' : 'Выбрать';},
+            addingToCartStyle: function() { return this.IsAddingToCart  ? "background:#dbdbd7" : '';},
             positionsWithProps: function () {
                 var updateLocalStorage = false;
                 var self = this;
@@ -405,6 +445,7 @@
                 if (item.vitrina === '1') {
                     res += ';box-shadow: 0px 0px 30px #CCDDFF;'
                 }
+                //console.log(self.$store.state.settings.isBrowser);
                  if (!self.$store.state.settings.isBrowser)
                     {
                         //todo сюда проверку на соответствие картинки
@@ -436,12 +477,10 @@
                               return res;
                          }
                     } else {
-                        //res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
-
+                        res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                        //console.log(res);
+                        return res;
                     }
-
-
-
             },
 
             toggleDetailsItem: function(item){
@@ -455,8 +494,24 @@
                this.activeTime = item.activeTime === '1';
                this.vitrina = item.vitrina;
                this.related = item.related;
+               this.charset = item.charset;
                this.$store.commit('SET_SELECTED_POSITION', item);
            },
+           add2cart: function(id){
+           console.log(id);
+                      if (this.IsAddingToCart) return;
+                      let self = this;
+                      this.IsAddingToCart = true;
+                      let payload = {
+                        positionId: id,
+                        TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
+                        callback: function(){
+                            self.IsAddingToCart = false
+                            }
+                      };
+                      this.$store.dispatch('ADD_TO_CART', payload);
+
+                },
 
             getJson: function (catId) {
                 let self = this;
@@ -504,4 +559,7 @@
             //LsPut("positions", positions);
         }
     }
-  </script>
+
+
+
+</script>

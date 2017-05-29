@@ -7,7 +7,6 @@
             <div class="dummy-logo">
                 <img :src="urlLogo">
                 <nav class="menu">
-                    <nav class="menu__breadcrumbs"><a @click="getStore">Разделы</a></nav>
                     <div class="menu__wrap">
                         <ul class="menu__level menu__level--current" v-for="item in ctgs_with_params">
                             <li class="menu__item">
