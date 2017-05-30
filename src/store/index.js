@@ -21,7 +21,7 @@ const store = new Vuex.Store({
                 selectedPosition: {},
                 TableNumberPrimary: 333,
                 LastTimeUpdate: '',
-                LocalPaths: {Positions: {}, Small: {}, Category: {}}
+                LocalPaths: {Positions: {}, Small: {}, Category: {}, LargePositions: {}}
             }
         },
         mutations: {
@@ -117,7 +117,14 @@ const store = new Vuex.Store({
                     case 'small':
                         state.app.LocalPaths.Small[payload.name] = payload.value;
                         break;
-
+                    case 'large':
+                        //alert( payload.value)
+                        state.app.LocalPaths.LargePositions[payload.name] = payload.value;
+                        LsPut('large', JSON.stringify(state.app.LocalPaths.LargePositions));
+                        if (payload && payload.callback && typeof(payload.callback) === "function") {
+                            payload.callback();
+                        }
+                        break;
                     default:
                         break;
                 }
@@ -134,7 +141,9 @@ const store = new Vuex.Store({
                     case 'small':
                         state.app.LocalPaths.Small = payload.value;
                         break;
-
+                    case 'large':
+                        state.app.LocalPaths.LargePositions = payload.value;
+                        break;
                     default:
                         break;
                 }

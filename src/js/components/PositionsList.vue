@@ -11,7 +11,14 @@
                                 </div>
                             </div>
                             <div class="product-inner-label" :data-Code="item.code">
-                                {{ item.name | deleteQuotes}}
+                               <!-- {{ item.name | deleteQuotes}} -->
+                                <template v-if="item.iconNameActiv==='0'">
+                                    <div :style="getTitleStyle(item)">{{item.name | deleteQuotes}}
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <img :src="getTitleImg(item)"> _$иконка$_
+                                </template>
                             </div>
                         </div>
                     </li>
@@ -20,7 +27,15 @@
             <div v-else>
                 <ul class="products">
                     <li v-for="item in positionslist" class="product-group product-group-level-1">
-                        <div class="product-group-level-1-descr">{{item.name | deleteQuotes}}</div>
+                        <!-- todo -->
+                        <div class="product-group-level-1-descr">
+                            <template v-if="item.iconNameActiv==='0'">
+                                <div :style="getTitleStyle(item)">{{item.name | deleteQuotes}}</div>
+                            </template>
+                            <template v-else>
+                                <img :src="getTitleImg(item)"> _$иконка$_
+                            </template>
+                        </div>
                         <div v-if="item.groups1 && item.groups1.length === 1">
                             <ul class="products">
                                 <div v-show="item.type === 'ИКОНКАМИ'">
@@ -35,7 +50,14 @@
                                                     </div>
                                                 </div>
                                                 <div class="product-inner-label" :data-Code="subitem.code">
-                                                    {{subitem.name | deleteQuotes}}
+                                                    <template v-if="subitem.iconNameActiv==='0'">
+                                                        <div :style="getTitleStyle(subitem)">{{subitem.name |
+                                                            deleteQuotes}}
+                                                        </div>
+                                                    </template>
+                                                    <template v-else>
+                                                        <img :src="getTitleImg(subitem)"> _$иконка$_
+                                                    </template>
                                                 </div>
                                             </div>
                                         </li>
@@ -72,7 +94,14 @@
                                 <li v-for="subgroups in item.groups1" class="product-group-level-2" v-if="subgroups">
                                     <div v-if="subgroups.groups2 && subgroups.groups2.length === 1">
                                         <div class="product-group-level-2-descr"
-                                             v-show="subgroups.name!=='' || subgroups">{{subgroups.name | deleteQuotes}}
+                                             v-show="subgroups.name!=='' || subgroups"><!--{{subgroups.name | deleteQuotes}}-->
+                                            <!-- todo -->
+                                            <template v-if="subgroups.iconNameActiv==='0'">
+                                                <div :style="getTitleStyle(subgroups)">{{subgroups.name | deleteQuotes}}</div>
+                                            </template>
+                                            <template v-else>
+                                                <img :src="getTitleImg(subgroups)"> _$иконка$_
+                                            </template>
                                         </div>
 
                                         <ul class="products">
@@ -108,7 +137,14 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-inner-label" :data-Code="subItem.code">
-                                                            {{subItem.name | deleteQuotes}}
+                                                            <!--{{subItem.name | deleteQuotes}}-->
+                                                            <template v-if="subItem.iconNameActiv==='0'">
+                                                                <div :style="getTitleStyle(subItem)">{{subItem.name | deleteQuotes}}
+                                                                </div>
+                                                            </template>
+                                                            <template v-else>
+                                                                <img :src="getTitleImg(subItem)"> _$иконка$_
+                                                            </template>
                                                         </div>
                                                     </div>
                                                 </li>
@@ -151,7 +187,8 @@
         margin: 0 auto;
         margin-right: 20px;
     }
-    .wrapper-for-add-btn{
+
+    .wrapper-for-add-btn {
         width: 100%;
     }
 
@@ -400,6 +437,21 @@
                          else {
                               item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
                          }
+                         if (self.$store.state.app.LocalPaths.LargePositions[item.code] === void 1){
+                            getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImageLarge, function(img, isTrue){
+                                   payload = {
+                                                type: 'large',
+                                                name: item.code,
+                                                value: img,
+                                                callback: function(){
+                                                    //res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' + img;
+                                                    isLoaded = true;
+                                                    return res;
+                                                }
+                                           }
+                                    self.$store.commit('SET_LOCAL_PATH', payload);
+                                   });
+                         }
                      } else
                     {
                         item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
@@ -436,6 +488,18 @@
         },
 
         methods: {
+            getTitleStyle(item){
+                let res = '';
+                if (item.textColor !==''){
+                   res += ';color:'+item.textColor;
+                   console.log(res);
+                }
+                return res;
+            },
+            getTitleImg(item){
+            const self = this;
+                return self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.iconName
+            },
             getStyle: function(item){
                 var updateLocalStorage = false;
                 var isLoaded = false;
@@ -449,11 +513,11 @@
                  if (!self.$store.state.settings.isBrowser)
                     {
                         //todo сюда проверку на соответствие картинки
-                        /*if (self.$store.state.app.LocalPaths.Category[item.code] && item.urlBigImage != self.$store.state.app.LocalPaths.Category[item.code]){
+                        /*if (self.$store.state.app.LocalPaths.Category[item.code] && (item.urlImage != self.$store.state.app.LocalPaths.Category[item.code])){
                                         self.$store.state.app.LocalPaths.Category[item.code] = void 1;
                                    }*/
                         if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
-                             updateLocalStorage = true;
+                             //updateLocalStorage = true;
                              //res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
                              getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(img, isTrue){
                                    payload = {
@@ -462,9 +526,7 @@
                                                 value: img,
                                                 callback: function(){
                                                     res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' + img;
-                                                    //alert('Картинка добавлена');
                                                     isLoaded = true;
-                                                    //alert ('Загружаемые: ' + res);
                                                     return res;
                                                 }
                                            }
@@ -473,12 +535,27 @@
                          }
                          else {
                               res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
-                              //alert ('Существующие: ' + res);
                               return res;
                          }
+                         // Загружаем большие картинки
+                         if (self.$store.state.app.LocalPaths.LargePositions[item.code] === void 1){
+                            getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImageLarge, function(img, isTrue){
+                                   payload = {
+                                                type: 'large',
+                                                name: item.code,
+                                                value: img,
+                                                callback: function(){
+                                                    //res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' + img;
+                                                    isLoaded = true;
+                                                    return res;
+                                                }
+                                           }
+                                    self.$store.commit('SET_LOCAL_PATH', payload);
+                                   });
+                         }
+                         ////
                     } else {
                         res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
-                        //console.log(res);
                         return res;
                     }
             },
@@ -498,7 +575,6 @@
                this.$store.commit('SET_SELECTED_POSITION', item);
            },
            add2cart: function(id){
-           console.log(id);
                       if (this.IsAddingToCart) return;
                       let self = this;
                       this.IsAddingToCart = true;
@@ -559,6 +635,7 @@
             //LsPut("positions", positions);
         }
     }
+
 
 
 

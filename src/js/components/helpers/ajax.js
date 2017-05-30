@@ -76,7 +76,7 @@ function getUrl(operation) {
             url = `groups=342020&tovar=${operation.id}&dellcartitem=${operation.stroka}`;
             break;
         case 'addToOrder':
-            url = `groups=1&addcart=1&tovar=${operation.positionId}&table=${operation.tableId}`;
+            url = `groups=1&addcart=1&category=1&tovar=${operation.positionId}&table=${operation.tableId}`;
             break;
         case 'rebuildTable':
             url = `groups=1&addcart=1&rebuildtable=${operation.stringOfCodes}`;

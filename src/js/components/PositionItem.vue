@@ -258,7 +258,22 @@
             computed:{
                 codeFromParent: function() {return this.code},
                 isActive: function() {return this.activeTime},
-                urlFromParents : function() {return this.$store.state.settings.urlBase + this.settings.urlBigImage + this.urlImageLarge;},
+                urlFromParents : function() {
+                    const self = this;
+                    let url = '';
+                    //alert(this.positionId);
+                    //alert(JSON.stringify(self.$store.state.app.LocalPaths.LargePositions));
+                    //alert(self.$store.state.app.LocalPaths.LargePositions[this.positionId]);
+                    //alert('file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.LargePositions[this.positionId]);
+
+                        if (self.$store.state.app.LocalPaths.LargePositions[this.positionId]){
+                            url = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.LargePositions[this.positionId];
+                        } else {
+                            url = this.$store.state.settings.urlBase + this.settings.urlBigImage + this.urlImageLarge;
+                        }
+                    //alert (url);
+                    return url;
+                },
                 priceFromParent : function () {return this.price;},
                 nameFromParent : function () {return this.name;},
                 descriptionFromParent : function() {return this.description},
@@ -347,7 +362,15 @@
                 },
 
                 getRelatedStyle: function(item){
-                    return 'background-image: url(' + this.$store.state.settings.urlBase + this.settings.urlBackImage + item.urlImage + ');';
+                    let res = '';
+                    const self = this;
+                    if (self.$store.state.app.LocalPaths.Positions[item.code]){
+                            res = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.Positions[item.code];
+                        } else {
+                            res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.urlImage;
+                        }
+                    alert(res);
+                    return 'background-image: url(' + res + ');';
                 }
 
             },

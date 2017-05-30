@@ -134,6 +134,24 @@ const app = new Vue({
                 }
             });
 
+            LsGet("large",(data)=>{
+                alert('Data for LargePositions:' + data);
+                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
+                    if (JSON.stringify(this.$store.state.app.LocalPaths.LargePositions) === '{}'){
+                        try{
+                            let payload = {
+                                type: 'large',
+                                value: JSON.parse(data)
+                            };
+                            self.$store.commit('SET_LOCAL_PATH_FULL', payload);
+                        }
+                        catch(err){
+                            alert(err);
+                        }
+                    }
+                }
+            });
+
 
         }
 
