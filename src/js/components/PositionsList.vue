@@ -94,10 +94,13 @@
                                 <li v-for="subgroups in item.groups1" class="product-group-level-2" v-if="subgroups">
                                     <div v-if="subgroups.groups2 && subgroups.groups2.length === 1">
                                         <div class="product-group-level-2-descr"
-                                             v-show="subgroups.name!=='' || subgroups"><!--{{subgroups.name | deleteQuotes}}-->
+                                             v-show="subgroups.name!=='' || subgroups">
+                                            <!--{{subgroups.name | deleteQuotes}}-->
                                             <!-- todo -->
                                             <template v-if="subgroups.iconNameActiv==='0'">
-                                                <div :style="getTitleStyle(subgroups)">{{subgroups.name | deleteQuotes}}</div>
+                                                <div :style="getTitleStyle(subgroups)">{{subgroups.name |
+                                                    deleteQuotes}}
+                                                </div>
                                             </template>
                                             <template v-else>
                                                 <img :src="getTitleImg(subgroups)"> _$иконка$_
@@ -139,7 +142,8 @@
                                                         <div class="product-inner-label" :data-Code="subItem.code">
                                                             <!--{{subItem.name | deleteQuotes}}-->
                                                             <template v-if="subItem.iconNameActiv==='0'">
-                                                                <div :style="getTitleStyle(subItem)">{{subItem.name | deleteQuotes}}
+                                                                <div :style="getTitleStyle(subItem)">{{subItem.name |
+                                                                    deleteQuotes}}
                                                                 </div>
                                                             </template>
                                                             <template v-else>

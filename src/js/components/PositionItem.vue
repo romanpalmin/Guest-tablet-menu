@@ -98,7 +98,9 @@
             overflow: auto;
             .item-column-image {
                 display: inline-block;
-                width: 47%;
+                width: 45%;
+                max-width: 45%;
+                min-width: 45%;
                 float: left;
                 padding-left: 15px;
                 padding-top: 15px;
@@ -108,6 +110,7 @@
                     height: auto;
                     border-radius: 30px;
                 }
+                position: fixed;
             }
             .item-column-data {
                 .related-items {
@@ -117,7 +120,7 @@
                         min-width: 100px;
                         min-height: 100px;
                         padding: 10px;
-                        float: right;
+                        float: left;
                         margin: 20px;
                         background-size: cover;
                         border-radius: 30px;

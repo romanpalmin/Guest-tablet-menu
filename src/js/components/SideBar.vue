@@ -115,6 +115,7 @@
                     color: #000000;
                     vertical-align: middle;
                     padding-top: 2px;
+                    height: 56px;
                 }
 
                 .menu__link {
