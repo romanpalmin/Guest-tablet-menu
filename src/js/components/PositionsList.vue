@@ -2,27 +2,29 @@
     <div class="rolling">
         <div clas="div-overlay">
             <div v-if="positionslist.tovar">
-                <ul class="products">
-                    <li class="product" v-for="item in positionsWithProps" @click="toggleDetailsItem(item)">
-                        <div class="product-inner">
-                            <div class="product-top-block" :data-Code="item.code" :style="item.style">
-                                <div class="product-top-block-price" :data-Code="item.code">
-                                    {{ item.price }}
+                <div class="level-0-0">
+                    <ul class="products">
+                        <li class="product" v-for="item in positionsWithProps" @click="toggleDetailsItem(item)">
+                            <div class="product-inner">
+                                <div class="product-top-block" :data-Code="item.code" :style="item.style">
+                                    <div class="product-top-block-price" :data-Code="item.code">
+                                        {{ item.price }}
+                                    </div>
+                                </div>
+                                <div class="product-inner-label" :data-Code="item.code">
+                                    <!-- {{ item.name | deleteQuotes}} -->
+                                    <template v-if="item.iconNameActiv==='0'">
+                                        <div :style="getTitleStyle(item)">{{item.name | deleteQuotes}}
+                                        </div>
+                                    </template>
+                                    <template v-else>
+                                        <img :src="getTitleImg(item)"> _$иконка$_
+                                    </template>
                                 </div>
                             </div>
-                            <div class="product-inner-label" :data-Code="item.code">
-                               <!-- {{ item.name | deleteQuotes}} -->
-                                <template v-if="item.iconNameActiv==='0'">
-                                    <div :style="getTitleStyle(item)">{{item.name | deleteQuotes}}
-                                    </div>
-                                </template>
-                                <template v-else>
-                                    <img :src="getTitleImg(item)"> _$иконка$_
-                                </template>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div v-else>
                 <ul class="products">
@@ -180,6 +182,11 @@
     </div>
 </template>
 <style scoped lang="less">
+
+    .level-0-0{
+        padding-top: 50px;
+    }
+
     .btn-add-to-cart {
         border-radius: 15px;
         background-color: #fff;
@@ -636,6 +643,7 @@
             //LsPut("positions", positions);
         }
     }
+
 
 
 
