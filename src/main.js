@@ -117,7 +117,7 @@ const app = new Vue({
             });
 
             LsGet("positions",(data)=>{
-                alert('Data for Positions:' + data);
+                //alert('Data for Positions:' + data);
                 if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
                     if (JSON.stringify(this.$store.state.app.LocalPaths.Positions) === '{}'){
                         try{
@@ -135,7 +135,7 @@ const app = new Vue({
             });
 
             LsGet("large",(data)=>{
-                alert('Data for LargePositions:' + data);
+                //alert('Data for LargePositions:' + data);
                 if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
                     if (JSON.stringify(this.$store.state.app.LocalPaths.LargePositions) === '{}'){
                         try{

@@ -426,8 +426,6 @@
                                                     cnt++;
                                                     if (len === cnt){
                                                         //alert('Update current menu:' + self.$route.params.id);
-                                                        //self.positionslist = _.map(self.positionslist,(item)=>{return item;});
-                                                        //self.refreshComponent();
                                                     }
                                                 }
                                            };
@@ -604,10 +602,10 @@
                 }
             },
             refreshComponent(){
-                alert('refresh');
+                //alert('refresh');
                 setTimeout(function(){
                     this.positionslist = _.map(this.positionslist);
-                    alert('refresh2');
+                    //alert('refresh2');
                 }, 2000);
              }
         },
@@ -615,7 +613,6 @@
             this.categoryId = this.$route.params.id;
             this.currentId = this.$route.params.id;
             this.getJson(this.currentId);
-            //alert(JSON.stringify(this.$store.state.app.LocalPaths.Category2));
             let key = 'cat' + this.currentId;
             LsGet(key,(data)=>{
                 /*if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){

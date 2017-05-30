@@ -181,10 +181,10 @@
         props:["categoryId"],
         methods:{
             getStore(){
-                console.log(this.$store.state.app);
+               /* console.log(this.$store.state.app);
                 alert('Small: ' + JSON.stringify(this.$store.state.app.LocalPaths.Small));
                 alert('Positions: ' + JSON.stringify(this.$store.state.app.LocalPaths.Positions));
-                alert('Category: ' + JSON.stringify(this.$store.state.app.LocalPaths.Category));
+                alert('Category: ' + JSON.stringify(this.$store.state.app.LocalPaths.Category));*/
             }
         },
 

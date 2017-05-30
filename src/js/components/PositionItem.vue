@@ -261,17 +261,11 @@
                 urlFromParents : function() {
                     const self = this;
                     let url = '';
-                    //alert(this.positionId);
-                    //alert(JSON.stringify(self.$store.state.app.LocalPaths.LargePositions));
-                    //alert(self.$store.state.app.LocalPaths.LargePositions[this.positionId]);
-                    //alert('file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.LargePositions[this.positionId]);
-
                         if (self.$store.state.app.LocalPaths.LargePositions[this.positionId]){
                             url = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.LargePositions[this.positionId];
                         } else {
                             url = this.$store.state.settings.urlBase + this.settings.urlBigImage + this.urlImageLarge;
                         }
-                    //alert (url);
                     return url;
                 },
                 priceFromParent : function () {return this.price;},
@@ -369,7 +363,6 @@
                         } else {
                             res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.urlImage;
                         }
-                    alert(res);
                     return 'background-image: url(' + res + ');';
                 }
 
