@@ -16,7 +16,8 @@
                     <div class="p-item">{{descriptionFromParent | deleteQuotes | deleteNewLines | addNewLine}}</div>
                     <div class="price-row">
                         <div class="charset-wrapper">
-                            <template class="charset" v-for="(chr, index) in charset"><img :src="getCharset(chr)"><span class="span-plus" v-if="index+1 < charset.length">+</span>
+                            <template class="charset" v-for="(chr, index) in charset"><img :src="getCharset(chr)"><span
+                                    class="span-plus" v-if="index+1 < charset.length">+</span>
                             </template>
                         </div>
                         <div class="price-wrapper">
@@ -39,13 +40,16 @@
                         </div>
 
                         <div class="related-items" v-if="relatedFromParent.length!==0">
-                            <div v-for="rel in relatedFromParent" :data-Code="rel.code"
-                                 @click="add2CartAdditional(rel.code)" :style="addingToCartStyleAdditional">
-                                <div :style="getRelatedStyle(rel)" class="related-item">
-                                    <div class="related-item-price product-top-block-price" :data-Code="rel.code">
-                                        {{rel.price}}
+                            С этим товаром часто заказывают
+                            <div class="p-item-related ">
+                                <div v-for="rel in relatedFromParent" :data-Code="rel.code"
+                                     @click="add2CartAdditional(rel.code)" :style="addingToCartStyleAdditional">
+                                    <div :style="getRelatedStyle(rel)" class="related-item">
+                                        <div class="related-item-price product-top-block-price" :data-Code="rel.code">
+                                            {{rel.price}}
+                                        </div>
+                                        <div class="related-item-title">{{rel.name | deleteQuotes}}</div>
                                     </div>
-                                    <div class="related-item-title">{{rel.name | deleteQuotes}}</div>
                                 </div>
                             </div>
                         </div>
@@ -125,6 +129,7 @@
                         background-size: cover;
                         border-radius: 30px;
                         position: relative;
+                        margin-top: 40px;
                         .related-item-price {
                             display: table-cell;
                             width: 80px;
@@ -140,6 +145,7 @@
                             padding-left: 8px;
                             padding-top: -20px;
                             margin-bottom: 10px;
+
                         }
                         .related-item-title {
                             position: absolute;
@@ -168,14 +174,14 @@
                 .capital {
                     text-transform: uppercase;
                 }
-                .price-wrapper{
+                .price-wrapper {
                     /*float: right;*/
                 }
-                .charset-wrapper{
+                .charset-wrapper {
                     float: left;
                     line-height: 125px;
                 }
-                .span-plus{
+                .span-plus {
                     position: relative;
                     bottom: 12px;
                 }
@@ -184,6 +190,14 @@
                     font-size: 20px;
                     padding-bottom: 15px;
                     margin-bottom: 15px;
+                    text-align: justify;
+                    border-bottom: #FFFFFF;
+                    border-bottom-width: thin;
+                    border-bottom-style: solid;
+                }
+                .p-item-related {
+                    padding-bottom: 15px;
+                    margin-bottom: 115px;
                     text-align: justify;
                     border-bottom: #FFFFFF;
                     border-bottom-width: thin;
@@ -375,6 +389,7 @@
                 this.urlClose = this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close;
             }
     }
+
 
 
 
