@@ -18,7 +18,7 @@
                                         </div>
                                     </template>
                                     <template v-else>
-                                        <img :src="getTitleImg(item)"> _$иконка$_
+                                        <img :src="getTitleImg(item)"> <!--Здесь будет размещена дополнительная к картинке текстовая информация -->
                                     </template>
                                 </div>
                             </div>
@@ -35,7 +35,7 @@
                                 <div :style="getTitleStyle(item)">{{item.name | deleteQuotes}}</div>
                             </template>
                             <template v-else>
-                                <img :src="getTitleImg(item)"> _$иконка$_
+                                <img :src="getTitleImg(item)"> <!--Здесь будет размещена дополнительная к картинке текстовая информация -->
                             </template>
                         </div>
                         <div v-if="item.groups1 && item.groups1.length === 1">
@@ -58,7 +58,7 @@
                                                         </div>
                                                     </template>
                                                     <template v-else>
-                                                        <img :src="getTitleImg(subitem)"> _$иконка$_
+                                                        <img :src="getTitleImg(subitem)"><!--Здесь будет размещена дополнительная к картинке текстовая информация -->
                                                     </template>
                                                 </div>
                                             </div>
@@ -105,7 +105,7 @@
                                                 </div>
                                             </template>
                                             <template v-else>
-                                                <img :src="getTitleImg(subgroups)"> _$иконка$_
+                                                <img :src="getTitleImg(subgroups)"> <!--Здесь будет размещена дополнительная к картинке текстовая информация -->
                                             </template>
                                         </div>
 
@@ -149,7 +149,7 @@
                                                                 </div>
                                                             </template>
                                                             <template v-else>
-                                                                <img :src="getTitleImg(subItem)"> _$иконка$_
+                                                                <img :src="getTitleImg(subItem)"> <!--Здесь будет размещена дополнительная к картинке текстовая информация -->
                                                             </template>
                                                         </div>
                                                     </div>
@@ -184,7 +184,7 @@
 <style scoped lang="less">
 
     .level-0-0{
-        padding-top: 50px;
+        padding-top: 100px;
     }
 
     .btn-add-to-cart {
