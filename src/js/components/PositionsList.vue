@@ -421,9 +421,11 @@
                     if (!self.$store.state.settings.isBrowser)
                     {
                          //todo сюда проверку на соответствие картинки
-                         /*if (self.$store.state.app.LocalPaths.Category[item.code] && item.urlBigImage != self.$store.state.app.LocalPaths.Category[item.code]){
-                                        self.$store.state.app.LocalPaths.Category[item.code] = void 1;
-                                   }*/
+                         //alert(`${item.urlImage.slice(1)} === ${self.$store.state.app.LocalPaths.Positions[item.code]} === ${item.urlImage.slice(1) === self.$store.state.app.LocalPaths.Positions[item.code]}`);
+                         if (self.$store.state.app.LocalPaths.Positions[item.code] && (item.urlImage.slice(1) != self.$store.state.app.LocalPaths.Positions[item.code])){
+                                        alert('Меняем картинку товара');
+                                        self.$store.state.app.LocalPaths.Positions[item.code] = void 1;
+                                   }
                          if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
                              getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(res, isExist){
                                     if (isExist)
@@ -438,6 +440,7 @@
                                                     if (len === cnt){
                                                         //alert('Update current menu:' + self.$route.params.id);
                                                     }
+                                                    item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  res + ')';
                                                 }
                                            };
                                     self.$store.commit('SET_LOCAL_PATH', payload);
@@ -446,6 +449,10 @@
                          else {
                               item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
                          }
+                         if (self.$store.state.app.LocalPaths.LargePositions[item.code] && (item.urlImageLarge.slice(1) != self.$store.state.app.LocalPaths.LargePositions[item.code])){
+                                        alert('Меняем большую картинку товара');
+                                        self.$store.state.app.LocalPaths.LargePositions[item.code] = void 1;
+                                   }
                          if (self.$store.state.app.LocalPaths.LargePositions[item.code] === void 1){
                             getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImageLarge, function(img, isTrue){
                                    payload = {
@@ -522,9 +529,11 @@
                  if (!self.$store.state.settings.isBrowser)
                     {
                         //todo сюда проверку на соответствие картинки
-                        /*if (self.$store.state.app.LocalPaths.Category[item.code] && (item.urlImage != self.$store.state.app.LocalPaths.Category[item.code])){
-                                        self.$store.state.app.LocalPaths.Category[item.code] = void 1;
-                                   }*/
+                        //alert(`${item.urlImage.slice(1)} === ${self.$store.state.app.LocalPaths.Positions[item.code]} === ${item.urlImage.slice(1) === self.$store.state.app.LocalPaths.Positions[item.code]}`);
+                         if (self.$store.state.app.LocalPaths.Positions[item.code] && (item.urlImage.slice(1) != self.$store.state.app.LocalPaths.Positions[item.code])){
+                                        alert('Меняем картинку товара');
+                                        self.$store.state.app.LocalPaths.Positions[item.code] = void 1;
+                                   }
                         if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
                              //updateLocalStorage = true;
                              //res += 'background-image: url(' + self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
@@ -547,6 +556,10 @@
                               return res;
                          }
                          // Загружаем большие картинки
+                         if (self.$store.state.app.LocalPaths.LargePositions[item.code] && (item.urlImageLarge.slice(1) != self.$store.state.app.LocalPaths.LargePositions[item.code])){
+                                        alert('Меняем большую картинку товара');
+                                        self.$store.state.app.LocalPaths.LargePositions[item.code] = void 1;
+                                   }
                          if (self.$store.state.app.LocalPaths.LargePositions[item.code] === void 1){
                             getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImageLarge, function(img, isTrue){
                                    payload = {

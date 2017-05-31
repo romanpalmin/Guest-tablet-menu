@@ -104,9 +104,11 @@
                     item.route = 'menu/' + item.code;
                     if (!self.$store.state.settings.isBrowser){
                                    //todo сюда проверку на соответствие картинки
-                                   /*if (self.$store.state.app.LocalPaths.Category[item.code] && item.urlBigImage != self.$store.state.app.LocalPaths.Category[item.code]){
+                                   //alert(`${item.urlBigImage.slice(1)} === ${self.$store.state.app.LocalPaths.Category[item.code]} === ${item.urlBigImage.slice(1) === self.$store.state.app.LocalPaths.Category[item.code]}`);
+                                   if (self.$store.state.app.LocalPaths.Category[item.code] && (item.urlBigImage.slice(1) != self.$store.state.app.LocalPaths.Category[item.code])){
+                                        alert('Обновляем картинку');
                                         self.$store.state.app.LocalPaths.Category[item.code] = void 1;
-                                   }*/
+                                   }
                                    //alert("Old: " + self.$store.state.app.LocalPaths.Category[item.code] + "\nNew: " + item.urlBigImage);
                                    if (self.$store.state.app.LocalPaths.Category[item.code] === void 1){
                                         getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage, function(res, isExist){
