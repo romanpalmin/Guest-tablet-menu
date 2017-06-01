@@ -180,11 +180,12 @@
                 .charset-wrapper {
                     float: left;
                     line-height: 125px;
+                    margin-top: -50px;
                 }
                 .span-plus {
                     position: relative;
                     /*bottom: 12px;*/
-                    bottom: 40px;
+                    bottom: 10px;
                 }
                 .p-item {
                     display: block;
@@ -340,7 +341,9 @@
                     if (chr.urlImage[0] === '/'){
                         ret = chr.urlImage.slice(1);
                     }
-                    return ret;
+                    let res = this.$store.state.settings.urlBase +  ret;
+                    console.log(res);
+                    return res;
                     //return chr.urlImage;
                 },
 

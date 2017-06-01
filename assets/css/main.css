@@ -6,11 +6,12 @@ body {
     background: #1d1e21 url('http://10.10.250.91/img/background.jpg');
     overflow: hidden;
     user-select: none;
+    height: 100%;
 }
 
 .main-app{
-    width: 110px;
-    height: 110px;
+    width: 1920px;
+    height: 1080px;
 }
 
 .tabletNumber{
