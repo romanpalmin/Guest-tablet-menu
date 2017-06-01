@@ -242,7 +242,7 @@
                           }
                          }, 1000)};
                 self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
-            }, 7000000);
+            }, 60000);
         },
         destroyed(){
             var category = JSON.stringify(this.$store.state.app.LocalPaths.Category);
