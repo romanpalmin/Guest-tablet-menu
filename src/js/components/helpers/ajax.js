@@ -2,8 +2,8 @@
 import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
-/*const ip = '10.10.182.11';*/
-const ip = '10.100.50.248';
+const ip = '10.10.182.11';
+/*const ip = '10.100.50.248';*/
 let userName = 'planshet';
 let password = 'planshet';
 let ajaxServerUrlShort = '';
@@ -73,7 +73,7 @@ function getUrl(operation) {
             url = 'groups=342020&category=&delcart=1&tovar=1';
             break;
         case 'deleteFromOrder':
-            url = `groups=342020&category=&tovar=${operation.id}&dellcartitem=${operation.stroka}`;
+            url = `groups=342020&category=&dellcartitem=${operation.stroka}`;
             break;
         case 'addToOrder':
             url = `groups=1&addcart=1&category=1&tovar=${operation.positionId}&table=${operation.tableId}`;

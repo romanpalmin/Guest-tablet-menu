@@ -15,7 +15,7 @@
                     <div class="h1-item capital">{{nameFromParent | deleteQuotes | deleteNewLines}}</div>
                     <div class="p-item">{{descriptionFromParent | deleteQuotes | deleteNewLines | addNewLine}}</div>
                     <div class="price-row">
-                        <div class="charset-wrapper">
+                        <div class="charset-wrapper" v-if="charset.length>0">
                             <template class="charset" v-for="(chr, index) in charset"><img :src="getCharset(chr)"><span
                                     class="span-plus" v-if="index+1 < charset.length">+</span>
                             </template>
@@ -183,7 +183,8 @@
                 }
                 .span-plus {
                     position: relative;
-                    bottom: 12px;
+                    /*bottom: 12px;*/
+                    bottom: 40px;
                 }
                 .p-item {
                     display: block;
@@ -335,7 +336,12 @@
                 },
 
                 getCharset(chr){
-                    return chr.urlImage;
+                    let ret = chr.urlImage;
+                    if (chr.urlImage[0] === '/'){
+                        ret = chr.urlImage.slice(1);
+                    }
+                    return ret;
+                    //return chr.urlImage;
                 },
 
                 add2cart: function(id){

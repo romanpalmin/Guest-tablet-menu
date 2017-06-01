@@ -423,7 +423,7 @@
                          //todo сюда проверку на соответствие картинки
                          //alert(`${item.urlImage.slice(1)} === ${self.$store.state.app.LocalPaths.Positions[item.code]} === ${item.urlImage.slice(1) === self.$store.state.app.LocalPaths.Positions[item.code]}`);
                          if (self.$store.state.app.LocalPaths.Positions[item.code] && (item.urlImage.slice(1) != self.$store.state.app.LocalPaths.Positions[item.code])){
-                                        alert('Меняем картинку товара');
+                                        //alert('Меняем картинку товара');
                                         self.$store.state.app.LocalPaths.Positions[item.code] = void 1;
                                    }
                          if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
@@ -450,7 +450,7 @@
                               item.style = 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
                          }
                          if (self.$store.state.app.LocalPaths.LargePositions[item.code] && (item.urlImageLarge.slice(1) != self.$store.state.app.LocalPaths.LargePositions[item.code])){
-                                        alert('Меняем большую картинку товара');
+                                        //alert('Меняем большую картинку товара');
                                         self.$store.state.app.LocalPaths.LargePositions[item.code] = void 1;
                                    }
                          if (self.$store.state.app.LocalPaths.LargePositions[item.code] === void 1){
@@ -531,7 +531,7 @@
                         //todo сюда проверку на соответствие картинки
                         //alert(`${item.urlImage.slice(1)} === ${self.$store.state.app.LocalPaths.Positions[item.code]} === ${item.urlImage.slice(1) === self.$store.state.app.LocalPaths.Positions[item.code]}`);
                          if (self.$store.state.app.LocalPaths.Positions[item.code] && (item.urlImage.slice(1) != self.$store.state.app.LocalPaths.Positions[item.code])){
-                                        alert('Меняем картинку товара');
+                                        //alert('Меняем картинку товара');
                                         self.$store.state.app.LocalPaths.Positions[item.code] = void 1;
                                    }
                         if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
@@ -557,7 +557,7 @@
                          }
                          // Загружаем большие картинки
                          if (self.$store.state.app.LocalPaths.LargePositions[item.code] && (item.urlImageLarge.slice(1) != self.$store.state.app.LocalPaths.LargePositions[item.code])){
-                                        alert('Меняем большую картинку товара');
+                                        //alert('Меняем большую картинку товара');
                                         self.$store.state.app.LocalPaths.LargePositions[item.code] = void 1;
                                    }
                          if (self.$store.state.app.LocalPaths.LargePositions[item.code] === void 1){
