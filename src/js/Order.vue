@@ -1,18 +1,25 @@
 <template>
     <div>
-        <div class="bg-panel">
+        <div class="left-panel">
             <sidebar/>
         </div>
-        <userorder/>
+        <div class="right-panel">
+            <userorder/>
+        </div>
     </div>
 </template>
 <style scoped lang="less">
-    .bg-panel {
+    .left-panel {
         width: 300px;
-        height: 100%;
-        background-color: white;
+        height: 100vh;
+        background-color: #ffffff;
         display: block;
         position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .right-panel{
+        opacity: 1;
     }
 
 </style>
@@ -25,6 +32,7 @@
             userorder
         }
     }
+
 
 
 </script>
