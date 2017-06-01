@@ -5,8 +5,8 @@ export default {
     password: '',
     /* server:'http://10.10.182.11/',*/
     /*urlImagesBase:  'http://10.100.50.248/',*/
-    urlBase:  'http://10.10.182.11/',
-    /*urlBase:  'http://10.100.50.248/',*/
+    /*urlBase:  'http://10.10.182.11/',*/
+    urlBase:  'http://10.100.50.248/',
     urlSmallImage: 'img/',
     urlBigImage: 'images/',
     urlBackImage: 'images',
