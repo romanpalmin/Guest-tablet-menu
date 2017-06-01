@@ -8,7 +8,7 @@
                     <img :src="urlFromParents" class="item-image" :style="lighting">
                     <div class="current-vitrina" v-if="yacheikaFromParent!==''">
                         <span>Витрина: {{vitrinaFromParent}}</span>
-                        <span>Ячейка: {{yacheikaFromParent*1}}</span>
+                        <span>Ячейка: {{yacheikaFromParent}}</span>
                     </div>
                 </div>
                 <div class="item-column-data">

@@ -508,7 +508,7 @@
                 let res = '';
                 if (item.textColor !==''){
                    res += ';color:'+item.textColor;
-                   console.log(res);
+                   //console.log(res);
                 }
                 return res;
             },
@@ -588,7 +588,7 @@
                this.price = item.price,
                this.name = item.name,
                this.description = item.description,
-               this.yacheika = item.yacheika
+               this.yacheika = ''+item.yacheika
                this.showDetails = true;
                this.activeTime = item.activeTime === '1';
                this.vitrina = item.vitrina;
