@@ -62,6 +62,7 @@
                 width: -211vw;
                 top: 0;
                 margin-left: 30px;
+                padding-top: 40px;
             }
 
             .overflow-content {

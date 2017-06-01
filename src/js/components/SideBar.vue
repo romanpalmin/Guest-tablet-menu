@@ -89,13 +89,14 @@
         }
 
         .menu {
-
+            height: 100%;
             .menu__wrap {
                 top: 3.5em;
                 bottom: 0;
                 overflow: hidden;
                 width: 100%;
                 background-color: white;
+                padding-top: 20px;
 
                 .menu__level {
                     top: 0;
@@ -147,7 +148,7 @@
             top: 220px;
             left: 0;
             width: 300px;
-            height: calc(100vh - 220px);
+            /*height: calc(100vh - 220px);*/
             background: #F7F7F7;
 
             .menu__breadcrumbs {

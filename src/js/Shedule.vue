@@ -22,12 +22,13 @@
 <style scoped lang="less">
     .watch-container {
         width: 100%;
-        height: 100vh;
+        /*height: 100vh;*/
         display: block;
         text-align: center;
         vertical-align: top;
         overflow-y: auto;
         overflow-x: hidden;
+        padding-top: 40px;
 
         .watch-content {
             width: 28vw;

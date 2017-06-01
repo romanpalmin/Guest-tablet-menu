@@ -13,7 +13,7 @@ ajaxServerUrlShort = formAjaxVars();
 
 
 let uuid = '';
-if (typeof device !== 'undefined') {
+/*if (typeof device !== 'undefined') {
     uuid = device.uuid;
     //alert(device.uuid);
     getTabletName(uuid);
@@ -22,8 +22,16 @@ if (typeof device !== 'undefined') {
     getTabletName(uuid);
     //userName = 'tab01';
     //password = '01';
-}
+}*/
 
+document.addEventListener('deviceready', onDeviceReady, false);
+
+function onDeviceReady(){
+    if (typeof device !== 'undefined') {
+        uuid = device.uuid;
+        getTabletName(uuid);
+    }
+}
 
 function getTabletName(uuid) {
     const operation = {name: 'getUserName', uuid: uuid};
@@ -31,6 +39,7 @@ function getTabletName(uuid) {
     executeRequest(url, function (resp) {
         userName = resp.data.login;
         password = resp.data.pass;
+        store.commit('SET_TABLET_NUMBER', password);
         formAjaxVars();
     });
 }

@@ -8,6 +8,11 @@ body {
     user-select: none;
 }
 
+.main-app{
+    width: 140px;
+    height: 140px;
+}
+
 .tabletNumber{
     width: 63px;
     height: 63px;
@@ -17,6 +22,7 @@ body {
     z-index: 99999;
     position: fixed;
     right: 0;
+    top: 0;
     text-align: center;
     line-height: 63px;
     font-size: xx-large;
@@ -47,7 +53,7 @@ body {
 }
 
 .content{
-    padding-top:50px;
+    /*padding-top:50px;*/
     z-index: 1000;
 }
 

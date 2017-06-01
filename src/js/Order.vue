@@ -1,10 +1,19 @@
 <template>
     <div>
-        <sidebar/>
+        <div class="bg-panel">
+            <sidebar/>
+        </div>
         <userorder/>
     </div>
 </template>
-<style>
+<style scoped lang="less">
+    .bg-panel {
+        width: 300px;
+        height: 100%;
+        background-color: white;
+        display: block;
+        position: absolute;
+    }
 
 </style>
 <script>
@@ -16,4 +25,6 @@
             userorder
         }
     }
+
+
 </script>

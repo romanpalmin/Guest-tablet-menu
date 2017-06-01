@@ -20,7 +20,7 @@
 
 <style scoped lang="less">
     .main-menu {
-        margin-top: 110px;
+        margin-top: 130px;
         text-align: center;
 
         .root-icon-descr {
@@ -45,6 +45,7 @@
             align-items: center;
             text-align: center;
             padding: 0;
+            margin-left: -25px;
         }
 
         .root-icon {
