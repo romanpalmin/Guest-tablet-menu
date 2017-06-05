@@ -21,7 +21,9 @@ const store = new Vuex.Store({
                 selectedPosition: {},
                 TableNumberPrimary: 333,
                 LastTimeUpdate: '',
-                LocalPaths: {Positions: {}, Small: {}, Category: {}, LargePositions: {}}
+                LocalPaths: {Positions: {}, Small: {}, Category: {}, LargePositions: {}},
+                SyncCounter: 0,
+                OrderCounter: 0
             }
         },
         mutations: {
@@ -145,6 +147,14 @@ const store = new Vuex.Store({
                         break;
                 }
                 //alert(JSON.stringify(state.app.LocalPaths));
+            },
+            [m_types.INCREMENT_SYNC_COUNTER](state){
+                state.app.SyncCounter++;
+                //todo alert
+            },
+            [m_types.INCREMENT_ORDER_COUNTER](state){
+                state.app.OrderCounter++;
+                //todo alert
             }
         },
         actions: {

@@ -325,6 +325,7 @@
                         self.positions = self.store.app.orders;
                     }}
                     this.$store.dispatch('GET_ORDERS', payload);
+                    self.$store.commit('INCREMENT_ORDER_COUNTER');
                 } else {
                     self.positions = this.store.app.orders;
                 }
@@ -338,7 +339,7 @@
             this.getJson();
             let upTimer = setInterval(function () {
                 self.getJson(true);
-            }, self.store.settings.updateOrderFrequency);
+            }, 30000);
         }
 }
 

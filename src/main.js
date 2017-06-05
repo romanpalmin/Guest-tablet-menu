@@ -60,6 +60,10 @@ const app = new Vue({
     },
     store,
     mounted(){
+        /*let docWidth = document.documentElement.clientWidth;
+        let docHeight = document.documentElement.clientHeight;
+        alert('Height:' + docHeight + '\n' + 'Width:' + docWidth);*/
+
         this.init();
 
         // определение меток для определения стола
