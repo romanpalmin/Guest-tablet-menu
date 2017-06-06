@@ -149,11 +149,11 @@ const store = new Vuex.Store({
                 //alert(JSON.stringify(state.app.LocalPaths));
             },
             [m_types.INCREMENT_SYNC_COUNTER](state){
-                state.app.SyncCounter++;
+                //state.app.SyncCounter++;
                 //todo alert
             },
             [m_types.INCREMENT_ORDER_COUNTER](state){
-                state.app.OrderCounter++;
+                //state.app.OrderCounter++;
                 //todo alert
             }
         },

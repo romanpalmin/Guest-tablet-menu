@@ -46,5 +46,10 @@ module.exports = {
     deploy:{
         src: dist + '/**/*/',
         dest: deploy
+    },
+
+    fonts:{
+        src: ['./assets/css/fonts/*.*'],
+        dest: distAssets + '/css/fonts'
     }
 };

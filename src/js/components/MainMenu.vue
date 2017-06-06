@@ -32,6 +32,8 @@
             padding-top: 5px;
             font-size: larger;
             font-weight: bold;
+            display: grid;
+            vertical-align: baseline;
         }
 
         .root-icon-image {
