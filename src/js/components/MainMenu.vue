@@ -6,7 +6,7 @@
                     <router-link :to="item.route">
                         <a :root-data-code="item.code">
                             <div class="root-icon-image" :style="item.style">
-                                <div class="root-icon-descr">
+                                <div class="root-icon-descr intro-header" >
                                     {{ item.name }}
                                 </div>
                             </div>
@@ -31,7 +31,6 @@
             text-align: center;
             padding-top: 5px;
             font-size: larger;
-            font-weight: bold;
             display: grid;
             vertical-align: baseline;
         }

@@ -164,7 +164,7 @@ const app = new Vue({
     template: `
     <div id="app-menu" >
     <div class="head" v-show="showMenu">
-    <div class="header" >
+    <div class="header intro-header" >
         <nav v-if= "$store.state.settings.language === 'ru'" class="pages-nav">
             <div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>

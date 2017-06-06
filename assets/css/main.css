@@ -1,6 +1,6 @@
 @font-face {
-    font-family: Intro; /* Гарнитура шрифта */
-    src: url(fonts/Intro.otf); /* Путь к файлу со шрифтом */
+    font-family: IntroHeader; /* Гарнитура шрифта */
+    src: url(fonts/IntroRust-Base.otf); /* Путь к файлу со шрифтом */
 }
 body {
     font-family: 'Avenir Next', Avenir, 'Helvetica Neue', 'Lato', 'Segoe UI', Helvetica, Arial, sans-serif;
@@ -12,6 +12,9 @@ body {
     overflow: hidden;
     user-select: none;
     height: 100%;
+}
+.intro-header{
+    font-family: IntroHeader;
 }
 
 .main-app{
