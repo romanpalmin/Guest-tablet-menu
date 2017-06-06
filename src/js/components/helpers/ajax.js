@@ -110,6 +110,9 @@ function getUrl(operation) {
         case 'getLastTimeUpdate':
             url = 'sync=1';
             break;
+        case 'getDataNew':
+            url = 'groups=&category=&sync=&data=1';
+            break;
         default:
             url = '';
             break;

@@ -9,6 +9,7 @@ import fishki from './js/Fishki.vue';
 import actions from './js/Actions.vue';
 import tables from './js/Tables.vue';
 import modal from './js/Modal.vue';
+import posnew from './js/PositionsListNew.vue';
 import tablenumber from './js/TableNumber.vue';
 import wheretablet from './js/WhereTablet.vue';
 import VueRouter from 'vue-router'
@@ -40,7 +41,8 @@ const routes = [
     {name: 'modal', path: '/:lang/modal', component: modal},
     {name: 'tables', path: '/:lang/tables', component: tables},
     {name: 'tablenumber', path: '/:lang/tablenumber', component: tablenumber},
-    {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet}
+    {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet},
+    {name: 'test', path: '/:lang/newlist', component: posnew}
 ];
 
 let router = new VueRouter({
@@ -170,6 +172,7 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
             <!--<div class="pages-nav__item "><router-link to="/ru/tablenumber" class="link-page link">Стол</router-link></div>-->
+             <div class="pages-nav__item "><router-link to="/ru/newlist" class="link-page link">Тест JSON</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
         </nav>
          <nav v-else class="pages-nav">
@@ -177,6 +180,7 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/en/shedule" class="link-page link">Shedule</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/menu" class="link-page link">Menu</router-link></div>
             <!--<div class="pages-nav__item "><router-link to="/en/tablenumber" class="link-page link">Table</router-link></div>-->
+            <div class="pages-nav__item "><router-link to="/en/newlist" class="link-page link">Test</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/order" class="link-page link">Your order</router-link></div>
         </nav>
         
