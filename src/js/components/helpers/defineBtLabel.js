@@ -14,7 +14,7 @@ export default function() {
         setTimeout(startScan, 1000);
 
         // Timer that refreshes the display.
-        timer = setInterval(updateDeviceList, 500);
+        timer = setInterval(updateDeviceList, 5000); //todo изменить по мере необходимости
     }
 
     function startScan() {
