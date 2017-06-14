@@ -1,12 +1,13 @@
 export default {
     server: '',
-    ip: '',
+    ip: '10.100.50.248',
+    /*ip: '10.10.182.11',*/
     userName: '',
     password: '',
     /* server:'http://10.10.182.11/',*/
     /*urlImagesBase:  'http://10.100.50.248/',*/
-    urlBase:  'http://10.10.182.11/',
-    /*urlBase:  'http://10.100.50.248/',*/
+    /*urlBase:  'http://10.10.182.11/',*/
+    urlBase:  'http://10.100.50.248/',
     urlSmallImage: 'img/',
     urlBigImage: 'images/',
     urlBackImage: 'images',
@@ -25,5 +26,5 @@ export default {
     language: 'ru',
     showLanguageToggle: false,
     localPath:'StreetFoodBar/images',
-    isBrowser: false
+    isBrowser: true
 }

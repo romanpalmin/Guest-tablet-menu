@@ -2,15 +2,15 @@
 import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
-const ip = '10.10.182.11';
-/*const ip = '10.100.50.248';*/
+/*const ip = '10.10.182.11';*/
+const ip = '10.100.50.248';
 let userName = 'planshet';
 let password = 'planshet';
 let ajaxServerUrlShort = '';
 const baseUrl = 'menu/hs/model?';
 //-------------------------------
 ajaxServerUrlShort = formAjaxVars();
-
+console.log('ip: ' + ip);
 
 let uuid = '';
 /*if (typeof device !== 'undefined') {

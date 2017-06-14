@@ -227,7 +227,7 @@
 
         watch:{
             positions : function(){
-                this.showDeleteBtn = this.positions.length && this.positions.length > 0;
+                this.showDeleteBtn = this.positions && this.positions.length && this.positions.length > 0;
             }
         },
 

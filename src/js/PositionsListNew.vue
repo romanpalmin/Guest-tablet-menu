@@ -25,17 +25,7 @@
             },
             formNewData(json){
                 let roots = _.filter(json.groups, function(item){
-                    if (item.parrent_code === item.code /*&& (item.code === '332020' ||
-                            item.code === '342020' ||
-                            item.code === '352020' ||
-                            item.code === '392020' ||
-                            item.code === '412020' ||
-                            item.code === '422020' ||
-                            item.code === '432020' ||
-                            item.code === '462020' ||
-                            item.code === '462020' ||
-                            item.code === '472020' ||
-                            item.code === '482020')*/) {
+                    if (item.parrent_code === '') {
                         // заполняем первый уровень
                         item.groups = _.filter(json.groups, function(sub1){
                             if (sub1.parrent_code !== sub1.code && sub1.parrent_code === item.code){
@@ -76,7 +66,7 @@
                         return item;
                     }});
                 console.log(json);
-                //console.log(_.filter(roots, {'code':'332020'}));
+                console.log(_.filter(roots, {'code':'332020'}));
                 console.log(roots);
             }
         },
