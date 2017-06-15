@@ -9,7 +9,7 @@ import fishki from './js/Fishki.vue';
 import actions from './js/Actions.vue';
 import tables from './js/Tables.vue';
 import modal from './js/Modal.vue';
-import posnew from './js/PositionsListNew.vue';
+import posnew from './js/components/PositionsListNew.vue';
 import tablenumber from './js/TableNumber.vue';
 import wheretablet from './js/WhereTablet.vue';
 import VueRouter from 'vue-router'

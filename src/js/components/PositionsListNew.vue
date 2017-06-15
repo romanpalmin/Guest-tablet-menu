@@ -1,62 +1,302 @@
 <template>
     <div class="top rolling">
         <div class="div-overlay">
-            <hr />
             <div>
-                <ul v-for="item in currentData">
-                        <div v-if="item.groups.length===0">
-                            <li>
-                                {{item.name_RU}}
-                                <ul v-for="item in item.items">
-                                    <li>{{item.name}}</li>
-                                </ul>
-                            </li>
-                        </div>
-                        <div v-else="item.groups.length > 0">
-                            <li>
-                                {{item.name_RU}}
-                                <ul v-for="sub1 in sortArray(item.groups)">
-                                    <div v-if="sub1.groups.length===0">
-                                        <li>
-                                            {{sub1.name_RU}}
-                                            <ul v-for="sub1item in sub1.items">
-                                                <li>{{sub1item.name}}</li>
-                                            </ul>
-                                        </li>
-                                    </div>
-                                    <div v-else="sub1.groups.length > 0">
-                                        {{sub1.name_RU}}
-                                        <ul v-for="sub2 in item.groups">
-                                            <div v-if="sub2.groups.length===0">
-                                                <li>
-                                                    {{sub2.name_RU}}
-                                                    <ul v-for="sub2item in sub2.items">
-                                                        <li>{{sub2item.name}}</li>
-                                                    </ul>
+                <ul v-for="item in currentData" class="products">
+                    <div v-if="item.groups.length===0" class="product-group product-group-level-1">
+                        <li>
+                            <template v-if="!item.iconNameActiv">
+                                <span class="product-group-title level-1"> {{item.name_RU}} </span>
+                            </template>
+                            <template v-else>
+                                <img :src="getTitleImg(item)">
+                                <!--Здесь будет размещена дополнительная к картинке текстовая информация -->
+                            </template>
+                            <ul class="products">
+
+                                <div v-show="item.type === 'Иконками'">
+                                    <li class="product" v-for="sub0 in item.items">
+                                        <div class="product-inner">
+                                            <div class="product-top-block" :style="getStyle(sub0)"
+                                                 :data-Code="sub0.code">
+                                                <div class="product-top-block-price" :data-Code="sub0.code">
+                                                    {{sub0.price}}
+                                                </div>
+                                            </div>
+                                            <div class="product-inner-label" :data-Code="sub0.code">
+                                                <template v-if="!sub0.iconNameActiv">{{sub0.iconNameActiv}}
+                                                    <div :style="getTitleStyle(sub0)">{{sub0.name | deleteQuotes}}</div>
+                                                </template>
+                                                <template v-else>
+                                                    <img :src="getTitleImg(sub0)">
+                                                    <!--Здесь будет размещена дополнительная к картинке текстовая информация -->
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </div>
+
+                                <div v-show="item.type === 'Списком'">
+                                    <li class="product2" v-for="sub0 in item.items">
+                                        <div class="product-inner2">
+                                            <div class="product-inner-label2" :data-Code="sub0.code">
+                                                <!-- @click="toggleDetailsItem(subitem)"-->
+                                                {{sub0.name | deleteQuotes}}
+                                            </div>
+                                            <div class="product-top-block-price2" :data-Code="sub0.code">
+                                                <!-- @click="toggleDetailsItem(subitem)"-->
+                                                {{sub0.price}}
+                                            </div>
+                                            <div class="wrapper-for-add-btn">
+                                                <div class="btn-add-to-cart" @click="add2cart(sub0.code)"
+                                                     :style="addingToCartStyle">
+                                                    {{addingToCartTitle}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </div>
+                            </ul>
+                        </li>
+                    </div>
+                    <div v-else="item.groups.length > 0" class="product-group product-group-level-1">
+                        <li>
+                            <template v-if="!item.iconNameActiv">
+                                <span class="product-group-title level-1"> {{item.name_RU}} </span>
+                            </template>
+                            <template v-else>
+                                <img :src="getTitleImg(item)">
+                                <!--Здесь будет размещена дополнительная к картинке текстовая информация -->
+                            </template>
+                            <ul v-for="sub1 in sortArray(item.groups)" class="products">
+                                <div v-if="sub1.groups.length===0">
+                                    <li>
+                                        <span class="product-group-title level-2">{{sub1.name_RU}}</span>
+                                        <ul class="products">
+
+                                            <div v-show="item.type === 'Иконками'">
+                                                <li v-for="sub1item in sub1.items" class="product">
+                                                    <div class="product-inner">
+                                                        <div class="product-top-block" :style="getStyle(sub1item)"
+                                                             :data-Code="sub1item.code">
+                                                            <div class="product-top-block-price"
+                                                                 :data-Code="sub1item.code">
+                                                                {{sub1item.price}}
+                                                            </div>
+                                                        </div>
+                                                        <div class="product-inner-label" :data-Code="sub1item.code">
+                                                            <template v-if="!sub1item.iconNameActiv">
+                                                                {{sub1item.iconNameActiv}}
+                                                                <div :style="getTitleStyle(sub1item)">{{sub1item.name |
+                                                                    deleteQuotes}}
+                                                                </div>
+                                                            </template>
+                                                            <template v-else>
+                                                                <img :src="getTitleImg(sub1item)">
+                                                                <!--Здесь будет размещена дополнительная к картинке текстовая информация -->
+                                                            </template>
+                                                        </div>
+                                                    </div>
                                                 </li>
                                             </div>
-                                            <div v-else="sub2.groups.length > 0">
-                                                {{sub2.name_RU}} + ...
-                                            </div>
-                                        </ul>
-                                    </div>
-                                </ul>
-                            </li>
-                        </div>
 
+                                            <div v-show="item.type === 'Списком'">
+                                                <li class="product2" v-for="sub1item in sub1.items">
+                                                    <div class="product-inner2">
+                                                        <div class="product-inner-label2" :data-Code="sub1item.code">
+                                                            <!-- @click="toggleDetailsItem(sub1item)"-->
+                                                            {{sub1item.name | deleteQuotes}}
+                                                        </div>
+                                                        <div class="product-top-block-price2" :data-Code="sub1item.code">
+                                                            <!-- @click="toggleDetailsItem(sub1item)"-->
+                                                            {{sub1item.price}}
+                                                        </div>
+                                                        <div class="wrapper-for-add-btn">
+                                                            <div class="btn-add-to-cart" @click="add2cart(sub1item.code)"
+                                                                 :style="addingToCartStyle">
+                                                                {{addingToCartTitle}}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </div>
+
+                                        </ul>
+                                    </li>
+                                </div>
+                                <!-- Раскомментировать, если появятся более вложенные уровни-->
+                                <div v-else="sub1.groups.length > 0">
+                                    <span class="product-group-title level-2">{{sub1.name_RU}}</span>
+                                    <ul v-for="sub2 in item.groups">
+                                        <div v-if="sub2.groups.length===0">
+                                            <li>
+                                                {{sub2.name_RU}}
+                                                <ul v-for="sub2item in sub2.items">
+                                                    <li>{{sub2item.name}}</li>
+                                                </ul>
+                                            </li>
+                                        </div>
+                                        <div v-else="sub2.groups.length > 0">
+                                            {{sub2.name_RU}} + ...
+                                        </div>
+                                    </ul>
+                                </div>
+                            </ul>
+                        </li>
+                    </div>
                 </ul>
             </div>
         </div>
     </div>
 </template>
 <style scoped lang="less">
-    .top{
+    .top {
         padding-top: 70px;
+    }
+
+    .product-group {
+        display: block;
+        width: 100%;
+        margin: 10px;
+    }
+
+    .product-group-level-1 {
+        background-color: hsla(0, 0%, 50%, .2);
+    }
+
+    .product-group-title {
+        font-family: 'Intro';
+        color: #FFFFFF;
+        padding-top: 10px;
+        padding-left: 20px;
+        text-align: left;
+        margin-top: 40px;
+        &.level-1 {
+            height: 100px;
+            font-size: 50px;
+        }
+        &.level-2 {
+            height: 50px;
+            font-size: 30px;
+        }
     }
 
     .rolling {
         overflow-y: scroll;
         height: 100vh;
+    }
+
+    .product {
+        display: inline-table;
+        width: 190px;
+        height: 235px;
+        color: #ffffff;
+        background-size: cover;
+        margin: 10px;
+    }
+
+    .product2 {
+        display: inline-table;
+        width: 100%;
+        height: 70px;
+        margin: 10px;
+        color: #FFFFFF;
+        background-color: #808080;
+    }
+
+    .products {
+        margin: 0;
+        padding: 1em;
+        text-align: left;
+        user-select: none;
+        list-style-type: none;
+
+        .product-inner {
+            .product-top-block {
+                width: 190px;
+                height: 190px;
+                background-size: cover;
+                border-radius: 30px;
+                position: relative;
+
+                .product-top-block-price {
+                    width: 75px;
+                    height: 77px;
+                    background-size: cover;
+                    position: absolute;
+                    left: 125px;
+                    top: -10px;
+                    color: rgb(0, 0, 0);
+                    text-align: center;
+                    padding-left: 18px;
+                    padding-top: 14px;
+
+                }
+            }
+
+            .product-inner-label {
+                width: 100%;
+                height: 45px;
+                color: #FFFFFF;
+                padding-top: 1px;
+                padding-left: 3px;
+                padding-right: 3px;
+                overflow: hidden;
+                text-align: center;
+            }
+        }
+    }
+
+    .btn-add-to-cart {
+        border-radius: 15px;
+        background-color: #fff;
+        color: #555;
+        line-height: 30px;
+        font-weight: 900;
+        text-align: center;
+        width: 150px;
+        margin: 0 auto;
+        margin-right: 20px;
+    }
+
+    .product-top-block-price2 {
+        display: table-cell;
+        width: 75px;
+        height: 77px;
+        background-size: cover;
+        color: #000000;
+        text-align: center;
+        padding-left: 5px;
+        padding-right: 26px;
+        padding-top: 25px;
+        background-position-x: -20px;
+        background-position-y: 10px;
+    }
+
+    .product-inner-label2 {
+        display: table-cell;
+        width: calc(100% - 100px);
+        height: 100%;
+        color: #FFFFFF;
+        vertical-align: middle;
+        font-size: 16px;
+        padding-left: 15px;
+        padding-right: 15px;
+        overflow: hidden;
+        text-align: left;
+        max-width: 130px;
+    }
+
+    .product-inner2 {
+        display: table-row;
+    }
+
+    .wrapper-for-add-btn {
+        width: 100%;
+    }
+
+    *, *:after, *:before {
+        box-sizing: border-box;
     }
 </style>
 <script>
@@ -65,10 +305,14 @@
         data(){
             return{
                 name:'New positions list',
-                data: []
+                settings: this.$store.state.settings,
+                data: [],
+                IsAddingToCart: false
             }
         },
         computed:{
+            addingToCartTitle : function(){ return this.IsAddingToCart  ? 'Добавление' : 'Выбрать';},
+            addingToCartStyle: function() { return this.IsAddingToCart  ? "background:#dbdbd7" : '';},
             currentData: function(){
                 return _.sortBy(this.data, ['order']);
             }
@@ -80,6 +324,14 @@
         },
 
         props: ["categoryId"],
+
+        filters:{
+            deleteQuotes: function (value) {
+              if (!value) return '';
+              value = value.toString();
+              return value.replace(/@/g, '"');
+            }
+        },
 
         methods:{
             getNewJson(){
@@ -94,7 +346,34 @@
                         return item.code === self.categoryId;
                     });
                 this.data = _.filter(category[0].groups, (item)=>{return !(item.items.length === 0 && item.groups.length ===0)});
-            }
+            },
+            getTitleStyle(item){
+                let res = '';
+                if (item.textColor !==''){
+                   res += ';color:'+item.textColor;
+                }
+                return res;
+            },
+            getTitleImg(item){
+                return this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName
+            },
+            getStyle(item){
+                return '';
+            },
+            add2cart: function(id){
+                      if (this.IsAddingToCart) return;
+                      let self = this;
+                      this.IsAddingToCart = true;
+                      let payload = {
+                        positionId: id,
+                        TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
+                        callback: function(){
+                            self.IsAddingToCart = false
+                            }
+                      };
+                      this.$store.dispatch('ADD_TO_CART', payload);
+
+                },
         },
         mounted() {
             if (this.$store.state.app.FullTree && this.$store.state.app.FullTree.length === 0){
@@ -106,5 +385,7 @@
             }
         }
     }
+
+
 
 </script>
