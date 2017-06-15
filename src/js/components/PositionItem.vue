@@ -48,7 +48,7 @@
                                         <div class="related-item-price product-top-block-price" :data-Code="rel.code">
                                             {{rel.price}}
                                         </div>
-                                        <div class="related-item-title">{{rel.name | deleteQuotes}}</div>
+                                        <div class="related-item-title">{{rel.name_RU | deleteQuotes}}</div>
                                     </div>
                                 </div>
                             </div>
@@ -337,14 +337,12 @@
                 },
 
                 getCharset(chr){
-                    let ret = chr.urlImage;
-                    if (chr.urlImage[0] === '/'){
-                        ret = chr.urlImage.slice(1);
+                    let ret = chr.icon_URL;
+                    if (chr && chr.icon_URL[0] === '/'){
+                        ret = chr.icon_URL.slice(1);
                     }
                     let res = this.$store.state.settings.urlBase +  ret;
-                    console.log(res);
                     return res;
-                    //return chr.urlImage;
                 },
 
                 add2cart: function(id){
@@ -387,7 +385,7 @@
                     if (self.$store.state.app.LocalPaths.Positions[item.code]){
                             res = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.Positions[item.code];
                         } else {
-                            res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.urlImage;
+                            res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.imgURL_Sm;
                         }
                     return 'background-image: url(' + res + ');';
                 }

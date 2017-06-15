@@ -15,7 +15,8 @@
                             <ul class="products">
 
                                 <div v-show="item.type === 'Иконками'">
-                                    <li class="product" v-for="sub0 in item.items">
+                                    <li class="product" v-for="sub0 in item.items"
+                                        @click="toggleDetailsItem(sub0, item)">
                                         <div class="product-inner">
                                             <div class="product-top-block" :style="getStyle(sub0)"
                                                  :data-Code="sub0.code">
@@ -37,7 +38,8 @@
                                 </div>
 
                                 <div v-show="item.type === 'Списком'">
-                                    <li class="product2" v-for="sub0 in item.items">
+                                    <li class="product2" v-for="sub0 in item.items"
+                                        @click="toggleDetailsItem(sub0, item)">
                                         <div class="product-inner2">
                                             <div class="product-inner-label2" :data-Code="sub0.code">
                                                 <!-- @click="toggleDetailsItem(subitem)"-->
@@ -75,7 +77,8 @@
                                         <ul class="products">
 
                                             <div v-show="item.type === 'Иконками'">
-                                                <li v-for="sub1item in sub1.items" class="product">
+                                                <li v-for="sub1item in sub1.items" class="product"
+                                                    @click="toggleDetailsItem(sub1item, sub1)">
                                                     <div class="product-inner">
                                                         <div class="product-top-block" :style="getStyle(sub1item)"
                                                              :data-Code="sub1item.code">
@@ -101,18 +104,21 @@
                                             </div>
 
                                             <div v-show="item.type === 'Списком'">
-                                                <li class="product2" v-for="sub1item in sub1.items">
+                                                <li class="product2" v-for="sub1item in sub1.items"
+                                                    @click="toggleDetailsItem(sub1item, sub1)">
                                                     <div class="product-inner2">
                                                         <div class="product-inner-label2" :data-Code="sub1item.code">
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
                                                             {{sub1item.name | deleteQuotes}}
                                                         </div>
-                                                        <div class="product-top-block-price2" :data-Code="sub1item.code">
+                                                        <div class="product-top-block-price2"
+                                                             :data-Code="sub1item.code">
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
                                                             {{sub1item.price}}
                                                         </div>
                                                         <div class="wrapper-for-add-btn">
-                                                            <div class="btn-add-to-cart" @click="add2cart(sub1item.code)"
+                                                            <div class="btn-add-to-cart"
+                                                                 @click="add2cart(sub1item.code)"
                                                                  :style="addingToCartStyle">
                                                                 {{addingToCartTitle}}
                                                             </div>
@@ -124,7 +130,7 @@
                                         </ul>
                                     </li>
                                 </div>
-                                <!-- Раскомментировать, если появятся более вложенные уровни-->
+                                <!-- Раскомментировать, если появятся более вложенные уровни
                                 <div v-else="sub1.groups.length > 0">
                                     <span class="product-group-title level-2">{{sub1.name_RU}}</span>
                                     <ul v-for="sub2 in item.groups">
@@ -140,13 +146,26 @@
                                             {{sub2.name_RU}} + ...
                                         </div>
                                     </ul>
-                                </div>
+                                </div>-->
                             </ul>
                         </li>
                     </div>
                 </ul>
             </div>
         </div>
+        <position v-if="showDetails"
+                  :positionId="code"
+                  :urlImageLarge="urlImageLarge"
+                  :price="price"
+                  :name="name"
+                  :description="description"
+                  :yacheika="yacheika"
+                  :activeTime="activeTime"
+                  :vitrina="vitrina"
+                  :related="related"
+                  :code="categoryId"
+                  :charset="charset"
+        />
     </div>
 </template>
 <style scoped lang="less">
@@ -300,14 +319,28 @@
     }
 </style>
 <script>
-    import _ from 'lodash'
+    import _ from 'lodash';
+    import Position from './PositionItem.vue';
     export default{
         data(){
             return{
                 name:'New positions list',
                 settings: this.$store.state.settings,
                 data: [],
-                IsAddingToCart: false
+                IsAddingToCart: false,
+                showDetails: false,
+
+                code:0,
+                urlImageLarge:'',
+                price:0,
+                name:'',
+                description:'',
+                yacheika:'',
+                currentId: this.$route.params.id,
+                activeTime: '',
+                vitrina: '',
+                related:[],
+                charset:[]
             }
         },
         computed:{
@@ -358,7 +391,21 @@
                 return this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName
             },
             getStyle(item){
-                return '';
+                var self = this;
+                var res='';
+                var payload = {};
+                if (item.yacheika !== null) {
+                    res += ';box-shadow: 0px 0px 30px #CCDDFF;'
+                }
+
+                if (!self.$store.state.settings.isBrowser){
+                    // todo добавляем различные проверки и загрузки картинок для планшета
+                } else {
+                        res += 'background-image: url(' + self.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                        return res;
+                    }
+
+                return res;
             },
             add2cart: function(id){
                       if (this.IsAddingToCart) return;
@@ -374,6 +421,24 @@
                       this.$store.dispatch('ADD_TO_CART', payload);
 
                 },
+            toggleDetailsItem: function(item, group){
+                if (!group.modal){
+                   //return;
+                }
+
+               this.code = item.code;
+               this.urlImageLarge = item.urlImageLarge;
+               this.price = item.price,
+               this.name = item.name,
+               this.description = item.description_ru,
+               this.yacheika = item.yacheika === null ? '' : item.yacheika;
+               this.activeTime = group.activeTime;
+               this.vitrina = 'test';//item.vitrina;
+               this.related = item.related;
+               this.charset = item.charset;
+               this.showDetails = true;
+               this.$store.commit('SET_SELECTED_POSITION', item);
+           }
         },
         mounted() {
             if (this.$store.state.app.FullTree && this.$store.state.app.FullTree.length === 0){
@@ -383,8 +448,12 @@
                 console.log('Данные уже загружены');
                 this.rebuildData();
             }
+        },
+        components:{
+            'position' : Position
         }
     }
+
 
 
 
