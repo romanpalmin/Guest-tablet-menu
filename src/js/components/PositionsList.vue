@@ -1,6 +1,6 @@
 <template>
     <div class="rolling">
-        <div clas="div-overlay">
+        <div class="div-overlay">
             <div v-if="positionslist.tovar">
                 <div class="level-0-0">
                     <ul class="products">

@@ -197,7 +197,13 @@
                 var updateStorage = false;
                 var cnt = 0;
                 var payload = {};
-                this.ctgs = this.$store.state.app.MenuPoints.map(function (item, index, arr) {
+                return this.$store.state.app.FullTree.map(function (item, index, arr) {
+                    if (self.currentLanguage === 'ru'){
+                        item.name = item.name_RU;
+                    }
+                    else{
+                        item.name = item.name_EN;
+                    }
                     if (!self.$store.state.settings.isBrowser){
                                    //todo сюда проверку на соответствие картинки
                                    if (self.$store.state.app.LocalPaths.Small[item.code] === void 1){
@@ -237,7 +243,6 @@
                     }
                     return item;
                 });
-                return this.ctgs;
             },
             urlLogo:function(){
                 //let settings = this.$store.state;
@@ -245,15 +250,15 @@
             }
         },
         mounted(){
-            if ( this.$store.state.app.MenuPoints.length === 0) {
-                 this.$store.dispatch('GET_CATEGORY');
-                 this.ctgs = this.$store.state.app.MenuPoints;
+            if ( this.$store.state.app.FullTree.length === 0) {
+                 this.$store.dispatch('GET_FULL_TREE');
+                 this.ctgs = this.$store.state.app.FullTree;
             }
             var self = this;
         },
         destroyed(){
-            var small = JSON.stringify(this.$store.state.app.LocalPaths.Small);
-            LsPut("small", small);
+            //var small = JSON.stringify(this.$store.state.app.LocalPaths.Small);
+            //LsPut("small", small);
         }
 
     }

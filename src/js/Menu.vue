@@ -1,11 +1,12 @@
 <template>
     <div>
-        <mainMenu />
+        <mainMenuNew />
     </div>
 </template>
 
 <script>
     import mainMenu from './components/MainMenu.vue';
+    import mainMenuNew from './components/MainMenuNew.vue';
     export default{
         data(){
             return{
@@ -13,7 +14,7 @@
             }
         },
         components:{
-            mainMenu
+            mainMenuNew
         }
     }
 </script>

@@ -10,3 +10,4 @@ export const TURN_ON_LAMP = 'TURN_ON_LAMP';
 export const EMPTY_ORDERS_FULL= 'EMPTY_ORDERS_FULL';
 export const DELETE_ORDER_BY_ID= 'DELETE_ORDER_BY_ID';
 export const GET_SHOW = 'GET_SHOW';
+export const GET_FULL_TREE = 'GET_FULL_TREE';
