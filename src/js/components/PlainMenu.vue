@@ -2,7 +2,7 @@
     <div>
         <sidebar :categoryId="currentCategoryId" />
         <div class="list">
-            <positionslist :categoryId="currentCategoryId"/>
+            <positionslistNew :categoryId="currentCategoryId"/>
         </div>
     </div>
 </template>
@@ -13,6 +13,7 @@
 </style>
 <script>
     import positionslist from './PositionsList.vue';
+    import positionslistNew from './PositionsListNew.vue';
     import sidebar from './SideBar.vue';
 
     export default{
@@ -29,7 +30,7 @@
         },
 
         components:{
-            positionslist,
+            positionslistNew,
             sidebar
         },
         mounted(){

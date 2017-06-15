@@ -339,29 +339,34 @@ const store = new Vuex.Store({
                                                     sub3.groups = _.filter(json.groups, function (sub4) {
                                                         if (sub4.parent_code !== sub4.code && sub4.parrent_code === sub3.code) {
                                                             // При добавление новых уровней, добавляем фильтры по аналогичному алгоритму...
+                                                            sub4.order = +sub4.order;
                                                             return sub4;
                                                         }
                                                     });
+                                                    sub3.order = +sub3.order;
                                                     return sub3;
                                                 }
                                             });
+                                            sub2.order = +sub2.order;
                                             return sub2;
                                         }
                                     });
+                                    sub1.order = +sub1.order;
                                     return sub1;
                                 }
                             });
+                            item.order = +item.order;
                             return item;
                         }
                     });
-                    console.log(roots);
+                    /*console.log(roots);
                     console.log((roots.filter(function(item){
                         return item.code === '332020';
                     }))[0].groups);
                     let burgers = _.filter(roots, function(item){
                         return item.code === '332020';
                     });
-                    console.log(burgers[0].groups);
+                    console.log(burgers[0].groups);*/
                     commit('SET_FULL_TREE', roots);
                 }
             }

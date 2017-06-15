@@ -164,7 +164,7 @@
                          }, 1000)};
                 self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
                 self.$store.commit('INCREMENT_SYNC_COUNTER');
-            }, 10000);
+            }, 60000);
         }
     }
 </script>
