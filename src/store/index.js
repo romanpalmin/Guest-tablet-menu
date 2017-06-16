@@ -208,7 +208,7 @@ const store = new Vuex.Store({
                         cb.callback = payload.callback;
                     }
                     commit('SET_ORDERS_CALLBACK', cb);
-                    commit('SET_ORDERS', resp.data);
+                    commit('SET_ORDERS', resp);
                 });
             },
             [a_types.GET_POSITIONS]({commit}, payload){

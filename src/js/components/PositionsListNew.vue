@@ -378,7 +378,8 @@
                 let category = _.filter(this.$store.state.app.FullTree, function(item){
                         return item.code === self.categoryId;
                     });
-                this.data = _.filter(category[0].groups, (item)=>{return !(item.items.length === 0 && item.groups.length ===0)});
+                //this.data = _.filter(category[0].groups, (item)=>{return !(item.items.length === 0 && item.groups.length ===0)});
+                this.data = _.filter(category[0].groups, (item)=>{return item});
             },
             getTitleStyle(item){
                 let res = '';
