@@ -25,10 +25,12 @@
                         </div>
                     </div>
 
-                    <div class="related-items" v-if="codeFromParent === '472020' && !isActive">
+                    <!--<div class="related-items" v-if="codeFromParent === '472020' && !isActive">-->
+                    <div class="related-items" v-if="codeFromParent === '713232' && !isActive">
                         {{infoMessageBreakfast}}
                     </div>
-                    <div class="related-items" v-if="codeFromParent === '482020' && !isActive">{{infoMessageLunch}}
+                    <!--<div class="related-items" v-if="codeFromParent === '482020' && !isActive">{{infoMessageLunch}}-->
+                    <div class="related-items" v-if="codeFromParent === '723232' && !isActive">{{infoMessageLunch}}
                     </div>
 
                     <div class="item-bottom-buttons" v-if="showButtons">
