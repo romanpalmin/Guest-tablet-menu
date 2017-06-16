@@ -422,8 +422,8 @@
 
                 },
             toggleDetailsItem: function(item, group){
-                if (!group.modal){
-                   //return;
+                if (!group.modal && group.type === 'Списком'){
+                   return;
                 }
 
                this.code = item.code;
