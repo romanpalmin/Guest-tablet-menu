@@ -313,6 +313,7 @@ const store = new Vuex.Store({
                 const self = this;
                 ajax.exec({name: 'getDataNew'}, function (resp) {
                     formNewData(resp.data);
+                    console.log(resp.data);
                 });
                 function formNewData(json) {
                     let roots = _.filter(json.groups, function (item) {

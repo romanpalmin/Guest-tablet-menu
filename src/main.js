@@ -104,7 +104,7 @@ const app = new Vue({
 
         getJsonOrder(){
             this.$store.dispatch('GET_ORDERS');
-            self.$store.commit('INCREMENT_ORDER_COUNTER');
+            this.$store.commit('INCREMENT_ORDER_COUNTER');
         },
         changeLanguage(){
             let path;
