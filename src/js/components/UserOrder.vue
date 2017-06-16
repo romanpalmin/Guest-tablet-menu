@@ -320,7 +320,7 @@
             getJson: function(isUpdate){
                 const self = this;
 
-                if (this.store.app.orders.length === 0 || isUpdate){
+                if (this.store.app.orders && this.store.app.orders.length === 0 || isUpdate){
                     let payload = {callback: function(){
                         self.positions = self.store.app.orders;
                     }}
@@ -337,9 +337,9 @@
             this.urlLogo = this.$store.state.settings.urlBase + this.store.settings.urlSmallImage + this.store.settings.images.logo;
             this.urlClose = this.$store.state.settings.urlBase + this.store.settings.urlSmallImage + this.store.settings.images.close;
             this.getJson();
-            let upTimer = setInterval(function () {
+            /*let upTimer = setInterval(function () {
                 self.getJson(true);
-            }, 30000);
+            }, 30000);*/
         }
 }
 

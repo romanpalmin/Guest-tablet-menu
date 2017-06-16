@@ -65,7 +65,7 @@ const app = new Vue({
         /*let docWidth = document.documentElement.clientWidth;
         let docHeight = document.documentElement.clientHeight;
         alert('Height:' + docHeight + '\n' + 'Width:' + docWidth);*/
-
+        const self = this;
         this.init();
 
         // определение меток для определения стола
@@ -75,11 +75,37 @@ const app = new Vue({
         //
         scanBLE();
 
-        //
+        // Проверка обновлений
+        let upTimerUpdate = setInterval(function () {
+            let lastUpdate = self.$store.state.app.LastTimeUpdate;
+            console.log('Старое знаечение:' + lastUpdate);
+            let callback = function(){
+                setTimeout(function(){
+                    if (lastUpdate !== self.$store.state.app.LastTimeUpdate){
+                        console.log('Обновляем номенклатуру');
+                        self.getNewJsonFullTree();
+                    }
+                    else {
+                        console.log('Обновление не требуется');
+                    }
+                }, 1000)};
+            self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
+            self.$store.commit('INCREMENT_SYNC_COUNTER');
+        }, 10000);
 
-
+        let upTimerOrder = setInterval(function () {
+            self.getJsonOrder(true);
+        }, 30000);
     },
     methods: {
+        getNewJsonFullTree(){
+            this.$store.dispatch('GET_FULL_TREE');
+        },
+
+        getJsonOrder(){
+            this.$store.dispatch('GET_ORDERS');
+            self.$store.commit('INCREMENT_ORDER_COUNTER');
+        },
         changeLanguage(){
             let path;
             let language = this.$store.state.settings.language === 'ru' ? 'en' : 'ru';

@@ -74,7 +74,9 @@ const store = new Vuex.Store({
             [m_types.SET_BLE_LABEL](state, payload){
                 state.app.BleLabels = payload;
             },
-            [m_types.SET_ORDERS](state){
+            [m_types.SET_ORDERS](state, payload){
+                console.log('ОБНОВЛЕНИЕ ЗАКАЗА:')
+                console.log(payload);
                 state.app.orders = payload.data;
             },
             [m_types.SET_ORDERS_CALLBACK](state, payload){
@@ -206,6 +208,7 @@ const store = new Vuex.Store({
                         cb.callback = payload.callback;
                     }
                     commit('SET_ORDERS_CALLBACK', cb);
+                    commit('SET_ORDERS', resp.data);
                 });
             },
             [a_types.GET_POSITIONS]({commit}, payload){

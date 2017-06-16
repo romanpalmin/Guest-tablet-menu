@@ -148,23 +148,7 @@
                 console.log('Данные уже загружены');
             };
 
-            let upTimer = setInterval(function () {
-                  let payload = {};
-                  let lastUpdate = self.$store.state.app.LastTimeUpdate;
-                  console.log('Старое знаечение:' + lastUpdate);
-                  let callback = function(){
-                         setTimeout(function(){
-                         if (lastUpdate !== self.$store.state.app.LastTimeUpdate){
-                             console.log('Обновляем номенклатуру');
-                             self.getNewJson();
-                         }
-                          else {
-                              console.log('Обновление не требуется');
-                          }
-                         }, 1000)};
-                self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
-                self.$store.commit('INCREMENT_SYNC_COUNTER');
-            }, 60000);
+
         }
     }
 </script>
