@@ -318,55 +318,59 @@
         box-sizing: border-box;
     }
 </style>
-<script>
+<script lang="Javascript">
     import _ from 'lodash';
     import Position from './PositionItem.vue';
     export default{
         data(){
-            return{
-                name:'New positions list',
+            return {
+                name: 'New positions list',
                 settings: this.$store.state.settings,
                 data: [],
                 IsAddingToCart: false,
                 showDetails: false,
 
-                code:0,
-                urlImageLarge:'',
-                price:0,
-                name:'',
-                description:'',
-                yacheika:'',
+                code: 0,
+                urlImageLarge: '',
+                price: 0,
+                name: '',
+                description: '',
+                yacheika: '',
                 currentId: this.$route.params.id,
                 activeTime: '',
                 vitrina: '',
-                related:[],
-                charset:[]
+                related: [],
+                charset: []
             }
         },
-        computed:{
-            addingToCartTitle : function(){ return this.IsAddingToCart  ? 'Добавление' : 'Выбрать';},
-            addingToCartStyle: function() { return this.IsAddingToCart  ? "background:#dbdbd7" : '';},
-            currentData: function(){
+        computed: {
+            addingToCartTitle: function () {
+                return this.IsAddingToCart ? 'Добавление' : 'Выбрать';
+            },
+            addingToCartStyle: function () {
+                return this.IsAddingToCart ? "background:#dbdbd7" : '';
+            },
+            currentData: function () {
                 return _.sortBy(this.data, ['order']);
             }
         },
-        watch:{
-            categoryId: function(){
+        watch: {
+            categoryId: function () {
                 this.rebuildData();
             }
         },
 
         props: ["categoryId"],
 
-        filters:{
+        filters: {
             deleteQuotes: function (value) {
-              if (!value) return '';
-              value = value.toString();
-              return value.replace(/@/g, '"');
+                if (!value) return '';
+                value = value.toString();
+                return value.replace(/@/g, '"');
             }
         },
 
-        methods:{
+        methods: {
             getNewJson(){
                 this.$store.dispatch('GET_FULL_TREE');
             },
@@ -375,16 +379,18 @@
             },
             rebuildData(){
                 const self = this;
-                let category = _.filter(this.$store.state.app.FullTree, function(item){
-                        return item.code === self.categoryId;
-                    });
+                let category = _.filter(this.$store.state.app.FullTree, function (item) {
+                    return item.code === self.categoryId;
+                });
                 //this.data = _.filter(category[0].groups, (item)=>{return !(item.items.length === 0 && item.groups.length ===0)});
-                this.data = _.filter(category[0].groups, (item)=>{return item});
+                this.data = _.filter(category[0].groups, (item) => {
+                    return item
+                });
             },
             getTitleStyle(item){
                 let res = '';
-                if (item.textColor !==''){
-                   res += ';color:'+item.textColor;
+                if (item.textColor !== '') {
+                    res += ';color:' + item.textColor;
                 }
                 return res;
             },
@@ -392,57 +398,57 @@
                 return this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName
             },
             getStyle(item){
-                var self = this;
-                var res='';
-                var payload = {};
+                const self = this;
+                let res = '';
+                let payload = {};
                 if (item.yacheika !== null) {
                     res += ';box-shadow: 0px 0px 30px #CCDDFF;'
                 }
 
-                if (!self.$store.state.settings.isBrowser){
+                if (!self.$store.state.settings.isBrowser) {
                     // todo добавляем различные проверки и загрузки картинок для планшета
                 } else {
-                        res += 'background-image: url(' + self.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
-                        return res;
-                    }
+                    res += 'background-image: url(' + self.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage + ');';
+                    return res;
+                }
 
                 return res;
             },
-            add2cart: function(id){
-                      if (this.IsAddingToCart) return;
-                      let self = this;
-                      this.IsAddingToCart = true;
-                      let payload = {
-                        positionId: id,
-                        TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
-                        callback: function(){
-                            self.IsAddingToCart = false
-                            }
-                      };
-                      this.$store.dispatch('ADD_TO_CART', payload);
+            add2cart: function (id) {
+                if (this.IsAddingToCart) return;
+                let self = this;
+                this.IsAddingToCart = true;
+                let payload = {
+                    positionId: id,
+                    TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
+                    callback: function () {
+                        self.IsAddingToCart = false
+                    }
+                };
+                this.$store.dispatch('ADD_TO_CART', payload);
 
-                },
-            toggleDetailsItem: function(item, group){
-                if (!group.modal && group.type === 'Списком'){
-                   return;
+            },
+            toggleDetailsItem: function (item, group) {
+                if (!group.modal && group.type === 'Списком') {
+                    return;
                 }
 
-               this.code = item.code;
-               this.urlImageLarge = item.urlImageLarge;
-               this.price = item.price,
-               this.name = item.name,
-               this.description = item.description_ru,
-               this.yacheika = item.yacheika === null ? '' : item.yacheika;
-               this.activeTime = group.activeTime;
-               this.vitrina = 'test';//item.vitrina;
-               this.related = item.related;
-               this.charset = item.charset;
-               this.showDetails = true;
-               this.$store.commit('SET_SELECTED_POSITION', item);
-           }
+                this.code = item.code;
+                this.urlImageLarge = item.urlImageLarge;
+                this.price = item.price,
+                this.name = item.name,
+                this.description = item.description_ru,
+                this.yacheika = item.yacheika === null ? '' : item.yacheika;
+                this.activeTime = group.activeTime;
+                this.vitrina = 'test';//item.vitrina;
+                this.related = item.related;
+                this.charset = item.charset;
+                this.showDetails = true;
+                this.$store.commit('SET_SELECTED_POSITION', item);
+            }
         },
         mounted() {
-            if (this.$store.state.app.FullTree && this.$store.state.app.FullTree.length === 0){
+            if (this.$store.state.app.FullTree && this.$store.state.app.FullTree.length === 0) {
                 this.getNewJson();
             }
             else {
@@ -450,12 +456,8 @@
                 this.rebuildData();
             }
         },
-        components:{
-            'position' : Position
+        components: {
+            'position': Position
         }
     }
-
-
-
-
 </script>

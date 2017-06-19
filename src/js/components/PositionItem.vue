@@ -244,165 +244,184 @@
     }
 
 </style>
-<script>
+<script lang="Javascript">
 
     export default {
-            data(){
-                return{
-                    positionSet : {},
-                    urlClose : '',
-                    addToCartBtn: '',
-                    IsAddingToCart: false,
-                    IsAddingAdditonal: false,
-                    settings: this.$store.state.settings,
-                    countOfCharset: 0
-                }
-            },
-            filters:{
-                deleteQuotes: function (value) {
-                  if (!value) return '';
-                  value = value.toString();
-                  return value.replace(/@/g, '"');
-                },
-                deleteNewLines: function (value) {
-                  if (!value) return '';
-                  value = value.toString();
-                  return value.replace(/#/g, ' ');
-                },
-                addNewLine: function(value){
-                  if (!value) return '';
-                  value = value.toString();
-                  return value.replace(/,/g, ',\n');
-                }
-            },
-
-            computed:{
-                codeFromParent: function() {return this.code},
-                isActive: function() {return this.activeTime},
-                urlFromParents : function() {
-                    const self = this;
-                    let url = '';
-                        if (self.$store.state.app.LocalPaths.LargePositions[this.positionId]){
-                            url = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.LargePositions[this.positionId];
-                        } else {
-                            url = this.$store.state.settings.urlBase + this.settings.urlBigImage + this.urlImageLarge;
-                        }
-                    return url;
-                },
-                priceFromParent : function () {return this.price;},
-                nameFromParent : function () {return this.name;},
-                descriptionFromParent : function() {return this.description},
-                yacheikaFromParent: function () { return this.yacheika },
-                addingToCartTitle : function(){ return this.IsAddingToCart  ? 'Добавление' : 'Выбрать';},
-                addingToCartStyle: function() { return this.IsAddingToCart  ? "background:#dbdbd7" : '';},
-                addingToCartStyleAdditional: function() { return this.IsAddingAdditonal ? "opacity:0.5" : '1';},
-                showButtons: function(){ return this.settings.showButtons && this.activeTime ;},
-                vitrinaFromParent: function(){ return this.vitrina ;},
-                relatedFromParent: function(){ return this.related ;},
-                lighting: function(){
-                    if (this.yacheika!==''){
-                        return ';box-shadow: 0px 0px 30px #CCDDFF;';
-                    }
-                },
-                infoMessageBreakfast: function(){
-                    let msg = '';
-                    let language = this.settings.language;
-                    switch (language){
-                        case 'ru':
-                            msg = 'Завтраки подаются с 8.00 до 12.00';
-                            break;
-                        case 'en':
-                            msg = 'Breakfast are served from 8.00 to 12.00';
-                    }
-                    return msg;
-                },
-                infoMessageLunch: function(){
-                    let msg = '';
-                    let language = this.settings.language;
-                    switch (language){
-                        case 'ru':
-                            msg = 'Ланчи подаются по будним дням с 12.00 до 16.00';
-                            break;
-                        case 'en':
-                            msg = 'Lunches are served on weekdays from 12.00 to 16.00';
-                    }
-                    return msg;
-                }
-            },
-
-            props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika', 'activeTime', 'vitrina', "related", "code", "charset"],
-
-            methods:{
-                close(){
-                    this.$parent.showDetails = false;
-                    this.$store.commit('SET_SELECTED_POSITION', {});
-                },
-
-                getCharset(chr){
-                    let ret = chr.icon_URL;
-                    if (chr && chr.icon_URL[0] === '/'){
-                        ret = chr.icon_URL.slice(1);
-                    }
-                    let res = this.$store.state.settings.urlBase +  ret;
-                    return res;
-                },
-
-                add2cart: function(id){
-                      if (this.IsAddingToCart) return;
-                      let self = this;
-                      this.IsAddingToCart = true;
-                      let payload = {
-                        positionId: this.positionId,
-                        TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
-                        callback: function(){
-                            self.IsAddingToCart = false
-                            }
-                      };
-                      this.$store.dispatch('ADD_TO_CART', payload);
-
-                },
-
-                add2CartAdditional: function(id){
-                    if (this.IsAddingAdditonal) return;
-                    let self = this;
-                    this.IsAddingAdditonal = true;
-                      let payload = {
-                        positionId: id,
-                        TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
-                        callback: function(){
-                            self.IsAddingAdditonal = false;
-                         }
-                      };
-                      this.$store.dispatch('ADD_TO_CART', payload);
-                },
-
-                showInLamp: function(id){
-                    let data = {currentId: id}
-                    this.$store.dispatch('TURN_ON_LAMP', data);
-                },
-
-                getRelatedStyle: function(item){
-                    let res = '';
-                    const self = this;
-                    if (self.$store.state.app.LocalPaths.Positions[item.code]){
-                            res = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.Positions[item.code];
-                        } else {
-                            res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.imgURL_Sm;
-                        }
-                    return 'background-image: url(' + res + ');';
-                }
-
-            },
-
-            mounted(){
-                this.urlClose = this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close;
+        data(){
+            return {
+                positionSet: {},
+                urlClose: '',
+                addToCartBtn: '',
+                IsAddingToCart: false,
+                IsAddingAdditonal: false,
+                settings: this.$store.state.settings,
+                countOfCharset: 0
             }
+        },
+        filters: {
+            deleteQuotes: function (value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.replace(/@/g, '"');
+            },
+            deleteNewLines: function (value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.replace(/#/g, ' ');
+            },
+            addNewLine: function (value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.replace(/,/g, ',\n');
+            }
+        },
+
+        computed: {
+            codeFromParent: function () {
+                return this.code
+            },
+            isActive: function () {
+                return this.activeTime
+            },
+            urlFromParents: function () {
+                const self = this;
+                let url = '';
+                if (self.$store.state.app.LocalPaths.LargePositions[this.positionId]) {
+                    url = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.LargePositions[this.positionId];
+                } else {
+                    url = this.$store.state.settings.urlBase + this.settings.urlBigImage + this.urlImageLarge;
+                }
+                return url;
+            },
+            priceFromParent: function () {
+                return this.price;
+            },
+            nameFromParent: function () {
+                return this.name;
+            },
+            descriptionFromParent: function () {
+                return this.description
+            },
+            yacheikaFromParent: function () {
+                return this.yacheika
+            },
+            addingToCartTitle: function () {
+                return this.IsAddingToCart ? 'Добавление' : 'Выбрать';
+            },
+            addingToCartStyle: function () {
+                return this.IsAddingToCart ? "background:#dbdbd7" : '';
+            },
+            addingToCartStyleAdditional: function () {
+                return this.IsAddingAdditonal ? "opacity:0.5" : '1';
+            },
+            showButtons: function () {
+                return this.settings.showButtons && this.activeTime;
+            },
+            vitrinaFromParent: function () {
+                return this.vitrina;
+            },
+            relatedFromParent: function () {
+                return this.related;
+            },
+            lighting: function () {
+                if (this.yacheika !== '') {
+                    return ';box-shadow: 0px 0px 30px #CCDDFF;';
+                }
+            },
+            infoMessageBreakfast: function () {
+                let msg = '';
+                let language = this.settings.language;
+                switch (language) {
+                    case 'ru':
+                        msg = 'Завтраки подаются с 8.00 до 12.00';
+                        break;
+                    case 'en':
+                        msg = 'Breakfast are served from 8.00 to 12.00';
+                }
+                return msg;
+            },
+            infoMessageLunch: function () {
+                let msg = '';
+                let language = this.settings.language;
+                switch (language) {
+                    case 'ru':
+                        msg = 'Ланчи подаются по будним дням с 12.00 до 16.00';
+                        break;
+                    case 'en':
+                        msg = 'Lunches are served on weekdays from 12.00 to 16.00';
+                }
+                return msg;
+            }
+        },
+
+        props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika', 'activeTime', 'vitrina', "related", "code", "charset"],
+
+        methods: {
+            close(){
+                this.$parent.showDetails = false;
+                this.$store.commit('SET_SELECTED_POSITION', {});
+            },
+
+            getCharset(chr){
+                let ret = chr.icon_URL;
+                if (chr && chr.icon_URL[0] === '/') {
+                    ret = chr.icon_URL.slice(1);
+                }
+                let res = this.$store.state.settings.urlBase + ret;
+                return res;
+            },
+
+            add2cart: function (id) {
+                if (this.IsAddingToCart) return;
+                let self = this;
+                this.IsAddingToCart = true;
+                let payload = {
+                    positionId: this.positionId,
+                    TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
+                    callback: function () {
+                        self.IsAddingToCart = false
+                    }
+                };
+                this.$store.dispatch('ADD_TO_CART', payload);
+
+            },
+
+            add2CartAdditional: function (id) {
+                if (this.IsAddingAdditonal) return;
+                let self = this;
+                this.IsAddingAdditonal = true;
+                let payload = {
+                    positionId: id,
+                    TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
+                    callback: function () {
+                        self.IsAddingAdditonal = false;
+                    }
+                };
+                this.$store.dispatch('ADD_TO_CART', payload);
+            },
+
+            showInLamp: function (id) {
+                let data = {currentId: id}
+                this.$store.dispatch('TURN_ON_LAMP', data);
+            },
+
+            getRelatedStyle: function (item) {
+                let res = '';
+                const self = this;
+                if (self.$store.state.app.LocalPaths.Positions[item.code]) {
+                    res = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.Positions[item.code];
+                } else {
+                    res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.imgURL_Sm;
+                }
+                return 'background-image: url(' + res + ');';
+            }
+
+        },
+
+        mounted(){
+            this.urlClose = this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close;
+        }
     }
-
-
-
-
-
 
 
 </script>

@@ -18,21 +18,19 @@
         top: 0;
         left: 0;
     }
-    .right-panel{
+
+    .right-panel {
         opacity: 1;
     }
 
 </style>
-<script>
+<script lang="Javascript">
     import sidebar from './components/SideBar.vue'
     import userorder from './components/UserOrder.vue'
     export default{
-        components:{
+        components: {
             sidebar,
             userorder
         }
     }
-
-
-
 </script>

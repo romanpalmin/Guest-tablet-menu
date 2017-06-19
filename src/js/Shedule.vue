@@ -94,56 +94,55 @@
         }
     }
 </style>
-<script>
+<script lang="Javascript">
     import ajax from './components/helpers/ajax.js';
 
     export default{
         data(){
             return {
-                rasp : []
+                rasp: []
             }
         },
         computed: {
-            fixedShedule: function(){
+            fixedShedule: function () {
                 return this.rasp;
             }
         },
 
-        methods:{
-           getShow: function(){
-                var self = this;
+        methods: {
+            getShow: function () {
+                const self = this;
                 const payload = {
-                    callback: function(){
-                        self.rasp = _.map(self.$store.state.app.show, function(item){
+                    callback: function () {
+                        self.rasp = _.map(self.$store.state.app.show, function (item) {
                             return item;
                         });
                     }
-                }
+                };
                 this.$store.dispatch('GET_SHOW', payload);
-
             }
         },
-        filters:{
-                deleteQuotes: function (value) {
-                  if (!value) return '';
-                  value = value.toString();
-                  return value.replace(/&quot/g, '"');
-                }
-         },
+        filters: {
+            deleteQuotes: function (value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.replace(/&quot/g, '"');
+            }
+        },
 
         mounted() {
             const self = this;
-            if (this.$store.state.app.show.length === 0){
+            if (this.$store.state.app.show.length === 0) {
                 //console.log('Заполняем');
                 this.getShow();
             } else {
                 //console.log('Из кэша');
-                this.rasp = _.map(this.$store.state.app.show, function(item){
-                            return item;
+                this.rasp = _.map(this.$store.state.app.show, function (item) {
+                    return item;
                 });
             }
 
-            let updateShow = setInterval(function(){
+            let updateShow = setInterval(function () {
                 //console.log('Обновляется список развлечений');
                 self.getShow();
             }, this.$store.state.settings.updateShow);

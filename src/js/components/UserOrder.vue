@@ -168,7 +168,7 @@
 
     }
 </style>
-<script>
+<script lang="Javascript">
     import _ from 'lodash';
 
     export default{
@@ -179,19 +179,19 @@
                 urlClose: '',
                 showDeleteBtn: false,
                 isAdding: false,
-                currentPressedKey:[],
+                currentPressedKey: [],
                 store: this.$store.state
             }
         },
 
-        computed:{
-            unionStrings: function(){
+        computed: {
+            unionStrings: function () {
                 let res = [];
-                _.forEach(_.groupBy(this.positions, 'code'), function(item){
+                _.forEach(_.groupBy(this.positions, 'code'), function (item) {
                     let strArray = [];
                     let row = {};
-                    _.forEach(item, function(str){
-                        if (str.stroka){
+                    _.forEach(item, function (str) {
+                        if (str.stroka) {
                             strArray.push(str.stroka);
                         }
                     });
@@ -200,24 +200,26 @@
                         code: item[0].code,
                         name: item[0].name,
                         stroka: strArray
-                    }
+                    };
                     res.push(row)
                 });
                 return res;
             },
-            addingToCartStyle: function() { return this.isAdding ? "color:darkgrey" : '';},
-            words: function(){
+            addingToCartStyle: function () {
+                return this.isAdding ? "color:darkgrey" : '';
+            },
+            words: function () {
                 let words = {};
-                if (this.store.settings.language === 'ru'){
+                if (this.store.settings.language === 'ru') {
                     words.title = 'Вы выбрали:';
-                    words.qty='КОЛ-ВО';
-                    words.name='НАИМЕНОВАНИЕ';
+                    words.qty = 'КОЛ-ВО';
+                    words.name = 'НАИМЕНОВАНИЕ';
                     words.delete = 'Удалить все выбранное'
                 }
                 else {
                     words.title = 'Your order:';
-                    words.qty='Q-ty';
-                    words.name='NAME';
+                    words.qty = 'Q-ty';
+                    words.name = 'NAME';
                     words.delete = 'Delete all'
                 }
                 return words;
@@ -225,105 +227,109 @@
 
         },
 
-        watch:{
-            positions : function(){
+        watch: {
+            positions: function () {
                 this.showDeleteBtn = this.positions && this.positions.length && this.positions.length > 0;
             }
         },
 
-        filters:{
-                deleteQuotes: function (value) {
-                  if (!value) return '';
-                  value = value.toString();
-                  return value.replace(/&QUOT/g, '"');
-                }
-         },
+        filters: {
+            deleteQuotes: function (value) {
+                if (!value) return '';
+                value = value.toString();
+                return value.replace(/&QUOT/g, '"');
+            }
+        },
 
-        methods:{
-            showState: function() {
+        methods: {
+            showState: function () {
                 //console.log(orderState);
             },
 
-             showArr: function() {
+            showArr: function () {
                 //console.log(this.currentPressedKey);
             },
 
-            isInArray: function(id){
-                for (let i = 0; i< this.currentPressedKey.length; i++){
-                    if (this.currentPressedKey[i] === id){
+            isInArray: function (id) {
+                for (let i = 0; i < this.currentPressedKey.length; i++) {
+                    if (this.currentPressedKey[i] === id) {
                         return true;
                     }
                 }
                 return false;
             },
 
-            setCurrentPressedPlus: function(evt){
+            setCurrentPressedPlus: function (evt) {
                 this.currentPressedKey.push(evt.target.dataset.code);
             },
 
-            plus: function(id) {
+            plus: function (id) {
                 if (this.isAdding) return;
                 this.isAdding = true;
                 let self = this;
-                   const payload = {
+                const payload = {
                     positionId: id,
                     tableId: this.store.app.TableNumberPrimary,
-                    callback: function(){
+                    callback: function () {
                         self.isAdding = false;
                         let idx = self.currentPressedKey.indexOf(id);
                         self.currentPressedKey.splice(idx, 1);
-                        self.positions = _.map(self.$store.state.app.orders, function(item){
+                        self.positions = _.map(self.$store.state.app.orders, function (item) {
                             return item;
                         });
                     }
-                 }
-                 this.$store.dispatch('ADD_TO_CART', payload);
+                }
+                this.$store.dispatch('ADD_TO_CART', payload);
             },
 
-            minus: function(id){
+            minus: function (id) {
                 if (this.isAdding) return;
-                let positionsCodesArray = _.find(this.positions, {code:id});
-                if (positionsCodesArray.length === 0){
+                let positionsCodesArray = _.find(this.positions, {code: id});
+                if (positionsCodesArray.length === 0) {
                     return 0;
                 }
                 this.deleteOrderById(id, positionsCodesArray.stroka);
             },
 
-            deleteFullPositions: function(id){
-                let positionsCodesArray = _.filter(this.positions, {code:id});
-                for (let i = 0; i< positionsCodesArray.length; i++){
+            deleteFullPositions: function (id) {
+                let positionsCodesArray = _.filter(this.positions, {code: id});
+                for (let i = 0; i < positionsCodesArray.length; i++) {
                     let stroka = positionsCodesArray[i].stroka;
                     this.deleteOrderById(id, stroka);
                 }
             },
 
-            deleteOrderById: function(id, stroka){
-                this.positions = _.without(this.positions, _.find(this.positions, {code:id, stroka:stroka}))
+            deleteOrderById: function (id, stroka) {
+                this.positions = _.without(this.positions, _.find(this.positions, {code: id, stroka: stroka}))
                 const payload = {
                     id: id,
                     stroka: stroka,
-                    callback: function(){
+                    callback: function () {
                     }
                 };
                 this.$store.dispatch('DELETE_ORDER_BY_ID', payload);
             },
 
-            deleteAll: function() {
+            deleteAll: function () {
                 const self = this;
-                const payload = {callback: function(){
-                    self.positions = [];
-                }};
+                const payload = {
+                    callback: function () {
+                        self.positions = [];
+                    }
+                };
                 this.$store.dispatch('EMPTY_ORDERS_FULL', payload);
 
             },
 
-            getJson: function(isUpdate){
+            getJson: function (isUpdate) {
                 const self = this;
 
-                if (this.store.app.orders && this.store.app.orders.length === 0 || isUpdate){
-                    let payload = {callback: function(){
-                        self.positions = self.store.app.orders;
-                    }}
+                if (this.store.app.orders && this.store.app.orders.length === 0 || isUpdate) {
+                    let payload = {
+                        callback: function () {
+                            self.positions = self.store.app.orders;
+                        }
+                    }
                     this.$store.dispatch('GET_ORDERS', payload);
                     self.$store.commit('INCREMENT_ORDER_COUNTER');
                 } else {
@@ -338,9 +344,9 @@
             this.urlClose = this.$store.state.settings.urlBase + this.store.settings.urlSmallImage + this.store.settings.images.close;
             this.getJson();
             /*let upTimer = setInterval(function () {
-                self.getJson(true);
-            }, 30000);*/
+             self.getJson(true);
+             }, 30000);*/
         }
-}
+    }
 
 </script>

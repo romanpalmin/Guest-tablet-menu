@@ -1,19 +1,19 @@
 <template>
     <div>
-        <mainMenuNew />
+        <mainMenuNew/>
     </div>
 </template>
 
-<script>
-    import mainMenu from './components/MainMenu.vue';
+<script lang="Javascript">
+    //import mainMenu from './components/MainMenu.vue';
     import mainMenuNew from './components/MainMenuNew.vue';
     export default{
         data(){
-            return{
-                items:[]
+            return {
+                items: []
             }
         },
-        components:{
+        components: {
             mainMenuNew
         }
     }

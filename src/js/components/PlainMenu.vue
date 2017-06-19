@@ -1,6 +1,6 @@
 <template>
     <div>
-        <sidebar :categoryId="currentCategoryId" />
+        <sidebar :categoryId="currentCategoryId"/>
         <div class="list">
             <positionslistNew :categoryId="currentCategoryId"/>
         </div>
@@ -11,25 +11,25 @@
         padding-left: 300px;
     }
 </style>
-<script>
+<script lang="JavaScript">
     import positionslist from './PositionsList.vue';
     import positionslistNew from './PositionsListNew.vue';
     import sidebar from './SideBar.vue';
 
     export default{
         data(){
-            return{
+            return {
                 currentSelectedId: this.$route.params.id
             }
         },
         computed: {
-            currentCategoryId: function(){
+            currentCategoryId: function () {
                 let newVal = this.$route.params.id;
                 return newVal;
             }
         },
 
-        components:{
+        components: {
             positionslistNew,
             sidebar
         },
@@ -37,6 +37,4 @@
             //alert(this.$route.params.id);
         }
     }
-
-
 </script>
