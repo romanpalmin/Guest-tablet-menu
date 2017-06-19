@@ -1,7 +1,7 @@
 export default {
     server: '',
-    ip: '10.100.50.248',
-    /*ip: '10.10.182.11',*/
+    /*ip: '10.100.50.248',*/
+    ip: '10.10.182.11',
     userName: '',
     password: '',
     /* server:'http://10.10.182.11/',*/
@@ -26,5 +26,5 @@ export default {
     language: 'ru',
     showLanguageToggle: false,
     localPath:'StreetFoodBar/images',
-    isBrowser: true
+    isBrowser: false
 }

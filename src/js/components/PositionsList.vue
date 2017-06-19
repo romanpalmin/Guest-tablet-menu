@@ -551,6 +551,7 @@
                                    });
                          }
                          else {
+                              //alert(self.$store.state.app.LocalPaths.Positions[item.code]);
                               res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
                               return res;
                          }

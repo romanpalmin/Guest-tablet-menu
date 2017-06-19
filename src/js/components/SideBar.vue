@@ -84,7 +84,7 @@
                 width: 100%;
                 padding-left: 10%;
                 padding-right: 10%;
-                padding-top: 20px;
+                padding-top: 10px;
             }
         }
 
@@ -96,7 +96,7 @@
                 overflow: hidden;
                 width: 100%;
                 background-color: white;
-                padding-top: 20px;
+                padding-top: 10px;
 
                 .menu__level {
                     top: 0;

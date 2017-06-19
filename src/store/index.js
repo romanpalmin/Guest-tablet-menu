@@ -75,7 +75,7 @@ const store = new Vuex.Store({
                 state.app.BleLabels = payload;
             },
             [m_types.SET_ORDERS](state, payload){
-                console.log('ОБНОВЛЕНИЕ ЗАКАЗА:')
+                console.log('ОБНОВЛЕНИЕ ЗАКАЗА:');
                 console.log(payload);
                 state.app.orders = payload.data;
             },
@@ -114,6 +114,7 @@ const store = new Vuex.Store({
                         break;
                     case 'category':
                         state.app.LocalPaths.Category[payload.name] = payload.value;
+                        LsPut('category', JSON.stringify(state.app.LocalPaths.Category));
                         if (payload.callback && typeof(payload.callback) === "function") {
                             payload.callback();
                         }
