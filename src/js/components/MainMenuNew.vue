@@ -64,7 +64,7 @@
         }
     }
 </style>
-<script lang="Javascript">
+<script>
     export default{
         data(){
             return {
@@ -90,7 +90,7 @@
                     if (!self.$store.state.settings.isBrowser) {
                         //todo сюда проверку на соответствие картинки
                         //alert(`${item.urlBigImage.slice(1)} === ${self.$store.state.app.LocalPaths.Category[item.code]} === ${item.urlBigImage.slice(1) === self.$store.state.app.LocalPaths.Category[item.code]}`);
-                        if (self.$store.state.app.LocalPaths.Category[item.code] && (item.urlBigImage.slice(1) != self.$store.state.app.LocalPaths.Category[item.code])) {
+                        if (self.$store.state.app.LocalPaths.Category[item.code] && (item.urlBigImage.slice(1) !== self.$store.state.app.LocalPaths.Category[item.code])) {
                             //alert('Обновляем картинку');
                             self.$store.state.app.LocalPaths.Category[item.code] = void 1;
                         }
@@ -145,9 +145,6 @@
             else {
                 console.log('Данные уже загружены');
             }
-            ;
-
-
         }
     }
 </script>

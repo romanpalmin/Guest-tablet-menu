@@ -11,7 +11,7 @@
         padding-left: 300px;
     }
 </style>
-<script lang="JavaScript">
+<script>
     import positionslist from './PositionsList.vue';
     import positionslistNew from './PositionsListNew.vue';
     import sidebar from './SideBar.vue';
@@ -34,7 +34,6 @@
             sidebar
         },
         mounted(){
-            //alert(this.$route.params.id);
         }
     }
 </script>

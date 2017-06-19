@@ -24,7 +24,7 @@
     }
 
 </style>
-<script lang="Javascript">
+<script>
     import sidebar from './components/SideBar.vue'
     import userorder from './components/UserOrder.vue'
     export default{

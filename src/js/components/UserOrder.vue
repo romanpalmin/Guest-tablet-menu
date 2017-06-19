@@ -168,7 +168,7 @@
 
     }
 </style>
-<script lang="Javascript">
+<script>
     import _ from 'lodash';
 
     export default{

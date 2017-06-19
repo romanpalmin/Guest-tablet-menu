@@ -2,15 +2,9 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import menu from './js/Menu.vue';
 import plainmenu from './js/components/PlainMenu.vue';
-import userorder from './js/components/UserOrder.vue';
 import order from './js/Order.vue';
 import shedule from './js/Shedule.vue';
-import fishki from './js/Fishki.vue';
 import actions from './js/Actions.vue';
-import tables from './js/Tables.vue';
-import modal from './js/Modal.vue';
-import posnew from './js/components/PositionsListNew.vue';
-import tablenumber from './js/TableNumber.vue';
 import wheretablet from './js/WhereTablet.vue';
 import VueRouter from 'vue-router'
 import axios from 'axios';
@@ -18,9 +12,6 @@ import VueAxios from 'vue-axios';
 import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
 import bleLabels from  './js/components/helpers/defineBtLabel';
-import checkFile from './js/components/helpers/checkForExist.js';
-import check from './js/components/helpers/checkFieldList';
-import LsPut from './js/components/helpers/lsPut.js';
 import LsGet from './js/components/helpers/lsGet.js';
 import settings from './store/structures/settings.js';
 import catPositions from './store/structures/categoryPositions.js';
@@ -33,16 +24,10 @@ Vue.use(Vuex);
 const routes = [
     {name: 'menu', path: '/:lang/menu', component: menu},
     {name: 'order', path: '/:lang/order', component: order},
-    {name: 'fishki', path: '/:lang/fishki', component: fishki},
     {name: 'actions', path: '/:lang/actions', component: actions},
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
     {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
-    {name: 'test2', path: '/:lang/ord', component: userorder},
-    {name: 'modal', path: '/:lang/modal', component: modal},
-    {name: 'tables', path: '/:lang/tables', component: tables},
-    {name: 'tablenumber', path: '/:lang/tablenumber', component: tablenumber},
-    {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet},
-    {name: 'test', path: '/:lang/newlist', component: posnew}
+    {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet}
 ];
 
 let router = new VueRouter({
@@ -63,8 +48,8 @@ const app = new Vue({
     store,
     mounted(){
         /*let docWidth = document.documentElement.clientWidth;
-        let docHeight = document.documentElement.clientHeight;
-        alert('Height:' + docHeight + '\n' + 'Width:' + docWidth);*/
+         let docHeight = document.documentElement.clientHeight;
+         alert('Height:' + docHeight + '\n' + 'Width:' + docWidth);*/
         const self = this;
         this.init();
 
@@ -79,16 +64,17 @@ const app = new Vue({
         let upTimerUpdate = setInterval(function () {
             let lastUpdate = self.$store.state.app.LastTimeUpdate;
             console.log('Старое знаечение:' + lastUpdate);
-            let callback = function(){
-                setTimeout(function(){
-                    if (lastUpdate !== self.$store.state.app.LastTimeUpdate){
+            let callback = function () {
+                setTimeout(function () {
+                    if (lastUpdate !== self.$store.state.app.LastTimeUpdate) {
                         console.log('Обновляем номенклатуру');
                         self.getNewJsonFullTree();
                     }
                     else {
                         console.log('Обновление не требуется');
                     }
-                }, 1000)};
+                }, 1000)
+            };
             self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
             self.$store.commit('INCREMENT_SYNC_COUNTER');
         }, 10000);
@@ -96,6 +82,11 @@ const app = new Vue({
         let upTimerOrder = setInterval(function () {
             self.getJsonOrder(true);
         }, 30000);
+
+        let updateShow = setInterval(function () {
+            //console.log('Обновляется список развлечений');
+            self.getShow();
+        }, this.$store.state.settings.updateShow);
     },
     methods: {
         getNewJsonFullTree(){
@@ -105,6 +96,10 @@ const app = new Vue({
         getJsonOrder(){
             this.$store.dispatch('GET_ORDERS');
             this.$store.commit('INCREMENT_ORDER_COUNTER');
+        },
+
+        getShow: function () {
+            this.$store.dispatch('GET_SHOW');
         },
         changeLanguage(){
             let path;
@@ -130,54 +125,54 @@ const app = new Vue({
             this.$store.dispatch('GET_TABLET_NUMBER');
             this.$store.dispatch('GET_BLE');
 
-            LsGet("small",(data)=>{
+            LsGet("small", (data) => {
                 //alert('Data for Small:' + data);
-                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
-                    if (JSON.stringify(this.$store.state.app.LocalPaths.Small) === '{}'){
-                        try{
+                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null) {
+                    if (JSON.stringify(this.$store.state.app.LocalPaths.Small) === '{}') {
+                        try {
                             let payload = {
                                 type: 'small',
                                 value: JSON.parse(data)
                             };
                             self.$store.commit('SET_LOCAL_PATH_FULL', payload);
                         }
-                        catch(err){
+                        catch (err) {
                             alert(err);
                         }
                     }
                 }
             });
 
-            LsGet("positions",(data)=>{
+            LsGet("positions", (data) => {
                 //alert('Data for Positions:' + data);
-                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
-                    if (JSON.stringify(this.$store.state.app.LocalPaths.Positions) === '{}'){
-                        try{
+                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null) {
+                    if (JSON.stringify(this.$store.state.app.LocalPaths.Positions) === '{}') {
+                        try {
                             let payload = {
                                 type: 'positions',
                                 value: JSON.parse(data)
                             };
                             self.$store.commit('SET_LOCAL_PATH_FULL', payload);
                         }
-                        catch(err){
+                        catch (err) {
                             alert(err);
                         }
                     }
                 }
             });
 
-            LsGet("large",(data)=>{
+            LsGet("large", (data) => {
                 //alert('Data for LargePositions:' + data);
-                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null){
-                    if (JSON.stringify(this.$store.state.app.LocalPaths.LargePositions) === '{}'){
-                        try{
+                if (JSON.parse(data) !== void 1 && JSON.parse(data) !== null) {
+                    if (JSON.stringify(this.$store.state.app.LocalPaths.LargePositions) === '{}') {
+                        try {
                             let payload = {
                                 type: 'large',
                                 value: JSON.parse(data)
                             };
                             self.$store.commit('SET_LOCAL_PATH_FULL', payload);
                         }
-                        catch(err){
+                        catch (err) {
                             alert(err);
                         }
                     }
@@ -197,14 +192,12 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
-            <!--<div class="pages-nav__item "><router-link to="/ru/tablenumber" class="link-page link">Стол</router-link></div>-->
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
         </nav>
          <nav v-else class="pages-nav">
             <div class="pages-nav__item "><router-link to="/en/Actions" class="link-page link">Questionnaire</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/shedule" class="link-page link">Shedule</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/menu" class="link-page link">Menu</router-link></div>
-            <!--<div class="pages-nav__item "><router-link to="/en/tablenumber" class="link-page link">Table</router-link></div>-->
             <div class="pages-nav__item "><router-link to="/en/order" class="link-page link">Your order</router-link></div>
         </nav>
         
@@ -220,8 +213,8 @@ const app = new Vue({
 }).$mount('#app');
 
 /*let updateInterval = setInterval(function () {
-    upState();
-}, state.settings.updateStatePeriod);*/
+ upState();
+ }, state.settings.updateStatePeriod);*/
 
 
 

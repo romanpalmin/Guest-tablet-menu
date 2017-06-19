@@ -374,7 +374,6 @@
 </style>
 <script>
     import Position from './PositionItem.vue';
-    import checkFile from './helpers/checkForExist.js';
     import getImg from './helpers/importImages.js';
     import LsPut from './helpers/lsPut.js';
     import LsGet from './helpers/lsGet.js';

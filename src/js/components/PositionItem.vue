@@ -244,7 +244,7 @@
     }
 
 </style>
-<script lang="Javascript">
+<script>
 
     export default {
         data(){

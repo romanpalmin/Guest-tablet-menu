@@ -4,7 +4,7 @@
     </div>
 </template>
 
-<script lang="Javascript">
+<script>
     //import mainMenu from './components/MainMenu.vue';
     import mainMenuNew from './components/MainMenuNew.vue';
     export default{

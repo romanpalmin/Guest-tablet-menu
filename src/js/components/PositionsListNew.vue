@@ -318,7 +318,7 @@
         box-sizing: border-box;
     }
 </style>
-<script lang="Javascript">
+<script>
     import _ from 'lodash';
     import Position from './PositionItem.vue';
     export default{

@@ -94,7 +94,7 @@
         }
     }
 </style>
-<script lang="Javascript">
+<script>
     import ajax from './components/helpers/ajax.js';
 
     export default{
@@ -141,12 +141,6 @@
                     return item;
                 });
             }
-
-            let updateShow = setInterval(function () {
-                //console.log('Обновляется список развлечений');
-                self.getShow();
-            }, this.$store.state.settings.updateShow);
-
         }
     }
 </script>

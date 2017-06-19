@@ -245,7 +245,6 @@
                 });
             },
             urlLogo:function(){
-                //let settings = this.$store.state;
                 return this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.logo;
             }
         },
