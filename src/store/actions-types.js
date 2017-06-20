@@ -8,6 +8,7 @@ export const GET_LAST_UPDATE = 'GET_LAST_UPDATE';
 export const ADD_TO_CART = 'ADD_TO_CART';
 export const TURN_ON_LAMP = 'TURN_ON_LAMP';
 export const EMPTY_ORDERS_FULL= 'EMPTY_ORDERS_FULL';
+export const EMPTY_STRING_BY_ID= 'EMPTY_STRING_BY_ID';
 export const DELETE_ORDER_BY_ID= 'DELETE_ORDER_BY_ID';
 export const GET_SHOW = 'GET_SHOW';
 export const GET_FULL_TREE = 'GET_FULL_TREE';

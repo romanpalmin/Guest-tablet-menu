@@ -75,8 +75,8 @@ const store = new Vuex.Store({
                 state.app.BleLabels = payload;
             },
             [m_types.SET_ORDERS](state, payload){
-                console.log('ОБНОВЛЕНИЕ ЗАКАЗА:');
-                console.log(payload);
+                console.log('ОБНОВЛЕНИЕ ЗАКАЗА');
+                //console.log(payload);
                 state.app.orders = payload.data;
             },
             [m_types.SET_ORDERS_CALLBACK](state, payload){
@@ -162,7 +162,7 @@ const store = new Vuex.Store({
             },
             [m_types.SET_FULL_TREE](state, payload){
                 state.app.FullTree = payload;
-                console.log(payload);
+               // console.log(payload);
             }
         },
         actions: {
@@ -290,6 +290,18 @@ const store = new Vuex.Store({
                     commit('DELETE_POSITION_IN_ORDER_BY_ID', payload);
                 });
             },
+            [a_types.EMPTY_STRING_BY_ID]({commit},payload){
+                alert(JSON.stringify(payload));
+                const operation = {
+                    name: 'deleteStringFromOrder',
+                    positionId: payload.positionId
+                };
+                ajax.exec(operation, function (resp) {
+                    alert(JSON.stringify(resp));
+                    //commit('DELETE_POSITION_IN_ORDER_BY_ID', payload);
+                });
+            }
+            ,
             [a_types.GET_SHOW]({commit}, payload){
                 const operation = {
                     name: 'show'
