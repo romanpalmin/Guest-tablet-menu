@@ -2,9 +2,9 @@
 import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
-/*const ip = '10.10.250.82';
-const ip = '10.10.182.11';*/
+/*const ip = '10.10.250.82';*/
 const ip = '10.100.50.248';
+/*const ip = '10.10.182.11';*/
 let userName = 'planshet';
 let password = 'planshet';
 let ajaxServerUrlShort = '';
@@ -85,6 +85,10 @@ function getUrl(operation) {
         case 'deleteFromOrder':
             url = `groups=342020&category=&dellcartitem=${operation.stroka}`;
             break;
+            //deleteStringFromOrder
+        case 'deleteStringFromOrder':
+            url = `groups=1&category=&tovar=${operation.positionId}&delcartstr=1`;
+            break;
         case 'addToOrder':
             url = `groups=1&addcart=1&category=1&tovar=${operation.positionId}&table=${operation.tableId}`;
             break;
@@ -101,8 +105,6 @@ function getUrl(operation) {
             url = `tablets=1`;
             break;
         case 'showLamp':
-            //console.log(operation);
-            //console.warn('Для работы заменить no_groups на groups');
             url = `groups=1&tovar=1&yacheika=${operation.id}`;
             break;
         case 'getUserName':
