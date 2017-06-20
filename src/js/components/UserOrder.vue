@@ -23,7 +23,7 @@
                                 </td>
                                 <td class="table-cell col2">{{item.name | deleteQuotes}}</td>
                                 <td class="table-cell col3">
-                                    <img class="delete" @click="deleteFullPositions(item.code)"
+                                    <img class="delete" @click="deleteFullPositionsNew(item.code)"
                                          :src="urlClose">
                                 </td>
                             </tr>
@@ -299,12 +299,30 @@
                 }
             },
 
+            deleteFullPositionsNew: function (id) {
+                const self = this;
+                const payload = {
+                    positionId: id,
+                    callback: function(){
+                        // здесь обновляем текущую корзину
+                        alert('Обновляем корзину');
+                        self.positions = self.store.app.orders;
+                    }
+                }
+                this.$store.dispatch('EMPTY_STRING_BY_ID', payload);
+            },
+
             deleteOrderById: function (id, stroka) {
-                this.positions = _.without(this.positions, _.find(this.positions, {code: id, stroka: stroka}))
+                this.isAdding = true;
+                //this.positions = _.without(this.positions, _.find(this.positions, {code: id, stroka: stroka}))
+                const self = this;
                 const payload = {
                     id: id,
                     stroka: stroka,
                     callback: function () {
+                        self.$store.dispatch('GET_ORDERS');
+                        self.isAdding = false;
+                        self.positions = self.store.app.orders;
                     }
                 };
                 this.$store.dispatch('DELETE_ORDER_BY_ID', payload);
