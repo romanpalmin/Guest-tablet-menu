@@ -45,9 +45,9 @@
                             С этим товаром часто заказывают
                             <div class="p-item-related ">
                                 <div v-for="rel in relatedFromParent" :data-Code="rel.code"
-                                     @click="add2CartAdditional(rel.code)" :style="addingToCartStyleAdditional">
+                                     @click="add2CartAdditional(rel.code2)" :style="addingToCartStyleAdditional">
                                     <div :style="getRelatedStyle(rel)" class="related-item">
-                                        <div class="related-item-price product-top-block-price" :data-Code="rel.code">
+                                        <div class="related-item-price product-top-block-price" :data-Code="rel.code2">
                                             {{rel.price}}
                                         </div>
                                         <div class="related-item-title">{{rel.name_RU | deleteQuotes}}</div>
