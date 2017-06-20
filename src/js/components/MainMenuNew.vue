@@ -83,10 +83,10 @@
                 return this.$store.state.app.FullTree.map(function (item, index, arr) {
                     item.route = 'menu/' + item.code;
                     if (self.currentLanguage === 'ru') {
-                        item.name = item.name_RU + '-test';
+                        item.name = item.name_RU;
                     }
                     else {
-                        item.name = item.name_EN + '-test';
+                        item.name = item.name_EN;
                     }
                     if (!self.$store.state.settings.isBrowser) {
                         //todo сюда проверку на соответствие картинки
