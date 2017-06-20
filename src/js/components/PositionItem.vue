@@ -6,7 +6,7 @@
             <div class="inner-item-container">
                 <div class="item-column-image">
                     <img :src="urlFromParents" class="item-image" :style="lighting">
-                    <div class="current-vitrina" v-if="yacheikaFromParent!==''">
+                    <div class="current-vitrina" v-if="yacheikaFromParent!=='' && false">
                         <span>Витрина: {{vitrinaFromParent}}</span>
                         <span>Ячейка: {{yacheikaFromParent}}</span>
                     </div>
@@ -408,8 +408,8 @@
             getRelatedStyle: function (item) {
                 let res = '';
                 const self = this;
-                if (self.$store.state.app.LocalPaths.Positions[item.code]) {
-                    res = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.Positions[item.code];
+                if (self.$store.state.app.LocalPaths.Positions[item.code2]) {
+                    res = 'file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.Positions[item.code2];
                 } else {
                     res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.imgURL_Sm;
                 }
