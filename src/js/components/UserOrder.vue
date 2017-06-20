@@ -300,12 +300,12 @@
             },
 
             deleteFullPositionsNew: function (id) {
+                this.isAdding = true;
                 const self = this;
                 const payload = {
                     positionId: id,
                     callback: function(){
-                        // здесь обновляем текущую корзину
-                        alert('Обновляем корзину');
+                        self.isAdding = false;
                         self.positions = self.store.app.orders;
                     }
                 }

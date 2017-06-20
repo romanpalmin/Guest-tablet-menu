@@ -290,15 +290,13 @@ const store = new Vuex.Store({
                     commit('DELETE_POSITION_IN_ORDER_BY_ID', payload);
                 });
             },
-            [a_types.EMPTY_STRING_BY_ID]({commit},payload){
-                alert(JSON.stringify(payload));
+            [a_types.EMPTY_STRING_BY_ID]({dispatch},payload){
                 const operation = {
                     name: 'deleteStringFromOrder',
                     positionId: payload.positionId
                 };
-                ajax.exec(operation, function (resp) {
-                    alert(JSON.stringify(resp));
-                    //commit('DELETE_POSITION_IN_ORDER_BY_ID', payload);
+                ajax.exec(operation, function () {
+                    dispatch('GET_ORDERS', payload);
                 });
             }
             ,

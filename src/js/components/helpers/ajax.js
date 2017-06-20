@@ -87,7 +87,7 @@ function getUrl(operation) {
             break;
             //deleteStringFromOrder
         case 'deleteStringFromOrder':
-            url = `groups=1&category=&tovar=${operation.positionId}&delcartstr=1`;
+            url = `groups=1&category=&tovar=${operation.positionId}&dellcartstr=1`;
             break;
         case 'addToOrder':
             url = `groups=1&addcart=1&category=1&tovar=${operation.positionId}&table=${operation.tableId}`;
