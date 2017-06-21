@@ -11,7 +11,7 @@ let ajaxServerUrlShort = '';
 const baseUrl = 'menu/hs/model?';
 //-------------------------------
 ajaxServerUrlShort = formAjaxVars();
-console.log('ip: ' + ip);
+//console.log('ip: ' + ip);
 
 let uuid = '';
 /*if (typeof device !== 'undefined') {

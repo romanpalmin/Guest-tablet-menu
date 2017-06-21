@@ -5,7 +5,7 @@
                 <ul v-for="item in currentData" class="products">
                     <div v-if="item.groups.length===0" class="product-group product-group-level-1">
                         <li>
-                            <template v-if="!item.iconNameActiv">
+                            <template v-if="!item.iconNameActive">
                                 <span class="product-group-title level-1"> {{item.name_RU}} </span>
                             </template>
                             <template v-else>
@@ -15,8 +15,7 @@
                             <ul class="products">
 
                                 <div v-show="item.type === 'Иконками'">
-                                    <li class="product" v-for="sub0 in item.items"
-                                        @click="toggleDetailsItem(sub0, item)">
+                                    <li class="product" v-for="sub0 in item.items" @click="toggleDetailsItem(sub0, item)">
                                         <div class="product-inner">
                                             <div class="product-top-block" :style="getStyle(sub0)"
                                                  :data-Code="sub0.code">
@@ -25,7 +24,7 @@
                                                 </div>
                                             </div>
                                             <div class="product-inner-label" :data-Code="sub0.code">
-                                                <template v-if="!sub0.iconNameActiv">{{sub0.iconNameActiv}}
+                                                <template v-if="!sub0.iconNameActive" >
                                                     <div :style="getTitleStyle(sub0)">{{sub0.name | deleteQuotes}}</div>
                                                 </template>
                                                 <template v-else>
@@ -38,14 +37,13 @@
                                 </div>
 
                                 <div v-show="item.type === 'Списком'">
-                                    <li class="product2" v-for="sub0 in item.items"
-                                        @click="toggleDetailsItem(sub0, item)">
+                                    <li class="product2" v-for="sub0 in item.items" >
                                         <div class="product-inner2">
-                                            <div class="product-inner-label2" :data-Code="sub0.code">
+                                            <div class="product-inner-label2" :data-Code="sub0.code" @click="toggleDetailsItem(sub0, item)">
                                                 <!-- @click="toggleDetailsItem(subitem)"-->
                                                 {{sub0.name | deleteQuotes}}
                                             </div>
-                                            <div class="product-top-block-price2" :data-Code="sub0.code">
+                                            <div class="product-top-block-price2" :data-Code="sub0.code" @click="toggleDetailsItem(sub0, item)">
                                                 <!-- @click="toggleDetailsItem(subitem)"-->
                                                 {{sub0.price}}
                                             </div>
@@ -61,9 +59,9 @@
                             </ul>
                         </li>
                     </div>
-                    <div v-else="item.groups.length > 0" class="product-group product-group-level-1">
+                    <div v-else="item.groups.length > 0" class="product-group product-group-level-1" >
                         <li>
-                            <template v-if="!item.iconNameActiv">
+                            <template v-if="!item.iconNameActive">
                                 <span class="product-group-title level-1"> {{item.name_RU}} </span>
                             </template>
                             <template v-else>
@@ -88,8 +86,8 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-inner-label" :data-Code="sub1item.code">
-                                                            <template v-if="!sub1item.iconNameActiv">
-                                                                {{sub1item.iconNameActiv}}
+                                                            <template v-if="!sub1item.iconNameActive" >
+
                                                                 <div :style="getTitleStyle(sub1item)">{{sub1item.name |
                                                                     deleteQuotes}}
                                                                 </div>
@@ -104,15 +102,14 @@
                                             </div>
 
                                             <div v-show="item.type === 'Списком'">
-                                                <li class="product2" v-for="sub1item in sub1.items"
-                                                    @click="toggleDetailsItem(sub1item, sub1)">
+                                                <li class="product2" v-for="sub1item in sub1.items">
                                                     <div class="product-inner2">
-                                                        <div class="product-inner-label2" :data-Code="sub1item.code">
+                                                        <div class="product-inner-label2" :data-Code="sub1item.code" @click="toggleDetailsItem(sub1item, sub1)">
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
                                                             {{sub1item.name | deleteQuotes}}
                                                         </div>
                                                         <div class="product-top-block-price2"
-                                                             :data-Code="sub1item.code">
+                                                             :data-Code="sub1item.code" @click="toggleDetailsItem(sub1item, sub1)">
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
                                                             {{sub1item.price}}
                                                         </div>
@@ -393,8 +390,20 @@
                 }
                 return res;
             },
+            test(item){
+                //alert(JSON.stringify(item));
+                return '';
+            },
+            test2(item){
+                //alert(321);
+                //alert(JSON.stringify(item));
+                //alert(JSON.stringify(item.iconNameActive));
+                return '';
+            },
             getTitleImg(item){
-                return this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName
+                //alert(123);
+                //alert(this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName);
+                return this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName;
             },
             getStyle(item){
                 const self = this;
@@ -414,6 +423,7 @@
                          }
 
                          if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
+                           // alert('URL: ' + self.$store.state.settings.urlBase);
                             getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(img, isTrue){
                                    payload = {
                                                 type: 'positions',
