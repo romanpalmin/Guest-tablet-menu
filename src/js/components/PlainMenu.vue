@@ -12,7 +12,6 @@
     }
 </style>
 <script>
-    import positionslist from './PositionsList.vue';
     import positionslistNew from './PositionsListNew.vue';
     import sidebar from './SideBar.vue';
 
