@@ -13,6 +13,7 @@ import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
 import bleLabels from  './js/components/helpers/defineBtLabel';
 import LsGet from './js/components/helpers/lsGet.js';
+import wakeLockAcquire from './js/components/helpers/power.js';
 import settings from './store/structures/settings.js';
 import catPositions from './store/structures/categoryPositions.js';
 import store from './store';
@@ -59,6 +60,9 @@ const app = new Vue({
         scan(router);
         //
         scanBLE();
+
+        // wakelock
+        wakeLockAcquire();
 
         // Проверка обновлений
         let upTimerUpdate = setInterval(function () {
