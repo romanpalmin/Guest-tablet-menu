@@ -1,6 +1,6 @@
 export default {
     settings:{
-        server:'http://tab01:01@10.10.182.11/',
+        server:'http://10.10.182.11/',
         ip: '10.10.182.11',
         userName: 'scr01',
         password:'01',

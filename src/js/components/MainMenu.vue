@@ -1,6 +1,7 @@
 <template>
     <div>
-        <div class="main-menu" v-if="showTabletView">
+       <!-- <div class="main-menu" v-if="showTabletView">-->
+        <div class="main-menu">
             <ul class="root-icons">
                 <li class="root-icon" v-for="item in tabView">
                     <router-link :to="item.route">
@@ -8,7 +9,6 @@
                             <div class="root-icon-image" :style="item.style">
                                 <div class="root-icon-descr">
                                     {{ item.name }}
-
                                 </div>
                             </div>
                         </a>
@@ -16,13 +16,14 @@
                 </li>
             </ul>
         </div>
-        <div v-else class="main-table">
+        <!--<div v-else class="main-table">
             <table class="inner-table">
                 <tr class="top-row">
                     <td :colspan="ctgs_amount">
                         <template>
                             <div class="img-wrapper">
-                                <router-link :to="mainPosition.route">
+                               &lt;!&ndash; <router-link :to="mainPosition.route">&ndash;&gt;
+                                <router-link :to="2">
                                     <a>
                                         <div class="root-icon-image-bottom">
                                             <div id="svg" class="svg"></div>
@@ -40,7 +41,8 @@
                 <tr>
                     <template v-for="item in ctgs_bottom">
                         <td class="current-cell">
-                            <router-link :to="item.route">
+                            &lt;!&ndash;<router-link :to="item.route">&ndash;&gt;
+                            <router-link :to="3">
                                 <a :root-data-code="item.code">
                                     <div class="root-icon-image-bottom">
                                         <div class="img-wrapper">
@@ -57,7 +59,7 @@
                     </template>
                 </tr>
             </table>
-        </div>
+        </div>-->
 
     </div>
 </template>
