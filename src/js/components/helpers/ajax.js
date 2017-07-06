@@ -83,7 +83,7 @@ function getUrl(operation) {
             url = 'groups=342020&category=&delcart=1&tovar=1';
             break;
         case 'deleteFromOrder':
-            url = `groups=342020&category=&dellcartitem=${operation.stroka}`;
+            url = `groups=342020&category=&dellcartitem=${operation.stroka}`; // добавить код товара
             break;
             //deleteStringFromOrder
         case 'deleteStringFromOrder':

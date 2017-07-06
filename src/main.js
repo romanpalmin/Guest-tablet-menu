@@ -5,6 +5,7 @@ import plainmenu from './js/components/PlainMenu.vue';
 import order from './js/Order.vue';
 import shedule from './js/Shedule.vue';
 import actions from './js/Actions.vue';
+import actions2 from './js/Actions2.vue';
 import wheretablet from './js/WhereTablet.vue';
 import VueRouter from 'vue-router'
 import axios from 'axios';
@@ -26,6 +27,7 @@ const routes = [
     {name: 'menu', path: '/:lang/menu', component: menu},
     {name: 'order', path: '/:lang/order', component: order},
     {name: 'actions', path: '/:lang/actions', component: actions},
+    {name: 'actions2', path: '/:lang/actions2', component: actions2},
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
     {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
     {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet}
@@ -211,7 +213,8 @@ const app = new Vue({
     <div class="head" v-show="showMenu">
     <div class="header intro-header" >
         <nav v-if= "$store.state.settings.language === 'ru'" class="pages-nav">
-            <div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>
+            <!--<div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>-->
+            <div class="pages-nav__item "><router-link to="/ru/Actions2" class="link-page link">Акция</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
