@@ -31,7 +31,7 @@
             }
         },
         computed: {
-            anketaUrl: function(){ return 'http://tab01:01@10.10.182.11' + '/menu/hs/ank1/display';}
+            anketaUrl: function(){ return 'http://10.10.182.11/menu/hs/ank1/display';}
         }
     }
 
