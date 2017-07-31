@@ -327,6 +327,9 @@ const store = new Vuex.Store({
                     console.log(resp.data);
                 });
                 function formNewData(json) {
+                    json.items = _.filter(json.items, (itms)=> {
+                        return (+itms.price > 0 && itms.price !== '');
+                    });
                     let roots = _.filter(json.groups, function (item) {
                         if (item.parrent_code === '') {
                             // заполняем первый уровень
