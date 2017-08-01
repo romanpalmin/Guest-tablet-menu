@@ -10,6 +10,7 @@ import wheretablet from './js/WhereTablet.vue';
 import VueRouter from 'vue-router'
 import axios from 'axios';
 import VueAxios from 'vue-axios';
+import VmBackTop from 'vue-multiple-back-top'
 import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
 import bleLabels from  './js/components/helpers/defineBtLabel';
@@ -19,6 +20,7 @@ import settings from './store/structures/settings.js';
 import catPositions from './store/structures/categoryPositions.js';
 import store from './store';
 
+Vue.component(VmBackTop.name, VmBackTop);
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);

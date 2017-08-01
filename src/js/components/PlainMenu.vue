@@ -3,7 +3,9 @@
         <sidebar :categoryId="currentCategoryId"/>
         <div class="list">
             <positionslistNew :categoryId="currentCategoryId"/>
+            <vm-back-top></vm-back-top>
         </div>
+
     </div>
 </template>
 <style scoped lang="less">
@@ -14,6 +16,7 @@
 <script>
     import positionslistNew from './PositionsListNew.vue';
     import sidebar from './SideBar.vue';
+    import VmBackTop from 'vue-multiple-back-top'
 
     export default{
         data(){
@@ -30,7 +33,8 @@
 
         components: {
             positionslistNew,
-            sidebar
+            sidebar,
+            'vm-back-top': VmBackTop
         },
         mounted(){
         }

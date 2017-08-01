@@ -1,5 +1,5 @@
 <template>
-    <div class="top rolling">
+    <div class="top rolling "  @scroll="scrollTrack">
         <div class="div-overlay">
             <div>
                 <ul v-for="item in currentData" class="products">
@@ -163,9 +163,41 @@
                   :code="categoryId"
                   :charset="charset"
         />
+        <div>
+            <a class="back_to_top" title="Наверх" @scroll="scrollTrack()" @click="backToTop()">&uarr;</a>
+        </div>
+        <vm-back-top :bottom="100" :duration="1000" :timing="'ease'">
+           <!-- <div class="top">Наверх</div>-->
+            <!--<a class="back_to_top" title="Наверх" @click="backToTop()">&uarr;</a>-->
+        </vm-back-top>
+        <vm-back-top></vm-back-top>
     </div>
 </template>
 <style scoped lang="less">
+    .back_to_top {
+        position: fixed;
+        bottom: 80px;
+        right: 40px;
+        z-index: 9999;
+        width: 30px;
+        height: 30px;
+        text-align: center;
+        line-height: 30px;
+        background: #f5f5f5;
+        color: #444;
+        cursor: pointer;
+        border-radius: 2px;
+        display: block;
+    }
+
+    back_to_top:hover {
+        background: #e9ebec;
+    }
+
+    .back_to_top-show {
+        display: block;
+    }
+
     .top {
         padding-top: 70px;
     }
@@ -319,6 +351,7 @@
     import _ from 'lodash';
     import Position from './PositionItem.vue';
     import getImg from './helpers/importImages.js';
+    import VmBackTop from 'vue-multiple-back-top'
     export default{
         data(){
             return {
@@ -369,6 +402,7 @@
         },
 
         methods: {
+
             getNewJson(){
                 this.$store.dispatch('GET_FULL_TREE');
             },
@@ -502,9 +536,39 @@
                 this.charset = item.charset;
                 this.showDetails = true;
                 this.$store.commit('SET_SELECTED_POSITION', item);
+            },
+            backToTop(){
+                console.log('goToTop');
+                let panel = document.querySelector('.rolling');
+                console.log(panel.pageYOffset);
+                 if (panel.pageYOffset > 0) {
+                  window.scrollBy(0, -80);
+                  setTimeout(backToTop, 0);
+                }
+                //panel.scrollTo(0,0);
+                window.scrollTo(0,0);
+            },
+            scrollTrack(){
+                console.log('Скроллинг');
+                let goTopBtn = document.querySelector('.back_to_top');
+
+                let panel = document.querySelector('.rolling');
+                console.log(goTopBtn);
+                console.log(panel);
+                var scrolled = panel.pageYOffset;
+                var coords = panel.clientHeight;
+                console.log(scrolled);
+                console.log(coords);
+                if (scrolled > coords) {
+                  goTopBtn.classList.add('back_to_top-show');
+                }
+                if (scrolled < coords) {
+                  goTopBtn.classList.remove('back_to_top-show');
+                }
             }
         },
         mounted() {
+
             if (this.$store.state.app.FullTree && this.$store.state.app.FullTree.length === 0) {
                 this.getNewJson();
             }
@@ -514,7 +578,8 @@
             }
         },
         components: {
-            'position': Position
+            'position': Position,
+            'vm-back-top': VmBackTop
         }
     }
 </script>
