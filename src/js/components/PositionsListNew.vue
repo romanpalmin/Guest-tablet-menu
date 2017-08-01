@@ -349,7 +349,6 @@
     import _ from 'lodash';
     import Position from './PositionItem.vue';
     import getImg from './helpers/importImages.js';
-    import VmBackTop from 'vue-multiple-back-top'
     export default{
         data(){
             return {
@@ -570,8 +569,7 @@
             }
         },
         components: {
-            'position': Position,
-            'vm-back-top': VmBackTop
+            'position': Position
         }
     }
 </script>
