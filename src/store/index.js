@@ -31,7 +31,6 @@ const store = new Vuex.Store({
         mutations: {
             [m_types.SET_MODAL_ANKETA_SHOW](state, payload){
                 state.app.showModalAnketa = payload.value;
-                console.log(state.app.showModalAnketa);
             },
 
             [m_types.SET_CATEGORY](state, payload){
@@ -272,6 +271,21 @@ const store = new Vuex.Store({
                         console.log('Ошибка добавления заказа');
                     }
                 })
+            },
+
+            /**
+             * Отправляет результат выбора из анкеты
+             * @param payload
+             */
+            [a_types.SEND_ANKETA]({},payload){
+                const operation = {
+                    name: 'sendAnketa',
+                    value: payload.code
+                };
+                console.log('Отправка ajax-запроса с параметрами: val=' + payload.code);
+                // ajax.exec(operation, function(responce){
+                //      console.log(response.data);
+                // });
             },
             [a_types.TURN_ON_LAMP]({commit}, payload){
                 //console.log('Подсвечиваем товар и шлем обратно');

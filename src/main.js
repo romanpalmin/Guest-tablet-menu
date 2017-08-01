@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import menu from './js/Menu.vue';
 import plainmenu from './js/components/PlainMenu.vue';
+import modalAnswer from './js/components/modal-answer.vue';
 import order from './js/Order.vue';
 import shedule from './js/Shedule.vue';
 import actions from './js/Actions.vue';
@@ -94,9 +95,15 @@ const app = new Vue({
             self.getShow();
         }, this.$store.state.settings.updateShow);
     },
+    components:{
+        'modal-anketa': modalAnswer
+    },
     methods: {
         showModal(){
             this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': true});
+        },
+        closeModal(){
+            this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
         },
         getNewJsonFullTree(){
             this.$store.dispatch('GET_FULL_TREE');
@@ -238,6 +245,7 @@ const app = new Vue({
       
       <router-view class="view"></router-view>
       </div>
+      <modal-anketa v-if="this.$store.state.app.showModalAnketa" @close="closeModal()" />
     </div>`
 }).$mount('#app');
 

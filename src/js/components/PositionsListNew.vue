@@ -430,7 +430,6 @@
             getImgSrc(name){
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
-                console.log(path);
                 return path;
             },
             getTitleImg(item){
