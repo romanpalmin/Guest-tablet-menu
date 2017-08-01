@@ -4,9 +4,9 @@
             <div class="modal-mask">
                 <div class="modal-wrapper">
                     <div class="modal-container">
-                        <div class="modal-close" @click="$emit('close')"><img :src="getImgPath('close')"/></div>
-                        <div class="primary-modal"  v-if="showType === 'primary'">
 
+                        <div class="primary-modal"  v-if="showType === 'primary'">
+                            <div class="modal-close" @click="$emit('close')"><img :src="getImgPath('close')"/></div>
                             <div class="modal-header">
                                 <h3> Расскажи, откуда ты о нас узнал, и получи лимонад "Vanilla sky" </h3>
                             </div>
@@ -34,7 +34,7 @@
                                     Благодарим за ответ. В ваш заказ будет добавлен лимонад "Vanilla sky"<br />
 
                                 </div>
-                                <button class="close-modal-button"> Закрыть </button>
+                                <button class="close-modal-button"  @click="$emit('close')"> Закрыть </button>
                             </div>
                         </div>
                     </div>
@@ -92,19 +92,22 @@
                 }
 
                 .modal-body {
+                    text-align: center;
                     .callback-modal-answer{
                         line-height: 300px;
                         color: #42b983;
-                        text-align: center;
+
                         font-family: IntroHeader;
                         width: 100%;
                         font-size: 14pt;
                     }
                     .close-modal-button{
-                        background-color: #555555;
-                        width: 100px;
-                        height: 30px;
+                        background-color: #555;
+                        width: 300px;
+                        height: 70px;
                         color: #42b983;
+                        font-size: 20pt;
+                        font-weight: 800;
                     }
                     margin: 20px 0;
                     .grid {
