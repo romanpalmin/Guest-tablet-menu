@@ -24,10 +24,16 @@ const store = new Vuex.Store({
                 LocalPaths: {Positions: {}, Small: {}, Category: {}, LargePositions: {}},
                 SyncCounter: 0,
                 OrderCounter: 0,
-                FullTree: []
+                FullTree: [],
+                showModalAnketa: false
             }
         },
         mutations: {
+            [m_types.SET_MODAL_ANKETA_SHOW](state, payload){
+                state.app.showModalAnketa = payload.value;
+                console.log(state.app.showModalAnketa);
+            },
+
             [m_types.SET_CATEGORY](state, payload){
                 state.app.MenuPoints = payload;
                 LsPut('MenuPoints', JSON.stringify(payload));

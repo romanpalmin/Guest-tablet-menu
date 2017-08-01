@@ -8,7 +8,7 @@ const ip = '10.100.50.248';
 let userName = 'planshet';
 let password = 'planshet';
 let ajaxServerUrlShort = '';
-const baseUrl = 'planshet/hs/model?';
+const baseUrl = 'menu/hs/model?';
 //-------------------------------
 ajaxServerUrlShort = formAjaxVars();
 //console.log('ip: ' + ip);
