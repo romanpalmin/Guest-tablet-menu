@@ -5,19 +5,36 @@
                 <div class="modal-wrapper">
                     <div class="modal-container">
                         <div class="modal-close" @click="$emit('close')"><img :src="getImgPath('close')"/></div>
-                        <div class="modal-header">
-                            <h3> Расскажи, откуда ты о нас узнал, и получи лимонад "Vanilla sky" </h3>
-                        </div>
+                        <div class="primary-modal"  v-if="showType === 'primary'">
 
-                        <div class="modal-body">
-                            <div class="grid"  v-if="itemsList.length > 0">
-                                <template v-for="row in 2">
-                                <div class="grid-items" v-for="cols in 5">
-                                    <div class="grid-item" @click="sendAnswer(itemsList[getIndex(row, cols)])">
-                                        <img :src="getImgPath(itemsList[getIndex(row, cols)].code)" />
-                                    </div>
+                            <div class="modal-header">
+                                <h3> Расскажи, откуда ты о нас узнал, и получи лимонад "Vanilla sky" </h3>
+                            </div>
+
+                            <div class="modal-body">
+                                <div class="grid" v-if="itemsList.length > 0">
+                                    <template v-for="row in 2">
+                                        <div class="grid-items" v-for="cols in 5">
+                                            <div class="grid-item" @click="sendAnswer(itemsList[getIndex(row, cols)])">
+                                                <img :src="getImgPath(itemsList[getIndex(row, cols)].code)"/>
+                                            </div>
+                                        </div>
+                                    </template>
                                 </div>
-                                </template>
+                            </div>
+                        </div>
+                        <div class="loading-modal" v-if="showType === 'loading'">
+                            <div class="modal-body">
+                                Loading...
+                            </div>
+                        </div>
+                        <div class="callback-modal" v-if="showType === 'callback'">
+                            <div class="modal-body">
+                                <div class="callback-modal-answer">
+                                    Благодарим за ответ. В ваш заказ будет добавлен лимонад "Vanilla sky"<br />
+
+                                </div>
+                                <button class="close-modal-button"> Закрыть </button>
                             </div>
                         </div>
                     </div>
@@ -75,6 +92,20 @@
                 }
 
                 .modal-body {
+                    .callback-modal-answer{
+                        line-height: 300px;
+                        color: #42b983;
+                        text-align: center;
+                        font-family: IntroHeader;
+                        width: 100%;
+                        font-size: 14pt;
+                    }
+                    .close-modal-button{
+                        background-color: #555555;
+                        width: 100px;
+                        height: 30px;
+                        color: #42b983;
+                    }
                     margin: 20px 0;
                     .grid {
                         display: grid;
@@ -136,6 +167,7 @@
                 name:'Модальное окно анкеты',
                 showModal: this.$store.state.app.showModalAnketa,
                 settings: this.$store.state.settings,
+                showType: 'primary',
                 itemsList: [
                         {'name': 'ВКонтакте', 'code': 'vk'},
                         {'name': 'Instagram', 'code': 'instagram'},
@@ -164,15 +196,28 @@
                 return path;
             },
             sendAnswer(item){
+                // включаем модальное окно загрузки
+                this.showType = 'loading';
+                console.log('loading');
                 const payload = {
                     'code': item.code,
-                    'name': item.name
+                    'name': item.name,
+                    'callback': resp => {
+                        // включаем модальное окно коллбэка
+                        this.showType = 'callback';
+                        console.log('callback');
+                        //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                    }
                 }
-                this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
-                this.$store.dispatch('SEND_ANKETA', payload);
+                //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                setTimeout(()=>{
+                    this.$store.dispatch('SEND_ANKETA', payload);
+                }, 2000);
+
             }
         }
     }
+
 
 
 

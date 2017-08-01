@@ -286,6 +286,10 @@ const store = new Vuex.Store({
                 // ajax.exec(operation, function(responce){
                 //      console.log(response.data);
                 // });
+                if (payload.callback && typeof(payload.callback) === "function") {
+                    console.log('Отрабатваем коллбэк');
+                    payload.callback();
+                }
             },
             [a_types.TURN_ON_LAMP]({commit}, payload){
                 //console.log('Подсвечиваем товар и шлем обратно');
