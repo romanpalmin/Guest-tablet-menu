@@ -20,7 +20,7 @@
                                             <div class="product-top-block" :style="getStyle(sub0)"
                                                  :data-Code="sub0.code">
                                                 <div class="product-top-block-price" :data-Code="sub0.code">
-                                                    {{sub0.price}}
+                                                    {{sub0.price}}&#8381;
                                                 </div>
                                             </div>
                                             <div class="product-inner-label" :data-Code="sub0.code">
@@ -45,7 +45,7 @@
                                             </div>
                                             <div class="product-top-block-price2" :data-Code="sub0.code" @click="toggleDetailsItem(sub0, item)">
                                                 <!-- @click="toggleDetailsItem(subitem)"-->
-                                                {{sub0.price}}
+                                                {{sub0.price}}&#8381;
                                             </div>
                                             <div class="wrapper-for-add-btn">
                                                 <div class="btn-add-to-cart" @click="add2cart(sub0.code)"
@@ -82,7 +82,7 @@
                                                              :data-Code="sub1item.code">
                                                             <div class="product-top-block-price"
                                                                  :data-Code="sub1item.code">
-                                                                {{sub1item.price}}
+                                                                {{sub1item.price}}&#8381;
                                                             </div>
                                                         </div>
                                                         <div class="product-inner-label" :data-Code="sub1item.code">
@@ -111,7 +111,7 @@
                                                         <div class="product-top-block-price2"
                                                              :data-Code="sub1item.code" @click="toggleDetailsItem(sub1item, sub1)">
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
-                                                            {{sub1item.price}}
+                                                            {{sub1item.price}}&#8381;
                                                         </div>
                                                         <div class="wrapper-for-add-btn">
                                                             <div class="btn-add-to-cart"
@@ -164,30 +164,28 @@
                   :charset="charset"
         />
         <div>
-            <a class="back_to_top" title="Наверх" @scroll="scrollTrack()" @click="backToTop()">&uarr;</a>
+            <a class="back_to_top" title="Наверх" @scroll="scrollTrack()" @click="backToTop()"><!--&uarr; --><img :src="getImgSrc('arrow-up')" /></a>
         </div>
-        <vm-back-top :bottom="100" :duration="1000" :timing="'ease'">
-           <!-- <div class="top">Наверх</div>-->
-            <!--<a class="back_to_top" title="Наверх" @click="backToTop()">&uarr;</a>-->
-        </vm-back-top>
-        <vm-back-top></vm-back-top>
     </div>
 </template>
 <style scoped lang="less">
     .back_to_top {
         position: fixed;
-        bottom: 80px;
-        right: 40px;
+        bottom: 60px;
+        right: 60px;
         z-index: 9999;
-        width: 30px;
-        height: 30px;
+        width: 60px;
+        height: 60px;
         text-align: center;
-        line-height: 30px;
-        background: #f5f5f5;
+        line-height: 60px;
         color: #444;
         cursor: pointer;
         border-radius: 2px;
-        display: block;
+        display: none;
+        img{
+            width: 100%;
+            height: 100%;
+        }
     }
 
     back_to_top:hover {
@@ -425,14 +423,16 @@
                 return res;
             },
             test(item){
-                //alert(JSON.stringify(item));
                 return '';
             },
             test2(item){
-                //alert(321);
-                //alert(JSON.stringify(item));
-                //alert(JSON.stringify(item.iconNameActive));
                 return '';
+            },
+            getImgSrc(name){
+                let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
+                path += name + '.png';
+                console.log(path);
+                return path;
             },
             getTitleImg(item){
                 //alert(123);
@@ -540,29 +540,21 @@
             backToTop(){
                 console.log('goToTop');
                 let panel = document.querySelector('.rolling');
-                console.log(panel.pageYOffset);
-                 if (panel.pageYOffset > 0) {
-                  window.scrollBy(0, -80);
-                  setTimeout(backToTop, 0);
+                let scrolled = panel.scrollTop;
+                if (scrolled > 0){
+                    panel.scrollTop -= 25;
+                    setTimeout(this.backToTop, 0);
                 }
-                //panel.scrollTo(0,0);
-                window.scrollTo(0,0);
             },
             scrollTrack(){
-                console.log('Скроллинг');
                 let goTopBtn = document.querySelector('.back_to_top');
-
                 let panel = document.querySelector('.rolling');
-                console.log(goTopBtn);
-                console.log(panel);
-                var scrolled = panel.pageYOffset;
+                var scrolled = panel.scrollTop;
                 var coords = panel.clientHeight;
-                console.log(scrolled);
-                console.log(coords);
-                if (scrolled > coords) {
+                if (scrolled > coords / 2) {
                   goTopBtn.classList.add('back_to_top-show');
                 }
-                if (scrolled < coords) {
+                if (scrolled < coords  / 2) {
                   goTopBtn.classList.remove('back_to_top-show');
                 }
             }
