@@ -244,6 +244,10 @@
                 // включаем модальное окно загрузки
                 // this.showType = 'loading';
                 // console.log('loading');
+                if (this.closeBtn === 'true'){
+                            this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                        }
                 const payload = {
                     'code': item.code,
                     'name': item.name,
@@ -258,10 +262,7 @@
                         } else {
                             this.success();
                         }
-                        if (this.closeBtn === 'true'){
-                            this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
-                            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
-                        }
+
                     }
                 }
                 //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
