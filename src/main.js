@@ -250,7 +250,7 @@ const app = new Vue({
     <div class="head" v-show="showMenu">
     <div class="header intro-header" >
         <nav v-if= "$store.state.settings.language === 'ru'" class="pages-nav">
-            <div class="pages-nav__item" @click="showModal()">Modal</div>
+           <!-- <div class="pages-nav__item" @click="showModal()">Modal</div>-->
             <!--<div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>-->
             <!--<div class="pages-nav__item "><router-link to="/ru/Actions2" class="link-page link">Акция</router-link></div>-->
             <div class="pages-nav__item "><router-link to="/ru/Actions3" class="link-page link">Анкета</router-link></div>
