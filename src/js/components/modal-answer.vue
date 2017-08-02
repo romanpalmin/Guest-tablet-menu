@@ -5,10 +5,13 @@
                 <div class="modal-wrapper">
                     <div class="modal-container">
 
-                        <div class="primary-modal"  v-if="showType === 'primary'">
-                            <div class="modal-close" @click="$emit('close')"><img :src="getImgPath('close')"/></div>
+                        <div class="primary-modal" v-if="showType === 'primary'">
+                            <template v-if="closeBtn === 'true'">
+                                <div class="modal-close" @click="$emit('close')"><img
+                                        :src="getImgPath('close')"/></div>
+                            </template>
                             <div class="modal-header">
-                                <h3> Расскажи, откуда ты о нас узнал</h3>
+                                <h01> Расскажи, откуда ты о нас узнал</h01>
                             </div>
 
                             <div class="modal-body">
@@ -31,10 +34,24 @@
                         <div class="callback-modal" v-if="showType === 'callback'">
                             <div class="modal-body">
                                 <div class="callback-modal-answer">
-                                    Благодарим за ответ. В ваш заказ будет добавлен лимонад "Vanilla sky"<br />
-
+                                    <h01>Большое спасибо!</h01>
+                                    <h02>Street Food Bar №1 благодарит Вас за уделенное время и заполненную анкету!
+                                    </h02>
+                                    <h02>К Вашим услугам инновационный спорт-бар с передовыми технологиями, позволяющий
+                                        не только смотреть спортивные трансляции на большом экране, но и полностью
+                                        погружаться в игру, ощущая себя на матче любимой команды. Эффект присутствия
+                                        усиливают уникальный мультимедийный центр, масштабная игровая консоль и мощная
+                                        акустическая система Dolby Atmos.
+                                    </h02>
+                                    <h02>Модные бургеры в меню Street Food Bar №1 занимают основную позицию. Их
+                                        особенность — цветные свежеиспеченные булочки, сочное мясо и эксклюзивные соусы.
+                                        Авторское исполнение и необычная подача блюд приближает хиты стрит-фуда –
+                                        хот-доги, сэндвичи, барбекю и домашние натуральные сосиски – к высокой кухне.
+                                    </h02>
                                 </div>
-                                <button class="close-modal-button"  @click="$emit('close')"> Закрыть </button>
+                                <button class="close-modal-button" @click="$emit('close')" v-if="closeBtn === true">
+                                    Закрыть
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -57,6 +74,15 @@
         .modal-wrapper {
             display: table-cell;
             vertical-align: middle;
+            h01 {
+                font-family: IntroHeader;
+                display: block;
+                padding-bottom: 20px;
+                font-size: 25pt;
+                color: #42b983;
+                text-align: center;
+                width: 100%;
+            }
             .modal-container {
                 background-image: url(http://10.10.182.11/img/background.jpg);
                 width: 900px;
@@ -94,15 +120,26 @@
 
                 .modal-body {
                     text-align: center;
-                    .callback-modal-answer{
-                        line-height: 300px;
+                    .callback-modal-answer {
+                        /*line-height: 300px;*/
                         color: #42b983;
 
-                        font-family: IntroHeader;
                         width: 100%;
                         font-size: 14pt;
+                        h02, h03, h04 {
+                            color: #FFF;
+                            display: block;
+                            font-size: 24px;
+                            font-weight: normal;
+                            padding-top: 0;
+                            padding-bottom: 10px;
+                            padding-left: 10px;
+                            padding-right: 10px;
+                            text-align: justify;
+                            /*font-family: IntroHeader;*/
+                        }
                     }
-                    .close-modal-button{
+                    .close-modal-button {
                         background-color: #555;
                         width: 300px;
                         height: 70px;
@@ -172,6 +209,7 @@
                 showModal: this.$store.state.app.showModalAnketa,
                 settings: this.$store.state.settings,
                 showType: 'primary',
+                showCloseBtn: this.closeBtn,
                 itemsList: [
                         {'name': 'ВКонтакте', 'img': 'vk', 'code': 'SN1'},
                         {'name': 'Instagram', 'img': 'instagram', 'code': 'SN3'},
@@ -186,7 +224,10 @@
                     ]
             }
         },
+        props: ['closeBtn'],
         mounted(){
+            console.log(this.closeBtn);
+            console.log(this.showCloseBtn);
         },
         methods:{
             getIndex(row, col){
@@ -211,11 +252,16 @@
                         // this.showType = 'callback';
                         if (resp.code === 'error'){
                             console.log('Ошибка отправки: ' + resp.message);
+                            if (this.closeBtn === 'false'){
+                                this.success();
+                            }
                         } else {
                             this.success();
                         }
-                        this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
-                        this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                        if (this.closeBtn === 'true'){
+                            this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                        }
                     }
                 }
                 //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
@@ -226,7 +272,14 @@
             },
             success(){
                 console.log('Анкета успешно отправлена');
+                if (this.closeBtn === 'false'){
+                    this.showType = 'callback';
+                }
             }
         }
     }
+
+
+
+
 </script>
