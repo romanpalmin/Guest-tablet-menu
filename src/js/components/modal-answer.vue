@@ -8,7 +8,7 @@
                         <div class="primary-modal"  v-if="showType === 'primary'">
                             <div class="modal-close" @click="$emit('close')"><img :src="getImgPath('close')"/></div>
                             <div class="modal-header">
-                                <h3> Расскажи, откуда ты о нас узнал, и получи лимонад "Vanilla sky" </h3>
+                                <h3> Расскажи, откуда ты о нас узнал</h3>
                             </div>
 
                             <div class="modal-body">
@@ -16,7 +16,7 @@
                                     <template v-for="row in 2">
                                         <div class="grid-items" v-for="cols in 5">
                                             <div class="grid-item" @click="sendAnswer(itemsList[getIndex(row, cols)])">
-                                                <img :src="getImgPath(itemsList[getIndex(row, cols)].code)"/>
+                                                <img :src="getImgPath(itemsList[getIndex(row, cols)].img)"/>
                                             </div>
                                         </div>
                                     </template>
@@ -112,7 +112,7 @@
                     margin: 20px 0;
                     .grid {
                         display: grid;
-                        grid-template-columns: 20% 20% 20% 20% 20%;
+                        grid-template-columns: repeat(5, 20%);
                         text-align: center;
                         .grid-items {
                             padding: 20px;
@@ -172,16 +172,16 @@
                 settings: this.$store.state.settings,
                 showType: 'primary',
                 itemsList: [
-                        {'name': 'ВКонтакте', 'code': 'vk'},
-                        {'name': 'Instagram', 'code': 'instagram'},
-                        {'name': 'Яndex', 'code': 'yandex'},
-                        {'name': 'Google', 'code': 'google'},
-                        {'name': 'Афиша', 'code': 'afisha'},
-                        {'name': 'РестоРейтинг', 'code': 'restorating'},
-                        {'name': 'Restoclub', 'code': 'restoclub'},
-                        {'name': 'Реклама', 'code': 'outdoor-ad'},
-                        {'name': 'От друзей', 'code': 'friends'},
-                        {'name': 'Проезжал', 'code': 'drivepast'}
+                        {'name': 'ВКонтакте', 'img': 'vk', 'code': 'SN1'},
+                        {'name': 'Instagram', 'img': 'instagram', 'code': 'SN3'},
+                        {'name': 'Яndex', 'img': 'yandex', 'code': 'NW2'},
+                        {'name': 'Google', 'img': 'google', 'code': 'NW1'},
+                        {'name': 'Афиша', 'img': 'afisha', 'code': 'IN4'},
+                        {'name': 'РестоРейтинг', 'img': 'restorating', 'code': 'NW4'},
+                        {'name': 'Restoclub', 'img': 'restoclub', 'code': 'NW3'},
+                        {'name': 'Реклама', 'img': 'outdoor-ad', 'code': 'SR5'},
+                        {'name': 'От друзей', 'img': 'friends', 'code': 'SR1'},
+                        {'name': 'Проезжал', 'img': 'drivepast', 'code': 'SR2'}
                     ]
             }
         },
@@ -200,33 +200,32 @@
             },
             sendAnswer(item){
                 // включаем модальное окно загрузки
-                this.showType = 'loading';
-                console.log('loading');
+                // this.showType = 'loading';
+                // console.log('loading');
                 const payload = {
                     'code': item.code,
                     'name': item.name,
                     'callback': resp => {
                         // включаем модальное окно коллбэка
-                        this.showType = 'callback';
-                        console.log('callback');
-                        //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                        // this.showType = 'callback';
+                        if (resp.code === 'error'){
+                            console.log('Ошибка отправки: ' + resp.message);
+                        } else {
+                            this.success();
+                        }
+                        this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                        this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                     }
                 }
                 //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
-                setTimeout(()=>{
+                //setTimeout(()=>{
                     this.$store.dispatch('SEND_ANKETA', payload);
-                }, 2000);
+                //}, 2000);
 
+            },
+            success(){
+                console.log('Анкета успешно отправлена');
             }
         }
     }
-
-
-
-
-
-
-
-
-
 </script>

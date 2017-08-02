@@ -38,6 +38,16 @@ let router = new VueRouter({
     routes,
     linkActiveClass: 'menu__link--current'
 });
+
+router.afterEach((toRoute, fromRoute) => {
+    if (toRoute.name === 'menu' && fromRoute.name !== 'order') {
+        //console.log('Включаем показ модального окна');
+        store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
+    } else {
+        //console.log('Не включаем модальное окно');
+    }
+});
+
 router.replace('/ru/menu');
 
 
@@ -94,8 +104,18 @@ const app = new Vue({
             //console.log('Обновляется список развлечений');
             self.getShow();
         }, this.$store.state.settings.updateShow);
+
+        let showModal = setInterval(() => {
+            //console.log('Показывать или не показывать модальное окно');
+            let condition = this.$store.state.app.isShowModalAnketa && //признак показа модального окна
+                !this.$store.state.app.showModalAnketa && // признак того, что окно не открыто
+                this.$router.currentRoute.name === 'plainmenu'; // признак того, что открыты категории
+            if (condition) { // если все условия соблюдены
+                this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': true});
+            }
+        }, 5000);
     },
-    components:{
+    components: {
         'modal-anketa': modalAnswer
     },
     methods: {
@@ -104,6 +124,7 @@ const app = new Vue({
         },
         closeModal(){
             this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
         },
         getNewJsonFullTree(){
             this.$store.dispatch('GET_FULL_TREE');

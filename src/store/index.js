@@ -25,12 +25,27 @@ const store = new Vuex.Store({
                 SyncCounter: 0,
                 OrderCounter: 0,
                 FullTree: [],
-                showModalAnketa: false
+                showModalAnketa: false,
+                isShowModalAnketa: true
             }
         },
         mutations: {
+            /**
+             * Включает модальное окно
+             * @param state
+             * @param payload
+             */
             [m_types.SET_MODAL_ANKETA_SHOW](state, payload){
                 state.app.showModalAnketa = payload.value;
+            },
+
+            /**
+             * Проверяет, нужно ли показывать модальное окно
+             * @param state
+             * @param payload
+             */
+            [m_types.SET_IS_SHOW_MODAL_ANKETA](state, payload){
+                state.app.isShowModalAnketa = payload.value;
             },
 
             [m_types.SET_CATEGORY](state, payload){
@@ -167,7 +182,7 @@ const store = new Vuex.Store({
             },
             [m_types.SET_FULL_TREE](state, payload){
                 state.app.FullTree = payload;
-               // console.log(payload);
+                // console.log(payload);
             }
         },
         actions: {
@@ -277,19 +292,18 @@ const store = new Vuex.Store({
              * Отправляет результат выбора из анкеты
              * @param payload
              */
-            [a_types.SEND_ANKETA]({},payload){
+                [a_types.SEND_ANKETA]({}, payload){
                 const operation = {
                     name: 'sendAnketa',
                     value: payload.code
                 };
-                console.log('Отправка ajax-запроса с параметрами: val=' + payload.code);
-                // ajax.exec(operation, function(responce){
-                //      console.log(response.data);
-                // });
-                if (payload.callback && typeof(payload.callback) === "function") {
-                    console.log('Отрабатваем коллбэк');
-                    payload.callback();
-                }
+                ajax.exec(operation, function (response) {
+                    console.log(response.data);
+                    if (payload.callback && typeof(payload.callback) === "function") {
+                        payload.callback(response.data);
+                    }
+                });
+
             },
             [a_types.TURN_ON_LAMP]({commit}, payload){
                 //console.log('Подсвечиваем товар и шлем обратно');
@@ -314,7 +328,7 @@ const store = new Vuex.Store({
                     commit('DELETE_POSITION_IN_ORDER_BY_ID', payload);
                 });
             },
-            [a_types.EMPTY_STRING_BY_ID]({dispatch},payload){
+            [a_types.EMPTY_STRING_BY_ID]({dispatch}, payload){
                 const operation = {
                     name: 'deleteStringFromOrder',
                     positionId: payload.positionId
@@ -322,8 +336,7 @@ const store = new Vuex.Store({
                 ajax.exec(operation, function () {
                     dispatch('GET_ORDERS', payload);
                 });
-            }
-            ,
+            },
             [a_types.GET_SHOW]({commit}, payload){
                 const operation = {
                     name: 'show'
@@ -348,10 +361,9 @@ const store = new Vuex.Store({
                 const self = this;
                 ajax.exec({name: 'getDataNew'}, function (resp) {
                     formNewData(resp.data);
-                    console.log(resp.data);
                 });
                 function formNewData(json) {
-                    json.items = _.filter(json.items, (itms)=> {
+                    json.items = _.filter(json.items, (itms) => {
                         return (+itms.price > 0 && itms.price !== '');
                     });
                     let roots = _.filter(json.groups, function (item) {
@@ -402,13 +414,13 @@ const store = new Vuex.Store({
                         }
                     });
                     /*console.log(roots);
-                    console.log((roots.filter(function(item){
-                        return item.code === '332020';
-                    }))[0].groups);
-                    let burgers = _.filter(roots, function(item){
-                        return item.code === '332020';
-                    });
-                    console.log(burgers[0].groups);*/
+                     console.log((roots.filter(function(item){
+                     return item.code === '332020';
+                     }))[0].groups);
+                     let burgers = _.filter(roots, function(item){
+                     return item.code === '332020';
+                     });
+                     console.log(burgers[0].groups);*/
                     commit('SET_FULL_TREE', roots);
                 }
             }

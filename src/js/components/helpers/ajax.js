@@ -10,24 +10,13 @@ let password = 'planshet';
 let ajaxServerUrlShort = '';
 const baseUrl = 'menu/hs/model?';
 //-------------------------------
-ajaxServerUrlShort = formAjaxVars();
-//console.log('ip: ' + ip);
+//ajaxServerUrlShort = formAjaxVars(true);
 
 let uuid = '';
-/*if (typeof device !== 'undefined') {
-    uuid = device.uuid;
-    //alert(device.uuid);
-    getTabletName(uuid);
-} else {
-    uuid = '8981e83c79f3be00';
-    getTabletName(uuid);
-    //userName = 'tab01';
-    //password = '01';
-}*/
 
 document.addEventListener('deviceready', onDeviceReady, false);
 
-function onDeviceReady(){
+function onDeviceReady() {
     if (typeof device !== 'undefined') {
         uuid = device.uuid;
         getTabletName(uuid);
@@ -41,12 +30,17 @@ function getTabletName(uuid) {
         userName = resp.data.login;
         password = resp.data.pass;
         store.commit('SET_TABLET_NUMBER', password);
-        formAjaxVars();
+        formAjaxVars(true);
     });
 }
 
-function formAjaxVars(){
-    ajaxServerUrlShort = `http://${userName}:${password}@${ip}/${baseUrl}`;
+function formAjaxVars(isBaseUrl) {
+    if (isBaseUrl) {
+        ajaxServerUrlShort = `http://${userName}:${password}@${ip}/${baseUrl}`;
+    } else {
+        ajaxServerUrlShort = `http://${userName}:${password}@${ip}/`;
+    }
+
     return ajaxServerUrlShort;
 }
 
@@ -60,6 +54,15 @@ function executeRequest(url, callback) {
         })
         .catch(function (error) {
             console.log(error);
+            if (callback && typeof(callback) === "function") {
+                callback(
+                    {
+                        'data': {
+                            'code': 'error',
+                            'message': error.message
+                        }
+                    });
+            }
         });
 }
 
@@ -85,7 +88,7 @@ function getUrl(operation) {
         case 'deleteFromOrder':
             url = `groups=342020&category=&dellcartitem=${operation.stroka}`; // добавить код товара
             break;
-            //deleteStringFromOrder
+        //deleteStringFromOrder
         case 'deleteStringFromOrder':
             url = `groups=1&category=&tovar=${operation.positionId}&dellcartstr=1`;
             break;
@@ -125,7 +128,15 @@ function getUrl(operation) {
 
 export default {
     exec: function (operation, callback) {
-        let url = getUrl(operation);
+        let url = '';
+        if (operation.name === 'sendAnketa') {
+            formAjaxVars(false);
+            url = 'planshet/hs/ank1/send?' + operation.value + '=1' + '&uuid=' + crypt(uuid);
+            console.log('url=' + url);
+        } else {
+            formAjaxVars(true);
+            url = getUrl(operation);
+        }
         return executeRequest(url, callback);
     }
 };
