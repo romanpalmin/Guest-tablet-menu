@@ -69,8 +69,12 @@ const app = new Vue({
 
         // определение меток для определения стола
         bleLabels();
-        // сканирование QR-кода
-        scan(router);
+        // ---сканирование QR-кода---
+        // Очистка признака показа модального окна
+        scan(router, () => {
+            console.log('Очищаем признак показа модального окна');
+            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
+        });
         //
         scanBLE();
 

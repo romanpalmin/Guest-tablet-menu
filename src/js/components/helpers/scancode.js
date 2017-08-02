@@ -1,5 +1,5 @@
 import rebind from './rebindTable.js';
-export default function scanQrCode(router) {
+export default function scanQrCode(router, callback) {
     let isPressedUp = false;
     let isPressedDown = false;
     let isPressedBack = false;
@@ -13,7 +13,7 @@ export default function scanQrCode(router) {
                 let timerId = setInterval(function () {
                     cnt += 1000;
                     if (isPressedBack) {
-                        startTestScan();
+                        startScan();
                         stopWaiting();
                     }
                     if (cnt === maxInterval) {
@@ -32,7 +32,7 @@ export default function scanQrCode(router) {
                 let timerId = setInterval(function () {
                     cnt += 1000;
                     if (isPressedBack) {
-                        goToTables();
+                        /*goToTables();*/
                         stopWaiting();
                     }
                     if (cnt === maxInterval) {
@@ -123,7 +123,10 @@ export default function scanQrCode(router) {
     }
 
     function startScan() {
-        cordova.plugins.barcodeScanner.scan(
+        if (callback && typeof(callback) === "function") {
+            callback();
+        }
+        /*cordova.plugins.barcodeScanner.scan(
             function (result) {
                 if (!result.cancelled && result.format === 'CODE_93') {
                     //rebind.rebind(result.text);
@@ -132,6 +135,6 @@ export default function scanQrCode(router) {
             },
             function (error) {
                 alert("Ошибка сканирования: " + error);
-            });
+            });*/
     }
 }

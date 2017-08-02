@@ -58,6 +58,7 @@
             display: table-cell;
             vertical-align: middle;
             .modal-container {
+                background-image: url(http://10.10.182.11/img/background.jpg);
                 width: 900px;
                 height: 450px;
                 margin: 0 auto;
