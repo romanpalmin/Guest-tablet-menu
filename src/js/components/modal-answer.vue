@@ -226,8 +226,6 @@
         },
         props: ['closeBtn'],
         mounted(){
-            console.log(this.closeBtn);
-            console.log(this.showCloseBtn);
         },
         methods:{
             getIndex(row, col){
