@@ -536,7 +536,6 @@
                 this.$store.commit('SET_SELECTED_POSITION', item);
             },
             backToTop(){
-                console.log('goToTop');
                 let panel = document.querySelector('.rolling');
                 let scrolled = panel.scrollTop;
                 if (scrolled > 0){
