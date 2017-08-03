@@ -3,8 +3,8 @@ import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
 /*const ip = '10.10.250.82';*/
-const ip = '10.100.50.248';
-/*const ip = '10.10.182.11';*/
+/*const ip = '10.100.50.248';*/
+const ip = '10.10.182.11';
 let userName = 'planshet';
 let password = 'planshet';
 let ajaxServerUrlShort = '';
@@ -46,6 +46,7 @@ function formAjaxVars(isBaseUrl) {
 
 
 function executeRequest(url, callback) {
+    //alert(url);
     axios.get(ajaxServerUrlShort + url)
         .then(function (response) {
             if (callback && typeof(callback) === "function") {
@@ -129,14 +130,17 @@ function getUrl(operation) {
 export default {
     exec: function (operation, callback) {
         let url = '';
+        let preffix = '';
         if (operation.name === 'sendAnketa') {
             formAjaxVars(false);
-            url = 'planshet/hs/ank1/send?' + operation.value + '=1' + '&uuid=' + crypt(uuid);
+            preffix = ip === '10.10.182.11' ? 'planshet/' : 'planshet_kl/';
+            url = preffix +'hs/ank1/send?' + operation.value + '=1' + '&uuid=' + crypt(uuid);
             console.log('url=' + url);
         } else {
             formAjaxVars(true);
             url = getUrl(operation);
         }
+
         return executeRequest(url, callback);
     }
 };

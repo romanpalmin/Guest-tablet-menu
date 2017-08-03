@@ -16,13 +16,22 @@
 
                             <div class="modal-body">
                                 <div class="grid" v-if="itemsList.length > 0">
-                                    <template v-for="row in 2">
+                                    <!--<template v-for="row in 2">
                                         <div class="grid-items" v-for="cols in 5">
                                             <div class="grid-item" @click="sendAnswer(itemsList[getIndex(row, cols)])">
                                                 <img :src="getImgPath(itemsList[getIndex(row, cols)].img)"/>
                                             </div>
                                         </div>
-                                    </template>
+                                    </template>-->
+                                    <table>
+                                        <tr v-for="row in 2">
+                                            <td v-for="cols in 5"  class="grid-items">
+                                                <div class="grid-item" @click="sendAnswer(itemsList[getIndex(row, cols)])">
+                                                    <img :src="getImgPath(itemsList[getIndex(row, cols)].img)"/>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -85,7 +94,7 @@
             }
             .modal-container {
                 background-image: url(http://10.10.182.11/img/background.jpg);
-                width: 900px;
+                width: 930px;
                 height: 450px;
                 margin: 0 auto;
                 padding: 20px 30px;
