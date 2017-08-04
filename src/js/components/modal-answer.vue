@@ -88,7 +88,7 @@
                 display: block;
                 padding-bottom: 20px;
                 font-size: 25pt;
-                color: #42b983;
+                color: #ffffff;
                 text-align: center;
                 width: 100%;
             }
@@ -122,7 +122,7 @@
                 }
                 .modal-header h3 {
                     margin-top: 0;
-                    color: #42b983;
+                    color: #ffffff;
                     text-align: center;
                     font-family: IntroHeader;
                 }
@@ -131,7 +131,7 @@
                     text-align: center;
                     .callback-modal-answer {
                         /*line-height: 300px;*/
-                        color: #42b983;
+                        color: #ffffff;
 
                         width: 100%;
                         font-size: 14pt;
@@ -152,7 +152,7 @@
                         background-color: #555;
                         width: 300px;
                         height: 70px;
-                        color: #42b983;
+                        color: #ffffff;
                         font-size: 20pt;
                         font-weight: 800;
                     }
@@ -170,7 +170,7 @@
                                 border-radius: 14px;
                                 background-color: #cecece;
                                 border: 2px solid #a99f9f;
-                                color: green;
+                                color: black;
                                 text-align: center;
                                 margin: 0 auto;
                                 cursor: pointer;
