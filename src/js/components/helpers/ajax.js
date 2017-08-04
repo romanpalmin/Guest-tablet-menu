@@ -6,7 +6,7 @@ const ip = state.settings.ip;
 const server = `${ip}/`;
 const user =  state.settings.userName;
 const password = state.settings.password;
-const baseUrl = '/menu/hs/model?';
+const baseUrl = 'planshet/hs/model?';
 let ajaxServerUrlShort = `http://${user}:${password}@${server}${baseUrl}`;
 let uuid = '';
 
