@@ -151,6 +151,7 @@ const app = new Vue({
             this.language = language;
             path = `/${this.$store.state.settings.language}/menu`;
             this.emptyCache();
+            this.getNewJsonFullTree();
             this.$router.replace(path);
         },
 
@@ -259,7 +260,7 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
         </nav>
          <nav v-else class="pages-nav">
-            <div class="pages-nav__item "><router-link to="/en/Actions" class="link-page link">Questionnaire</router-link></div>
+            <div class="pages-nav__item "><router-link to="/en/Actions3" class="link-page link">Questionnaire</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/shedule" class="link-page link">Shedule</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/menu" class="link-page link">Menu</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/order" class="link-page link">Your order</router-link></div>

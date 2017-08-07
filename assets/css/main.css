@@ -47,6 +47,7 @@ body {
     z-index: 99999;
     position: fixed;
     left: 0;
+    top: 0;
     text-align: center;
     line-height: 63px;
     font-size: xx-large;

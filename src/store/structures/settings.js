@@ -25,7 +25,7 @@ export default {
     updateMenu: 300000, // Обновление меню и товаров
     updateShow: 100000*15, // Обновление расписания развлечений (раз в 15 минут)
     language: 'ru',
-    showLanguageToggle: false,
+    showLanguageToggle: true,
     localPath:'StreetFoodBar/images',
     isBrowser: false
 }

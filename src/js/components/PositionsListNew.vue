@@ -1,12 +1,17 @@
 <template>
-    <div class="top rolling "  @scroll="scrollTrack">
+    <div class="top rolling " @scroll="scrollTrack">
         <div class="div-overlay">
             <div>
                 <ul v-for="item in currentData" class="products">
                     <div v-if="item.groups.length===0" class="product-group product-group-level-1">
                         <li>
                             <template v-if="!item.iconNameActive">
-                                <span class="product-group-title level-1"> {{item.name_RU}} </span>
+                                <template v-if="$store.state.settings.language === 'ru'">
+                                    <span class="product-group-title level-1"> {{item.name_RU}} </span>
+                                </template>
+                                <template v-else>
+                                    <span class="product-group-title level-1"> {{item.name_EN}} </span>
+                                </template>
                             </template>
                             <template v-else>
                                 <img :src="getTitleImg(item)">
@@ -15,7 +20,8 @@
                             <ul class="products">
 
                                 <div v-show="item.type === 'Иконками'">
-                                    <li class="product" v-for="sub0 in item.items" @click="toggleDetailsItem(sub0, item)">
+                                    <li class="product" v-for="sub0 in item.items"
+                                        @click="toggleDetailsItem(sub0, item)">
                                         <div class="product-inner">
                                             <div class="product-top-block" :style="getStyle(sub0)"
                                                  :data-Code="sub0.code">
@@ -24,7 +30,7 @@
                                                 </div>
                                             </div>
                                             <div class="product-inner-label" :data-Code="sub0.code">
-                                                <template v-if="!sub0.iconNameActive" >
+                                                <template v-if="!sub0.iconNameActive">
                                                     <div :style="getTitleStyle(sub0)">{{sub0.name | deleteQuotes}}</div>
                                                 </template>
                                                 <template v-else>
@@ -37,13 +43,15 @@
                                 </div>
 
                                 <div v-show="item.type === 'Списком'">
-                                    <li class="product2" v-for="sub0 in item.items" >
+                                    <li class="product2" v-for="sub0 in item.items">
                                         <div class="product-inner2">
-                                            <div class="product-inner-label2" :data-Code="sub0.code" @click="toggleDetailsItem(sub0, item)">
+                                            <div class="product-inner-label2" :data-Code="sub0.code"
+                                                 @click="toggleDetailsItem(sub0, item)">
                                                 <!-- @click="toggleDetailsItem(subitem)"-->
                                                 {{sub0.name | deleteQuotes}}
                                             </div>
-                                            <div class="product-top-block-price2" :data-Code="sub0.code" @click="toggleDetailsItem(sub0, item)">
+                                            <div class="product-top-block-price2" :data-Code="sub0.code"
+                                                 @click="toggleDetailsItem(sub0, item)">
                                                 <!-- @click="toggleDetailsItem(subitem)"-->
                                                 {{sub0.price}}&#8381;
                                             </div>
@@ -59,10 +67,15 @@
                             </ul>
                         </li>
                     </div>
-                    <div v-else="item.groups.length > 0" class="product-group product-group-level-1" >
+                    <div v-else="item.groups.length > 0" class="product-group product-group-level-1">
                         <li>
                             <template v-if="!item.iconNameActive">
-                                <span class="product-group-title level-1"> {{item.name_RU}} </span>
+                                <template v-if="$store.state.settings.language === 'ru'">
+                                    <span class="product-group-title level-1"> {{item.name_RU}} </span>
+                                </template>
+                                <template v-else>
+                                    <span class="product-group-title level-1"> {{item.name_EN}} </span>
+                                </template>
                             </template>
                             <template v-else>
                                 <img :src="getTitleImg(item)">
@@ -71,7 +84,12 @@
                             <ul v-for="sub1 in sortArray(item.groups)" class="products">
                                 <div v-if="sub1.groups.length===0">
                                     <li>
-                                        <span class="product-group-title level-2">{{sub1.name_RU}}</span>
+                                        <template v-if="$store.state.settings.language === 'ru'">
+                                            <span class="product-group-title level-2">{{sub1.name_RU}}</span>
+                                        </template>
+                                        <template v-else>
+                                            <span class="product-group-title level-2">{{sub1.name_EN}}</span>
+                                        </template>
                                         <ul class="products">
 
                                             <div v-show="item.type === 'Иконками'">
@@ -86,10 +104,10 @@
                                                             </div>
                                                         </div>
                                                         <div class="product-inner-label" :data-Code="sub1item.code">
-                                                            <template v-if="!sub1item.iconNameActive" >
+                                                            <template v-if="!sub1item.iconNameActive">
 
                                                                 <div :style="getTitleStyle(sub1item)">{{sub1item.name |
-                                                                    deleteQuotes}}
+                                                                deleteQuotes}}
                                                                 </div>
                                                             </template>
                                                             <template v-else>
@@ -104,12 +122,14 @@
                                             <div v-show="item.type === 'Списком'">
                                                 <li class="product2" v-for="sub1item in sub1.items">
                                                     <div class="product-inner2">
-                                                        <div class="product-inner-label2" :data-Code="sub1item.code" @click="toggleDetailsItem(sub1item, sub1)">
+                                                        <div class="product-inner-label2" :data-Code="sub1item.code"
+                                                             @click="toggleDetailsItem(sub1item, sub1)">
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
                                                             {{sub1item.name | deleteQuotes}}
                                                         </div>
                                                         <div class="product-top-block-price2"
-                                                             :data-Code="sub1item.code" @click="toggleDetailsItem(sub1item, sub1)">
+                                                             :data-Code="sub1item.code"
+                                                             @click="toggleDetailsItem(sub1item, sub1)">
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
                                                             {{sub1item.price}}&#8381;
                                                         </div>
@@ -164,7 +184,8 @@
                   :charset="charset"
         />
         <div>
-            <a class="back_to_top" title="Наверх" @scroll="scrollTrack()" @click="backToTop()"><!--&uarr; --><img :src="getImgSrc('arrow-up')" /></a>
+            <a class="back_to_top" title="Наверх" @scroll="scrollTrack()" @click="backToTop()"><!--&uarr; --><img
+                    :src="getImgSrc('arrow-up')"/></a>
         </div>
     </div>
 </template>
@@ -182,7 +203,7 @@
         cursor: pointer;
         border-radius: 2px;
         display: none;
-        img{
+        img {
             width: 100%;
             height: 100%;
         }
@@ -349,8 +370,9 @@
     import _ from 'lodash';
     import Position from './PositionItem.vue';
     import getImg from './helpers/importImages.js';
-    export default{
-        data(){
+
+    export default {
+        data() {
             return {
                 name: 'New positions list',
                 settings: this.$store.state.settings,
@@ -400,44 +422,46 @@
 
         methods: {
 
-            getNewJson(){
+            getNewJson() {
                 this.$store.dispatch('GET_FULL_TREE');
             },
-            sortArray(arr){
+            sortArray(arr) {
                 return _.sortBy(arr, 'order');
             },
-            rebuildData(){
+            rebuildData() {
                 const self = this;
                 let category = _.filter(this.$store.state.app.FullTree, function (item) {
                     return item.code === self.categoryId;
                 });
-                this.data = _.filter(category[0].groups, (item)=>{return !(item.items.length === 0 && item.groups.length ===0)});
+                this.data = _.filter(category[0].groups, (item) => {
+                    return !(item.items.length === 0 && item.groups.length === 0)
+                });
                 //this.data = _.filter(category[0].groups, (item) => { return item; });
             },
-            getTitleStyle(item){
+            getTitleStyle(item) {
                 let res = '';
                 if (item.textColor !== '') {
                     res += ';color:' + item.textColor;
                 }
                 return res;
             },
-            test(item){
+            test(item) {
                 return '';
             },
-            test2(item){
+            test2(item) {
                 return '';
             },
-            getImgSrc(name){
+            getImgSrc(name) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
                 return path;
             },
-            getTitleImg(item){
+            getTitleImg(item) {
                 //alert(123);
                 //alert(this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName);
                 return this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName;
             },
-            getStyle(item){
+            getStyle(item) {
                 const self = this;
                 let res = '';
                 let payload = {};
@@ -448,52 +472,52 @@
                 if (!self.$store.state.settings.isBrowser) {
                     // todo добавляем различные проверки и загрузки картинок для планшета
                     // 1. todo сюда проверку на соответствие картинки
-                        //alert(`${item.urlImage.slice(1)} === ${self.$store.state.app.LocalPaths.Positions[item.code]} === ${item.urlImage.slice(1) === self.$store.state.app.LocalPaths.Positions[item.code]}`);
-                         if (self.$store.state.app.LocalPaths.Positions[item.code] && (item.urlImage.slice(1) != self.$store.state.app.LocalPaths.Positions[item.code])){
-                             //alert('Меняем картинку товара');
-                             self.$store.state.app.LocalPaths.Positions[item.code] = void 1;
-                         }
+                    //alert(`${item.urlImage.slice(1)} === ${self.$store.state.app.LocalPaths.Positions[item.code]} === ${item.urlImage.slice(1) === self.$store.state.app.LocalPaths.Positions[item.code]}`);
+                    if (self.$store.state.app.LocalPaths.Positions[item.code] && (item.urlImage.slice(1) != self.$store.state.app.LocalPaths.Positions[item.code])) {
+                        //alert('Меняем картинку товара');
+                        self.$store.state.app.LocalPaths.Positions[item.code] = void 1;
+                    }
 
-                         if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1){
-                           // alert('URL: ' + self.$store.state.settings.urlBase);
-                            getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function(img, isTrue){
-                                   payload = {
-                                                type: 'positions',
-                                                name: item.code,
-                                                value: img,
-                                                callback: function(){
-                                                    res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' + img;
-                                                    isLoaded = true;
-                                                    return res;
-                                                }
-                                           }
-                                    self.$store.commit('SET_LOCAL_PATH', payload);
-                                   });
-                         } else {
-                             //alert(self.$store.state.app.LocalPaths.Positions[item.code]);
-                             res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' +  self.$store.state.app.LocalPaths.Positions[item.code] + ')';
-                             return res;
-                         }
+                    if (self.$store.state.app.LocalPaths.Positions[item.code] === void 1) {
+                        // alert('URL: ' + self.$store.state.settings.urlBase);
+                        getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImage, function (img, isTrue) {
+                            payload = {
+                                type: 'positions',
+                                name: item.code,
+                                value: img,
+                                callback: function () {
+                                    res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' + img;
+                                    isLoaded = true;
+                                    return res;
+                                }
+                            }
+                            self.$store.commit('SET_LOCAL_PATH', payload);
+                        });
+                    } else {
+                        //alert(self.$store.state.app.LocalPaths.Positions[item.code]);
+                        res += 'background-image: url(file:///storage/emulated/0/StreetFoodBar/images/' + self.$store.state.app.LocalPaths.Positions[item.code] + ')';
+                        return res;
+                    }
 
-                         if (self.$store.state.app.LocalPaths.LargePositions[item.code] && (item.urlImageLarge.slice(1) != self.$store.state.app.LocalPaths.LargePositions[item.code])){
-                              //alert('Меняем большую картинку товара');
-                              self.$store.state.app.LocalPaths.LargePositions[item.code] = void 1;
-                         }
+                    if (self.$store.state.app.LocalPaths.LargePositions[item.code] && (item.urlImageLarge.slice(1) != self.$store.state.app.LocalPaths.LargePositions[item.code])) {
+                        //alert('Меняем большую картинку товара');
+                        self.$store.state.app.LocalPaths.LargePositions[item.code] = void 1;
+                    }
 
-                         if (self.$store.state.app.LocalPaths.LargePositions[item.code] === void 1){
-                            getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImageLarge, function(img, isTrue){
-                                   payload = {
-                                                type: 'large',
-                                                name: item.code,
-                                                value: img,
-                                                callback: function(){
-                                                    isLoaded = true;
-                                                    return res;
-                                                }
-                                   }
-                                   self.$store.commit('SET_LOCAL_PATH', payload);
-                            });
-                         }
+                    if (self.$store.state.app.LocalPaths.LargePositions[item.code] === void 1) {
+                        getImg(self.$store.state.settings.urlBase + self.settings.server + self.settings.urlBackImage + item.urlImageLarge, function (img, isTrue) {
+                            payload = {
+                                type: 'large',
+                                name: item.code,
+                                value: img,
+                                callback: function () {
+                                    isLoaded = true;
+                                    return res;
+                                }
+                            }
+                            self.$store.commit('SET_LOCAL_PATH', payload);
+                        });
+                    }
 
 
                 } else {
@@ -526,7 +550,7 @@
                 this.urlImageLarge = item.urlImageLarge;
                 this.price = item.price,
                 this.name = item.name,
-                this.description = item.description_ru,
+                this.description = this.$store.state.settings.language === 'ru' ? item.description_ru : item.description_en,
                 this.yacheika = item.yacheika === null ? '' : item.yacheika;
                 this.activeTime = group.activeTime;
                 this.vitrina = 'test';//item.vitrina;
@@ -535,24 +559,24 @@
                 this.showDetails = true;
                 this.$store.commit('SET_SELECTED_POSITION', item);
             },
-            backToTop(){
+            backToTop() {
                 let panel = document.querySelector('.rolling');
                 let scrolled = panel.scrollTop;
-                if (scrolled > 0){
+                if (scrolled > 0) {
                     panel.scrollTop -= 25;
                     setTimeout(this.backToTop, 0);
                 }
             },
-            scrollTrack(){
+            scrollTrack() {
                 let goTopBtn = document.querySelector('.back_to_top');
                 let panel = document.querySelector('.rolling');
                 var scrolled = panel.scrollTop;
                 var coords = panel.clientHeight;
                 if (scrolled > coords / 2) {
-                  goTopBtn.classList.add('back_to_top-show');
+                    goTopBtn.classList.add('back_to_top-show');
                 }
-                if (scrolled < coords  / 2) {
-                  goTopBtn.classList.remove('back_to_top-show');
+                if (scrolled < coords / 2) {
+                    goTopBtn.classList.remove('back_to_top-show');
                 }
             }
         },
