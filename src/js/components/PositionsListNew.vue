@@ -31,7 +31,13 @@
                                             </div>
                                             <div class="product-inner-label" :data-Code="sub0.code">
                                                 <template v-if="!sub0.iconNameActive">
-                                                    <div :style="getTitleStyle(sub0)">{{sub0.name | deleteQuotes}}</div>
+                                                    <template v-if="$store.state.settings.language === 'ru'">
+                                                        <div :style="getTitleStyle(sub0)">{{sub0.name | deleteQuotes}}
+                                                        </div>
+                                                    </template>
+                                                    <template v-else>
+                                                        <div :style="getTitleStyle(sub0)">{{sub0.name_en | deleteQuotes}}
+                                                    </template>
                                                 </template>
                                                 <template v-else>
                                                     <img :src="getTitleImg(sub0)">
@@ -48,7 +54,12 @@
                                             <div class="product-inner-label2" :data-Code="sub0.code"
                                                  @click="toggleDetailsItem(sub0, item)">
                                                 <!-- @click="toggleDetailsItem(subitem)"-->
+                                                <template v-if="$store.state.settings.language === 'ru'">
                                                 {{sub0.name | deleteQuotes}}
+                                                </template>
+                                                <template v-else>
+                                                    {{sub0.name_en | deleteQuotes}}
+                                                </template>
                                             </div>
                                             <div class="product-top-block-price2" :data-Code="sub0.code"
                                                  @click="toggleDetailsItem(sub0, item)">
@@ -105,10 +116,14 @@
                                                         </div>
                                                         <div class="product-inner-label" :data-Code="sub1item.code">
                                                             <template v-if="!sub1item.iconNameActive">
-
-                                                                <div :style="getTitleStyle(sub1item)">{{sub1item.name |
-                                                                deleteQuotes}}
+                                                                <template v-if="$store.state.settings.language === 'ru'">
+                                                                <div :style="getTitleStyle(sub1item)">{{sub1item.name | deleteQuotes}}
                                                                 </div>
+                                                                </template>
+                                                                <template v-else>
+                                                                    <div :style="getTitleStyle(sub1item)">{{sub1item.name_en | deleteQuotes}}
+                                                                    </div>
+                                                                </template>
                                                             </template>
                                                             <template v-else>
                                                                 <img :src="getTitleImg(sub1item)">
@@ -125,7 +140,12 @@
                                                         <div class="product-inner-label2" :data-Code="sub1item.code"
                                                              @click="toggleDetailsItem(sub1item, sub1)">
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
+                                                            <template v-if="$store.state.settings.language === 'ru'">
                                                             {{sub1item.name | deleteQuotes}}
+                                                            </template>
+                                                            <template v-else>
+                                                                {{sub1item.name_en | deleteQuotes}}
+                                                            </template>
                                                         </div>
                                                         <div class="product-top-block-price2"
                                                              :data-Code="sub1item.code"
@@ -514,7 +534,7 @@
                                     isLoaded = true;
                                     return res;
                                 }
-                            }
+                            };
                             self.$store.commit('SET_LOCAL_PATH', payload);
                         });
                     }
@@ -549,9 +569,9 @@
                 this.code = item.code;
                 this.urlImageLarge = item.urlImageLarge;
                 this.price = item.price,
-                this.name = item.name,
-                this.description = this.$store.state.settings.language === 'ru' ? item.description_ru : item.description_en,
-                this.yacheika = item.yacheika === null ? '' : item.yacheika;
+                    this.name = this.$store.state.settings.language === 'ru' ? item.name : item.name_en,
+                    this.description = this.$store.state.settings.language === 'ru' ? item.description_ru : item.description_en,
+                    this.yacheika = item.yacheika === null ? '' : item.yacheika;
                 this.activeTime = group.activeTime;
                 this.vitrina = 'test';//item.vitrina;
                 this.related = item.related;

@@ -7,7 +7,13 @@
                         <a :root-data-code="item.code">
                             <div class="root-icon-image" :style="item.style">
                                 <div class="root-icon-descr intro-header">
-                                    {{ item.name }}
+                                    <template v-if="$store.state.settings.language === 'ru'">
+                                        {{ item.name_RU }}
+                                    </template>
+                                    <template v-else>
+                                        {{ item.name_EN }}
+                                    </template>
+
                                 </div>
                             </div>
                         </a>
@@ -66,8 +72,9 @@
 </style>
 <script>
     import getImg from './helpers/importImages.js';
-    export default{
-        data(){
+
+    export default {
+        data() {
             return {
                 name: 'this component',
                 ctgs: [],
@@ -124,7 +131,7 @@
                         }
 
                     } else {
-                        item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlImageLarge + ')';
+                        item.style = 'background-image: url(' + self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage + ')';
                     }
                     return item;
                 });
@@ -132,12 +139,12 @@
         },
 
         methods: {
-            getNewJson(){
+            getNewJson() {
                 this.$store.dispatch('GET_FULL_TREE');
             }
         },
 
-        mounted(){
+        mounted() {
             const self = this;
             this.currentLanguage = this.$store.state.settings.language;
 

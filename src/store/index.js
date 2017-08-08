@@ -182,6 +182,10 @@ const store = new Vuex.Store({
             },
             [m_types.SET_FULL_TREE](state, payload){
                 state.app.FullTree = payload;
+/*                state.app.FullTree = _.map(state.app.FullTree, (item) => {
+                    console.log(item);
+                    return item;
+                })*/
                 // console.log(payload);
             }
         },
