@@ -16,7 +16,13 @@
                                        :class="item.newClass"
                                        :style="item.style"
                                     >
-                                        {{ item.name }}
+                                        <!--{{ item.name }}-->
+                                        <template v-if="$store.state.settings.language === 'ru'">
+                                            {{ item.name_RU }}
+                                        </template>
+                                        <template v-else>
+                                            {{ item.name_EN }}
+                                        </template>
                                     </a>
                                 </router-link>
                             </li>
