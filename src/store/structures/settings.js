@@ -17,7 +17,7 @@ export default {
         close: 'close.png'
     },
     testMode: false,
-    isTablet: false,
+    isTablet: true,
     showButtons: true,
     updateStatePeriod: 1000 * 60 * 30,  // время обновления меню секунда * кол-во секунд * кол-во минут
     updateOrderFrequency: 1000 * 15, // время обновления состояния корзины
@@ -27,5 +27,5 @@ export default {
     language: 'ru',
     showLanguageToggle: true,
     localPath:'StreetFoodBar/images',
-    isBrowser: true
+    isBrowser: false
 }

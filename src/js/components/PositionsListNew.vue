@@ -36,7 +36,7 @@
                                                         </div>
                                                     </template>
                                                     <template v-else>
-                                                        <div :style="getTitleStyle(sub0)">{{sub0.name_en | deleteQuotes}}
+                                                        <div :style="getTitleStyle(sub0)">{{sub0.name_en | deleteQuotes}}</div>
                                                     </template>
                                                 </template>
                                                 <template v-else>
@@ -69,7 +69,13 @@
                                             <div class="wrapper-for-add-btn">
                                                 <div class="btn-add-to-cart" @click="add2cart(sub0.code)"
                                                      :style="addingToCartStyle">
-                                                    {{addingToCartTitle}}
+                                                    <template
+                                                            v-if="$store.state.settings.language === 'ru'">
+                                                        {{addingToCartTitle}}
+                                                    </template>
+                                                    <template v-else>
+                                                        {{addingToCartTitleEng}}
+                                                    </template>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,7 +166,13 @@
                                                             <div class="btn-add-to-cart"
                                                                  @click="add2cart(sub1item.code)"
                                                                  :style="addingToCartStyle">
-                                                                {{addingToCartTitle}}
+                                                                <template
+                                                                        v-if="$store.state.settings.language === 'ru'">
+                                                                    {{addingToCartTitle}}
+                                                                </template>
+                                                                <template v-else>
+                                                                    {{addingToCartTitleEng}}
+                                                                </template>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -427,6 +439,9 @@
             addingToCartTitle: function () {
                 return this.IsAddingToCart ? 'Добавление' : 'Выбрать';
             },
+            addingToCartTitleEng: function () {
+                return this.IsAddingToCart ? 'Adding' : 'Add';
+            },
             addingToCartStyle: function () {
                 return this.IsAddingToCart ? "background:#dbdbd7" : '';
             },
@@ -584,7 +599,7 @@
                     this.description = this.$store.state.settings.language === 'ru' ? item.description_ru : item.description_en,
                     this.description_ru = item.description_ru,
                     this.description_en = item.description_en,
-                this.yacheika = item.yacheika === null ? '' : item.yacheika;
+                    this.yacheika = item.yacheika === null ? '' : item.yacheika;
                 this.activeTime = group.activeTime;
                 this.vitrina = 'test';//item.vitrina;
                 this.related = item.related;
