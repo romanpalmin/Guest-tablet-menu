@@ -55,7 +55,7 @@
                                                  @click="toggleDetailsItem(sub0, item)">
                                                 <!-- @click="toggleDetailsItem(subitem)"-->
                                                 <template v-if="$store.state.settings.language === 'ru'">
-                                                {{sub0.name | deleteQuotes}}
+                                                    {{sub0.name | deleteQuotes}}
                                                 </template>
                                                 <template v-else>
                                                     {{sub0.name_en | deleteQuotes}}
@@ -116,12 +116,15 @@
                                                         </div>
                                                         <div class="product-inner-label" :data-Code="sub1item.code">
                                                             <template v-if="!sub1item.iconNameActive">
-                                                                <template v-if="$store.state.settings.language === 'ru'">
-                                                                <div :style="getTitleStyle(sub1item)">{{sub1item.name | deleteQuotes}}
-                                                                </div>
+                                                                <template
+                                                                        v-if="$store.state.settings.language === 'ru'">
+                                                                    <div :style="getTitleStyle(sub1item)">
+                                                                        {{sub1item.name | deleteQuotes}}
+                                                                    </div>
                                                                 </template>
                                                                 <template v-else>
-                                                                    <div :style="getTitleStyle(sub1item)">{{sub1item.name_en | deleteQuotes}}
+                                                                    <div :style="getTitleStyle(sub1item)">
+                                                                        {{sub1item.name_en | deleteQuotes}}
                                                                     </div>
                                                                 </template>
                                                             </template>
@@ -141,7 +144,7 @@
                                                              @click="toggleDetailsItem(sub1item, sub1)">
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
                                                             <template v-if="$store.state.settings.language === 'ru'">
-                                                            {{sub1item.name | deleteQuotes}}
+                                                                {{sub1item.name | deleteQuotes}}
                                                             </template>
                                                             <template v-else>
                                                                 {{sub1item.name_en | deleteQuotes}}
@@ -195,7 +198,11 @@
                   :urlImageLarge="urlImageLarge"
                   :price="price"
                   :name="name"
+                  :name_ru="name_ru"
+                  :name_en="name_en"
                   :description="description"
+                  :description_ru="description_ru"
+                  :description_en="description_en"
                   :yacheika="yacheika"
                   :activeTime="activeTime"
                   :vitrina="vitrina"
@@ -399,12 +406,15 @@
                 data: [],
                 IsAddingToCart: false,
                 showDetails: false,
-
                 code: 0,
                 urlImageLarge: '',
                 price: 0,
                 name: '',
+                name_en: '',
+                name_ru: '',
                 description: '',
+                description_en: '',
+                description_ru: '',
                 yacheika: '',
                 currentId: this.$route.params.id,
                 activeTime: '',
@@ -565,13 +575,16 @@
                 if (!group.modal && group.type === 'Списком') {
                     return;
                 }
-
                 this.code = item.code;
                 this.urlImageLarge = item.urlImageLarge;
                 this.price = item.price,
                     this.name = this.$store.state.settings.language === 'ru' ? item.name : item.name_en,
+                    this.name_ru = item.name_ru,
+                    this.name_en = item.name_en,
                     this.description = this.$store.state.settings.language === 'ru' ? item.description_ru : item.description_en,
-                    this.yacheika = item.yacheika === null ? '' : item.yacheika;
+                    this.description_ru = item.description_ru,
+                    this.description_en = item.description_en,
+                this.yacheika = item.yacheika === null ? '' : item.yacheika;
                 this.activeTime = group.activeTime;
                 this.vitrina = 'test';//item.vitrina;
                 this.related = item.related;

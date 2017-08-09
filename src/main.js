@@ -152,7 +152,7 @@ const app = new Vue({
             path = `/${this.$store.state.settings.language}/menu`;
             this.emptyCache();
             this.getNewJsonFullTree();
-            this.$router.replace(path);
+            //this.$router.replace(path);
         },
 
         emptyCache(){

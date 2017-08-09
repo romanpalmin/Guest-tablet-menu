@@ -12,8 +12,22 @@
                     </div>
                 </div>
                 <div class="item-column-data">
-                    <div class="h1-item capital">{{nameFromParent | deleteQuotes | deleteNewLines}}</div>
-                    <div class="p-item">{{descriptionFromParent | deleteQuotes | deleteNewLines | addNewLine}}</div>
+                    <div class="h1-item capital">
+                        <template v-if="$store.state.settings.language === 'ru'">
+                            {{nameFromParentRu | deleteQuotes | deleteNewLines}}
+                        </template>
+                        <template v-else>
+                            {{nameFromParentEn | deleteQuotes | deleteNewLines}}
+                        </template>
+                    </div>
+                    <div class="p-item">
+                        <template v-if="$store.state.settings.language === 'ru'">
+                            {{descriptionFromParentRu | deleteQuotes | deleteNewLines | addNewLine}}
+                        </template>
+                        <template v-else>
+                            {{descriptionFromParentEn | deleteQuotes | deleteNewLines | addNewLine}}
+                        </template>
+                    </div>
                     <div class="price-row">
                         <div class="charset-wrapper" v-if="charset.length>0">
                             <template class="charset" v-for="(chr, index) in charset"><img :src="getCharset(chr)"><span
@@ -35,14 +49,30 @@
 
                     <div class="item-bottom-buttons" v-if="showButtons">
                         <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle">
-                            {{addingToCartTitle}}
+                            <template v-if="$store.state.settings.language === 'ru'">
+                                {{addingToCartTitle}}
+                            </template>
+                            <template v-else>
+                                {{addingToCartTitleEng}}
+                            </template>
+
                         </div>
                         <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp(yacheikaFromParent)">
-                            Показать
+                            <template v-if="$store.state.settings.language === 'ru'">
+                                Показать
+                            </template>
+                            <template v-else>
+                                Show
+                            </template>
                         </div>
 
                         <div class="related-items" v-if="relatedFromParent.length!==0">
-                            С этим товаром часто заказывают
+                            <template v-if="$store.state.settings.language === 'ru'">
+                                С этим товаром часто заказывают
+                            </template>
+                            <template v-else>
+                                Related products
+                            </template>
                             <div class="p-item-related ">
                                 <div v-for="rel in relatedFromParent" :data-Code="rel.code"
                                      @click="add2CartAdditional(rel.code2)" :style="addingToCartStyleAdditional">
@@ -50,7 +80,14 @@
                                         <div class="related-item-price product-top-block-price" :data-Code="rel.code2">
                                             {{rel.price}}
                                         </div>
-                                        <div class="related-item-title">{{rel.name_RU | deleteQuotes}}</div>
+                                        <div class="related-item-title">
+                                            <template v-if="$store.state.settings.language === 'ru'">
+                                                {{rel.name_RU | deleteQuotes}}
+                                            </template>
+                                            <template v-else>
+                                                {{rel.name_EN | deleteQuotes}}
+                                            </template>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -247,7 +284,7 @@
 <script>
 
     export default {
-        data(){
+        data() {
             return {
                 positionSet: {},
                 urlClose: '',
@@ -299,14 +336,29 @@
             nameFromParent: function () {
                 return this.name;
             },
+            nameFromParentRu: function () {
+                return this.name_ru;
+            },
+            nameFromParentEn: function () {
+                return this.name_en;
+            },
             descriptionFromParent: function () {
-                return this.description
+                return this.description;
+            },
+            descriptionFromParentRu: function () {
+                return this.description_ru;
+            },
+            descriptionFromParentEn: function () {
+                return this.description_en;
             },
             yacheikaFromParent: function () {
-                return this.yacheika
+                return this.yacheika;
             },
             addingToCartTitle: function () {
                 return this.IsAddingToCart ? 'Добавление' : 'Выбрать';
+            },
+            addingToCartTitleEng: function () {
+                return this.IsAddingToCart ? 'Adding' : 'Add';
             },
             addingToCartStyle: function () {
                 return this.IsAddingToCart ? "background:#dbdbd7" : '';
@@ -354,15 +406,15 @@
             }
         },
 
-        props: ["positionId", "urlImageLarge", "name", "price", "description", 'yacheika', 'activeTime', 'vitrina', "related", "code", "charset"],
+        props: ["positionId", "urlImageLarge", "name", "name_ru", "name_en",  "price", "description", "description_ru", "description_en", 'yacheika', 'activeTime', 'vitrina', "related", "code", "charset"],
 
         methods: {
-            close(){
+            close() {
                 this.$parent.showDetails = false;
                 this.$store.commit('SET_SELECTED_POSITION', {});
             },
 
-            getCharset(chr){
+            getCharset(chr) {
                 let ret = chr.icon_URL;
                 if (chr && chr.icon_URL[0] === '/') {
                     ret = chr.icon_URL.slice(1);
@@ -418,7 +470,7 @@
 
         },
 
-        mounted(){
+        mounted() {
             this.urlClose = this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close;
         }
     }
