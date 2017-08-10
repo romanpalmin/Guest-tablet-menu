@@ -115,6 +115,7 @@ const app = new Vue({
             //console.log('Показывать или не показывать модальное окно');
             let condition = this.$store.state.app.isShowModalAnketa && //признак показа модального окна
                 !this.$store.state.app.showModalAnketa && // признак того, что окно не открыто
+                this.$store.state.settings.language === 'ru' && // признак того, что включен русский язык
                 this.$router.currentRoute.name === 'plainmenu'; // признак того, что открыты категории
             if (condition) { // если все условия соблюдены
                 this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': true});
@@ -260,7 +261,7 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
         </nav>
          <nav v-else class="pages-nav">
-            <div class="pages-nav__item "><router-link to="/en/Actions3" class="link-page link">Questionnaire</router-link></div>
+            <!--<div class="pages-nav__item "><router-link to="/en/Actions3" class="link-page link">Questionnaire</router-link></div>-->
             <div class="pages-nav__item "><router-link to="/en/shedule" class="link-page link">Shedule</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/menu" class="link-page link">Menu</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/order" class="link-page link">Your order</router-link></div>
