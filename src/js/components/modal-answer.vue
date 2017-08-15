@@ -11,7 +11,8 @@
                                         :src="getImgPath('close')"/></div>
                             </template>
                             <div class="modal-header">
-                                <h01> Расскажи, откуда ты о нас узнал</h01>
+                                <h01>Расскажи откуда ты о нас узнал </h01>
+                                <h02>и получи возможность поужинать вдвоем за счет нашего ресторана на 3000 руб!*</h02>
                             </div>
 
                             <div class="modal-body">
@@ -25,8 +26,9 @@
                                     </template>-->
                                     <table>
                                         <tr v-for="row in 2">
-                                            <td v-for="cols in 5"  class="grid-items">
-                                                <div class="grid-item" @click="sendAnswer(itemsList[getIndex(row, cols)])">
+                                            <td v-for="cols in 5" class="grid-items">
+                                                <div class="grid-item" :data-id="itemsList[getIndex(row, cols)].code"
+                                                     @click="selectAnswer(itemsList[getIndex(row, cols)])">
                                                     <img :src="getImgPath(itemsList[getIndex(row, cols)].img)"/>
                                                 </div>
                                             </td>
@@ -34,10 +36,39 @@
                                     </table>
                                 </div>
                             </div>
+                            <div class="phone-number" v-if="showNumpad">
+                                <div class="phone-number-title">
+                                    <h03>Введите номер телефона</h03>
+                                </div>
+                                <div class="phone-number-mask"><!--+7 ( _ _ _ ) _ _ _ - _ _ - _ _--> {{phoneView}}</div>
+                            </div>
+                            <div class="num-pad" v-if="showNumpad">
+                                <table class="numpad-table">
+                                    <tr>
+                                        <td class="numpad-cell" v-for="n in 10">
+                                            <button class="numpad-buttons" @click="printPhone(n-1)">{{n - 1}}</button>
+                                        </td>
+                                        <td class="numpad-cell">
+                                            <button class="numpad-buttons" @click="deletePhone(n-1)">DEL</button>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="accept-phone-number">
+                                <button class="accept-phone-number-button" id="btn-accept" disabled
+                                        @click="sendAnswer()">ОТПРАВИТЬ
+                                </button>
+                            </div>
+                            <div class="modal-header">
+                                <h03>
+                                    *1 числа каждого месяца объявляем счастливчика из ответивших. Участие возможно только 1 раз
+                                </h03>
+                            </div>
                         </div>
                         <div class="loading-modal" v-if="showType === 'loading'">
                             <div class="modal-body">
                                 Loading...
+
                             </div>
                         </div>
                         <div class="callback-modal" v-if="showType === 'callback'">
@@ -45,23 +76,57 @@
                                 <div class="callback-modal-answer">
                                     <h01>Большое спасибо!</h01>
                                     <h02>Street Food Bar №1 благодарит Вас за уделенное время и заполненную анкету!
+
                                     </h02>
                                     <h02>К Вашим услугам инновационный спорт-бар с передовыми технологиями, позволяющий
                                         не только смотреть спортивные трансляции на большом экране, но и полностью
                                         погружаться в игру, ощущая себя на матче любимой команды. Эффект присутствия
                                         усиливают уникальный мультимедийный центр, масштабная игровая консоль и мощная
                                         акустическая система Dolby Atmos.
+
                                     </h02>
                                     <h02>Модные бургеры в меню Street Food Bar №1 занимают основную позицию. Их
                                         особенность — цветные свежеиспеченные булочки, сочное мясо и эксклюзивные соусы.
                                         Авторское исполнение и необычная подача блюд приближает хиты стрит-фуда –
                                         хот-доги, сэндвичи, барбекю и домашние натуральные сосиски – к высокой кухне.
+
                                     </h02>
                                 </div>
                                 <button class="close-modal-button" @click="$emit('close')" v-if="closeBtn === true">
                                     Закрыть
+
                                 </button>
                             </div>
+                        </div>
+                        <div class="callback-modal" v-if="showType === 'callback-success'">
+                            <template v-if="closeBtn === 'true'">
+                                <div class="modal-close" @click="$emit('close')"><img
+                                        :src="getImgPath('close')"/></div>
+                            </template>
+                            <div class="modal-body">
+                                <div class="callback-modal-answer callback-success">
+                                    <h01>Большое спасибо!</h01>
+                                    <h01>Вы успешно зарегистрировались, Ваш номер телефона учавствует в акции</h01>
+                                </div>
+                            </div>
+                           <!-- <button class="close-modal-button" @click="$emit('close')">
+                                Закрыть
+                            </button>-->
+                        </div>
+                        <div class="callback-modal" v-if="showType === 'callback-repeat'">
+                            <template v-if="closeBtn === 'true'">
+                                <div class="modal-close" @click="$emit('close')"><img
+                                        :src="getImgPath('close')"/></div>
+                            </template>
+                            <div class="modal-body">
+                                <div class="callback-modal-answer  callback-repeat">
+                                    <h01>Cпасибо!</h01>
+                                    <h01>Такой номер уже учавствует в акции в текущем месяце</h01>
+                                </div>
+                            </div>
+                            <!--<button class="close-modal-button" @click="$emit('close')">
+                                Закрыть
+                            </button>-->
                         </div>
                     </div>
                 </div>
@@ -70,6 +135,12 @@
     </div>
 </template>
 <style scoped lang="less">
+    .item-opacity {
+        opacity: 0.2;
+    }
+
+
+
     .modal-mask {
         position: fixed;
         z-index: 9998;
@@ -86,18 +157,82 @@
             h01 {
                 font-family: IntroHeader;
                 display: block;
-                padding-bottom: 20px;
-                font-size: 25pt;
+                /*padding-bottom: 20px;*/
+                font-size: 22pt;
                 color: #ffffff;
                 text-align: center;
                 width: 100%;
             }
+            h02 {
+                font-family: IntroHeader;
+                display: block;
+                /*padding-bottom: 20px;*/
+                font-size: 15pt;
+                color: #ffffff;
+                text-align: center;
+                width: 100%;
+            }
+            h03 {
+                font-family: IntroHeader;
+                display: block;
+                /*padding-bottom: 20px;*/
+                font-size: 10pt;
+                color: #ffffff;
+                text-align: center;
+                width: 100%;
+            }
+            .phone-number {
+                text-align: center;
+                .phone-number-mask {
+                    width: 300px;
+                    height: 35px;
+                    background-color: black;
+                    line-height: 35px;
+                    font-size: 17pt;
+                    font-weight: bolder;
+                    margin: 0 auto;
+                }
+            }
+            .num-pad {
+                text-align: center;
+                width: 100%;
+                .numpad-table {
+                    width: 50%;
+                    margin: 0 auto;
+                    .numpad-buttons {
+                        height: 45px;
+                        min-width: 45px;
+                        background-color: black;
+                        color: #f7f7f7;
+                        font-size: 16pt;
+                        font-weight: bolder;
+                        border-radius: 5px;
+                    }
+                }
+            }
+
+            .accept-phone-number {
+                text-align: center;
+                .accept-phone-number-button {
+                    width: 300px;
+                    height: 35px;
+                    border-radius: 8px;
+                    background-color: black;
+                    color: gray;
+                    font-size: 16pt;
+                    font-weight: bolder;
+                    margin: 5px;
+                    .btn-red{
+                        background-color: #ff341b;
+                    }
+                }
+            }
             .modal-container {
                 background-image: url(http://10.10.182.11/img/background.jpg);
-                width: 930px;
-                height: 450px;
-                margin: 0 auto;
+                width: 990px;
+                /*height: 600px;*/
                 padding: 20px 30px;
+                margin: 0 auto -100px;
                 background-color: #fff;
                 box-shadow: 0 2px 8px rgba(76, 76, 76, 0.33);
                 transition: all .3s ease;
@@ -105,6 +240,14 @@
                 position: relative;
                 border-radius: 13px;
                 border: 4px solid #8a8787;
+                .callback-success{
+                    width: 100%;
+                    text-align: center;
+                }
+                .callback-repeat{
+                    width: 100%;
+                    text-align: center;
+                }
                 .modal-close {
                     width: 70px;
                     height: 70px;
@@ -140,10 +283,7 @@
                             display: block;
                             font-size: 24px;
                             font-weight: normal;
-                            padding-top: 0;
-                            padding-bottom: 10px;
-                            padding-left: 10px;
-                            padding-right: 10px;
+                            padding: 0 10px 10px;
                             text-align: justify;
                             /*font-family: IntroHeader;*/
                         }
@@ -161,8 +301,9 @@
                         display: grid;
                         grid-template-columns: repeat(5, 20%);
                         text-align: center;
+                        padding-left: 50px;
                         .grid-items {
-                            padding: 20px;
+                            padding: 10px;
                             .grid-item {
                                 height: 140px;
                                 width: 140px;
@@ -211,83 +352,183 @@
 
 </style>
 <script>
-    export default{
-        data(){
-            return{
-                name:'Модальное окно анкеты',
+    export default {
+        data() {
+            return {
+                name: 'Модальное окно анкеты',
                 showModal: this.$store.state.app.showModalAnketa,
                 settings: this.$store.state.settings,
+                showNumpad: false,
                 showType: 'primary',
                 showCloseBtn: this.closeBtn,
+                selectedItem: {},
+                currentPhone: '',
                 itemsList: [
-                        {'name': 'ВКонтакте', 'img': 'vk', 'code': 'SN1'},
-                        {'name': 'Instagram', 'img': 'instagram', 'code': 'SN3'},
-                        {'name': 'Яndex', 'img': 'yandex', 'code': 'NW2'},
-                        {'name': 'Google', 'img': 'google', 'code': 'NW1'},
-                        {'name': 'Афиша', 'img': 'afisha', 'code': 'IN4'},
-                        {'name': 'РестоРейтинг', 'img': 'restorating', 'code': 'NW4'},
-                        {'name': 'Restoclub', 'img': 'restoclub', 'code': 'NW3'},
-                        {'name': 'Реклама', 'img': 'outdoor-ad', 'code': 'SR5'},
-                        {'name': 'От друзей', 'img': 'friends', 'code': 'SR1'},
-                        {'name': 'Проезжал', 'img': 'drivepast', 'code': 'SR2'}
-                    ]
+                    {'name': 'ВКонтакте', 'img': 'vk', 'code': 'SN1'},
+                    {'name': 'Instagram', 'img': 'instagram', 'code': 'SN3'},
+                    {'name': 'Яndex', 'img': 'yandex', 'code': 'NW2'},
+                    {'name': 'Google', 'img': 'google', 'code': 'NW1'},
+                    {'name': 'Афиша', 'img': 'afisha', 'code': 'IN4'},
+                    {'name': 'РестоРейтинг', 'img': 'restorating', 'code': 'NW4'},
+                    {'name': 'Restoclub', 'img': 'restoclub', 'code': 'NW3'},
+                    {'name': 'Реклама', 'img': 'outdoor-ad', 'code': 'SR5'},
+                    {'name': 'От друзей', 'img': 'friends', 'code': 'SR1'},
+                    {'name': 'Проезжал', 'img': 'drivepast', 'code': 'SR2'}
+                ]
             }
         },
         props: ['closeBtn'],
-        mounted(){
+        mounted() {
         },
-        methods:{
-            getIndex(row, col){
+        computed: {
+            phoneView: function () {
+                const str = this.currentPhone;
+                let res = '';
+                //let res = `+7(${str.substr(0,2)})${str.substr(3,5)}-${str.substr(6,7)}-${str.substr(8,9)}`;
+                //let preffix = str[0].length === 1 ? str[0] : ' _ ';
+                //res += preffix + str[1].length === 1 ? str[1] : ' _ ';
+                switch (str.length) {
+                    case 0:
+                        res = '+7 ( _ _ _) _ _ _ - _ _ - _ _';
+                        break;
+                    case 1:
+                        res = `+7 (${str[0]} _ _) _ _ _ - _ _ - _ _`;
+                        break;
+                    case 2:
+                        res = `+7 (${str[0]} ${str[1]} _) _ _ _ - _ _ - _ _`;
+                        break;
+                    case 3:
+                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) _ _ _ - _ _ - _ _`;
+                        break;
+                    case 4:
+                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} _ _ - _ _ - _ _`;
+                        break;
+                    case 5:
+                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} _ - _ _ - _ _`;
+                        break;
+                    case 6:
+                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - _ _ - _ _`;
+                        break;
+                    case 7:
+                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} _ - _ _`;
+                        break;
+                    case 8:
+                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} ${str[7]} - _ _`;
+                        break;
+                    case 9:
+                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} ${str[7]} - ${str[8]} _`;
+                        break;
+                    case 10:
+                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} ${str[7]} - ${str[8]} ${str[9]}`;
+                        break;
+                }
+                return res;
+            }
+        },
+        methods: {
+            printPhone(digit) {
+                let len = this.currentPhone.length;
+                if (len < 10) {
+                    this.currentPhone = '' + this.currentPhone + digit;
+                }
+            },
+            deletePhone() {
+                let len = this.currentPhone.length;
+                console.log(this.currentPhone);
+                if (len > 0) {
+                    this.currentPhone = this.currentPhone.substr(0, len - 1);
+                    console.log(this.currentPhone);
+                }
+            },
+            getIndex(row, col) {
                 // если первая строка, берем колонки, если вторая, добавляем 5, для печати второй строки
                 // в любом случае вычитаем индекс для корректного индекса массива
                 return (col + (row === 1 ? 0 : 5)) - 1;
             },
-            getImgPath(name){
+            getImgPath(name) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
                 return path;
             },
-            sendAnswer(item){
+            selectAnswer(currentitem) {
+                let items = document.getElementsByClassName('grid-item');
+                _.forEach(items, (item) => {
+                    if (item.dataset.id === currentitem.code) {
+                        item.classList.remove('item-opacity');
+                    } else {
+                        item.classList.add('item-opacity');
+                    }
+                });
+                this.selectedItem = currentitem;
+                this.showNumpad = true;
+                document.getElementById('btn-accept').removeAttribute('disabled');
+                document.getElementById('btn-accept').classList.add('btn-red')
+            },
+            sendAnswer() {
+                if (this.closeBtn === 'true') {
+                    //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                    this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                }
+                const payload = {
+                    'code': this.selectedItem.code,
+                    'name': this.selectedItem.name,
+                    'phone': '8' + this.currentPhone,
+                    'callback': resp => {
+                        // включаем модальное окно коллбэка
+                        // this.showType = 'callback';
+                        if (resp.code && resp.code === 'error') {
+                            console.log('Ошибка отправки: ' + resp.message);
+                            if (this.closeBtn === 'false') {
+                                this.success();
+                            }
+                        } else if (resp && resp.status === 1){
+                            this.showType = 'callback-success';
+                        } else if (resp && resp.status === 0){
+                            this.showType = 'callback-repeat';
+                        }
+                    }
+                };
+                this.$store.dispatch('SEND_ANKETA', payload);
+            },
+
+            sendAnswerOld(item) {
                 // включаем модальное окно загрузки
                 // this.showType = 'loading';
                 // console.log('loading');
-                if (this.closeBtn === 'true'){
-                            this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
-                            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
-                        }
+                if (this.closeBtn === 'true') {
+                    this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                    this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                }
                 const payload = {
                     'code': item.code,
                     'name': item.name,
                     'callback': resp => {
                         // включаем модальное окно коллбэка
                         // this.showType = 'callback';
-                        if (resp.code === 'error'){
+                        if (resp.code === 'error') {
                             console.log('Ошибка отправки: ' + resp.message);
-                            if (this.closeBtn === 'false'){
+                            if (this.closeBtn === 'false') {
                                 this.success();
                             }
                         } else {
                             this.success();
                         }
-
                     }
-                }
+                };
                 //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
                 //setTimeout(()=>{
-                    this.$store.dispatch('SEND_ANKETA', payload);
+                this.$store.dispatch('SEND_ANKETA', payload);
                 //}, 2000);
 
             },
-            success(){
+            success() {
                 console.log('Анкета успешно отправлена');
-                if (this.closeBtn === 'false'){
+                if (this.closeBtn === 'false') {
                     this.showType = 'callback';
                 }
             }
         }
     }
-
-
 
 
 </script>

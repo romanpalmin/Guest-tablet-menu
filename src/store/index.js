@@ -302,10 +302,18 @@ const store = new Vuex.Store({
                     value: payload.code
                 };
                 ajax.exec(operation, function (response) {
-                    console.log(response.data);
-                    if (payload.callback && typeof(payload.callback) === "function") {
-                        payload.callback(response.data);
-                    }
+                    const secondOperation = {
+                        name: 'sendPhone',
+                        phone: payload.phone
+                    };
+                    ajax.exec(secondOperation, resp => {
+                        console.log('Ответ на телефон');
+                        console.log(resp);
+                        if (payload.callback && typeof(payload.callback) === "function") {
+                            payload.callback(resp.data);
+                        }
+                    });
+
                 });
 
             },

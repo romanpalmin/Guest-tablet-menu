@@ -3,12 +3,12 @@ import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
 /*const ip = '10.10.250.82';*/
-/*const ip = '10.100.50.248';*/
-const ip = '10.10.182.11';
+const ip = '10.100.50.248';
+/*const ip = '10.10.182.11';*/
 let userName = 'planshet';
 let password = 'planshet';
 let ajaxServerUrlShort = '';
-const baseUrl = 'planshet/hs/model?';
+const baseUrl = 'planshet_kl/hs/model?';
 //-------------------------------
 //ajaxServerUrlShort = formAjaxVars(true);
 
@@ -119,6 +119,9 @@ function getUrl(operation) {
             break;
         case 'getDataNew':
             url = 'groups=&category=&sync=&data=1';
+            break;
+        case 'sendPhone':
+            url = `freeDinner=${operation.phone}`;
             break;
         default:
             url = '';
