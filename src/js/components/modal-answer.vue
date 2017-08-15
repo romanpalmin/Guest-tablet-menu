@@ -40,7 +40,7 @@
                                 <div class="phone-number-title">
                                     <h03>Введите номер телефона</h03>
                                 </div>
-                                <div class="phone-number-mask"><!--+7 ( _ _ _ ) _ _ _ - _ _ - _ _--> {{phoneView}}</div>
+                                <div class="phone-number-mask">{{phoneView}}</div>
                             </div>
                             <div class="num-pad" v-if="showNumpad">
                                 <table class="numpad-table">
@@ -67,8 +67,12 @@
                         </div>
                         <div class="loading-modal" v-if="showType === 'loading'">
                             <div class="modal-body">
-                                Loading...
-
+                                <div class="modal-body">
+                                    <div class="callback-modal-answer callback-success">
+                                        <h01>Большое спасибо!</h01>
+                                        <h01>Идет регистрация Вашего номера телефона...</h01>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <div class="callback-modal" v-if="showType === 'callback'">
@@ -106,7 +110,7 @@
                             <div class="modal-body">
                                 <div class="callback-modal-answer callback-success">
                                     <h01>Большое спасибо!</h01>
-                                    <h01>Вы успешно зарегистрировались, Ваш номер телефона учавствует в акции</h01>
+                                    <h01>Вы успешно зарегистрировались, Ваш номер телефона участвует в акции</h01>
                                 </div>
                             </div>
                            <!-- <button class="close-modal-button" @click="$emit('close')">
@@ -121,7 +125,7 @@
                             <div class="modal-body">
                                 <div class="callback-modal-answer  callback-repeat">
                                     <h01>Cпасибо!</h01>
-                                    <h01>Такой номер уже учавствует в акции в текущем месяце</h01>
+                                    <h01>Такой номер уже участвует в акции в текущем месяце</h01>
                                 </div>
                             </div>
                             <!--<button class="close-modal-button" @click="$emit('close')">
@@ -187,6 +191,7 @@
                 }
                 text-align: center;
                 .phone-number-mask {
+
                     width: 300px;
                     height: 35px;
                     background-color: black;
@@ -223,14 +228,14 @@
                     width: 300px;
                     height: 45px;
                     border-radius: 8px;
-                    background-color: black;
+                    &:disabled{
+                        background-color: black;
+                    }
                     color: white;
                     font-size: 18pt;
                     font-weight: bolder;
                     margin: 5px;
-                    .btn-red{
-                        background-color: #ff341b;
-                    }
+                    background-color: #e70001;
                 }
             }
             .modal-container {
@@ -307,7 +312,7 @@
                         display: grid;
                         grid-template-columns: repeat(5, 20%);
                         text-align: center;
-                        padding-left: 50px;
+                        padding-left: 80px;
                         .grid-items {
                             padding: 10px;
                             .grid-item {
@@ -390,9 +395,6 @@
             phoneView: function () {
                 const str = this.currentPhone;
                 let res = '';
-                //let res = `+7(${str.substr(0,2)})${str.substr(3,5)}-${str.substr(6,7)}-${str.substr(8,9)}`;
-                //let preffix = str[0].length === 1 ? str[0] : ' _ ';
-                //res += preffix + str[1].length === 1 ? str[1] : ' _ ';
                 switch (str.length) {
                     case 0:
                         res = '+7 ( _ _ _) _ _ _ - _ _ - _ _';
@@ -475,6 +477,8 @@
                     //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
                     this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                 }
+                // включаем модальное окно загрузки
+                this.showType = 'loading';
                 const payload = {
                     'code': this.selectedItem.code,
                     'name': this.selectedItem.name,
@@ -483,14 +487,15 @@
                         // включаем модальное окно коллбэка
                         // this.showType = 'callback';
                         if (resp.code && resp.code === 'error') {
-                            console.log('Ошибка отправки: ' + resp.message);
                             if (this.closeBtn === 'false') {
                                 this.success();
                             }
-                        } else if (resp && resp.status === 1){
+                        } else if (resp && resp.status && resp.status === 1){
                             this.showType = 'callback-success';
-                        } else if (resp && resp.status === 0){
+                        } else if (resp  && resp.status && resp.status === 0){
                             this.showType = 'callback-repeat';
+                        } else if (resp  && resp.status && resp.status === -1){
+                            this.success();
                         }
                     }
                 };
@@ -531,6 +536,8 @@
                 console.log('Анкета успешно отправлена');
                 if (this.closeBtn === 'false') {
                     this.showType = 'callback';
+                } else {
+                    this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
                 }
             }
         }

@@ -299,21 +299,25 @@ const store = new Vuex.Store({
                 [a_types.SEND_ANKETA]({}, payload){
                 const operation = {
                     name: 'sendAnketa',
-                    value: payload.code
+                    value: payload.code,
+                    phone: payload.phone
                 };
-                ajax.exec(operation, function (response) {
-                    const secondOperation = {
-                        name: 'sendPhone',
-                        phone: payload.phone
-                    };
-                    ajax.exec(secondOperation, resp => {
-                        console.log('Ответ на телефон');
-                        console.log(resp);
-                        if (payload.callback && typeof(payload.callback) === "function") {
-                            payload.callback(resp.data);
-                        }
-                    });
 
+                ajax.exec(operation, function (response) {
+                    console.log('Телефон:' + payload.phone + '\nДлина: ' + payload.phone.length);
+                    if (payload.phone && payload.phone.length === 11) {
+                        const secondOperation = {
+                            name: 'sendPhone',
+                            phone: payload.phone
+                        };
+                        ajax.exec(secondOperation, resp => {
+                            if (payload.callback && typeof(payload.callback) === "function") {
+                                payload.callback(resp.data);
+                            }
+                        });
+                    } else {
+                        payload.callback({'status': -1});
+                    }
                 });
 
             },
