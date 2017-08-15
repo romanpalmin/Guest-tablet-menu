@@ -182,6 +182,9 @@
                 width: 100%;
             }
             .phone-number {
+                .phone-number-title{
+                    margin-top: -30px;
+                }
                 text-align: center;
                 .phone-number-mask {
                     width: 300px;
@@ -199,9 +202,12 @@
                 .numpad-table {
                     width: 50%;
                     margin: 0 auto;
+                    .numpad-cell{
+                        padding:10px;
+                    }
                     .numpad-buttons {
-                        height: 45px;
-                        min-width: 45px;
+                        height: 60px;
+                        min-width: 60px;
                         background-color: black;
                         color: #f7f7f7;
                         font-size: 16pt;
@@ -215,11 +221,11 @@
                 text-align: center;
                 .accept-phone-number-button {
                     width: 300px;
-                    height: 35px;
+                    height: 45px;
                     border-radius: 8px;
                     background-color: black;
-                    color: gray;
-                    font-size: 16pt;
+                    color: white;
+                    font-size: 18pt;
                     font-weight: bolder;
                     margin: 5px;
                     .btn-red{
@@ -231,8 +237,8 @@
                 background-image: url(http://10.10.182.11/img/background.jpg);
                 width: 990px;
                 /*height: 600px;*/
-                padding: 20px 30px;
-                margin: 0 auto -100px;
+                padding: 10px 20px;
+                margin: 0 auto -60px;
                 background-color: #fff;
                 box-shadow: 0 2px 8px rgba(76, 76, 76, 0.33);
                 transition: all .3s ease;
