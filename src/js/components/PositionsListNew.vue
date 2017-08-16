@@ -66,7 +66,7 @@
                                                 <!-- @click="toggleDetailsItem(subitem)"-->
                                                 {{sub0.price}}&#8381;
                                             </div>
-                                            <div class="wrapper-for-add-btn">
+                                            <div class="wrapper-for-add-btn"  v-if="$store.state.settings.showButtons">
                                                 <div class="btn-add-to-cart" @click="add2cart(sub0.code)"
                                                      :style="addingToCartStyle">
                                                     <template
@@ -162,7 +162,7 @@
                                                             <!-- @click="toggleDetailsItem(sub1item)"-->
                                                             {{sub1item.price}}&#8381;
                                                         </div>
-                                                        <div class="wrapper-for-add-btn">
+                                                        <div class="wrapper-for-add-btn"  v-if="$store.state.settings.showButtons">
                                                             <div class="btn-add-to-cart"
                                                                  @click="add2cart(sub1item.code)"
                                                                  :style="addingToCartStyle">

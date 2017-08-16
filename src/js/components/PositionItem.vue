@@ -152,6 +152,7 @@
                     width: 90%;
                     height: auto;
                     border-radius: 30px;
+                    max-width: 500px;
                 }
                 position: fixed;
             }
