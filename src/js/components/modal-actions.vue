@@ -4,50 +4,24 @@
             <div class="modal-mask">
                 <div class="modal-wrapper">
                     <div class="modal-container">
-                        <div class="primary-modal" v-if="closeBtn">
-                            <div class="modal-close" @click="$emit('close')"><img :src="getImgPath('close')"/></div>
+                        <div class="primary-modal" v-if="isModal">
+                            <div class="modal-close" @click="$emit('close')" v-if="getCurrentModal().escActive"><img :src="getImgPath('close')"/></div>
                             <div class="modal-body">
-                                <template v-for="items in getActionsList">
-                                    {{items}}
-                                </template>
-                                TEST<br/>
-                                TEST<br/>
-                                TEST<br/>
-                                TEST<br/>
-                                  </div>
-                        </div>
-                        <div v-else="!closeBtn" class="primary-list">
-                            <div class="list-body">
-                                <template v-for="items in getActionsList">
-                                    {{items['Наименование']}}
-                                </template>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
-                                TEST TEST TEST<br/>
+                                <div class="item">
+                                    <div class="img-wrapper">
+                                        <img :src="getImgByUrl(getCurrentModal().urlRuStock)"/>
+                                    </div>
+                                </div>
 
+                            </div>
+                        </div>
+                        <div v-else="!isModal" class="primary-list">
+                            <div class="list-body">
+                                <div class="item" v-for="item in getActionsList">
+                                    <div class="img-wrapper">
+                                        <img :src="getImgByUrl(item.urlRuStock)"/>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -86,6 +60,14 @@
                 .modal-body {
 
                 }
+                .item {
+                    width: 100%;
+                    margin: 0 auto;
+                    text-align: center;
+                    .img-wrapper {
+
+                    }
+                }
                 .modal-close {
                     width: 70px;
                     height: 70px;
@@ -103,11 +85,12 @@
                 }
                 .primary-modal {
                     /*background-color: green;*/
+                    height: 700px;
+                    min-height: 400px;
                 }
                 .primary-list {
-                    /*background-color: lightseagreen;*/
-                    max-height: 200px;
-                    overflow: scroll;
+                    max-height: 600px;
+                    overflow-y: auto;
                 }
 
             }
@@ -136,23 +119,49 @@
                 name: 'Модальное/списочное окно акций',
                 showModal: this.$store.state.app.showModalActions,
                 settings: this.$store.state.settings,
-                showCloseBtn: this.closeBtn,
+                showCloseBtn: this.isModal,
             }
         },
-        computed:{
-            getActionsList: function(){
-                console.log(this.$store.state.app.actions);
-                return this.$store.state.app.actions;
+        computed: {
+            getActionsList: function () {
+                let current = this.$store.state.app.actions;
+                current = _.sortBy(
+                    _.filter(current, (item) => {
+                        return item.stock &&
+                            item.urlRuStock !== '';
+                    }),
+                    ['orderStock']);
+                return current;
+            },
+            getIsShowCloseBtn: function(item){
+                return item.escActive;
             }
         },
         mounted() {
         },
-        props: ['closeBtn'],
+        props: ['isModal'],
         methods: {
             getImgPath(name) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
                 return path;
+            },
+            getImgByUrl(url) {
+                let path = this.settings.urlBase + this.settings.server + this.settings.urlBackImage;
+                path += url;
+                return path;
+            },
+            getCurrentModal() {
+                let current = this.$store.state.app.actions;
+                let index = 1;
+                current = _.sortBy(
+                    _.filter(current, (item) => {
+                        return item.modal &&
+                            item.urlRuStock !== '';
+                    }),
+                    ['orderStock']);
+                console.log(current[index]);
+                return current[index];
             }
         }
 

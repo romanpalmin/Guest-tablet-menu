@@ -51,10 +51,31 @@ router.afterEach((toRoute, fromRoute) => {
     } else {
         //console.log('Не включаем модальное окно');
     }
+
+    if (
+        (toRoute.name === 'plainmenu' && fromRoute.name !== 'order' && fromRoute.name !== 'plainmenu')
+        || (fromRoute.name === 'order' && toRoute.name === 'plainmenu' && !store.state.app.isShowModalActions)) {
+        console.log('Включаем цикл показа модальных окон!!!!!!');
+        store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': true});
+    } else {
+        if (toRoute.name !== 'plainmenu'
+            && toRoute.name !== 'order'
+            && store.state.app.isShowModalActions) {
+            console.log('Выключаем цикл показа модальных окон');
+            store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': false});
+        }
+    }
 });
 
 router.replace('/ru/menu');
-
+/*const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
+const foo = ()=> {
+    for (let i = 1; i < n + 1; i++) {
+        const result = await delay(i * 1000);
+        console.log('wait', result);
+    }
+    return 'done';
+};*/
 
 const app = new Vue({
     data() {
@@ -70,7 +91,9 @@ const app = new Vue({
          let docHeight = document.documentElement.clientHeight;
          alert('Height:' + docHeight + '\n' + 'Width:' + docWidth);*/
         const self = this;
+        let startModalsShow = false;
         this.init();
+
 
         // определение меток для определения стола
         bleLabels();
@@ -115,7 +138,7 @@ const app = new Vue({
         }, this.$store.state.settings.updateShow);
 
         let showModal = setInterval(() => {
-            //console.log('Показывать или не показывать модальное окно');
+            //console.log('Показывать или не показывать модальное окно анкеты');
             let condition = this.$store.state.app.isShowModalAnketa && //признак показа модального окна
                 !this.$store.state.app.showModalAnketa && // признак того, что окно не открыто
                 this.$store.state.settings.language === 'ru' && // признак того, что включен русский язык
@@ -127,13 +150,44 @@ const app = new Vue({
 
         let updateActions = setInterval(() => {
             this.$store.dispatch('GET_ACTIONS');
-        }, 5000);
+        }, 100000);
+
+        let showModalActions = setInterval(() => {
+            console.log('Проверяем, нужно ли показывать модальное окно');
+            if (this.$store.state.app.isShowModalActions) {
+                console.log('Да');
+                if (!startModalsShow) {
+                    startModalsShow = true;
+                    console.log('Start');
+                    this.startModals();
+
+                } else {
+                    console.log('Do nothing...');
+                }
+            } else {
+                console.log('Нет');
+                startModalsShow = false;
+            }
+        }, 1000);
     },
     components: {
         'modal-anketa': modalAnswer,
         'modal-actions': modalActions
     },
     methods: {
+        startModals() {
+            let counter = 1000;
+            let foo = function () {
+                clearInterval(interval);
+                counter *= 2;
+                console.log(counter);
+                if (counter <= 20000) {
+                    interval = setInterval(foo, counter);
+                }
+            };
+            let interval = setInterval(foo, counter);
+        },
+
         showModalActions() {
             this.$store.commit('SET_MODAL_ACTIONS_SHOW', {'value': true});
         },
@@ -184,6 +238,7 @@ const app = new Vue({
             this.$store.commit('SET_CATEGORY_POSITIONS', catPositions);
             this.$store.dispatch('GET_TABLET_NUMBER');
             this.$store.dispatch('GET_BLE');
+            this.$store.dispatch('GET_ACTIONS');
 
             LsGet("small", (data) => {
                 //alert('Data for Small:' + data);
@@ -292,7 +347,7 @@ const app = new Vue({
       <router-view class="view"></router-view>
       </div>
       <modal-anketa v-if="this.$store.state.app.showModalAnketa" @close="closeModal()"  closeBtn="true" />
-      <modal-actions v-if="this.$store.state.app.showModalActions" @close="closeModalActions()"  :closeBtn="true" />
+      <modal-actions v-if="this.$store.state.app.showModalActions" @close="closeModalActions()"  :isModal="true" />
     </div>`
 }).$mount('#app');
 

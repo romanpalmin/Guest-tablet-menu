@@ -58,12 +58,12 @@ const store = new Vuex.Store({
             },
 
             /**
-             * Проверяет, нужно ли показывать модальное окно
+             * Проверяет, нужно ли показывать модальное окно акций
              * @param state
              * @param payload
              */
             [m_types.SET_IS_SHOW_MODAL_ACTIONS](state, payload){
-                state.app.isShowModalAnketa = payload.value;
+                state.app.isShowModalActions = payload.value;
             },
             /**
              * Включает модальное окно

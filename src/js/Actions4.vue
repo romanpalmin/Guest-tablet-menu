@@ -1,14 +1,14 @@
 <template>
     <div>
         <div class="modal-page-wrapper">
-            <modal-actions :closeBtn="false" />
+            <modal-actions :isModal="false" />
         </div>
     </div>
 </template>
 <style scoped lang="less">
     .modal-page-wrapper{
-        max-height: 500px;
-        min-height: 300px;
+       /* max-height: 500px;
+        min-height: 300px;*/
     }
 </style>
 <script>
