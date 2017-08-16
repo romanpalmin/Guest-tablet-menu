@@ -123,6 +123,9 @@ function getUrl(operation) {
         case 'sendPhone':
             url = `freeDinner=${operation.phone}`;
             break;
+        case 'getActions':
+            url = `stock=1`;
+            break;
         default:
             url = '';
             break;

@@ -7,6 +7,7 @@ import order from './js/Order.vue';
 import shedule from './js/Shedule.vue';
 import actions from './js/Actions.vue';
 import actions3 from './js/Actions3.vue';
+import actions4 from './js/Actions4.vue';
 /*import actions2 from './js/Actions2.vue';*/
 import wheretablet from './js/WhereTablet.vue';
 import VueRouter from 'vue-router'
@@ -14,12 +15,13 @@ import axios from 'axios';
 import VueAxios from 'vue-axios';
 import scan from './js/components/helpers/scancode.js';
 import scanBLE from './js/components/helpers/scanbt.js';
-import bleLabels from  './js/components/helpers/defineBtLabel';
+import bleLabels from './js/components/helpers/defineBtLabel';
 import LsGet from './js/components/helpers/lsGet.js';
 import wakeLockAcquire from './js/components/helpers/power.js';
 import settings from './store/structures/settings.js';
 import catPositions from './store/structures/categoryPositions.js';
 import store from './store';
+import modalActions from './js/components/modal-actions.vue';
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
@@ -31,6 +33,7 @@ const routes = [
     {name: 'actions', path: '/:lang/actions', component: actions},
     /*{name: 'actions2', path: '/:lang/actions2', component: actions2},*/
     {name: 'actions3', path: '/:lang/actions3', component: actions3},
+    {name: 'actions4', path: '/:lang/actions4', component: actions4},
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
     {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
     {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet}
@@ -62,7 +65,7 @@ const app = new Vue({
         }
     },
     store,
-    mounted(){
+    mounted() {
         /*let docWidth = document.documentElement.clientWidth;
          let docHeight = document.documentElement.clientHeight;
          alert('Height:' + docHeight + '\n' + 'Width:' + docWidth);*/
@@ -86,7 +89,7 @@ const app = new Vue({
         // Проверка обновлений
         let upTimerUpdate = setInterval(function () {
             let lastUpdate = self.$store.state.app.LastTimeUpdate;
-            console.log('Старое знаечение:' + lastUpdate);
+            console.log('Старое значение:' + lastUpdate);
             let callback = function () {
                 setTimeout(function () {
                     if (lastUpdate !== self.$store.state.app.LastTimeUpdate) {
@@ -121,23 +124,35 @@ const app = new Vue({
                 this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': true});
             }
         }, 50000);
+
+        let updateActions = setInterval(() => {
+            this.$store.dispatch('GET_ACTIONS');
+        }, 5000);
     },
     components: {
-        'modal-anketa': modalAnswer
+        'modal-anketa': modalAnswer,
+        'modal-actions': modalActions
     },
     methods: {
-        showModal(){
+        showModalActions() {
+            this.$store.commit('SET_MODAL_ACTIONS_SHOW', {'value': true});
+        },
+        closeModalActions() {
+            this.$store.commit('SET_MODAL_ACTIONS_SHOW', {'value': false});
+            this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': false});
+        },
+        showModal() {
             this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': true});
         },
-        closeModal(){
+        closeModal() {
             this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
             this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
         },
-        getNewJsonFullTree(){
+        getNewJsonFullTree() {
             this.$store.dispatch('GET_FULL_TREE');
         },
 
-        getJsonOrder(){
+        getJsonOrder() {
             this.$store.dispatch('GET_ORDERS');
             this.$store.commit('INCREMENT_ORDER_COUNTER');
         },
@@ -145,7 +160,7 @@ const app = new Vue({
         getShow: function () {
             this.$store.dispatch('GET_SHOW');
         },
-        changeLanguage(){
+        changeLanguage() {
             let path;
             let language = this.$store.state.settings.language === 'ru' ? 'en' : 'ru';
             this.$store.state.settings.language = language;
@@ -156,14 +171,14 @@ const app = new Vue({
             //this.$router.replace(path);
         },
 
-        emptyCache(){
+        emptyCache() {
             this.$store.state.app.MenuPoints.length = 0;
             for (let item in this.$store.state.app.Category) {
                 this.$store.state.app.Category[item + ''].currentState.length = 0;
             }
         },
 
-        init(){
+        init() {
             const self = this;
             this.$store.commit('SET_SETTINGS', settings);
             this.$store.commit('SET_CATEGORY_POSITIONS', catPositions);
@@ -252,7 +267,8 @@ const app = new Vue({
     <div class="head" v-show="showMenu">
     <div class="header intro-header" >
         <nav v-if= "$store.state.settings.language === 'ru'" class="pages-nav">
-           <!-- <div class="pages-nav__item" @click="showModal()">Modal</div>-->
+            <div class="pages-nav__item" @click="showModalActions()">ModalA</div>
+            <div class="pages-nav__item "><router-link to="/ru/Actions4" class="link-page link">Actions</router-link></div>
             <!--<div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>-->
             <!--<div class="pages-nav__item "><router-link to="/ru/Actions2" class="link-page link">Акция</router-link></div>-->
             <div class="pages-nav__item "><router-link to="/ru/Actions3" class="link-page link">Анкета</router-link></div>
@@ -276,6 +292,7 @@ const app = new Vue({
       <router-view class="view"></router-view>
       </div>
       <modal-anketa v-if="this.$store.state.app.showModalAnketa" @close="closeModal()"  closeBtn="true" />
+      <modal-actions v-if="this.$store.state.app.showModalActions" @close="closeModalActions()"  :closeBtn="true" />
     </div>`
 }).$mount('#app');
 

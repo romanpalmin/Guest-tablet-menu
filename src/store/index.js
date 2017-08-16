@@ -26,10 +26,45 @@ const store = new Vuex.Store({
                 OrderCounter: 0,
                 FullTree: [],
                 showModalAnketa: false,
-                isShowModalAnketa: true
+                isShowModalAnketa: true,
+                showModalActions: false,
+                isShowModalActions: true,
+                actions:[]
             }
         },
         mutations: {
+            /**
+             * заполняет текущие акции
+             * @param state
+             * @param payload
+             */
+            [m_types.SET_ACTIONS](state, payload){
+                console.log(payload);
+                state.app.actions = _.map(payload.actions, (item)=>{
+                  return item;
+                });
+                console.log(12321);
+                if (payload.callback && typeof(payload.callback) === "function") {
+                    payload.callback();
+                }
+            },
+            /**
+             * Включает модальное окно
+             * @param state
+             * @param payload
+             */
+            [m_types.SET_MODAL_ACTIONS_SHOW](state, payload){
+                state.app.showModalActions = payload.value;
+            },
+
+            /**
+             * Проверяет, нужно ли показывать модальное окно
+             * @param state
+             * @param payload
+             */
+            [m_types.SET_IS_SHOW_MODAL_ACTIONS](state, payload){
+                state.app.isShowModalAnketa = payload.value;
+            },
             /**
              * Включает модальное окно
              * @param state
@@ -190,6 +225,18 @@ const store = new Vuex.Store({
             }
         },
         actions: {
+            /**
+             * Загружает список текущих акций
+             * @param commit
+             * @param state
+             * @param payload
+             */
+            [a_types.GET_ACTIONS]({commit, state}, payload){
+                ajax.exec({name: 'getActions'}, resp => {
+                    console.log(resp);
+                    commit('SET_ACTIONS', {actions: resp.data});
+                });
+            },
             [a_types.GET_CATEGORY]({commit, state}, payload){
                 let categoryPositions = {};
                 let idx = 0;

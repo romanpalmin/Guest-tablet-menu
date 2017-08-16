@@ -113,9 +113,6 @@
                                     <h01>Вы успешно зарегистрировались, Ваш номер телефона участвует в акции</h01>
                                 </div>
                             </div>
-                           <!-- <button class="close-modal-button" @click="$emit('close')">
-                                Закрыть
-                            </button>-->
                         </div>
                         <div class="callback-modal" v-if="showType === 'callback-repeat'">
                             <template v-if="closeBtn === 'true'">
@@ -128,9 +125,6 @@
                                     <h01>Такой номер уже участвует в акции в текущем месяце</h01>
                                 </div>
                             </div>
-                            <!--<button class="close-modal-button" @click="$emit('close')">
-                                Закрыть
-                            </button>-->
                         </div>
                     </div>
                 </div>

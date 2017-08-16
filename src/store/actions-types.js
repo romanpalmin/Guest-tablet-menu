@@ -13,3 +13,4 @@ export const DELETE_ORDER_BY_ID= 'DELETE_ORDER_BY_ID';
 export const GET_SHOW = 'GET_SHOW';
 export const GET_FULL_TREE = 'GET_FULL_TREE';
 export const SEND_ANKETA = 'SEND_ANKETA';
+export const GET_ACTIONS = 'GET_ACTIONS';
