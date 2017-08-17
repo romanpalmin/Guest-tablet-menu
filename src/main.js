@@ -18,10 +18,13 @@ import scanBLE from './js/components/helpers/scanbt.js';
 import bleLabels from './js/components/helpers/defineBtLabel';
 import LsGet from './js/components/helpers/lsGet.js';
 import wakeLockAcquire from './js/components/helpers/power.js';
+import timer from './js/components/helpers/timer';
 import settings from './store/structures/settings.js';
 import catPositions from './store/structures/categoryPositions.js';
 import store from './store';
 import modalActions from './js/components/modal-actions.vue';
+
+
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
@@ -175,17 +178,38 @@ const app = new Vue({
         'modal-actions': modalActions
     },
     methods: {
+        /* startModals() {
+             let counter = 1000;
+             let foo = function () {
+                 clearInterval(interval);
+                 counter *= 2;
+                 console.log(counter);
+                 if (counter <= 20000) {
+                     interval = setInterval(foo, counter);
+                 }
+             };
+             let interval = setInterval(foo, counter);
+         },*/
+
         startModals() {
-            let counter = 1000;
-            let foo = function () {
-                clearInterval(interval);
-                counter *= 2;
-                console.log(counter);
-                if (counter <= 20000) {
-                    interval = setInterval(foo, counter);
+            let timerStart = new timer();
+            let index = 0;
+            const self = this;
+            timerStart.start(()=>{
+                index++;
+                console.log('Запускаем 2 раза' + index);
+                if (index === 4) {
+                    timerStart.set_interval(1000);
                 }
-            };
-            let interval = setInterval(foo, counter);
+                check();
+
+            }, 2000, true);
+            function check(){
+                if (!self.$store.state.app.isShowModalActions){
+                    console.log('Stop');
+                    timerStart.stop();
+                }
+            }
         },
 
         showModalActions() {
