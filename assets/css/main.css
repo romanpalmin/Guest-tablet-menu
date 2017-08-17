@@ -85,13 +85,9 @@ a {
     background: #0e0f0f;
 }
 
-.pages-nav__item {
-    width: 16%;
-    padding: 1em 1em 0 1em;
-}
 
 .pages-nav__item {
-    width: 16%;
+    width: 12%;
     padding: 1em 1em 0 1em;
 }
 

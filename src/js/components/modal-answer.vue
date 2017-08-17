@@ -2,6 +2,7 @@
     <div>
         <transition name="modal-answer">
             <div class="modal-mask">
+                <vue-touch-keyboard v-if="visible", :layout="layout", :cancel="hide", :accept="accept", :input="input" />
                 <div class="modal-wrapper">
                     <div class="modal-container">
 
@@ -60,6 +61,8 @@
                                 </button>
                             </div>
                             <div class="modal-header">
+                                <input type="text" placeholder="Text input" @focus="show" data-layout="normal" />
+
                                 <h03>
                                     *1 числа каждого месяца объявляем счастливчика из ответивших. Участие возможно только 1 раз
                                 </h03>
@@ -357,6 +360,7 @@
 
 </style>
 <script>
+
     export default {
         data() {
             return {
@@ -379,7 +383,13 @@
                     {'name': 'Реклама', 'img': 'outdoor-ad', 'code': 'SR5'},
                     {'name': 'От друзей', 'img': 'friends', 'code': 'SR1'},
                     {'name': 'Проезжал', 'img': 'drivepast', 'code': 'SR2'}
-                ]
+                ],
+                visible: false,
+                layout: "normal",
+                input: null,
+                options: {
+                    useKbEvents: false
+                }
             }
         },
         props: ['closeBtn'],
@@ -428,6 +438,22 @@
             }
         },
         methods: {
+            accept(text) {
+                alert("Input text: " + text);
+                this.hide();
+            },
+
+            show(e) {
+                this.input = e.target;
+                this.layout = e.target.dataset.layout;
+
+                if (!this.visible)
+                    this.visible = true
+            },
+
+            hide() {
+                this.visible = false;
+            },
             printPhone(digit) {
                 let len = this.currentPhone.length;
                 if (len < 10) {

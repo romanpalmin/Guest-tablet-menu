@@ -23,12 +23,14 @@ import settings from './store/structures/settings.js';
 import catPositions from './store/structures/categoryPositions.js';
 import store from './store';
 import modalActions from './js/components/modal-actions.vue';
-
+import keyboard from 'vue-touch-keyboard';
+//import styles from 'vue-touch-keyboard/dist/vue-touch-keyboard.css';
 
 
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
+Vue.use(keyboard);
 
 const routes = [
     {name: 'menu', path: '/:lang/menu', component: menu},
@@ -155,7 +157,7 @@ const app = new Vue({
             this.$store.dispatch('GET_ACTIONS');
         }, 100000);
 
-        let showModalActions = setInterval(() => {
+        /*let showModalActions = setInterval(() => {
             console.log('Проверяем, нужно ли показывать модальное окно');
             if (this.$store.state.app.isShowModalActions) {
                 console.log('Да');
@@ -171,7 +173,7 @@ const app = new Vue({
                 console.log('Нет');
                 startModalsShow = false;
             }
-        }, 1000);
+        }, 1000);*/
     },
     components: {
         'modal-anketa': modalAnswer,
@@ -346,8 +348,8 @@ const app = new Vue({
     <div class="head" v-show="showMenu">
     <div class="header intro-header" >
         <nav v-if= "$store.state.settings.language === 'ru'" class="pages-nav">
-            <div class="pages-nav__item" @click="showModalActions()">ModalA</div>
-            <div class="pages-nav__item "><router-link to="/ru/Actions4" class="link-page link">Actions</router-link></div>
+            <div class="pages-nav__item" @click="showModalActions()">A</div>
+            <div class="pages-nav__item "><router-link to="/ru/Actions4" class="link-page link">B</router-link></div>
             <!--<div class="pages-nav__item "><router-link to="/ru/Actions" class="link-page link">Анкета</router-link></div>-->
             <!--<div class="pages-nav__item "><router-link to="/ru/Actions2" class="link-page link">Акция</router-link></div>-->
             <div class="pages-nav__item "><router-link to="/ru/Actions3" class="link-page link">Анкета</router-link></div>
