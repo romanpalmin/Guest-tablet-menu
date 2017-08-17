@@ -10,6 +10,7 @@ export default function scanQrCode(router, callback) {
             let cnt = 0;
             if (event.keyCode === 38) {
                 isPressedUp = true;
+                isPressedBack = true;
                 let timerId = setInterval(function () {
                     cnt += 1000;
                     if (isPressedBack) {
@@ -48,7 +49,7 @@ export default function scanQrCode(router, callback) {
             }
         }
     );
-    addEventListener("click", function () {
+    /*addEventListener("click", function () {
         let cnt = 0;
         isPressedBack = true;
         let timerId = setInterval(function () {
@@ -58,11 +59,12 @@ export default function scanQrCode(router, callback) {
                 clearInterval(timerId);
             }
         }, interval);
-    });
+    });*/
 
     document.addEventListener("volumeupbutton", function () {
         let cnt = 0;
         isPressedUp = true;
+        isPressedBack = true;
         let timerId = setInterval(function () {
             cnt += 1000;
             if (isPressedBack) {
@@ -126,6 +128,8 @@ export default function scanQrCode(router, callback) {
         if (callback && typeof(callback) === "function") {
             callback();
         }
+        //alert('Выход из киоска');
+        KioskPlugin.exitKiosk();
         /*cordova.plugins.barcodeScanner.scan(
             function (result) {
                 if (!result.cancelled && result.format === 'CODE_93') {

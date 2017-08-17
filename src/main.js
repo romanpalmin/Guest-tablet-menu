@@ -74,7 +74,7 @@ const app = new Vue({
         // ---сканирование QR-кода---
         // Очистка признака показа модального окна
         scan(router, () => {
-            console.log('Очищаем признак показа модального окна');
+            //console.log('Очищаем признак показа модального окна');
             this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
         });
         //
