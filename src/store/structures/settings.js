@@ -29,6 +29,6 @@ export default {
     localPath:'StreetFoodBar/images',
     /*isTablet: false,
     isBrowser: true,*/
-    isTablet: true,
-    isBrowser: false
+    isTablet: false,
+    isBrowser: true
 }

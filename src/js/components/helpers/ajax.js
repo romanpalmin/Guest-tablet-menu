@@ -5,8 +5,10 @@ import store from './../../../store';
 /*const ip = '10.10.250.82';*/
 /*const ip = '10.100.50.248';*/
 const ip = '10.10.182.11';
-let userName = 'planshet';
-let password = 'planshet';
+/*let userName = 'planshet';
+let password = 'planshet';*/
+let userName = 'scr01';
+let password = '01';
 let ajaxServerUrlShort = '';
 /*const baseUrl = 'planshet_kl/hs/model?';*/
 const baseUrl = 'planshet/hs/model?';
@@ -18,10 +20,16 @@ let uuid = '';
 document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
-    if (typeof device !== 'undefined') {
+    /*if (typeof device !== 'undefined') {
         uuid = device.uuid;
         getTabletName(uuid);
-    }
+    } else {*/
+        uuid = '01';
+        getTabletName(uuid);
+        //userName = 'tab01';
+        //password = '01';
+    //}
+
 }
 
 function getTabletName(uuid) {
