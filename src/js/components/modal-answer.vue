@@ -14,7 +14,7 @@
                             </template>
                             <div class="modal-header">
                                 <h01>Расскажи откуда ты о нас узнал </h01>
-                                <h02>и выиграй ужина на двоих на 3000 рублей*</h02>
+                                <h02>и выиграй ужин на двоих на 3000 рублей*</h02>
                             </div>
 
                             <div class="modal-body">
@@ -70,7 +70,11 @@
                                     *1 числа каждого месяца объявляем счастливчика из ответивших. Участие возможно только 1 раз
                                 </h03>
                             </div>
-
+                            <div class="action-img" v-if="!(closeBtn === 'true')">
+                                <div class="current-actions-new">
+                                    <img :src="getActions()"/>
+                                </div>
+                            </div>
                         </div>
                         <div class="scale-modal" v-if="showType === 'scale'">
                             <template v-if="closeBtn === 'true'">
@@ -79,7 +83,7 @@
                             </template>
                             <div class="modal-body">
                                 <div class="scale-img"><img :src="getImgPath(getSelectedItemImg())"/></div>
-                                <input class="phone-input" :value="phoneView"/>
+                                <input class="phone-input" :value="phoneView" readonly />
                                 <button class="accept-phone-number-button" id="btn-accept" disabled
                                         @click="sendAnswer()">ОТПРАВИТЬ
                                 </button>
@@ -101,7 +105,7 @@
                         <div class="callback-modal" v-if="showType === 'callback'">
                             <div class="modal-body">
                                 <div class="callback-modal-answer">
-                                    <h01>Большое спасибо!</h01>
+                                    <!--<h01>Большое спасибо!</h01>
                                     <h02>Street Food Bar №1 благодарит Вас за уделенное время и заполненную анкету!
 
                                     </h02>
@@ -117,7 +121,9 @@
                                         Авторское исполнение и необычная подача блюд приближает хиты стрит-фуда –
                                         хот-доги, сэндвичи, барбекю и домашние натуральные сосиски – к высокой кухне.
 
-                                    </h02>
+                                    </h02>-->
+                                    <h01>Cпасибо!</h01>
+                                    <h01>Вы успешно зарегистрировались, Ваш номер телефона участвует в акции</h01>
                                 </div>
                                 <button class="close-modal-button" @click="$emit('close')" v-if="closeBtn === true">
                                     Закрыть
@@ -150,12 +156,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="action-img" v-if="!(closeBtn === 'true')">
-                        <div class="current-actions">
-                            Текущие акции:<br /><br />
-                            <img :src="getActions()"/>
-                        </div>
-                    </div>
+
                 </div>
 
             </div>
@@ -164,11 +165,11 @@
     </div>
 </template>
 <style scoped lang="less">
-    .current-actions {
+    .current-actions-new {
         width: 100%;
         text-align: center;
         img{
-            width: 400px;
+            width: 990px;
             border-radius: 8px;
         }
     }
@@ -195,7 +196,8 @@
         transition: opacity .3s ease;
         .modal-wrapper {
             display: table-cell;
-            vertical-align: middle;
+            overflow-y: scroll;
+            /*vertical-align: middle;*/
             h01 {
                 font-family: IntroHeader;
                 display: block;
@@ -322,7 +324,7 @@
                 background-image: url(http://10.10.182.11/img/background.jpg);
                 width: 990px;
                 height: 500px;
-                padding: 10px 20px;
+                /*padding: 10px 20px;*/
                 margin: 0 auto -60px;
                 background-color: #fff;
                 box-shadow: 0 2px 8px rgba(76, 76, 76, 0.33);
@@ -331,6 +333,7 @@
                 position: relative;
                 border-radius: 13px;
                 border: 4px solid #8a8787;
+                margin-top: 100px;
                 .callback-success {
                     width: 100%;
                     text-align: center;
@@ -634,21 +637,22 @@
 
             },
             sendAnswer() {
-                console.log('PRINT');
+/*                console.log('PRINT');
                 console.log(this.selectedItem.code);
                 console.log(this.selectedItem.name);
-                console.log('8' + this.currentPhone);
-                this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
-                this.showType = '';
+                console.log('8' + this.currentPhone);*/
+                //this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                //this.showType = '';
+                this.showType = 'callback';
                 //return;
-                if (this.closeBtn === 'true') {
+                /*if (this.closeBtn === 'true') {
                     console.log('Закрыть окно ' + this.$store.state.app.showModalAnketa);
                     this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                 }
                 if (this.closeBtn === 'true') {
                     //this.showType = 'loading';
                     //this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
-                    /*setTimeout(()=>{
+                    /!*setTimeout(()=>{
                         this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                         let path;
                         let language = this.$store.state.settings.language === 'ru' ? 'en' : 'ru';
@@ -656,8 +660,8 @@
                         this.language = language;
                         path = `/${this.$store.state.settings.language}/menu`;
                         this.$router.replace(path);
-                    }, 3000)*/
-                }
+                    }, 3000)*!/
+                }*/
                 // включаем модальное окно загрузки
                 //this.showType = 'loading';
                 const payload = {
@@ -675,6 +679,9 @@
                         this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                         if (this.closeBtn === 'false') {
                             this.$router.replace(path);
+                            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
+                        } else {
+                            this.showType = '';
                             this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
                         }
                         //this.showType = 'callback-success';
@@ -704,8 +711,13 @@
                         }*/
                     }
                 };
-                this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
-                this.$store.dispatch('SEND_ANKETA', payload);
+                //this.showType = 'callback';
+                setTimeout(()=>{
+                    this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                    this.$store.dispatch('SEND_ANKETA', payload);
+                }, 2333);
+                //this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+
             },
 
             sendAnswerOld(item) {

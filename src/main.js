@@ -154,7 +154,7 @@ const app = new Vue({
             if (condition) { // если все условия соблюдены
                 this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': true});
             }
-        }, 5000);
+        }, 50000);
 
         let updateActions = setInterval(() => {
             this.$store.dispatch('GET_ACTIONS');
