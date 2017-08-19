@@ -70,6 +70,7 @@
                                     *1 числа каждого месяца объявляем счастливчика из ответивших. Участие возможно только 1 раз
                                 </h03>
                             </div>
+
                         </div>
                         <div class="scale-modal" v-if="showType === 'scale'">
                             <template v-if="closeBtn === 'true'">
@@ -149,12 +150,35 @@
                             </div>
                         </div>
                     </div>
+                    <div class="action-img" v-if="!(closeBtn === 'true')">
+                        <div class="current-actions">
+                            Текущие акции:<br /><br />
+                            <img :src="getActions()"/>
+                        </div>
+                    </div>
                 </div>
+
             </div>
+
         </transition>
     </div>
 </template>
 <style scoped lang="less">
+    .current-actions {
+        width: 100%;
+        text-align: center;
+        img{
+            width: 400px;
+            border-radius: 8px;
+        }
+    }
+
+    .action-img {
+        width: 100%;
+        text-align: center;
+        padding-top: 100px;
+    }
+
     .item-opacity {
         opacity: 0.2;
     }
@@ -423,10 +447,13 @@
 </style>
 <script>
 
+    import ajax from "./helpers/ajax";
+
     export default {
         data() {
             return {
                 name: 'Модальное окно анкеты',
+                imgAnswer: '',
                 showModal: this.$store.state.app.showModalAnketa,
                 settings: this.$store.state.settings,
                 showNumpad: false,
@@ -500,6 +527,23 @@
             }
         },
         methods: {
+            getImgActions() {
+                let res = '';
+                let imgPath = this.getActions()[0];
+                console.log(imgPath);
+            },
+            getActions() {
+                return this.settings.urlBase + this.settings.server + this.settings.urlBigImage  + '/siry.jpg';
+                /*let resp = '';
+                let result = ajax.exec({name: 'getActions'}, (res) => {
+                    console.log('Ответ');
+                    console.log(res.data);
+                    this.imgAnswer = this.settings.urlBase + this.settings.server + this.settings.urlBigImage  + '/';
+                    console.log('ответ2: ' + this.settings.urlBase + this.settings.server + this.settings.urlBigImage + res);
+                    return result.data;
+                });*/
+
+            },
             change(evt) {
                 let digital = evt;
                 digital = digital.replace(/[^-0-9]/gim, '')
