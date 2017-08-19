@@ -134,11 +134,11 @@ const app = new Vue({
             };
             self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
             self.$store.commit('INCREMENT_SYNC_COUNTER');
-        }, 30000);
+        }, 2000);
 
         let upTimerOrder = setInterval(function () {
             self.getJsonOrder(true);
-        }, 30000);
+        }, 2000);
 
         let updateShow = setInterval(function () {
             //console.log('Обновляется список развлечений');

@@ -38,11 +38,16 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="phone-number" v-if="showNumpad">
-                                <!--<div class="phone-number-title">
-                                    <h03>Введите номер телефона</h03>
+                            <div class="phone-number">
+                                <div class="phone-number-title">
+                                    <!-- <h03>Введите номер телефона</h03>-->
                                 </div>
-                                <div class="phone-number-mask">{{phoneView}}</div>-->
+                                <br/>
+                                <div class="phone-number-mask" @click="setShowHint()">+7 ( _ _ _ ) _ _ _ - _ _ - _ _
+                                </div>
+                                <div class="phone-number-mask-btn">Отправить</div>
+
+                                <!--<div class="hint" v-if="showHint"><span>Выберите, пожалуйста, вариант ответа</div>-->
                             </div>
                             <!--<div class="num-pad" v-if="showNumpad">
                                 <table class="numpad-table">
@@ -59,9 +64,7 @@
 
                             <div class="accept-phone-number">
                                 <input class="phone-input hidden" @focus="show" data-layout="normal"/>
-                                <!--<button class="accept-phone-number-button" id="btn-accept-scale" disabled
-                                        @click="sendAnswer()">ОТПРАВИТЬ
-                                </button>-->
+
                             </div>
                             <div class="modal-header">
                                 <!--<input type="text" placeholder="Text input" @focus="show" data-layout="normal" />-->
@@ -73,6 +76,7 @@
                             <div class="action-img" v-if="!(closeBtn === 'true')">
                                 <div class="current-actions-new">
                                     <img :src="getActions()"/>
+                                    <button class="go-to-actions" @click="goTo4start()">ВЫБРАТЬ</button>
                                 </div>
                             </div>
                         </div>
@@ -83,7 +87,7 @@
                             </template>
                             <div class="modal-body">
                                 <div class="scale-img"><img :src="getImgPath(getSelectedItemImg())"/></div>
-                                <input class="phone-input" :value="phoneView" readonly />
+                                <input class="phone-input" :value="phoneView" readonly/>
                                 <button class="accept-phone-number-button" id="btn-accept" disabled
                                         @click="sendAnswer()">ОТПРАВИТЬ
                                 </button>
@@ -123,7 +127,7 @@
 
                                     </h02>-->
                                     <h01>Cпасибо!</h01>
-                                    <h01>Вы успешно зарегистрировались, Ваш номер телефона участвует в акции</h01>
+                                    <!--<h01>Вы успешно зарегистрировались, Ваш номер телефона участвует в акции</h01>-->
                                 </div>
                                 <button class="close-modal-button" @click="$emit('close')" v-if="closeBtn === true">
                                     Закрыть
@@ -166,11 +170,23 @@
 </template>
 <style scoped lang="less">
     .current-actions-new {
+        .go-to-actions {
+            width: 200px;
+            height: 60px;
+            border-radius: 8px;
+            position: absolute;
+            bottom: -650px;
+            font-size: 20pt;
+            font-weight: bold;
+            left: 400px;
+        }
         width: 100%;
         text-align: center;
-        img{
+        img {
             width: 990px;
             border-radius: 8px;
+            padding-top: 80px;
+            padding-bottom: 80px;
         }
     }
 
@@ -224,15 +240,23 @@
                 color: #ffffff;
                 text-align: center;
                 width: 100%;
-                margin-top: 50px;
+                margin-top: 25px;
             }
             .phone-number {
+                .hint {
+                    color: #e70001;
+                    font-weight: 900;
+                }
                 .phone-number-title {
                     margin-top: -30px;
                 }
                 text-align: center;
                 .phone-number-mask {
-
+                    .btn {
+                        margin-top: 10px;
+                        color: gray;
+                    }
+                    border-radius: 8px;
                     width: 300px;
                     height: 35px;
                     background-color: black;
@@ -240,6 +264,17 @@
                     font-size: 17pt;
                     font-weight: bolder;
                     margin: 0 auto;
+                }
+                .phone-number-mask-btn {
+                    color: gray;
+                    border-radius: 8px;
+                    width: 300px;
+                    height: 35px;
+                    background-color: black;
+                    line-height: 35px;
+                    font-size: 17pt;
+                    font-weight: bolder;
+                    margin: 10px auto 0;
                 }
             }
             .num-pad {
@@ -323,7 +358,7 @@
             .modal-container {
                 background-image: url(http://10.10.182.11/img/background.jpg);
                 width: 990px;
-                height: 500px;
+                height: 550px;
                 /*padding: 10px 20px;*/
                 margin: 0 auto -60px;
                 background-color: #fff;
@@ -369,7 +404,7 @@
                     .callback-modal-answer {
                         /*line-height: 300px;*/
                         color: #ffffff;
-
+                        line-height: 15;
                         width: 100%;
                         font-size: 14pt;
                         h02, h03, h04 {
@@ -457,6 +492,7 @@
             return {
                 name: 'Модальное окно анкеты',
                 imgAnswer: '',
+                showHint: false,
                 showModal: this.$store.state.app.showModalAnketa,
                 settings: this.$store.state.settings,
                 showNumpad: false,
@@ -530,13 +566,19 @@
             }
         },
         methods: {
+            setShowHint() {
+                this.showHint = !this.showHint;
+            },
+            goTo4start() {
+                let path = `/${this.$store.state.settings.language}/menu/653232`;
+                this.$router.replace(path);
+            },
             getImgActions() {
                 let res = '';
                 let imgPath = this.getActions()[0];
-                console.log(imgPath);
             },
             getActions() {
-                return this.settings.urlBase + this.settings.server + this.settings.urlBigImage  + '/siry.jpg';
+                return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + '/siry.png';
                 /*let resp = '';
                 let result = ajax.exec({name: 'getActions'}, (res) => {
                     console.log('Ответ');
@@ -637,13 +679,10 @@
 
             },
             sendAnswer() {
-/*                console.log('PRINT');
-                console.log(this.selectedItem.code);
-                console.log(this.selectedItem.name);
-                console.log('8' + this.currentPhone);*/
                 //this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                 //this.showType = '';
                 this.showType = 'callback';
+                this.visible = false;
                 //return;
                 /*if (this.closeBtn === 'true') {
                     console.log('Закрыть окно ' + this.$store.state.app.showModalAnketa);
@@ -670,20 +709,27 @@
                     'phone': '8' + this.currentPhone,
                     'callback': resp => {
                         //setTimeout(()=>{
-                        //this.showType = 'loading';
+                        this.currentPhone = '';
+                        this.showType = 'primary';
                         let path;
                         //let language = this.$store.state.settings.language === 'ru' ? 'en' : 'ru';
                         //this.$store.state.settings.language = language;
                         //this.language = language;
-                        path = `/${this.$store.state.settings.language}/menu`;
+                        path = `/${this.$store.state.settings.language}/Actions3`;
                         this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                         if (this.closeBtn === 'false') {
+                            this.showType = 'primary';
                             this.$router.replace(path);
-                            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
+                        } else {
+                            this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                        }
+                        /*if (this.closeBtn === 'false') {
+                            this.$router.replace(path);
+                            //this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
                         } else {
                             this.showType = '';
-                            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
-                        }
+                            //this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
+                        }*/
                         //this.showType = 'callback-success';
                         //}, 3000);
                         // включаем модальное окно коллбэка
@@ -712,10 +758,10 @@
                     }
                 };
                 //this.showType = 'callback';
-                setTimeout(()=>{
+                setTimeout(() => {
                     this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                     this.$store.dispatch('SEND_ANKETA', payload);
-                }, 2333);
+                }, 2111);
                 //this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
 
             },
