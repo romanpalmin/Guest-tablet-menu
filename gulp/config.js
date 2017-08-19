@@ -10,7 +10,7 @@ var distAssets = dist + assets;
 
 module.exports = {
     js: {
-        src: ['./assets/js/*'],
+        src: ['./assets/js/*', '!./assets/js/*.min.js'],
         dest: distAssets+'/js'
     },
 

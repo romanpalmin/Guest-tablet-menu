@@ -1,8 +1,9 @@
 <template>
     <div>
-        <transition name="modal-answer">
+        <transition name="modal-answer" v-if="showType !== ''">
             <div class="modal-mask">
-                <vue-touch-keyboard v-if="visible", :layout="layout", :cancel="hide", :accept="accept", :input="input" />
+                <vue-touch-keyboard v-if="visible" , :layout="layout" , :cancel="hide" , :accept="accept" ,
+                                    :input="input" , :change="change"/>
                 <div class="modal-wrapper">
                     <div class="modal-container">
 
@@ -13,7 +14,7 @@
                             </template>
                             <div class="modal-header">
                                 <h01>Расскажи откуда ты о нас узнал </h01>
-                                <h02>и получи возможность поужинать вдвоем за счет нашего ресторана на 3000 руб!*</h02>
+                                <h02>и выиграй ужина на двоих на 3000 рублей*</h02>
                             </div>
 
                             <div class="modal-body">
@@ -38,12 +39,12 @@
                                 </div>
                             </div>
                             <div class="phone-number" v-if="showNumpad">
-                                <div class="phone-number-title">
+                                <!--<div class="phone-number-title">
                                     <h03>Введите номер телефона</h03>
                                 </div>
-                                <div class="phone-number-mask">{{phoneView}}</div>
+                                <div class="phone-number-mask">{{phoneView}}</div>-->
                             </div>
-                            <div class="num-pad" v-if="showNumpad">
+                            <!--<div class="num-pad" v-if="showNumpad">
                                 <table class="numpad-table">
                                     <tr>
                                         <td class="numpad-cell" v-for="n in 10">
@@ -54,18 +55,36 @@
                                         </td>
                                     </tr>
                                 </table>
-                            </div>
+                            </div>-->
+
                             <div class="accept-phone-number">
-                                <button class="accept-phone-number-button" id="btn-accept" disabled
+                                <input class="phone-input hidden" @focus="show" data-layout="normal"/>
+                                <!--<button class="accept-phone-number-button" id="btn-accept-scale" disabled
                                         @click="sendAnswer()">ОТПРАВИТЬ
-                                </button>
+                                </button>-->
                             </div>
                             <div class="modal-header">
-                                <input type="text" placeholder="Text input" @focus="show" data-layout="normal" />
+                                <!--<input type="text" placeholder="Text input" @focus="show" data-layout="normal" />-->
 
                                 <h03>
                                     *1 числа каждого месяца объявляем счастливчика из ответивших. Участие возможно только 1 раз
                                 </h03>
+                            </div>
+                        </div>
+                        <div class="scale-modal" v-if="showType === 'scale'">
+                            <template v-if="closeBtn === 'true'">
+                                <div class="modal-close" @click="$emit('close')"><img
+                                        :src="getImgPath('close')"/></div>
+                            </template>
+                            <div class="modal-body">
+                                <div class="scale-img"><img :src="getImgPath(getSelectedItemImg())"/></div>
+                                <input class="phone-input" :value="phoneView"/>
+                                <button class="accept-phone-number-button" id="btn-accept" disabled
+                                        @click="sendAnswer()">ОТПРАВИТЬ
+                                </button>
+                                <!--<h03>
+                                    *1 числа каждого месяца объявляем счастливчика из ответивших. Участие возможно только 1 раз
+                                </h03>-->
                             </div>
                         </div>
                         <div class="loading-modal" v-if="showType === 'loading'">
@@ -140,8 +159,6 @@
         opacity: 0.2;
     }
 
-
-
     .modal-mask {
         position: fixed;
         z-index: 9998;
@@ -181,9 +198,10 @@
                 color: #ffffff;
                 text-align: center;
                 width: 100%;
+                margin-top: 50px;
             }
             .phone-number {
-                .phone-number-title{
+                .phone-number-title {
                     margin-top: -30px;
                 }
                 text-align: center;
@@ -204,8 +222,8 @@
                 .numpad-table {
                     width: 50%;
                     margin: 0 auto;
-                    .numpad-cell{
-                        padding:10px;
+                    .numpad-cell {
+                        padding: 10px;
                     }
                     .numpad-buttons {
                         height: 60px;
@@ -219,13 +237,54 @@
                 }
             }
 
+            .scale-modal {
+                img {
+                    width: 25%;
+                    border-radius: 58px;
+                    /*padding: 30px;*/
+                }
+                .phone-input {
+                    color: white;
+                    background-color: black;
+                    width: 430px;
+                    height: 90px;
+                    font-size: 25pt;
+                    border-radius: 8px;
+                    font-weight: bolder;
+                }
+                text-align: center;
+                .accept-phone-number-button {
+                    width: 430px;
+                    height: 95px;
+                    border-radius: 8px;
+                    &:disabled {
+                        background-color: black;
+                    }
+                    color: white;
+                    font-size: 25pt;
+                    font-weight: bolder;
+                    margin: 5px;
+                    background-color: #e70001;
+                }
+            }
+
             .accept-phone-number {
+                width: 0px;
+                height: 0px;
+                .phone-input {
+                    color: white;
+                    background-color: black;
+                    height: 0px;
+                    width: 0px;
+                    font-size: 18pt;
+                    opacity: 0;
+                }
                 text-align: center;
                 .accept-phone-number-button {
                     width: 300px;
                     height: 45px;
                     border-radius: 8px;
-                    &:disabled{
+                    &:disabled {
                         background-color: black;
                     }
                     color: white;
@@ -238,7 +297,7 @@
             .modal-container {
                 background-image: url(http://10.10.182.11/img/background.jpg);
                 width: 990px;
-                /*height: 600px;*/
+                height: 500px;
                 padding: 10px 20px;
                 margin: 0 auto -60px;
                 background-color: #fff;
@@ -248,11 +307,11 @@
                 position: relative;
                 border-radius: 13px;
                 border: 4px solid #8a8787;
-                .callback-success{
+                .callback-success {
                     width: 100%;
                     text-align: center;
                 }
-                .callback-repeat{
+                .callback-repeat {
                     width: 100%;
                     text-align: center;
                 }
@@ -295,6 +354,9 @@
                             text-align: justify;
                             /*font-family: IntroHeader;*/
                         }
+                    }
+                    .scale-img {
+                        border-radius: 5px;
                     }
                     .close-modal-button {
                         background-color: #555;
@@ -401,49 +463,70 @@
                 let res = '';
                 switch (str.length) {
                     case 0:
-                        res = '+7 ( _ _ _) _ _ _ - _ _ - _ _';
+                        res = '+7 ( _ _ _ ) _ _ _ - _ _ - _ _';
                         break;
                     case 1:
-                        res = `+7 (${str[0]} _ _) _ _ _ - _ _ - _ _`;
+                        res = `+7 ( ${str[0]} _ _ ) _ _ _ - _ _ - _ _`;
                         break;
                     case 2:
-                        res = `+7 (${str[0]} ${str[1]} _) _ _ _ - _ _ - _ _`;
+                        res = `+7 ( ${str[0]} ${str[1]} _ ) _ _ _ - _ _ - _ _`;
                         break;
                     case 3:
-                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) _ _ _ - _ _ - _ _`;
+                        res = `+7 ( ${str[0]} ${str[1]} ${str[2]} ) _ _ _ - _ _ - _ _`;
                         break;
                     case 4:
-                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} _ _ - _ _ - _ _`;
+                        res = `+7 ( ${str[0]} ${str[1]} ${str[2]} ) ${str[3]} _ _ - _ _ - _ _`;
                         break;
                     case 5:
-                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} _ - _ _ - _ _`;
+                        res = `+7 ( ${str[0]} ${str[1]} ${str[2]} ) ${str[3]} ${str[4]} _ - _ _ - _ _`;
                         break;
                     case 6:
-                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - _ _ - _ _`;
+                        res = `+7 ( ${str[0]} ${str[1]} ${str[2]} ) ${str[3]} ${str[4]} ${str[5]} - _ _ - _ _`;
                         break;
                     case 7:
-                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} _ - _ _`;
+                        res = `+7 ( ${str[0]} ${str[1]} ${str[2]} ) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} _ - _ _`;
                         break;
                     case 8:
-                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} ${str[7]} - _ _`;
+                        res = `+7 ( ${str[0]} ${str[1]} ${str[2]} ) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} ${str[7]} - _ _`;
                         break;
                     case 9:
-                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} ${str[7]} - ${str[8]} _`;
+                        res = `+7 ( ${str[0]} ${str[1]} ${str[2]} ) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} ${str[7]} - ${str[8]} _`;
                         break;
                     case 10:
-                        res = `+7 (${str[0]} ${str[1]} ${str[2]}) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} ${str[7]} - ${str[8]} ${str[9]}`;
+                        res = `+7 ( ${str[0]} ${str[1]} ${str[2]} ) ${str[3]} ${str[4]} ${str[5]} - ${str[6]} ${str[7]} - ${str[8]} ${str[9]}`;
                         break;
                 }
                 return res;
             }
         },
         methods: {
+            change(evt) {
+                let digital = evt;
+                digital = digital.replace(/[^-0-9]/gim, '')
+
+                if (+digital >= 0 && +digital <= 9999999999 && digital.length <= 10) {
+                    //this.printPhone(digital);
+                    this.currentPhone = digital;
+                }
+                let el = document.getElementById('btn-accept');
+                if (this.currentPhone.length === 10) {
+
+                    if (el) {
+                        el.removeAttribute('disabled');
+                    }
+                } else {
+                    if (el) {
+                        el.setAttribute('disabled', 'disabled');
+                    }
+                }
+            },
+
             accept(text) {
-                alert("Input text: " + text);
                 this.hide();
             },
 
             show(e) {
+                this.showType = 'scale';
                 this.input = e.target;
                 this.layout = e.target.dataset.layout;
 
@@ -453,6 +536,7 @@
 
             hide() {
                 this.visible = false;
+                this.showType = 'primary';
             },
             printPhone(digit) {
                 let len = this.currentPhone.length;
@@ -462,10 +546,8 @@
             },
             deletePhone() {
                 let len = this.currentPhone.length;
-                console.log(this.currentPhone);
                 if (len > 0) {
                     this.currentPhone = this.currentPhone.substr(0, len - 1);
-                    console.log(this.currentPhone);
                 }
             },
             getIndex(row, col) {
@@ -478,6 +560,13 @@
                 path += name + '.png';
                 return path;
             },
+            getSelectedItemImg() {
+                let res = '';
+                if (this.selectedItem) {
+                    res = _.find(this.itemsList, {'code': this.selectedItem.code}).img;
+                }
+                return res;
+            },
             selectAnswer(currentitem) {
                 let items = document.getElementsByClassName('grid-item');
                 _.forEach(items, (item) => {
@@ -489,36 +578,89 @@
                 });
                 this.selectedItem = currentitem;
                 this.showNumpad = true;
-                document.getElementById('btn-accept').removeAttribute('disabled');
-                document.getElementById('btn-accept').classList.add('btn-red')
+                let input = document.getElementsByClassName('phone-input')[0];
+                input.focus();
+                input.blur();
+                //this.show(input);
+                let el = document.getElementById('btn-accept');
+                if (el) {
+                    el.removeAttribute('disabled');
+                    el.classList.add('btn-red')
+                }
+
             },
             sendAnswer() {
+                console.log('PRINT');
+                console.log(this.selectedItem.code);
+                console.log(this.selectedItem.name);
+                console.log('8' + this.currentPhone);
+                this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                this.showType = '';
+                //return;
                 if (this.closeBtn === 'true') {
-                    //this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
+                    console.log('Закрыть окно ' + this.$store.state.app.showModalAnketa);
                     this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                 }
+                if (this.closeBtn === 'true') {
+                    //this.showType = 'loading';
+                    //this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                    /*setTimeout(()=>{
+                        this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                        let path;
+                        let language = this.$store.state.settings.language === 'ru' ? 'en' : 'ru';
+                        this.$store.state.settings.language = language;
+                        this.language = language;
+                        path = `/${this.$store.state.settings.language}/menu`;
+                        this.$router.replace(path);
+                    }, 3000)*/
+                }
                 // включаем модальное окно загрузки
-                this.showType = 'loading';
+                //this.showType = 'loading';
                 const payload = {
                     'code': this.selectedItem.code,
                     'name': this.selectedItem.name,
                     'phone': '8' + this.currentPhone,
                     'callback': resp => {
+                        //setTimeout(()=>{
+                        //this.showType = 'loading';
+                        let path;
+                        //let language = this.$store.state.settings.language === 'ru' ? 'en' : 'ru';
+                        //this.$store.state.settings.language = language;
+                        //this.language = language;
+                        path = `/${this.$store.state.settings.language}/menu`;
+                        this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
+                        if (this.closeBtn === 'false') {
+                            this.$router.replace(path);
+                            this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
+                        }
+                        //this.showType = 'callback-success';
+                        //}, 3000);
                         // включаем модальное окно коллбэка
                         // this.showType = 'callback';
-                        if (resp.code && resp.code === 'error') {
+                        /*if (resp.code && resp.code === 'error') {
                             if (this.closeBtn === 'false') {
                                 this.success();
                             }
-                        } else if (resp && resp.status && resp.status === 1){
-                            this.showType = 'callback-success';
-                        } else if (resp  && resp.status && resp.status === 0){
+                        } else if (resp && resp.status && resp.status === 1) {
+                            this.showType = 'callback';
+                            setTimeout(()=>{
+                                this.showType = 'loading';
+                                let path;
+                                let language = this.$store.state.settings.language === 'ru' ? 'en' : 'ru';
+                                this.$store.state.settings.language = language;
+                                this.language = language;
+                                path = `/${this.$store.state.settings.language}/menu`;
+                                this.$router.replace(path);
+                                this.showType = 'callback-success';
+                            }, 3000)
+                        } else if (resp && resp.status && resp.status === 0) {
                             this.showType = 'callback-repeat';
-                        } else if (resp  && resp.status && resp.status === -1){
+                        } else if (resp && resp.status && resp.status === -1) {
                             this.success();
-                        }
+                        }*/
                     }
                 };
+                this.$store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': false});
                 this.$store.dispatch('SEND_ANKETA', payload);
             },
 
