@@ -26,10 +26,10 @@ import modalActions from './js/components/modal-actions.vue';
 //import keyboard from 'vue-touch-keyboard';
 //import keyboard from './js/components/helpers/vue-touch-keyboard.min';
 import keyboard from '../assets/js/vue-touch-keyboard.min';
-//import styles from 'vue-touch-keyboard/dist/vue-touch-keyboard.css';
+//import styles from '../assets/css/vue-touch-keyboard.css';
 
 console.log(keyboard);
-console.log('test');
+//console.log(styles);
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
 Vue.use(Vuex);
@@ -133,13 +133,13 @@ const app = new Vue({
                     }
                 }, 1000)
             };
-            self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
+            //self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
             self.$store.commit('INCREMENT_SYNC_COUNTER');
-        }, 2000);
+        }, 30000);
 
         let upTimerOrder = setInterval(function () {
             self.getJsonOrder(true);
-        }, 2000);
+        }, 30000);
 
         let updateShow = setInterval(function () {
             //console.log('Обновляется список развлечений');

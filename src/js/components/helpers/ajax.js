@@ -3,13 +3,13 @@ import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
 /*const ip = '10.10.250.82';*/
-/*const ip = '10.100.50.248';*/
-const ip = '10.10.182.11';
+const ip = '10.100.50.248';
+/*const ip = '10.10.182.11';*/
 let userName = 'planshet';
 let password = 'planshet';
 let ajaxServerUrlShort = '';
-/*const baseUrl = 'planshet_kl/hs/model?';*/
-const baseUrl = 'planshet/hs/model?';
+const baseUrl = 'planshet_kl/hs/model?';
+/*const baseUrl = 'planshet/hs/model?';*/
 //-------------------------------
 //ajaxServerUrlShort = formAjaxVars(true);
 
@@ -50,22 +50,24 @@ let uuid = '';
 //uuid = '7e59b6ef2412e6d9';
 //uuid = '854dbb0f2fdac46c';
 //uuid = '10e00be6a70f0bcc';
-uuid = '8981e83c79f3be00';
-getTabletName(uuid);
+//uuid = '8981e83c79f3be00';
+//getTabletName(uuid);
 document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
-    //if (typeof device !== 'undefined') {
-        //uuid = device.uuid;
-
+    if (typeof device !== 'undefined') {
+        uuid = device.uuid;
         getTabletName(uuid);
-    //}
+    } else {
+        userName = 'tab01';
+        password = '01';
+    }
 }
 
 function getTabletName(uuid) {
     const operation = {name: 'getUserName', uuid: uuid};
-    //let url = getUrl(operation);
-    let url = `http://${userName}:${password}@${ip}/${baseUrl}` +  'usr=1' + '&uuid=' + crypt(uuid);;
+    let url = getUrl(operation);
+    //let url = `http://${userName}:${password}@${ip}/${baseUrl}` +  'usr=1' + '&uuid=' + crypt(uuid);;
     executeRequest(url, function (resp) {
         userName = resp.data.login;
         password = resp.data.pass;
@@ -86,7 +88,6 @@ function formAjaxVars(isBaseUrl) {
 
 
 function executeRequest(url, callback) {
-    //alert(url);
     axios.get(ajaxServerUrlShort + url)
         .then(function (response) {
             if (callback && typeof(callback) === "function") {
@@ -180,7 +181,7 @@ export default {
         if (operation.name === 'sendAnketa') {
             formAjaxVars(false);
             preffix = ip === '10.10.182.11' ? 'planshet/' : 'planshet_kl/';
-            url = preffix +'hs/ank1/send?' + operation.value + '=1' + '&phone=' + operation.phone + '&uuid=' + crypt(uuid);
+            url = preffix + 'hs/ank1/send?' + operation.value + '=1' + '&phone=' + operation.phone + '&uuid=' + crypt(uuid);
             console.log('url=' + url);
         } else {
             formAjaxVars(true);
