@@ -182,7 +182,6 @@ export default {
             formAjaxVars(false);
             preffix = ip === '10.10.182.11' ? 'planshet/' : 'planshet_kl/';
             url = preffix + 'hs/ank1/send?' + operation.value + '=1' + '&phone=' + operation.phone + '&uuid=' + crypt(uuid);
-            console.log('url=' + url);
         } else {
             formAjaxVars(true);
             url = getUrl(operation);

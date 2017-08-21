@@ -1,6 +1,7 @@
 <template>
     <div class="content">
         <anketa closeBtn="false"/>
+        <!--<actions :closeBtn="false"/>-->
     </div>
 
 </template>
@@ -24,7 +25,8 @@
             anketaUrl: function(){ return 'http://planshet:planshet@10.10.182.11/menu/hs/ank1/display';}
         },
         components:{
-            anketa: modal
+            anketa: modal/*,
+            actions*/
         }
     }
 

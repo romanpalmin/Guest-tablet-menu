@@ -10,6 +10,7 @@
                                 <div class="item">
                                     <div class="img-wrapper">
                                         <img :src="getImgByUrl(getCurrentModal().urlRuStock)"/>
+                                        <button class="go-to-actions" @click="goTo4start()">ВЫБРАТЬ</button>
                                     </div>
                                 </div>
 
@@ -44,28 +45,35 @@
         .modal-wrapper {
             display: table-cell;
             vertical-align: middle;
+
             .modal-container {
-                background-image: url(http://10.10.182.11/img/background.jpg);
-                width: 790px;
+                /*background-image: url(http://10.10.182.11/img/background.jpg);*/
+                width: 990px;
                 /*height: 600px;*/
-                padding: 10px 20px;
+                /*padding: 10px 20px;*/
                 margin: 0 auto -60px;
-                background-color: #fff;
-                box-shadow: 0 2px 8px rgba(76, 76, 76, 0.33);
+                /*background-color: #fff;*/
+                /*box-shadow: 0 2px 8px rgba(76, 76, 76, 0.33);*/
                 transition: all .3s ease;
                 font-family: Helvetica, Arial, sans-serif;
                 position: relative;
                 border-radius: 13px;
-                border: 4px solid #8a8787;
+                /*border: 4px solid #8a8787;*/
+                /*height: 600px;*/
                 .modal-body {
 
                 }
                 .item {
-                    width: 100%;
+                    /*width: 100%;*/
                     margin: 0 auto;
                     text-align: center;
                     .img-wrapper {
-
+                        width: 100%;
+                        height: 100%;
+                        img{
+                            width: 100%;
+                            border-radius: 5px;
+                        }
                     }
                 }
                 .modal-close {
@@ -85,8 +93,18 @@
                 }
                 .primary-modal {
                     /*background-color: green;*/
-                    height: 700px;
+                    /*height: 700px;*/
                     min-height: 400px;
+                    .go-to-actions {
+                        width: 200px;
+                        height: 60px;
+                        border-radius: 8px;
+                        position: absolute;
+                        bottom: 130px;
+                        font-size: 20pt;
+                        font-weight: bold;
+                        left: 400px;
+                    }
                 }
                 .primary-list {
                     max-height: 600px;
@@ -141,6 +159,14 @@
         },
         props: ['isModal'],
         methods: {
+            goTo4start() {
+                this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': false});
+                this.$store.commit('SET_MODAL_ACTIONS_SHOW', {'value': false});
+                this.$store.commit('SET_CHANGE_PAGE');
+                //let path = `/${this.$store.state.settings.language}/menu/653232#656932`;
+                let path = `/${this.$store.state.settings.language}/menu/653232/656932`;
+                this.$router.replace(path);
+            },
             getImgPath(name) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
@@ -148,19 +174,24 @@
             },
             getImgByUrl(url) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlBackImage;
-                path += url;
+                if (url === '/siry.jpg'){
+                    path += '/siry2.png';
+                } else {
+                    path += url;
+                }
+
                 return path;
             },
             getCurrentModal() {
                 let current = this.$store.state.app.actions;
-                let index = 1;
-                current = _.sortBy(
+                let index = 0;
+                /*current = _.sortBy(
                     _.filter(current, (item) => {
                         return item.modal &&
                             item.urlRuStock !== '';
                     }),
                     ['orderStock']);
-                console.log(current[index]);
+                console.log(current[index]);*/
                 return current[index];
             }
         }

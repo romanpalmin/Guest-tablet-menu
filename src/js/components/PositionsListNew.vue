@@ -236,7 +236,7 @@
         position: fixed;
         bottom: 60px;
         right: 60px;
-        z-index: 9999;
+        z-index: 9990;
         width: 60px;
         height: 60px;
         text-align: center;
@@ -450,11 +450,18 @@
             },
             currentData: function () {
                 return _.sortBy(this.data, ['order']);
+            },
+            changePage: function(){
+                return this.$store.state.app.changePage;
             }
+
         },
         watch: {
             categoryId: function () {
                 this.rebuildData();
+            },
+            changePage: function(){
+                this.scrollToHash();
             }
         },
 
@@ -632,7 +639,7 @@
             },
             scrollToHash(){
                 let hash = this.$router.currentRoute.params.hash;
-                if (hash !== ''){
+                if (hash && hash !== '' ){
                     setTimeout(()=>{
                         let el = document.querySelector('a.hash-'+hash);
                         el.scrollIntoView(true);
@@ -645,6 +652,7 @@
         mounted() {
             if (this.$store.state.app.FullTree && this.$store.state.app.FullTree.length === 0) {
                 this.getNewJson();
+                this.scrollToHash();
             }
             else {
                 console.log('Данные уже загружены');
@@ -652,6 +660,10 @@
                 this.scrollToHash();
 
             }
+        },
+        updated() {
+            console.log('DOM изменился');
+            this.scrollToHash();
         },
         components: {
             'position': Position

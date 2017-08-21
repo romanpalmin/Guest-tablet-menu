@@ -29,10 +29,14 @@ const store = new Vuex.Store({
                 isShowModalAnketa: true,
                 showModalActions: false,
                 isShowModalActions: true,
-                actions:[]
+                actions:[],
+                changePage: true
             }
         },
         mutations: {
+            [m_types.SET_CHANGE_PAGE](state){
+                state.app.changePage = !state.app.changePage;
+            },
             /**
              * заполняет текущие акции
              * @param state
@@ -43,7 +47,6 @@ const store = new Vuex.Store({
                 state.app.actions = _.map(payload.actions, (item)=>{
                   return item;
                 });
-                console.log(12321);
                 if (payload.callback && typeof(payload.callback) === "function") {
                     payload.callback();
                 }
@@ -71,6 +74,7 @@ const store = new Vuex.Store({
              * @param payload
              */
             [m_types.SET_MODAL_ANKETA_SHOW](state, payload){
+                console.log('оТКРЫВАЕМ окно акций');
                 state.app.showModalAnketa = payload.value;
             },
 

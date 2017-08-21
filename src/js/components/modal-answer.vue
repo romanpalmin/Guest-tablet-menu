@@ -14,7 +14,7 @@
                             </template>
                             <div class="modal-header">
                                 <h01>Расскажи откуда ты о нас узнал </h01>
-                                <h02>и выиграй ужин на двоих на 3000 рублей*</h02>
+                                <h02>и выиграй ужин на 3000 рублей*</h02>
                             </div>
 
                             <div class="modal-body">
@@ -83,6 +83,10 @@
                         <div class="scale-modal" v-if="showType === 'scale'">
                             <template v-if="closeBtn === 'true'">
                                 <div class="modal-close" @click="$emit('close')"><img
+                                        :src="getImgPath('close')"/></div>
+                            </template>
+                            <template v-else>
+                                <div class="modal-close" @click="hide()"><img
                                         :src="getImgPath('close')"/></div>
                             </template>
                             <div class="modal-body">
@@ -570,6 +574,7 @@
                 this.showHint = !this.showHint;
             },
             goTo4start() {
+                //this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': true});
                 //let path = `/${this.$store.state.settings.language}/menu/653232#656932`;
                 let path = `/${this.$store.state.settings.language}/menu/653232/656932`;
                 this.$router.replace(path);

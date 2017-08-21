@@ -54,17 +54,18 @@ let router = new VueRouter({
 });
 
 router.afterEach((toRoute, fromRoute) => {
-    if (toRoute.name === 'menu' && fromRoute.name !== 'order') {
+    if (toRoute.name === 'menu' && fromRoute.name !== 'order' && fromRoute.name !== 'actions3') {
         //console.log('Включаем показ модального окна');
         store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
     } else {
         //console.log('Не включаем модальное окно');
     }
-
     if (
-        (toRoute.name === 'plainmenu' && fromRoute.name !== 'order' && fromRoute.name !== 'plainmenu')
-        || (fromRoute.name === 'order' && toRoute.name === 'plainmenu' && !store.state.app.isShowModalActions)) {
-        console.log('Включаем цикл показа модальных окон!!!!!!');
+        (toRoute.name === 'plainmenu' && fromRoute.name !== 'actions3' && fromRoute.name !== 'order' && fromRoute.name !== 'plainmenu')
+        || (fromRoute.name === 'order' && toRoute.name === 'plainmenu' && !store.state.app.isShowModalActions
+        )) {
+        console.log(store.state.app);
+        console.log('Включаем цикл показа модальных окон!');
         store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': true});
     } else {
         if (toRoute.name !== 'plainmenu'
@@ -161,61 +162,55 @@ const app = new Vue({
             this.$store.dispatch('GET_ACTIONS');
         }, 100000);
 
-        /*let showModalActions = setInterval(() => {
+        let showModalActions = setInterval(() => {
             console.log('Проверяем, нужно ли показывать модальное окно');
-            if (this.$store.state.app.isShowModalActions) {
-                console.log('Да');
-                if (!startModalsShow) {
-                    startModalsShow = true;
-                    console.log('Start');
-                    this.startModals();
 
-                } else {
-                    console.log('Do nothing...');
-                }
+            if (!store.state.app.isShowModalAnketa
+                && this.$router.currentRoute.name === 'plainmenu'
+                /*&& !startModalsShow*/
+                && store.state.app.isShowModalActions) {
+                console.log('Да. START');
+                this.startModals();
             } else {
                 console.log('Нет');
-                startModalsShow = false;
+                //startModalsShow = false;
             }
-        }, 1000);*/
+        }, 2000);
     },
     components: {
         'modal-anketa': modalAnswer,
         'modal-actions': modalActions
     },
     methods: {
-        /* startModals() {
-             let counter = 1000;
-             let foo = function () {
-                 clearInterval(interval);
-                 counter *= 2;
-                 console.log(counter);
-                 if (counter <= 20000) {
-                     interval = setInterval(foo, counter);
-                 }
-             };
-             let interval = setInterval(foo, counter);
-         },*/
-
         startModals() {
-            let timerStart = new timer();
-            let index = 0;
-            const self = this;
-            timerStart.start(()=>{
-                index++;
-                console.log('Запускаем 2 раза' + index);
-                if (index === 4) {
+            /* let timerStart = new timer();
+             let index = 0;*/
+            const actions = this.$store.state.app.actions[0];
+            let interval = actions.delay * 1000;
+            console.log(actions);
+            //const self = this;
+            console.log('Открывае модальное окно через ' + interval/1000 + ' секунд');
+            this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {value: false});
+            //this.startModalsShow = false;
+            setTimeout(() => {
+                this.$store.commit('SET_MODAL_ACTIONS_SHOW', {value: true});
+            }, interval);
+            /*timerStart.start(()=>{
+                //index++;
+                console.log('Открываем модальное окно');
+                this.$store.commit('SET_MODAL_ACTIONS_SHOW', {'value': true});
+               if (index === 4) {
                     timerStart.set_interval(1000);
                 }
                 check();
 
-            }, 2000, true);
+            }, interval, false);
             function check(){
                 if (!self.$store.state.app.isShowModalActions){
                     console.log('Stop');
                     timerStart.stop();
                 }
-            }
+            }*/
         },
 
         showModalActions() {
