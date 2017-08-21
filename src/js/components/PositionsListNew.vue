@@ -4,7 +4,7 @@
             <div>
                 <ul v-for="item in currentData" class="products">
                     <div v-if="item.groups.length===0" class="product-group product-group-level-1">
-                        <li>
+                        <li><a :name="item.code" :class="'hash-'+item.code"></a>
                             <template v-if="!item.iconNameActive">
                                 <template v-if="$store.state.settings.language === 'ru'">
                                     <span class="product-group-title level-1"> {{item.name_RU}} </span>
@@ -86,6 +86,7 @@
                     </div>
                     <div v-else="item.groups.length > 0" class="product-group product-group-level-1">
                         <li>
+                            <a :name="item.code" :class="'hash-'+item.code"></a>
                             <template v-if="!item.iconNameActive">
                                 <template v-if="$store.state.settings.language === 'ru'">
                                     <span class="product-group-title level-1"> {{item.name_RU}} </span>
@@ -99,8 +100,10 @@
                                 <!--Здесь будет размещена дополнительная к картинке текстовая информация -->
                             </template>
                             <ul v-for="sub1 in sortArray(item.groups)" class="products">
+                                <a :name="item.code" :class="'hash-'+item.code"></a>
                                 <div v-if="sub1.groups.length===0">
                                     <li>
+
                                         <template v-if="$store.state.settings.language === 'ru'">
                                             <span class="product-group-title level-2">{{sub1.name_RU}}</span>
                                         </template>
@@ -626,16 +629,28 @@
                 if (scrolled < coords / 2) {
                     goTopBtn.classList.remove('back_to_top-show');
                 }
+            },
+            scrollToHash(){
+                let hash = this.$router.currentRoute.params.hash;
+                if (hash !== ''){
+                    setTimeout(()=>{
+                        let el = document.querySelector('a.hash-'+hash);
+                        el.scrollIntoView(true);
+                        let panel = document.querySelector('.rolling');
+                        panel.scrollTop -= 50;
+                    }, 0);
+                }
             }
         },
         mounted() {
-
             if (this.$store.state.app.FullTree && this.$store.state.app.FullTree.length === 0) {
                 this.getNewJson();
             }
             else {
                 console.log('Данные уже загружены');
                 this.rebuildData();
+                this.scrollToHash();
+
             }
         },
         components: {

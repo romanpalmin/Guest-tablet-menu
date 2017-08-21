@@ -570,7 +570,8 @@
                 this.showHint = !this.showHint;
             },
             goTo4start() {
-                let path = `/${this.$store.state.settings.language}/menu/653232`;
+                //let path = `/${this.$store.state.settings.language}/menu/653232#656932`;
+                let path = `/${this.$store.state.settings.language}/menu/653232/656932`;
                 this.$router.replace(path);
             },
             getImgActions() {
@@ -578,7 +579,7 @@
                 let imgPath = this.getActions()[0];
             },
             getActions() {
-                return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + '/siry.png';
+                return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + '/siry2.png';
                 /*let resp = '';
                 let result = ajax.exec({name: 'getActions'}, (res) => {
                     console.log('Ответ');

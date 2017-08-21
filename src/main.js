@@ -44,6 +44,7 @@ const routes = [
     {name: 'actions4', path: '/:lang/actions4', component: actions4},
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
     {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
+    {name: 'plainmenu', path: '/:lang/menu/:id/:hash', component: plainmenu},
     {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet}
 ];
 
