@@ -5,12 +5,21 @@
                 <div class="modal-wrapper">
                     <div class="modal-container">
                         <div class="primary-modal" v-if="isModal">
-                            <div class="modal-close" @click="$emit('close')" v-if="getCurrentModal().escActive"><img :src="getImgPath('close')"/></div>
+                            <!--<div class="modal-close" @click="$emit('close')" v-if="getCurrentModal().escActive"><img :src="getImgPath('close')"/></div>-->
+                            <div class="modal-close" @click="$emit('close')" v-if="true"><img :src="getImgPath('close')"/></div>
                             <div class="modal-body">
                                 <div class="item">
                                     <div class="img-wrapper">
-                                        <img :src="getImgByUrl(getCurrentModal().urlRuStock)"/>
-                                        <button class="go-to-actions" @click="goTo4start()">ВЫБРАТЬ</button>
+                                        <!--<img :src="getImgByUrl(getCurrentModal().urlRuStock)"/>-->
+                                        <img :src="getImgByUrl('/siry.jpg')"/>
+                                        <button class="go-to-actions" @click="goTo4start()">
+                                            <template v-if="$store.state.settings.language === 'ru'">
+                                                ВЫБРАТЬ
+                                            </template>
+                                            <template v-else>
+                                                CHOOSE
+                                            </template>
+                                        </button>
                                     </div>
                                 </div>
 
@@ -20,7 +29,8 @@
                             <div class="list-body">
                                 <div class="item" v-for="item in getActionsList">
                                     <div class="img-wrapper">
-                                        <img :src="getImgByUrl(item.urlRuStock)"/>
+                                        <!--<img :src="getImgByUrl(item.urlRuStock)"/>-->
+                                        <img :src="getImgByUrl('/siry.jpg')"/>
                                     </div>
                                 </div>
                             </div>
@@ -175,7 +185,11 @@
             getImgByUrl(url) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlBackImage;
                 if (url === '/siry.jpg'){
-                    path += '/siry2.png';
+                    if (this.$store.state.settings.language === 'ru') {
+                        path += '/sir_ru.png';
+                    } else {
+                        path += '/sir_en.png';
+                    }
                 } else {
                     path += url;
                 }

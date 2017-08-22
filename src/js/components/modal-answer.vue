@@ -13,8 +13,14 @@
                                         :src="getImgPath('close')"/></div>
                             </template>
                             <div class="modal-header">
-                                <h01>Расскажи откуда ты о нас узнал </h01>
-                                <h02>и выиграй ужин на 3000 рублей*</h02>
+                                <template v-if="$store.state.settings.language === 'ru'">
+                                    <h01>Расскажи откуда ты о нас узнал</h01>
+                                    <h02>и выиграй ужин на 3000 рублей*</h02>
+                                </template>
+                                <template v-else>
+                                    <h01>How did you know about us</h01>
+                                    <h02>Win dinner at 3000 rubles*</h02>
+                                </template>
                             </div>
 
                             <div class="modal-body">
@@ -45,7 +51,13 @@
                                 <br/>
                                 <div class="phone-number-mask" @click="setShowHint()">+7 ( _ _ _ ) _ _ _ - _ _ - _ _
                                 </div>
-                                <div class="phone-number-mask-btn">Отправить</div>
+
+                                <template v-if="$store.state.settings.language === 'ru'">
+                                    <div class="phone-number-mask-btn">Отправить</div>
+                                </template>
+                                <template v-else>
+                                    <div class="phone-number-mask-btn">ENTER</div>
+                                </template>
 
                                 <!--<div class="hint" v-if="showHint"><span>Выберите, пожалуйста, вариант ответа</div>-->
                             </div>
@@ -70,13 +82,26 @@
                                 <!--<input type="text" placeholder="Text input" @focus="show" data-layout="normal" />-->
 
                                 <h03>
-                                    *1 числа каждого месяца объявляем счастливчика из ответивших. Участие возможно только 1 раз
+                                    <template v-if="$store.state.settings.language === 'ru'">
+                                        *1 числа каждого месяца объявляем счастливчика из ответивших. Участие возможно только 1 раз
+                                    </template>
+                                    <template v-else>
+                                        On the 1st of every month we announce the lucky person from the respondent. you can Take a part once only
+                                    </template>
                                 </h03>
+
                             </div>
                             <div class="action-img" v-if="!(closeBtn === 'true')">
                                 <div class="current-actions-new">
                                     <img :src="getActions()"/>
-                                    <button class="go-to-actions" @click="goTo4start()">ВЫБРАТЬ</button>
+                                    <button class="go-to-actions" @click="goTo4start()">
+                                        <template v-if="$store.state.settings.language === 'ru'">
+                                            ВЫБРАТЬ
+                                        </template>
+                                        <template v-else>
+                                            CHOOSE
+                                        </template>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -93,7 +118,13 @@
                                 <div class="scale-img"><img :src="getImgPath(getSelectedItemImg())"/></div>
                                 <input class="phone-input" :value="phoneView" readonly/>
                                 <button class="accept-phone-number-button" id="btn-accept" disabled
-                                        @click="sendAnswer()">ОТПРАВИТЬ
+                                        @click="sendAnswer()">
+                                    <template v-if="$store.state.settings.language === 'ru'">
+                                        ОТПРАВИТЬ
+                                    </template>
+                                    <template v-else>
+                                        ENTER
+                                    </template>
                                 </button>
                                 <!--<h03>
                                     *1 числа каждого месяца объявляем счастливчика из ответивших. Участие возможно только 1 раз
@@ -130,7 +161,14 @@
                                         хот-доги, сэндвичи, барбекю и домашние натуральные сосиски – к высокой кухне.
 
                                     </h02>-->
-                                    <h01>Cпасибо!</h01>
+                                    <h01>
+                                        <template v-if="$store.state.settings.language === 'ru'">
+                                            Cпасибо!
+                                        </template>
+                                        <template v-else>
+                                            Thank you!
+                                        </template>
+                                    </h01>
                                     <!--<h01>Вы успешно зарегистрировались, Ваш номер телефона участвует в акции</h01>-->
                                 </div>
                                 <button class="close-modal-button" @click="$emit('close')" v-if="closeBtn === true">
@@ -584,7 +622,11 @@
                 let imgPath = this.getActions()[0];
             },
             getActions() {
-                return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + '/siry2.png';
+                if (this.$store.state.settings.language === 'ru') {
+                    return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + '/sir_ru.png';
+                } else {
+                    return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + '/sir_en.png';
+                }
                 /*let resp = '';
                 let result = ajax.exec({name: 'getActions'}, (res) => {
                     console.log('Ответ');

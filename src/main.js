@@ -151,7 +151,7 @@ const app = new Vue({
             //console.log('Показывать или не показывать модальное окно анкеты');
             let condition = this.$store.state.app.isShowModalAnketa && //признак показа модального окна
                 !this.$store.state.app.showModalAnketa && // признак того, что окно не открыто
-                this.$store.state.settings.language === 'ru' && // признак того, что включен русский язык
+                /*this.$store.state.settings.language === 'ru' && // признак того, что включен русский язык*/
                 this.$router.currentRoute.name === 'plainmenu'; // признак того, что открыты категории
             if (condition) { // если все условия соблюдены
                 this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': true});
@@ -165,7 +165,7 @@ const app = new Vue({
         let showModalActions = setInterval(() => {
             console.log('Проверяем, нужно ли показывать модальное окно');
 
-            if (!store.state.app.isShowModalAnketa
+            if ((!store.state.app.isShowModalAnketa)
                 && this.$router.currentRoute.name === 'plainmenu'
                 /*&& !startModalsShow*/
                 && store.state.app.isShowModalActions) {
@@ -186,14 +186,17 @@ const app = new Vue({
             /* let timerStart = new timer();
              let index = 0;*/
             const actions = this.$store.state.app.actions[0];
-            let interval = actions.delay * 1000;
+            let interval = 150000;//actions.delay * 1000;
             console.log(actions);
             //const self = this;
             console.log('Открывае модальное окно через ' + interval/1000 + ' секунд');
             this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {value: false});
             //this.startModalsShow = false;
             setTimeout(() => {
-                this.$store.commit('SET_MODAL_ACTIONS_SHOW', {value: true});
+                if (this.$router.currentRoute.name === 'plainmenu') {
+                    this.$store.commit('SET_MODAL_ACTIONS_SHOW', {value: true});
+                    this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {value: false});
+                }
             }, interval);
             /*timerStart.start(()=>{
                 //index++;
@@ -357,7 +360,7 @@ const app = new Vue({
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
         </nav>
          <nav v-else class="pages-nav">
-            <!--<div class="pages-nav__item "><router-link to="/en/Actions3" class="link-page link">Questionnaire</router-link></div>-->
+            <div class="pages-nav__item "><router-link to="/en/Actions3" class="link-page link">Stock</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/shedule" class="link-page link">Shedule</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/menu" class="link-page link">Menu</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/order" class="link-page link">Your order</router-link></div>
