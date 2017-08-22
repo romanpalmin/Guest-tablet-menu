@@ -11,7 +11,13 @@
                                 <div class="item">
                                     <div class="img-wrapper">
                                         <!--<img :src="getImgByUrl(getCurrentModal().urlRuStock)"/>-->
-                                        <img :src="getImgByUrl('/siry.jpg')"/>
+                                        <!--<img :src="getImgByUrl(getCurrentModal().)"/>-->
+                                        <template v-if="$store.state.settings.language === 'ru'">
+                                            <img :src="getImgByUrl(getCurrentModal().urlRuModal)"/>
+                                        </template>
+                                        <template v-else>
+                                            <img :src="getImgByUrl(getCurrentModal().urlEnModal)"/>
+                                        </template>
                                         <button class="go-to-actions" @click="goTo4start()">
                                             <template v-if="$store.state.settings.language === 'ru'">
                                                 ВЫБРАТЬ
@@ -173,7 +179,6 @@
                 this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': false});
                 this.$store.commit('SET_MODAL_ACTIONS_SHOW', {'value': false});
                 this.$store.commit('SET_CHANGE_PAGE');
-                //let path = `/${this.$store.state.settings.language}/menu/653232#656932`;
                 let path = `/${this.$store.state.settings.language}/menu/653232/656932`;
                 this.$router.replace(path);
             },
@@ -184,7 +189,12 @@
             },
             getImgByUrl(url) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlBackImage;
-                if (url === '/siry.jpg'){
+                if (url){
+                    path += url;
+                } else {
+                    return;
+                }
+                /*if (url === '/siry.jpg'){
                     if (this.$store.state.settings.language === 'ru') {
                         path += '/sir_ru.png';
                     } else {
@@ -192,8 +202,8 @@
                     }
                 } else {
                     path += url;
-                }
-
+                }*/
+                console.log('Путь к картинке' + path);
                 return path;
             },
             getCurrentModal() {

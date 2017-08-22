@@ -64,7 +64,6 @@ router.afterEach((toRoute, fromRoute) => {
         (toRoute.name === 'plainmenu' && fromRoute.name !== 'actions3' && fromRoute.name !== 'order' && fromRoute.name !== 'plainmenu')
         || (fromRoute.name === 'order' && toRoute.name === 'plainmenu' && !store.state.app.isShowModalActions
         )) {
-        console.log(store.state.app);
         console.log('Включаем цикл показа модальных окон!');
         store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': true});
     } else {
@@ -186,7 +185,7 @@ const app = new Vue({
             /* let timerStart = new timer();
              let index = 0;*/
             const actions = this.$store.state.app.actions[0];
-            let interval = 150000;//actions.delay * 1000;
+            let interval = actions.delay * 1000;
             console.log(actions);
             //const self = this;
             console.log('Открывае модальное окно через ' + interval/1000 + ' секунд');

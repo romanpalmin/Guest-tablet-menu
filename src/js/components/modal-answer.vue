@@ -622,10 +622,13 @@
                 let imgPath = this.getActions()[0];
             },
             getActions() {
+                let current = this.$store.state.app.actions[0];
+                if (!current) return;
+
                 if (this.$store.state.settings.language === 'ru') {
-                    return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + '/sir_ru.png';
+                    return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + current.urlRuModal;
                 } else {
-                    return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + '/sir_en.png';
+                    return this.settings.urlBase + this.settings.server + this.settings.urlBigImage + current.urlEnModal;
                 }
                 /*let resp = '';
                 let result = ajax.exec({name: 'getActions'}, (res) => {
@@ -639,7 +642,7 @@
             },
             change(evt) {
                 let digital = evt;
-                digital = digital.replace(/[^-0-9]/gim, '')
+                digital = digital.replace(/[^-0-9]/gim, '');
 
                 if (+digital >= 0 && +digital <= 9999999999 && digital.length <= 10) {
                     //this.printPhone(digital);
