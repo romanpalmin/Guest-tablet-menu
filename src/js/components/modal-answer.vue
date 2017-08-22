@@ -51,6 +51,9 @@
                                 <br/>
                                 <div class="phone-number-mask" @click="setShowHint()">+7 ( _ _ _ ) _ _ _ - _ _ - _ _
                                 </div>
+                                <!--<div>
+                                    <input type="text"/>
+                                </div>-->
 
                                 <template v-if="$store.state.settings.language === 'ru'">
                                     <div class="phone-number-mask-btn">Отправить</div>
