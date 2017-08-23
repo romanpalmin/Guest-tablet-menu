@@ -147,6 +147,7 @@
 
 </style>
 <script>
+    import getImg from './helpers/importImages.js';
     export default {
         data() {
             return {
@@ -183,8 +184,21 @@
                 this.$router.replace(path);
             },
             getImgPath(name) {
+                /*let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
+                path += name + '.png';
+                return path;*/
+
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
+                if (!this.$store.state.settings.isBrowser) {
+                    getImg(path, (res, isExist) => {
+                        if(isExist){
+                            path = 'file:///storage/emulated/0/StreetFoodBar/images/' + res;
+                        }
+                    })
+                } else {
+                    return path;
+                }
                 return path;
             },
             getImgByUrl(url) {
@@ -194,16 +208,6 @@
                 } else {
                     return;
                 }
-                /*if (url === '/siry.jpg'){
-                    if (this.$store.state.settings.language === 'ru') {
-                        path += '/sir_ru.png';
-                    } else {
-                        path += '/sir_en.png';
-                    }
-                } else {
-                    path += url;
-                }*/
-                console.log('Путь к картинке' + path);
                 return path;
             },
             getCurrentModal() {

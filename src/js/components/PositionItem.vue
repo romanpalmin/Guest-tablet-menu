@@ -287,7 +287,7 @@
 
 </style>
 <script>
-
+    import getImg from './helpers/importImages.js';
     export default {
         data() {
             return {
@@ -505,7 +505,15 @@
         },
 
         mounted() {
-            this.urlClose = this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close;
+            if (!this.$store.state.settings.isBrowser) {
+                getImg(this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close, (res, isExist) => {
+                    if(isExist){
+                        this.urlClose = 'file:///storage/emulated/0/StreetFoodBar/images/' + res;
+                    }
+                })
+            } else {
+                this.urlClose = this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close;
+            }
         }
     }
 

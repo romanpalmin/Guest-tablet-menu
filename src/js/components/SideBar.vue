@@ -218,7 +218,7 @@
                                            if (isExist)
                                            {
                                                 cnt++;
-                                                if (cnt == arr.length){
+                                                if (cnt === arr.length){
                                                     //alert('Update sidebar');
                                                     self.ctgs = _.map(self.ctgs,(item)=>{return item;});
                                                 }
@@ -227,7 +227,7 @@
                                                 type: 'small',
                                                 name: item.code,
                                                 value: res
-                                           }
+                                           };
                                            self.$store.commit('SET_LOCAL_PATH', payload);
                                        });
                                    }
@@ -252,6 +252,18 @@
             },
             urlLogo:function(){
                 return this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.logo;
+                /*if (!this.$store.state.settings.isBrowser) {
+                    alert(111);
+                    getImg(this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.logo, (res, isExist) => {
+                        if(isExist){
+                            alert('file:///storage/emulated/0/StreetFoodBar/images/' + res);
+                            return 'file:///storage/emulated/0/StreetFoodBar/images/' + res;
+                        }
+                    })
+                } else {
+                    alert(222);
+                    return this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.logo;
+                }*/
             }
         },
         mounted(){
@@ -259,11 +271,8 @@
                  this.$store.dispatch('GET_FULL_TREE');
                  this.ctgs = this.$store.state.app.FullTree;
             }
-            var self = this;
         },
         destroyed(){
-            //var small = JSON.stringify(this.$store.state.app.LocalPaths.Small);
-            //LsPut("small", small);
         }
 
     }

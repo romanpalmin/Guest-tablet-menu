@@ -513,6 +513,15 @@
             getImgSrc(name) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
+                if (!this.$store.state.settings.isBrowser) {
+                    getImg(path, (res, isExist) => {
+                        if(isExist){
+                            path = 'file:///storage/emulated/0/StreetFoodBar/images/' + res;
+                        }
+                    })
+                } else {
+                    return path;
+                }
                 return path;
             },
             getTitleImg(item) {
