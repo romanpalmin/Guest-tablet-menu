@@ -162,16 +162,16 @@ const app = new Vue({
         }, 100000);
 
         let showModalActions = setInterval(() => {
-            console.log('Проверяем, нужно ли показывать модальное окно');
+            /**console.log('Проверяем, нужно ли показывать модальное окно');*/
 
             if ((!store.state.app.isShowModalAnketa)
                 && this.$router.currentRoute.name === 'plainmenu'
                 /*&& !startModalsShow*/
                 && store.state.app.isShowModalActions) {
-                console.log('Да. START');
+                /**console.log('Да. START');*/
                 this.startModals();
             } else {
-                console.log('Нет');
+                /**console.log('Нет');*/
                 //startModalsShow = false;
             }
         }, 2000);

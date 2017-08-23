@@ -224,6 +224,8 @@
                   :related="related"
                   :code="categoryId"
                   :charset="charset"
+                  :ancor="ancor"
+                  :ancorUrl="ancorUrl"
         />
         <div>
             <a class="back_to_top" title="Наверх" @scroll="scrollTrack()" @click="backToTop()"><!--&uarr; --><img
@@ -435,7 +437,9 @@
                 activeTime: '',
                 vitrina: '',
                 related: [],
-                charset: []
+                charset: [],
+                ancor: '',
+                ancorUrl: ''
             }
         },
         computed: {
@@ -614,6 +618,8 @@
                 this.vitrina = 'test';//item.vitrina;
                 this.related = item.related;
                 this.charset = item.charset;
+                this.ancorUrl = item.ancorUrl;
+                this.ancor = item.ancor;
                 this.showDetails = true;
                 this.$store.commit('SET_SELECTED_POSITION', item);
             },
@@ -639,6 +645,7 @@
             },
             scrollToHash(){
                 let hash = this.$router.currentRoute.params.hash;
+                console.log('hash: ' + hash);
                 if (hash && hash !== '' ){
                     setTimeout(()=>{
                         let el = document.querySelector('a.hash-'+hash);

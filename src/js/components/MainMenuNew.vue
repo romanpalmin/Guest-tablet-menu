@@ -97,14 +97,10 @@
                     }
                     if (!self.$store.state.settings.isBrowser) {
                         //todo сюда проверку на соответствие картинки
-                        //alert(`${item.urlBigImage.slice(1)} === ${self.$store.state.app.LocalPaths.Category[item.code]} === ${item.urlBigImage.slice(1) === self.$store.state.app.LocalPaths.Category[item.code]}`);
-                        /*alert('category: ' + self.$store.state.app.LocalPaths.Category[item.code]);
-                        alert('url: ' + item.urlBigImage);
-                        alert('item: ' + JSON.stringify(item));*/
                         if (self.$store.state.app.LocalPaths.Category[item.code] && (item.urlBigImage.slice(1) !== self.$store.state.app.LocalPaths.Category[item.code])) {
                             self.$store.state.app.LocalPaths.Category[item.code] = void 1;
                         }
-                        //alert("Old: " + self.$store.state.app.LocalPaths.Category[item.code] + "\nNew: " + item.urlBigImage);
+
                         if (self.$store.state.app.LocalPaths.Category[item.code] === void 1) {
                             getImg(self.$store.state.settings.urlBase + self.$store.state.settings.server + self.$store.state.settings.urlBigImage + item.urlBigImage, function (res, isExist) {
                                 if (isExist) {

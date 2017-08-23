@@ -66,7 +66,7 @@
                             </template>
                         </div>
 
-                        <div class="related-items" v-if="relatedFromParent.length!==0">
+                        <div class="related-items" v-if="relatedFromParent.length!==0 || ancorFromParent">
                             <template v-if="$store.state.settings.language === 'ru'">
                                 С этим товаром часто заказывают
                             </template>
@@ -89,6 +89,11 @@
                                             </template>
                                         </div>
                                     </div>
+
+                                </div>
+                                <div :style="getGroupName(ancorUrlFromParent, ancorFromParent)"
+                                     class="related-item ancor" @click="goToPage(ancorFromParent)">
+
                                 </div>
                             </div>
                         </div>
@@ -375,6 +380,13 @@
             relatedFromParent: function () {
                 return this.related;
             },
+            ancorFromParent: function () {
+                console.log(this.ancor);
+                return this.ancor;
+            },
+            ancorUrlFromParent: function () {
+                return this.ancorUrl;
+            },
             lighting: function () {
                 if (this.yacheika !== '') {
                     return ';box-shadow: 0px 0px 30px #CCDDFF;';
@@ -406,9 +418,27 @@
             }
         },
 
-        props: ["positionId", "urlImageLarge", "name", "name_ru", "name_en",  "price", "description", "description_ru", "description_en", 'yacheika', 'activeTime', 'vitrina', "related", "code", "charset"],
+        props: ["positionId", "urlImageLarge", "name", "name_ru", "name_en", "price",
+            "description", "description_ru", "description_en", 'yacheika',
+            'activeTime', 'vitrina', "related", "code", "charset", "ancorUrl", "ancor"],
 
         methods: {
+            goToPage(code) {
+                let prefPath = `/${this.$store.state.settings.language}/menu/`;
+                let path = '';
+                const groups = this.$store.state.app.SourceTree.groups;
+                let el = _.find(groups, (item) => {
+                    return item.code === code;
+                });
+                if (el) {
+                    path += el.root === '' ? code : el.root + '/' + code;
+                }
+                console.log(prefPath + path);
+                if (path !== '') {
+                    this.$router.replace(path);
+                }
+                this.close();
+            },
             close() {
                 this.$parent.showDetails = false;
                 this.$store.commit('SET_SELECTED_POSITION', {});
@@ -453,7 +483,7 @@
             },
 
             showInLamp: function (id) {
-                let data = {currentId: id}
+                let data = {currentId: id};
                 this.$store.dispatch('TURN_ON_LAMP', data);
             },
 
@@ -465,6 +495,11 @@
                 } else {
                     res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.imgURL_Sm;
                 }
+                return 'background-image: url(' + res + ');';
+            },
+            getGroupName(url, code) {
+                if (!url) return;
+                const res = this.$store.state.settings.urlBase + this.settings.urlBackImage + url;
                 return 'background-image: url(' + res + ');';
             }
 

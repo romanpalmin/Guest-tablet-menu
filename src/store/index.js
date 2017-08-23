@@ -25,6 +25,7 @@ const store = new Vuex.Store({
                 SyncCounter: 0,
                 OrderCounter: 0,
                 FullTree: [],
+                SourceTree: [],
                 showModalAnketa: false,
                 isShowModalAnketa: true,
                 showModalActions: false,
@@ -225,6 +226,15 @@ const store = new Vuex.Store({
                     console.log(item);
                     return item;
                 })*/
+                // console.log(payload);
+            }
+            ,
+            [m_types.SET_SOURCE_TREE](state, payload){
+                state.app.SourceTree = payload;
+                /*                state.app.FullTree = _.map(state.app.FullTree, (item) => {
+                                    console.log(item);
+                                    return item;
+                                })*/
                 // console.log(payload);
             }
         },
@@ -433,6 +443,7 @@ const store = new Vuex.Store({
                     json.items = _.filter(json.items, (itms) => {
                         return (+itms.price > 0 && itms.price !== '');
                     });
+                    commit('SET_SOURCE_TREE', json);
                     let roots = _.filter(json.groups, function (item) {
                         if (item.parrent_code === '') {
                             // заполняем первый уровень
