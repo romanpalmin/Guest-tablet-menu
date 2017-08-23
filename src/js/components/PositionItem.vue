@@ -433,7 +433,6 @@
                 if (el) {
                     path += el.root === '' ? code : el.root + '/' + code;
                 }
-                console.log(prefPath + path);
                 if (path !== '') {
                     this.$router.replace(path);
                 }
