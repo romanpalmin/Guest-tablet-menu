@@ -34,7 +34,7 @@
             <div class="shedule-body">
                 <div class="shedule-body-tv" v-if="currentType==='tv'">
                     <div class="watch-content" v-for="(value, key) in dayContent">
-                        <div class="hall-title">{{key === '' ? 'Зал не определен' : key}}</div>
+                        <div class="hall-title">{{key === '' ? 'Любой зал' : key}}</div>
                         <div class="day-descr" ></div>
                         <div class="day-content"  v-for="contentItem in dayContent[key]">
                             <div class="event-header">
@@ -50,7 +50,18 @@
                     </div>
                 </div>
                 <div class="shedule-body-events" v-if="currentType==='events'">
-                    EVENTS
+                    <div class="">
+                        <div class="event-item" v-for="item in eventsContent">
+                            <template v-if="$store.state.settings.language === 'ru'">
+                                <div class="event-item-title">{{item.name}}</div>
+                                <div class="event-item-img"><img :src="item.urlRU" /> </div>
+                            </template>
+                            <template v-else>
+                                <div class="event-item-title">{{item.name}}</div>
+                                <div class="event-item-img"><img :src="item.urlEN" /> </div>
+                            </template>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -186,9 +197,21 @@
                         }
                     }
                 }
-                &-events {
-                    padding-top: 100px;
-                    background-color: #232eff;
+            }
+            &-events {
+                padding-top: 100px;
+                margin-top: 100px;
+                .event-item{
+                    border-radius: 5px;
+                    padding-bottom: 100px;
+                    img{
+                        border: 4px solid gray;
+                        border-radius: 15px;
+                    }
+                    &-title{
+                        font-size: 15pt;
+                        font-weight: 900;
+                    }
                 }
             }
         }
@@ -205,7 +228,8 @@
                 currentType: 'tv',
                 currentDayWeek: '',
                 currentDayIndex: '',
-                currentContent: []
+                currentContent: [],
+                currentEvents: []
             }
         },
         computed: {
@@ -232,8 +256,29 @@
                 return list;
             },
             dayContent: function(){
-                let res = _.groupBy(this.currentContent, item => item.event.hallCode);
+                let res = _.groupBy(this.currentContent, item => {
+                    if (this.$store.state.settings.language === 'ru'){
+                        return item.event.hallRU;
+                    } else {
+                        return item.event.hallEN;
+                    }
+                    //item.event.hallCode
+                });
                 return res;
+            },
+            eventsContent: function(){
+                if (!this.rasp.events) return;
+                const emptyImgUrl = this.getImg('404');
+                let list = this.rasp.events.map((item, index) => {
+                    let res = {
+                        name: item.name,
+                        urlEN: item.urlEnStock === '' ? emptyImgUrl : item.urlEnStock,
+                        urlRU: item.urlRuStock === '' ? emptyImgUrl : item.urlRuStock
+                    }
+                    return res;
+                });
+                console.log(list);
+                return list;
             }
         },
 
