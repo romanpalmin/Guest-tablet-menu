@@ -133,7 +133,7 @@ const app = new Vue({
                     }
                 }, 1000)
             };
-            //self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
+            self.$store.dispatch('GET_LAST_UPDATE', {callback: callback});
             self.$store.commit('INCREMENT_SYNC_COUNTER');
         }, 30000);
 

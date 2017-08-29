@@ -654,7 +654,6 @@
             },
             scrollToHash(){
                 let hash = this.$router.currentRoute.params.hash;
-                console.log('hash: ' + hash);
                 if (hash && hash !== '' ){
                     setTimeout(()=>{
                         let el = document.querySelector('a.hash-'+hash);
@@ -678,7 +677,7 @@
             }
         },
         updated() {
-            console.log('DOM изменился');
+            //console.log('DOM изменился');
             this.scrollToHash();
         },
         components: {
