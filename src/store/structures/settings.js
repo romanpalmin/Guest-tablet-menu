@@ -1,11 +1,11 @@
 export default {
     server: '',
-    ip: '10.10.182.11',
-    /*ip: '10.100.50.248',*/
+    /*ip: '10.10.182.11',*/
+    ip: '10.100.50.248',
     userName: '',
     password: '',
-    urlBase:  'http://10.10.182.11/',
-    /*urlBase:  'http://10.100.50.248/',*/
+    /*urlBase:  'http://10.10.182.11/',*/
+    urlBase:  'http://10.100.50.248/',
     urlSmallImage: 'img/',
     urlBigImage: 'images/',
     urlBackImage: 'images',

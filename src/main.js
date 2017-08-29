@@ -5,6 +5,7 @@ import plainmenu from './js/components/PlainMenu.vue';
 import modalAnswer from './js/components/modal-answer.vue';
 import order from './js/Order.vue';
 import shedule from './js/Shedule.vue';
+import sheduleNew from './js/SheduleNew.vue';
 import actions from './js/Actions.vue';
 import actions3 from './js/Actions3.vue';
 import actions4 from './js/Actions4.vue';
@@ -43,6 +44,7 @@ const routes = [
     {name: 'actions3', path: '/:lang/actions3', component: actions3},
     {name: 'actions4', path: '/:lang/actions4', component: actions4},
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
+    {name: 'sheduleNew', path: '/:lang/sheduleNew', component: sheduleNew},
     {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
     {name: 'plainmenu', path: '/:lang/menu/:id/:hash', component: plainmenu},
     {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet}
@@ -355,12 +357,14 @@ const app = new Vue({
             <!--<div class="pages-nav__item "><router-link to="/ru/Actions2" class="link-page link">Акция</router-link></div>-->
             <div class="pages-nav__item "><router-link to="/ru/Actions3" class="link-page link">Акции</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/shedule" class="link-page link">Развлечения</router-link></div>
+            <div class="pages-nav__item "><router-link to="/ru/sheduleNew" class="link-page link">РазвлеченияNew</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/menu" class="link-page link">Меню</router-link></div>
             <div class="pages-nav__item "><router-link to="/ru/order" class="link-page link">Вы заказали</router-link></div>
         </nav>
          <nav v-else class="pages-nav">
             <div class="pages-nav__item "><router-link to="/en/Actions3" class="link-page link">Stock</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/shedule" class="link-page link">Shedule</router-link></div>
+            <div class="pages-nav__item "><router-link to="/en/sheduleNew" class="link-page link">SheduleNew</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/menu" class="link-page link">Menu</router-link></div>
             <div class="pages-nav__item "><router-link to="/en/order" class="link-page link">Your order</router-link></div>
         </nav>
