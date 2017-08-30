@@ -5,12 +5,13 @@
             <div class="shedule-sidebar">
                 <!-- Заголовки сайдбара -->
                 <div class="shedule-sidebar-header">
-                    <div class="tv" @click="currentType='tv'"><img :src="getImg('sport-tv')" /></div>
-                    <div class="events" @click="currentType='events'"><img :src="getImg('events')" /></div>
+                    <div class="tv" @click="currentType='tv'"><img :src="getImg('sport-tv')"/></div>
+                    <div class="events" @click="currentType='events'"><img :src="getImg('events')"/></div>
                 </div>
                 <!-- Список дней на сайдбаре -->
                 <div class="shedule-days-list" v-if="currentType==='tv'">
-                    <div class="day-week" v-for="days, index in daysWeek" @click="currentDayIndex=index; currentContent=days.daycontent">
+                    <div class="day-week" v-for="days, index in daysWeek"
+                         @click="currentDayIndex=index; currentContent=days.daycontent">
                         <template v-if="$store.state.settings.language === 'ru'">
                             <div :class="index === currentDayIndex ? 'day-week-abbr selected' : 'day-week-abbr'">
                                 {{days.daydescRU}}
@@ -34,17 +35,35 @@
             <div class="shedule-body">
                 <div class="shedule-body-tv" v-if="currentType==='tv'">
                     <div class="watch-content" v-for="(value, key) in dayContent">
-                        <div class="hall-title">{{key === '' ? 'Любой зал' : key}}</div>
-                        <div class="day-descr" ></div>
-                        <div class="day-content"  v-for="contentItem in dayContent[key]">
+                        <template v-if="$store.state.settings.language === 'ru'">
+                            <div class="hall-title">{{key === '' ? 'Любой зал' : key}}</div>
+                        </template>
+                        <template v-else>
+                            <div class="hall-title">{{key === '' ? 'Any hall' : key}}</div>
+                        </template>
+                        <div class="day-descr"></div>
+                        <div class="day-content" v-for="contentItem in dayContent[key]">
                             <div class="event-header">
                                 <div class="event-time">
                                     <div class="event-time-begin">{{ contentItem.event.timebegin }}</div>
                                 </div>
-                                <div class="event-type">{{ contentItem.event.eventtype }}</div>
+                                <template v-if="$store.state.settings.language === 'ru'">
+                                    <div class="event-type">{{ contentItem.event.eventtype }}</div>
+                                </template>
+                                <template v-else>
+                                    <div class="event-type">{{ contentItem.event.eventtypeEN }}</div>
+                                </template>
                             </div>
                             <div class="event-descr-row">
-                                <div class="event-descr-cell">{{ contentItem.event.description | deleteQuotes}}</div>
+                                <template v-if="$store.state.settings.language === 'ru'">
+                                    <div class="event-descr-cell" v-if="$store.state.settings.language === 'ru'">
+                                        {{ contentItem.event.description | deleteQuotes}}
+                                    </div>
+                                </template>
+                                <template v-else>
+                                    <div class="event-descr-cell">{{ contentItem.event.descriptionEN | deleteQuotes}}
+                                    </div>
+                                </template>
                             </div>
                         </div>
                     </div>
@@ -54,11 +73,11 @@
                         <div class="event-item" v-for="item in eventsContent">
                             <template v-if="$store.state.settings.language === 'ru'">
                                 <div class="event-item-title">{{item.name}}</div>
-                                <div class="event-item-img"><img :src="item.urlRU" /> </div>
+                                <div class="event-item-img"><img :src="item.urlRU"/></div>
                             </template>
                             <template v-else>
                                 <div class="event-item-title">{{item.name}}</div>
-                                <div class="event-item-img"><img :src="item.urlEN" /> </div>
+                                <div class="event-item-img"><img :src="item.urlEN"/></div>
                             </template>
                         </div>
                     </div>
@@ -82,6 +101,7 @@
             top: 0;
             left: 0;
             height: 100%;
+            min-height: 100%;
             width: 300px;
             background-color: white;
             .shedule-sidebar-header {
@@ -109,7 +129,7 @@
                     font-size: 20pt;
                     &-abbr {
                         background-color: black;
-                        color: white;
+                        /*color: white;*/
                         float: left;
                         width: 60px;
                         text-align: center;
@@ -119,7 +139,7 @@
                         }
                     }
                     &-str {
-                        background-color: white;
+                        /*background-color: white;*/
                         color: black;
                         padding-left: 70px;
                         &.selected {
@@ -133,9 +153,12 @@
         .shedule-body {
             padding-left: 300px;
             display: block;
-            height: 100%;
+            /*height: 100%;*/
+            overflow-y: scroll;
+            height: 91vh;
+            padding-top: 30px;
             &-tv {
-                padding-top: 100px;
+                /*padding-top: 30px;*/
                 .watch-content {
                     width: 28vw;
                     display: inline-block;
@@ -199,16 +222,17 @@
                 }
             }
             &-events {
-                padding-top: 100px;
+                /*padding-top: 30px;*/
                 margin-top: 100px;
-                .event-item{
+                .event-item {
                     border-radius: 5px;
                     padding-bottom: 100px;
-                    img{
+                    img {
                         border: 4px solid gray;
                         border-radius: 15px;
+                        max-width: 80%;
                     }
-                    &-title{
+                    &-title {
                         font-size: 15pt;
                         font-weight: 900;
                     }
@@ -255,9 +279,9 @@
                 });
                 return list;
             },
-            dayContent: function(){
+            dayContent: function () {
                 let res = _.groupBy(this.currentContent, item => {
-                    if (this.$store.state.settings.language === 'ru'){
+                    if (this.$store.state.settings.language === 'ru') {
                         return item.event.hallRU;
                     } else {
                         return item.event.hallEN;
@@ -266,15 +290,15 @@
                 });
                 return res;
             },
-            eventsContent: function(){
+            eventsContent: function () {
                 if (!this.rasp.events) return;
                 const emptyImgUrl = this.getImg('404');
                 let list = this.rasp.events.map((item, index) => {
                     let res = {
                         name: item.name,
-                        urlEN: item.urlEnStock === '' ? emptyImgUrl : item.urlEnStock,
-                        urlRU: item.urlRuStock === '' ? emptyImgUrl : item.urlRuStock
-                    }
+                        urlEN: item.urlEnStock === '' ? emptyImgUrl : this.settings.urlBase + item.urlEnStock,
+                        urlRU: item.urlRuStock === '' ? emptyImgUrl : this.settings.urlBase + item.urlRuStock
+                    };
                     return res;
                 });
                 console.log(list);
@@ -283,7 +307,7 @@
         },
 
         methods: {
-            getImg(name){
+            getImg(name) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
                 return path;
@@ -321,6 +345,7 @@
                 });*/
                 this.rasp = this.$store.state.app.show;
             }
+            this.getShow();
         }
     }
 </script>
