@@ -36,10 +36,10 @@
                 <div class="shedule-body-tv" v-if="currentType==='tv'">
                     <div class="watch-content" v-for="(value, key) in dayContent">
                         <template v-if="$store.state.settings.language === 'ru'">
-                            <div class="hall-title">{{key === '' ? 'Любой зал' : key}}</div>
+                            <div class="hall-title">{{key === '' ? '' : key}}</div>
                         </template>
                         <template v-else>
-                            <div class="hall-title">{{key === '' ? 'Any hall' : key}}</div>
+                            <div class="hall-title">{{key === '' ? '' : key}}</div>
                         </template>
                         <div class="day-descr"></div>
                         <div class="day-content" v-for="contentItem in dayContent[key]">
