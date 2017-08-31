@@ -116,7 +116,7 @@
                         height: 60px;
                         border-radius: 8px;
                         position: absolute;
-                        bottom: 130px;
+                        bottom: 740px;
                         font-size: 20pt;
                         font-weight: bold;
                         left: 400px;
