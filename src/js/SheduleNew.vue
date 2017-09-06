@@ -160,10 +160,10 @@
             &-tv {
                 /*padding-top: 30px;*/
                 .watch-content {
-                    width: 28vw;
+                    width: 22vw;
                     display: inline-block;
                     vertical-align: top;
-                    padding: 30px;
+                    padding: 10px;
                 }
                 .hall-title {
                     text-align: left;
@@ -210,7 +210,7 @@
                     }
                     .event-descr-row {
                         display: block;
-                        width: 28vw;
+                        /*width: 28vw;*/
                         margin-bottom: 15px;
                         padding-left: 80px;
                         .event-descr-cell {
