@@ -504,12 +504,7 @@
                 }
                 return res;
             },
-            test(item) {
-                return '';
-            },
-            test2(item) {
-                return '';
-            },
+
             getImgSrc(name) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
@@ -525,8 +520,6 @@
                 return path;
             },
             getTitleImg(item) {
-                //alert(123);
-                //alert(this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName);
                 return this.settings.urlBase + this.settings.server + this.settings.urlBackImage + item.iconName;
             },
             getStyle(item) {
@@ -616,13 +609,13 @@
                 this.code = item.code;
                 this.urlImageLarge = item.urlImageLarge;
                 this.price = item.price,
-                    this.name = this.$store.state.settings.language === 'ru' ? item.name : item.name_en,
-                    this.name_ru = item.name_ru,
-                    this.name_en = item.name_en,
-                    this.description = this.$store.state.settings.language === 'ru' ? item.description_ru : item.description_en,
-                    this.description_ru = item.description_ru,
-                    this.description_en = item.description_en,
-                    this.yacheika = item.yacheika === null ? '' : item.yacheika;
+                this.name = this.$store.state.settings.language === 'ru' ? item.name : item.name_en,
+                this.name_ru = item.name_ru,
+                this.name_en = item.name_en,
+                this.description = this.$store.state.settings.language === 'ru' ? item.description_ru : item.description_en,
+                this.description_ru = item.description_ru,
+                this.description_en = item.description_en,
+                this.yacheika = item.yacheika === null ? '' : item.yacheika;
                 this.activeTime = group.activeTime;
                 this.vitrina = 'test';//item.vitrina;
                 this.related = item.related;
