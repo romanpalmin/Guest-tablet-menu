@@ -491,8 +491,8 @@ const store = new Vuex.Store({
                             return item;
                         }
                     });
-                    /*console.log(roots);
-                     console.log((roots.filter(function(item){
+                    console.log(roots);
+                     /*console.log((roots.filter(function(item){
                      return item.code === '332020';
                      }))[0].groups);
                      let burgers = _.filter(roots, function(item){

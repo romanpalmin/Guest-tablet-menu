@@ -36,7 +36,9 @@
                                                         </div>
                                                     </template>
                                                     <template v-else>
-                                                        <div :style="getTitleStyle(sub0)">{{sub0.name_en | deleteQuotes}}</div>
+                                                        <div :style="getTitleStyle(sub0)">{{sub0.name_en |
+                                                            deleteQuotes}}
+                                                        </div>
                                                     </template>
                                                 </template>
                                                 <template v-else>
@@ -640,10 +642,12 @@
                 var coords = panel.clientHeight;
                 if (scrolled > coords / 2) {
                     goTopBtn.classList.add('back_to_top-show');
-                }
-                if (scrolled < coords / 2) {
+                } else {
                     goTopBtn.classList.remove('back_to_top-show');
                 }
+                /*if (scrolled < coords / 2) {
+                    goTopBtn.classList.remove('back_to_top-show');
+                }*/
             },
             scrollToHash(){
                 let hash = this.$router.currentRoute.params.hash;
@@ -677,4 +681,9 @@
             'position': Position
         }
     }
+
+
+
+
+
 </script>
