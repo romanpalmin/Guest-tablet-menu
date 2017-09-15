@@ -121,8 +121,10 @@ function getUrl(operation) {
             url = `groups=${operation.catId}&category=${operation.catId}`;
             break;
         case 'show':
-            url = 'groups=1&shows=1';
+            //url = 'groups=1&shows=1';
+            url = 'newJsnoShow=1';
             break;
+
         case 'order':
             url = 'groups=1&korzina=1';
             break;

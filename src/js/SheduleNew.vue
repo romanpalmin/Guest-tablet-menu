@@ -10,22 +10,22 @@
                 </div>
                 <!-- Список дней на сайдбаре -->
                 <div class="shedule-days-list" v-if="currentType==='tv'">
-                    <div class="day-week" v-for="days, index in daysWeek"
-                         @click="currentDayIndex=index; currentContent=days.daycontent">
+                   <div class="day-week" v-for="days, index in daysWeek"
+                         @click="currentDayIndex=index; currentContent=days.content">
                         <template v-if="$store.state.settings.language === 'ru'">
                             <div :class="index === currentDayIndex ? 'day-week-abbr selected' : 'day-week-abbr'">
-                                {{days.daydescRU}}
+                                {{days.dayWeekShort}}
                             </div>
                             <div :class="index === currentDayIndex ? 'day-week-str selected' : 'day-week-str'">
-                                {{days.datedayRU}}
+                                {{days.date}}
                             </div>
                         </template>
                         <template v-else>
                             <div :class="index === currentDayIndex ? 'day-week-abbr selected' : 'day-week-abbr'">
-                                {{days.daydescEN}}
+                                {{days.dayWeekShortEN}}
                             </div>
                             <div :class="index === currentDayIndex ? 'day-week-str selected' : 'day-week-str'">
-                                {{days.datedayEN}}
+                                {{days.dateEN}}
                             </div>
                         </template>
                     </div>
@@ -36,32 +36,32 @@
                 <div class="shedule-body-tv" v-if="currentType==='tv'">
                     <div class="watch-content" v-for="(value, key) in dayContent">
                         <template v-if="$store.state.settings.language === 'ru'">
-                            <div class="hall-title">{{key === '' ? '' : key}}</div>
+                            <div class="hall-title">{{value.hallName}}</div>
                         </template>
                         <template v-else>
-                            <div class="hall-title">{{key === '' ? '' : key}}</div>
+                            <div class="hall-title">{{value.hallNameEN}}</div>
                         </template>
                         <div class="day-descr"></div>
-                        <div class="day-content" v-for="contentItem in dayContent[key]">
+                        <div class="day-content" v-for="contentItem in value.events">
                             <div class="event-header">
                                 <div class="event-time">
-                                    <div class="event-time-begin">{{ contentItem.event.timebegin }}</div>
+                                    <div class="event-time-begin">{{ getTime(contentItem.start) }}</div>
                                 </div>
                                 <template v-if="$store.state.settings.language === 'ru'">
-                                    <div class="event-type">{{ contentItem.event.eventtype }}</div>
+                                    <div class="event-type">{{ contentItem.eventTypeNameRu }}</div>
                                 </template>
                                 <template v-else>
-                                    <div class="event-type">{{ contentItem.event.eventtypeEN }}</div>
+                                    <div class="event-type">{{ contentItem.eventTypeNameEN }}</div>
                                 </template>
                             </div>
                             <div class="event-descr-row">
                                 <template v-if="$store.state.settings.language === 'ru'">
                                     <div class="event-descr-cell" v-if="$store.state.settings.language === 'ru'">
-                                        {{ contentItem.event.description | deleteQuotes}}
+                                        {{ contentItem.eventNameRU | deleteQuotes}}
                                     </div>
                                 </template>
                                 <template v-else>
-                                    <div class="event-descr-cell">{{ contentItem.event.descriptionEN | deleteQuotes}}
+                                    <div class="event-descr-cell">{{ contentItem.eventNameEN | deleteQuotes}}
                                     </div>
                                 </template>
                             </div>
@@ -261,34 +261,28 @@
                 return this.rasp;
             },
             daysWeek: function () {
-                if (!this.rasp.schedule) return;
-                let list = this.rasp.schedule.map((item, index) => {
-                    let res = {
-                        datedayRU: item.daydateRU,
-                        datedayEN: item.daydateEN,
-                        daydescEN: item.daydescEN,
-                        daydescRU: item.daydescRU,
-                        daycontent: item.daycontent
-
-                    };
-                    if (index === 0 && this.currentDayIndex === '') {
-                        this.currentDayIndex = 0;
-                        this.currentContent = item.daycontent;
-                    }
-                    return res;
-                });
-                return list;
+                const days = _.filter(this.rasp, {type: 1})[0];
+                if (!days) return;
+                const byDaysNew = _.map(
+                    days.content, (item, index) => {
+                        if (index === 0 && this.currentDayIndex === '') {
+                            this.currentDayIndex = 0;
+                            this.currentContent = item.hall;
+                        }
+                        return {
+                            date: item.date,
+                            dateEN: item.dateEN,
+                            dayWeekShort: item.dayWeekSokr,
+                            dayWeekShortEN: item.dayWeekSokrEN,
+                            dateTime: item.dateTime,
+                            monthDay: item.dayOfMounth,
+                            content: item.hall
+                        }
+                    });
+                return byDaysNew;
             },
             dayContent: function () {
-                let res = _.groupBy(this.currentContent, item => {
-                    if (this.$store.state.settings.language === 'ru') {
-                        return item.event.hallRU;
-                    } else {
-                        return item.event.hallEN;
-                    }
-                    //item.event.hallCode
-                });
-                return res;
+                return this.currentContent;
             },
             eventsContent: function () {
                 if (!this.rasp.events) return;
@@ -307,6 +301,13 @@
         },
 
         methods: {
+            getTime(strDt) {
+                const dt = new Date(strDt);
+                const hr = dt.getHours() > 9 ? dt.getHours() : '0' + dt.getHours();
+                const min = dt.getMinutes() > 9 ? dt.getMinutes() : '0' + dt.getMinutes();
+                const res = `${hr}:${min}`;
+                return res;
+            },
             getImg(name) {
                 let path = this.settings.urlBase + this.settings.server + this.settings.urlSmallImage;
                 path += name + '.png';
