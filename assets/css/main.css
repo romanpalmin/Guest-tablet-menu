@@ -120,6 +120,7 @@ a {
 .menu__link--current.sidebar {
     color: #FFFFFF;
     background-color: #e2e2e2;
+    width: 300px;
 }
 
 .link-page:not(.link-faded)::before {
