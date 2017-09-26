@@ -68,17 +68,23 @@
 
                         <div class="related-items" v-if="relatedFromParent.length!==0 || ancorFromParent">
                             <template v-if="$store.state.settings.language === 'ru'">
-                                С этим товаром часто заказывают
+                                Предложение от шеф повара
                             </template>
                             <template v-else>
-                                Related products
+                                Proposal from chef
                             </template>
                             <div class="p-item-related ">
                                 <div v-for="rel in relatedFromParent" :data-Code="rel.code"
                                      @click="add2CartAdditional(rel.code2)" :style="addingToCartStyleAdditional">
                                     <div :style="getRelatedStyle(rel)" class="related-item">
                                         <div class="related-item-price product-top-block-price" :data-Code="rel.code2">
-                                            {{rel.price}}
+                                            <template v-if="!IsAddingAdditonal">
+                                                {{rel.price}}
+                                            </template>
+                                            <template v-else>
+                                                <img class="trash" :src="getTrash()" />
+                                            </template>
+
                                         </div>
                                         <div class="related-item-title">
                                             <template v-if="$store.state.settings.language === 'ru'">
@@ -174,6 +180,9 @@
                         border-radius: 30px;
                         position: relative;
                         margin-top: 40px;
+                        .trash{
+                            padding: 5px;
+                        }
                         .related-item-price {
                             display: table-cell;
                             width: 80px;
@@ -484,6 +493,11 @@
             showInLamp: function (id) {
                 let data = {currentId: id};
                 this.$store.dispatch('TURN_ON_LAMP', data);
+            },
+
+            getTrash(){
+                const res = this.$store.state.settings.urlBase + this.settings.urlBigImage + 'basket2.png';
+                return res;
             },
 
             getRelatedStyle: function (item) {

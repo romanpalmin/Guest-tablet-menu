@@ -1,11 +1,11 @@
 export default {
     server: '',
-    /*ip: '10.10.182.11',*/
-    ip: '10.100.50.248',
+    ip: '10.10.182.11',
+    /*ip: '10.100.50.248',*/
     userName: '',
     password: '',
-   /* urlBase:  'http://10.10.182.11/',*/
-    urlBase:  'http://10.100.50.248/',
+    urlBase:  'http://10.10.182.11/',
+   /* urlBase:  'http://10.100.50.248/',*/
     urlSmallImage: 'img/',
     urlBigImage: 'images/',
     urlBackImage: 'images',
@@ -14,7 +14,7 @@ export default {
         close: 'close.png'
     },
     testMode: false,
-    isTablet: false,
+    isTablet: true,
     showButtons: true,
     updateStatePeriod: 1000 * 60 * 30,  // время обновления меню секунда * кол-во секунд * кол-во минут
     updateOrderFrequency: 1000 * 15, // время обновления состояния корзины
@@ -24,5 +24,5 @@ export default {
     language: 'ru',
     showLanguageToggle: true,
     localPath:'StreetFoodBar/images',
-    isBrowser: true
+    isBrowser: false
 }
