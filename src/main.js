@@ -45,7 +45,7 @@ const routes = [
     {name: 'actions4', path: '/:lang/actions4', component: actions4},
     {name: 'shedule', path: '/:lang/shedule', component: shedule},
     {name: 'sheduleNew', path: '/:lang/sheduleNew', component: sheduleNew},
-    {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu},
+    {name: 'plainmenu', path: '/:lang/menu/:id', component: plainmenu, meta: { scrollToTop: true }},
     {name: 'plainmenu', path: '/:lang/menu/:id/:hash', component: plainmenu},
     {name: 'wheretablet', path: '/:lang/wheretablet', component: wheretablet}
 ];
@@ -56,6 +56,16 @@ let router = new VueRouter({
 });
 
 router.afterEach((toRoute, fromRoute) => {
+    // скроллим вверх
+    if (toRoute.name === 'plainmenu'){
+        let panel = document.querySelector('.rolling');
+        if (panel && panel !== null){
+            let scrolled = panel ? panel.scrollTop : 0;
+            if (scrolled !== 0){
+                panel.scrollTop = 0;
+            }
+        }
+    }
     if (toRoute.name === 'menu' && fromRoute.name !== 'order' && fromRoute.name !== 'actions3') {
         //console.log('Включаем показ модального окна');
         store.commit('SET_IS_SHOW_MODAL_ANKETA', {'value': true});
