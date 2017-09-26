@@ -57,7 +57,7 @@ let router = new VueRouter({
 
 router.afterEach((toRoute, fromRoute) => {
     // скроллим вверх
-    if (toRoute.name === 'plainmenu'){
+    if (toRoute.name === 'plainmenu' && !router.currentRoute.params.hash){
         let panel = document.querySelector('.rolling');
         if (panel && panel !== null){
             let scrolled = panel ? panel.scrollTop : 0;
