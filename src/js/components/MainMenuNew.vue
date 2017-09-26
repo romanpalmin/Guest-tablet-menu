@@ -87,7 +87,7 @@
                 const self = this;
                 let cnt = 0;
                 let payload = {};
-                return this.$store.state.app.FullTree.map(function (item, index, arr) {
+                let res = this.$store.state.app.FullTree.map(function (item, index, arr) {
                     item.route = 'menu/' + item.code;
                     if (self.currentLanguage === 'ru') {
                         item.name = item.name_RU;
@@ -131,6 +131,8 @@
                     }
                     return item;
                 });
+                res = _.orderBy(res, ['order']);
+                return res;
             }
         },
 
