@@ -42,6 +42,11 @@
                                 </div>
                             </td>
                         </tr>
+                        <tr class="table-row "  v-if="showDeleteBtn">
+                            <td colspan="3" class="footer">
+                                Проверьте Ваш заказ и позовите официанта. Приятного аппетита.
+                            </td>
+                        </tr>
                     </table>
 
                 </div>
