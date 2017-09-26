@@ -645,15 +645,13 @@
                 } else {
                     goTopBtn.classList.remove('back_to_top-show');
                 }
-                /*if (scrolled < coords / 2) {
-                    goTopBtn.classList.remove('back_to_top-show');
-                }*/
             },
             scrollToHash(){
                 let hash = this.$router.currentRoute.params.hash;
                 if (hash && hash !== '' ){
                     setTimeout(()=>{
                         let el = document.querySelector('a.hash-'+hash);
+                        if (!el) return;
                         el.scrollIntoView(true);
                         let panel = document.querySelector('.rolling');
                         panel.scrollTop -= 50;

@@ -618,7 +618,8 @@
             goTo4start() {
                 //this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': true});
                 //let path = `/${this.$store.state.settings.language}/menu/653232#656932`;
-                let path = `/${this.$store.state.settings.language}/menu/653232/656932`;
+                //let path = `/${this.$store.state.settings.language}/menu/653232/656932`;
+                let path = `/${this.$store.state.settings.language}/menu/763232/766932`;
                 this.$router.replace(path);
             },
             getImgActions() {
