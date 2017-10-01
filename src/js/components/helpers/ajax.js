@@ -2,8 +2,8 @@
 import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
-/*const ip = '10.100.50.248';*/
-const ip = '10.10.182.11';
+const ip = '10.100.50.248';
+/*const ip = '10.10.182.11';*/
 let userName = 'planshet';
 let password = 'planshet';
 let ajaxServerUrlShort = '';
@@ -13,7 +13,7 @@ const baseUrl = ip === '10.10.182.11'
     ? 'planshet/hs/model?'
     : 'planshet_kl/hs/model?';
 //-------------------------------
-//ajaxServerUrlShort = formAjaxVars(true);
+//ajaxServerUrlShort = formAjaxVars(true); 6d071901727aec1ba6d8e2497ef5b709
 
 let uuid = '';
 //uuid = device.uuid;
