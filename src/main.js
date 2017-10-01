@@ -164,7 +164,7 @@ const app = new Vue({
                 !this.$store.state.app.showModalAnketa && // признак того, что окно не открыто
                 /*this.$store.state.settings.language === 'ru' && // признак того, что включен русский язык*/
                 this.$router.currentRoute.name === 'plainmenu'; // признак того, что открыты категории
-            if (condition) { // если все условия соблюдены
+            if (condition && false) { // если все условия соблюдены
                 this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': true});
             }
         }, 50000);
@@ -203,12 +203,12 @@ const app = new Vue({
             console.log('Открывае модальное окно через ' + interval/1000 + ' секунд');
             this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {value: false});
             //this.startModalsShow = false;
-            setTimeout(() => {
+            /*setTimeout(() => {
                 if (this.$router.currentRoute.name === 'plainmenu') {
                     this.$store.commit('SET_MODAL_ACTIONS_SHOW', {value: true});
                     this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {value: false});
                 }
-            }, interval);
+            }, interval);*/
             /*timerStart.start(()=>{
                 //index++;
                 console.log('Открываем модальное окно');
@@ -228,14 +228,14 @@ const app = new Vue({
         },
 
         showModalActions() {
-            this.$store.commit('SET_MODAL_ACTIONS_SHOW', {'value': true});
+            this.$store.commit('SET_MODAL_ACTIONS_SHOW', {'value': false});
         },
         closeModalActions() {
             this.$store.commit('SET_MODAL_ACTIONS_SHOW', {'value': false});
             this.$store.commit('SET_IS_SHOW_MODAL_ACTIONS', {'value': false});
         },
         showModal() {
-            this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': true});
+            this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
         },
         closeModal() {
             this.$store.commit('SET_MODAL_ANKETA_SHOW', {'value': false});
