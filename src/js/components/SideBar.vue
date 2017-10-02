@@ -203,7 +203,7 @@
                 var updateStorage = false;
                 var cnt = 0;
                 var payload = {};
-                return this.$store.state.app.FullTree.map(function (item, index, arr) {
+                let res = this.$store.state.app.FullTree.map(function (item, index, arr) {
                     if (self.currentLanguage === 'ru'){
                         item.name = item.name_RU;
                     }
@@ -249,6 +249,8 @@
                     }
                     return item;
                 });
+                res = _.orderBy(res, ['order']);
+                return res;
             },
             urlLogo:function(){
                 return this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.logo;
