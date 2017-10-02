@@ -46,15 +46,9 @@
                     <!--<div class="related-items" v-if="codeFromParent === '482020' && !isActive">{{infoMessageLunch}}-->
                     <div class="related-items" v-if="codeFromParent === '723232' && !isActive">{{infoMessageLunch}}
                     </div>
-
-                    <div class="item-bottom-buttons" v-if="showButtons">
-                        <div class="buttons-add">
-                            <div class="btn-plus_minus minus" @click="">-
-                            </div>
-                            {{count}}
-                            <div class="btn-plus_minus plus" @click="">+
-                            </div>
-                            <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle">
+                    <div class="item-bottom-buttons">
+                        <div class="buttons-add btn-small">
+                            <div class="add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle">
                                 <template v-if="$store.state.settings.language === 'ru'">
                                     {{addingToCartTitle}}
                                 </template>
@@ -62,16 +56,23 @@
                                     {{addingToCartTitleEng}}
                                 </template>
                             </div>
+                            <div class=" btn-add plus" @click="plusOne()">+</div>
+                            <div class=" btn-add count">{{count}}</div>
+                            <div class=" btn-add minus" @click="minusOne()" ()>-</div>
                         </div>
-                        <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp(yacheikaFromParent)">
-                            <template v-if="$store.state.settings.language === 'ru'">
-                                Показать
-                            </template>
-                            <template v-else>
-                                Show
-                            </template>
-                        </div>
+                    </div>
 
+                    <div class="item-bottom-buttons" v-if="showButtons">
+                        <div class="buttons-show" v-if="yacheikaFromParent!==''">
+                            <div class="btn" @click="showInLamp(yacheikaFromParent)">
+                                <template v-if="$store.state.settings.language === 'ru'">
+                                    Показать
+                                </template>
+                                <template v-else>
+                                    Show
+                                </template>
+                            </div>
+                        </div>
                         <div class="related-items" v-if="relatedFromParent.length!==0 || ancorFromParent">
                             <template v-if="$store.state.settings.language === 'ru'">
                                 Предложение от шеф повара
@@ -282,10 +283,100 @@
                 }
                 .item-bottom-buttons {
                     display: block;
-                    .buttons-add{
-                        //float: left;
+                    .btn {
+
                     }
-                    .btn-plus_minus{
+                    .buttons-show {
+                        width: 200px;
+                        height: 60px;
+                        border-radius: 15px;
+                        background-color: #fff;
+                        color: #555;
+                        float: right;
+                        line-height: 60px;
+                        text-align: center;
+                        font-size: x-large;
+                        font-weight: 900;
+                    }
+                    .buttons-add {
+                        &.btn-small {
+                            height: 60px;
+                            border-radius: 15px;
+                            background-color: #fff;
+                            color: #555;
+                            float: right;
+                            line-height: 60px;
+                            text-align: center;
+                            font-size: x-large;
+                            font-weight: 900;
+                            margin: 20px 0px 20px 20px;
+                            div {
+                                float: right;
+                            }
+                            .btn-add {
+                                width: 60px;
+                                &.plus {
+                                    /*background-color: #2e6da4;*/
+                                    border-right: 2px solid gray;
+                                }
+                                &.minus {
+                                    /*background-color: #ff2c42;*/
+                                }
+                                &.count {
+                                    /*background-color: #d01e60;*/
+                                    border-left: 2px solid gray;
+                                    border-right: 2px solid gray;
+                                }
+                            }
+
+                            .add-to-cart {
+                                width: 200px;
+                                height: 60px;
+                                border-radius: 15px;
+                                background-color: #fff;
+                                color: #555;
+                                float: right;
+                                line-height: 60px;
+                                text-align: center;
+                                font-size: x-large;
+                                font-weight: 900;
+                                /*margin: 20px 0px 20px 20px;*/
+                            }
+                        }
+                        /*div {
+                            float: right;
+                        }
+                        .plus {
+                            width: 30px;
+                            background-color: #2e6da4;
+                        }
+                        .minus {
+                            width: 30px;
+                            background-color: #ff2c42;
+                        }
+                        .count {
+                            width: 30px;
+                            background-color: #d01e60;
+                        }
+                        .add-to-cart {
+                            width: 30px;
+                            background-color: #43793e;
+                            .btn {
+                                width: 200px;
+                                height: 60px;
+                                border-radius: 15px;
+                                background-color: #fff;
+                                color: #555;
+                                float: right;
+                                line-height: 60px;
+                                text-align: center;
+                                font-size: x-large;
+                                font-weight: 900;
+                                margin: 20px 0px 20px 20px;
+                            }
+                        }*/
+                    }
+                    /*.btn-plus_minus {
                         float: right;
                     }
                     .btn {
@@ -300,7 +391,7 @@
                         font-size: x-large;
                         font-weight: 900;
                         margin: 20px 0px 20px 20px;
-                    }
+                    }*/
                 }
             }
         }
@@ -446,6 +537,12 @@
             'activeTime', 'vitrina', "related", "code", "charset", "ancorUrl", "ancor"],
 
         methods: {
+            plusOne() {
+                this.count++;
+            },
+            minusOne() {
+                if (this.count > 1) this.count--;
+            },
             goToPage(code) {
                 let prefPath = `/${this.$store.state.settings.language}/menu/`;
                 let path = '';
