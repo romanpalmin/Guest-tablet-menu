@@ -32,20 +32,13 @@
                                 </td>
                             </tr>
                         </template>
-                        <tr class="table-footer" v-if="showDeleteBtn">
-                            <td colspan="2">
+                        <tr class="table-row summary" v-if="showDeleteBtn">
+                            <td colspan="2" class="check-order-string">
                                 {{words.checkOrder}}
                             </td>
                             <td class="">{{words.summary}}</td>
                             <td class=""> {{summary}} ₽</td>
                         </tr>
-                        <!--<tr class="table-footer " v-if="showDeleteBtn">
-                            <td class=""></td>
-                            <td class=""></td>
-                            <td class="">{{words.summary}}</td>
-                            <td class=""> {{summary}} ₽</td>
-                        </tr>-->
-
                         <template class="table-footer">
                             <tr>
                                 <td class="table-header"></td>
@@ -120,6 +113,14 @@
                     padding-top: 10px;
                     padding-bottom: 10px;
                     height: 24px;
+                    &.summary {
+                        height: 100px;
+                        font-size: 14pt;
+                        font-weight: 600;
+                    }
+                    td.check-order-string {
+                        text-align: center;
+                    }
                     .footer {
                         .btn-wrapper {
                             width: 100%;
@@ -211,10 +212,10 @@
         computed: {
             unionStrings: function () {
                 let res = [];
-                _.forEach(_.groupBy(this.positions, 'code'), function (item) {
+                _.forEach(_.groupBy(this.positions, 'code'), item => {
                     let strArray = [];
                     let row = {};
-                    _.forEach(item, function (str) {
+                    _.forEach(item, str => {
                         if (str.stroka) {
                             strArray.push(str.stroka);
                         }
@@ -223,20 +224,21 @@
                         client: item[0].client,
                         code: item[0].code,
                         name: item[0].name,
-                        nameEN: item[0].name_en,
-                        nameRU: item[0].name_ru,
-                        price: 123,
+                        nameEN: this.getItem(item[0].code).name_en,
+                        nameRU: this.getItem(item[0].code).name_ru,
+                        price: this.getItem(item[0].code).price,
                         stroka: strArray,
                     };
-                    res.push(row)
+                    if (row.code) res.push(row);
                 });
                 return res;
             },
-            summary(){
-              let res = this.positions.reduce((sum, currentItem)=>{
-                  return sum + currentItem.price;
-              }, 0);
-              return res;
+            summary() {
+                //console.log(this.$store.state.app.FullTree);
+                let res = this.unionStrings.reduce((sum, currentItem) => {
+                    return sum + currentItem.price * currentItem.stroka.length;
+                }, 0);
+                return res;
             },
             addingToCartStyle: function () {
                 return this.isAdding ? "color:darkgrey" : '';
@@ -279,6 +281,12 @@
         },
 
         methods: {
+            getItem(code) {
+                return _.filter(this.$store.state.app.SourceTree, item => {
+                    return item.code === code;
+                });
+            },
+
             showState: function () {
                 //console.log(orderState);
             },
