@@ -289,6 +289,8 @@ const store = new Vuex.Store({
             [a_types.GET_ORDERS]({commit}, payload){
                 let cb = {};
                 ajax.exec({name: 'order'}, function (resp) {
+                    //alert('answer');
+                    //alert(JSON.stringify(resp.data));
                     cb.data = resp.data;
                     if (payload && payload.callback) {
                         cb.callback = payload.callback;

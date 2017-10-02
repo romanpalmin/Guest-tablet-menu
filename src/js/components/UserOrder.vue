@@ -9,6 +9,7 @@
                             <td class="table-cell col-header col1">{{words.qty}}</td>
                             <td class="table-cell col-header col2">{{words.name}}</td>
                             <td class="table-cell col-header col3"></td>
+                            <td class="table-cell col-header col4"></td>
                         </tr>
                         <template v-for="item in unionStrings">
                             <tr class="table-row">
@@ -23,30 +24,45 @@
                                 </td>
                                 <td class="table-cell col2">{{item.name | deleteQuotes}}</td>
                                 <td class="table-cell col3">
+                                    {{item.price}}×{{(+item.stroka.length)}} ₽
+                                </td>
+                                <td class="table-cell col4">
                                     <img class="delete" @click="deleteFullPositionsNew(item.code)"
                                          :src="urlClose">
                                 </td>
                             </tr>
                         </template>
+                        <tr class="table-footer" v-if="showDeleteBtn">
+                            <td colspan="2">
+                                {{words.checkOrder}}
+                            </td>
+                            <td class="">{{words.summary}}</td>
+                            <td class=""> {{summary}} ₽</td>
+                        </tr>
+                        <!--<tr class="table-footer " v-if="showDeleteBtn">
+                            <td class=""></td>
+                            <td class=""></td>
+                            <td class="">{{words.summary}}</td>
+                            <td class=""> {{summary}} ₽</td>
+                        </tr>-->
+
                         <template class="table-footer">
                             <tr>
                                 <td class="table-header"></td>
                                 <td class="table-header"></td>
                                 <td class="table-header"></td>
+                                <td class="table-header"></td>
                             </tr>
                         </template>
+
                         <tr class="table-row ">
-                            <td colspan="3" class="footer">
+                            <td colspan="4" class="footer">
                                 <div class="btn-wrapper" v-if="showDeleteBtn">
                                     <div class="btn delete-all" @click="deleteAll">{{words.delete}}</div>
                                 </div>
                             </td>
                         </tr>
-                        <tr class="table-row "  v-if="showDeleteBtn">
-                            <td colspan="3" class="footer">
-                                Проверьте Ваш заказ и позовите официанта. Приятного аппетита.
-                            </td>
-                        </tr>
+
                     </table>
 
                 </div>
@@ -161,9 +177,12 @@
                             width: 15%;
                         }
                         &.col2 {
-                            width: 75%;
+                            width: 65%;
                         }
                         &.col3 {
+                            width: 10%;
+                        }
+                        &.col4 {
                             width: 10%;
                         }
                     }
@@ -176,8 +195,8 @@
 <script>
     import _ from 'lodash';
 
-    export default{
-        data(){
+    export default {
+        data() {
             return {
                 positions: [],
                 urlLogo: '',
@@ -204,11 +223,20 @@
                         client: item[0].client,
                         code: item[0].code,
                         name: item[0].name,
-                        stroka: strArray
+                        nameEN: item[0].name_en,
+                        nameRU: item[0].name_ru,
+                        price: 123,
+                        stroka: strArray,
                     };
                     res.push(row)
                 });
                 return res;
+            },
+            summary(){
+              let res = this.positions.reduce((sum, currentItem)=>{
+                  return sum + currentItem.price;
+              }, 0);
+              return res;
             },
             addingToCartStyle: function () {
                 return this.isAdding ? "color:darkgrey" : '';
@@ -219,13 +247,17 @@
                     words.title = 'Вы выбрали:';
                     words.qty = 'КОЛ-ВО';
                     words.name = 'НАИМЕНОВАНИЕ';
-                    words.delete = 'Удалить все выбранное'
+                    words.delete = 'Удалить все выбранное';
+                    words.checkOrder = 'Проверьте Ваш заказ и позовите официанта. Приятного аппетита.';
+                    words.summary = 'ИТОГО:';
                 }
                 else {
                     words.title = 'Your order:';
                     words.qty = 'Q-ty';
                     words.name = 'NAME';
-                    words.delete = 'Delete all'
+                    words.delete = 'Delete all';
+                    words.checkOrder = 'Check your order and call the waiter. Bon appetit.';
+                    words.summary = 'IN TOTAL:';
                 }
                 return words;
             }
@@ -283,7 +315,7 @@
                             return item;
                         });
                     }
-                }
+                };
                 this.$store.dispatch('ADD_TO_CART', payload);
             },
 
@@ -309,11 +341,11 @@
                 const self = this;
                 const payload = {
                     positionId: id,
-                    callback: function(){
+                    callback: function () {
                         self.isAdding = false;
                         self.positions = self.store.app.orders;
                     }
-                }
+                };
                 this.$store.dispatch('EMPTY_STRING_BY_ID', payload);
             },
 
@@ -352,7 +384,7 @@
                         callback: function () {
                             self.positions = self.store.app.orders;
                         }
-                    }
+                    };
                     this.$store.dispatch('GET_ORDERS', payload);
                     self.$store.commit('INCREMENT_ORDER_COUNTER');
                 } else {
@@ -361,7 +393,7 @@
             }
 
         },
-        mounted(){
+        mounted() {
             const self = this;
             this.urlLogo = this.$store.state.settings.urlBase + this.store.settings.urlSmallImage + this.store.settings.images.logo;
             this.urlClose = this.$store.state.settings.urlBase + this.store.settings.urlSmallImage + this.store.settings.images.close;
