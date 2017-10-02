@@ -48,14 +48,20 @@
                     </div>
 
                     <div class="item-bottom-buttons" v-if="showButtons">
-                        <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle">
-                            <template v-if="$store.state.settings.language === 'ru'">
-                                {{addingToCartTitle}}
-                            </template>
-                            <template v-else>
-                                {{addingToCartTitleEng}}
-                            </template>
-
+                        <div class="buttons-add">
+                            <div class="btn-plus_minus minus" @click="">-
+                            </div>
+                            {{count}}
+                            <div class="btn-plus_minus plus" @click="">+
+                            </div>
+                            <div class="btn add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle">
+                                <template v-if="$store.state.settings.language === 'ru'">
+                                    {{addingToCartTitle}}
+                                </template>
+                                <template v-else>
+                                    {{addingToCartTitleEng}}
+                                </template>
+                            </div>
                         </div>
                         <div class="btn" v-if="yacheikaFromParent!==''" @click="showInLamp(yacheikaFromParent)">
                             <template v-if="$store.state.settings.language === 'ru'">
@@ -82,7 +88,7 @@
                                                 {{rel.price}}
                                             </template>
                                             <template v-else>
-                                                <img class="trash" :src="getTrash()" />
+                                                <img class="trash" :src="getTrash()"/>
                                             </template>
 
                                         </div>
@@ -180,7 +186,7 @@
                         border-radius: 30px;
                         position: relative;
                         margin-top: 40px;
-                        .trash{
+                        .trash {
                             padding: 5px;
                         }
                         .related-item-price {
@@ -276,6 +282,12 @@
                 }
                 .item-bottom-buttons {
                     display: block;
+                    .buttons-add{
+                        //float: left;
+                    }
+                    .btn-plus_minus{
+                        float: right;
+                    }
                     .btn {
                         width: 200px;
                         height: 60px;
@@ -297,6 +309,7 @@
 </style>
 <script>
     import getImg from './helpers/importImages.js';
+
     export default {
         data() {
             return {
@@ -306,7 +319,8 @@
                 IsAddingToCart: false,
                 IsAddingAdditonal: false,
                 settings: this.$store.state.settings,
-                countOfCharset: 0
+                countOfCharset: 0,
+                count: 1
             }
         },
         filters: {
@@ -495,7 +509,7 @@
                 this.$store.dispatch('TURN_ON_LAMP', data);
             },
 
-            getTrash(){
+            getTrash() {
                 const res = this.$store.state.settings.urlBase + this.settings.urlBigImage + 'basket2.png';
                 return res;
             },
@@ -521,7 +535,7 @@
         mounted() {
             if (!this.$store.state.settings.isBrowser) {
                 getImg(this.$store.state.settings.urlBase + this.settings.urlSmallImage + this.settings.images.close, (res, isExist) => {
-                    if(isExist){
+                    if (isExist) {
                         this.urlClose = 'file:///storage/emulated/0/StreetFoodBar/images/' + res;
                     }
                 })
