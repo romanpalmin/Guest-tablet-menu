@@ -56,9 +56,9 @@
                                     {{addingToCartTitleEng}}
                                 </template>
                             </div>
-                            <div class=" btn-add plus" @click="plusOne()">+</div>
-                            <div class=" btn-add count">{{count}}</div>
-                            <div class=" btn-add minus" @click="minusOne()" ()>-</div>
+                            <div class=" btn-add plus" @click="plusOne()" :style="addingToCartStyle">+</div>
+                            <div class=" btn-add count" :style="addingToCartStyle">{{count}}</div>
+                            <div class=" btn-add minus" @click="minusOne()" :style="addingToCartStyle">-</div>
                         </div>
                     </div>
 
@@ -321,6 +321,7 @@
                                 }
                                 &.minus {
                                     /*background-color: #ff2c42;*/
+                                    border-radius: 15px;
                                 }
                                 &.count {
                                     /*background-color: #d01e60;*/
@@ -576,14 +577,17 @@
                 if (this.IsAddingToCart) return;
                 let self = this;
                 this.IsAddingToCart = true;
-                let payload = {
-                    positionId: this.positionId,
-                    TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
-                    callback: function () {
-                        self.IsAddingToCart = false
-                    }
-                };
-                this.$store.dispatch('ADD_TO_CART', payload);
+                for (let cnt = 0; cnt < this.count; cnt++){
+                    let payload = {
+                        positionId: this.positionId,
+                        TableNumberPrimary: this.$store.state.app.TableNumberPrimary/*,
+                        callback: function () {
+                            self.IsAddingToCart = false
+                        }*/
+                    };
+                    this.$store.dispatch('ADD_TO_CART', payload);
+                }
+
 
             },
 
