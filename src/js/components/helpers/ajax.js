@@ -3,8 +3,8 @@ import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
 
-const ip = '10.100.50.248';
-/*const ip = '10.10.182.11';*/
+/*const ip = '10.100.50.248';*/
+const ip = '10.10.182.11';
 let userName = 'planshet';
 let password = 'planshet';
 let ajaxServerUrlShort = '';
@@ -126,10 +126,10 @@ function getUrl(operation) {
             break;
         case 'show':
             //url = 'groups=1&shows=1';
-            //url = 'newJsnoShow=1';
-            url = ip === '10.10.182.11'
-                ? 'newJsnoShow=1'
-                : 'newJsonShow=1';
+            url = 'newJsonShow=1';
+            /*url = ip === '10.10.182.11'
+                ? 'newJsonoShow=1'
+                : 'newJsonShow=1';*/
             break;
 
         case 'order':
