@@ -82,15 +82,21 @@
                             </template>
                             <div class="p-item-related ">
                                 <div v-for="rel in relatedFromParent" :data-Code="rel.code"
-                                     @click="add2CartAdditional(rel.code2)" :style="addingToCartStyleAdditional">
-                                    <div :style="getRelatedStyle(rel)" class="related-item">
-                                        <div class="related-item-price product-top-block-price" :data-Code="rel.code2">
-                                            <template v-if="!IsAddingAdditonal">
-                                                {{rel.price}}
-                                            </template>
-                                            <template v-else>
-                                                <img class="trash" :src="getTrash()"/>
-                                            </template>
+                                     @click="add2CartAdditional(rel.code2)">
+                                    <div :style="rel.code2 === currentAdditionalId ? addingToCartStyleAdditional : ''"   class="related-item">
+                                        <div :style="getRelatedStyle(rel)">
+                                            <div class="related-item-price product-top-block-price"
+                                                 :data-Code="rel.code2">
+                                                <template
+                                                        v-if="!IsAddingAdditonal || currentAdditionalId !== rel.code2">
+                                                    {{rel.price}}
+                                                </template>
+                                                <template
+                                                        v-else-if="IsAddingAdditonal && currentAdditionalId === rel.code2">
+                                                    <img class="trash" :src="getTrash()"/>
+                                                </template>
+
+                                            </div>
 
                                         </div>
                                         <div class="related-item-title">
@@ -209,7 +215,7 @@
                         }
                         .related-item-title {
                             position: absolute;
-                            bottom: -70px;
+                            top: 120px;
                             text-align: center;
                             min-height: 70px;
                         }
@@ -410,6 +416,8 @@
                 addToCartBtn: '',
                 IsAddingToCart: false,
                 IsAddingAdditonal: false,
+                currentAdditionalId: 0,
+                IsAddedToCart: false,
                 settings: this.$store.state.settings,
                 countOfCharset: 0,
                 count: 1
@@ -475,11 +483,22 @@
                 return this.yacheika;
             },
             addingToCartTitle: function () {
-                return this.IsAddingToCart ? 'Добавление' : 'Выбрать';
+                let res = '';
+                res = this.IsAddingToCart ? this.IsAddedToCart ? 'Добавлено' : 'Добавление' : 'Выбрать';
+                //return this.IsAddingToCart ? 'Добавление' : 'Выбрать';
+                return res;
             },
             addingToCartTitleEng: function () {
                 return this.IsAddingToCart ? 'Adding' : 'Add';
             },
+
+            addedToCartTitle: function () {
+                return this.IsAddedToCart ? 'Добавлено' : 'Выбрать';
+            },
+            adddToCartTitleEng: function () {
+                return this.IsAddedToCart ? 'Added' : 'Add';
+            },
+
             addingToCartStyle: function () {
                 return this.IsAddingToCart ? "background:#dbdbd7" : '';
             },
@@ -539,10 +558,12 @@
 
         methods: {
             plusOne() {
-                this.count++;
+                if (!this.IsAddedToCart) {
+                    this.count++;
+                }
             },
             minusOne() {
-                if (this.count > 1) this.count--;
+                if (this.count > 1 && !this.IsAddedToCart) this.count--;
             },
             goToPage(code) {
                 let prefPath = `/${this.$store.state.settings.language}/menu/`;
@@ -577,32 +598,30 @@
                 if (this.IsAddingToCart) return;
                 let self = this;
                 this.IsAddingToCart = true;
-                //for (let cnt = 0; cnt < this.count; cnt++){
                 let payload = {
                     positionId: this.positionId,
                     count: this.count,
                     TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
                     callback: function () {
-                        //self.IsAddingToCart = false
-                        alert('Добавлено ' + self.count + ' позиций ' + self.positionId);
+                        self.IsAddedToCart = true;
+                        //alert('Добавлено ' + self.count + ' позиций ' + self.positionId);
                     }
                 };
-                alert(JSON.stringify(payload));
                 this.$store.dispatch('ADD_TO_CART', payload);
-                //}
-
-
             },
 
             add2CartAdditional: function (id) {
                 if (this.IsAddingAdditonal) return;
                 let self = this;
+                this.currentAdditionalId = id;
                 this.IsAddingAdditonal = true;
                 let payload = {
                     positionId: id,
+                    count: 1,
                     TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
                     callback: function () {
                         self.IsAddingAdditonal = false;
+                        self.currentAdditionalId = 0;
                     }
                 };
                 this.$store.dispatch('ADD_TO_CART', payload);
