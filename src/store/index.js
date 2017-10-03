@@ -338,7 +338,8 @@ const store = new Vuex.Store({
                 const options = {
                     name: 'addToOrder',
                     positionId: payload.positionId,
-                    tableId: payload.TableNumberPrimary
+                    tableId: payload.TableNumberPrimary,
+                    count: payload.count
                 };
                 let cb = {};
                 ajax.exec(options, function (response) {

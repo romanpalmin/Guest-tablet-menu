@@ -2,6 +2,7 @@
 import axios from 'axios';
 import crypt from './encryption.js';
 import store from './../../../store';
+
 const ip = '10.100.50.248';
 /*const ip = '10.10.182.11';*/
 let userName = 'planshet';
@@ -54,6 +55,9 @@ let uuid = '';
 //uuid = '10e00be6a70f0bcc';
 //uuid = '8981e83c79f3be00';
 //getTabletName(uuid);
+/*uuid = '7e59b6ef2412e6d9';
+userName = 'tab06';
+password = '06'*/;
 document.addEventListener('deviceready', onDeviceReady, false);
 
 function onDeviceReady() {
@@ -91,7 +95,8 @@ function formAjaxVars(isBaseUrl) {
 
 function executeRequest(url, callback) {
     axios.get(ajaxServerUrlShort + url)
-        .then(function (response) {
+        .then(response => {
+            //alert(JSON.stringify(response));
             if (callback && typeof(callback) === "function") {
                 callback(response);
             }
