@@ -83,20 +83,18 @@
                             <div class="p-item-related ">
                                 <div v-for="rel in relatedFromParent" :data-Code="rel.code"
                                      @click="add2CartAdditional(rel.code2)">
-                                    <div :style="rel.code2 === currentAdditionalId ? addingToCartStyleAdditional : ''"   class="related-item">
-                                        <div :style="getRelatedStyle(rel)">
-                                            <div class="related-item-price product-top-block-price"
-                                                 :data-Code="rel.code2">
-                                                <template
-                                                        v-if="!IsAddingAdditonal || currentAdditionalId !== rel.code2">
-                                                    {{rel.price}}
-                                                </template>
-                                                <template
-                                                        v-else-if="IsAddingAdditonal && currentAdditionalId === rel.code2">
-                                                    <img class="trash" :src="getTrash()"/>
-                                                </template>
-
-                                            </div>
+                                    <div :style="rel.code2 === currentAdditionalId ? addingToCartStyleAdditional+getRelatedStyle(rel) : getRelatedStyle(rel)"
+                                         class="related-item">
+                                        <div class="related-item-price product-top-block-price"
+                                             :data-Code="rel.code2">
+                                            <template
+                                                    v-if="!IsAddingAdditonal || currentAdditionalId !== rel.code2">
+                                                {{rel.price}}
+                                            </template>
+                                            <template
+                                                    v-else-if="IsAddingAdditonal && currentAdditionalId === rel.code2">
+                                                <img class="trash" :src="getTrash()"/>
+                                            </template>
 
                                         </div>
                                         <div class="related-item-title">
@@ -645,7 +643,8 @@
                 } else {
                     res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.imgURL_Sm;
                 }
-                return 'background-image: url(' + res + ');';
+                //res = this.$store.state.settings.urlBase + this.settings.urlBackImage + item.imgURL_Sm;
+                return ';background-image: url(' + res + ');';
             },
             getGroupName(url, code) {
                 if (!url) return;
