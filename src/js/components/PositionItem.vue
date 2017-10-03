@@ -47,7 +47,7 @@
                     <div class="related-items" v-if="codeFromParent === '723232' && !isActive">{{infoMessageLunch}}
                     </div>
                     <div class="item-bottom-buttons">
-                        <div class="buttons-add btn-small">
+                        <div class="buttons-add btn-small" :style="addingToCartStyle">
                             <div class="add-to-cart" @click="add2cart(positionId)" :style="addingToCartStyle">
                                 <template v-if="$store.state.settings.language === 'ru'">
                                     {{addingToCartTitle}}
@@ -577,16 +577,19 @@
                 if (this.IsAddingToCart) return;
                 let self = this;
                 this.IsAddingToCart = true;
-                for (let cnt = 0; cnt < this.count; cnt++){
-                    let payload = {
-                        positionId: this.positionId,
-                        TableNumberPrimary: this.$store.state.app.TableNumberPrimary/*,
-                        callback: function () {
-                            self.IsAddingToCart = false
-                        }*/
-                    };
-                    this.$store.dispatch('ADD_TO_CART', payload);
-                }
+                //for (let cnt = 0; cnt < this.count; cnt++){
+                let payload = {
+                    positionId: this.positionId,
+                    count: this.count,
+                    TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
+                    callback: function () {
+                        //self.IsAddingToCart = false
+                        alert('Добавлено ' + self.count + ' позиций ' + self.positionId);
+                    }
+                };
+                alert(JSON.stringify(payload));
+                this.$store.dispatch('ADD_TO_CART', payload);
+                //}
 
 
             },

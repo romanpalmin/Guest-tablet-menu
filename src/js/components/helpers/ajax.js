@@ -97,7 +97,6 @@ function executeRequest(url, callback) {
             }
         })
         .catch(function (error) {
-            console.log(error);
             if (callback && typeof(callback) === "function") {
                 callback(
                     {
@@ -142,7 +141,7 @@ function getUrl(operation) {
             url = `groups=1&category=&tovar=${operation.positionId}&dellcartstr=1`;
             break;
         case 'addToOrder':
-            url = `groups=1&addcart=1&category=1&tovar=${operation.positionId}&table=${operation.tableId}`;
+            url = `groups=1&addcart=1&category=1&tovar=${operation.positionId}&table=${operation.tableId}&count=${operation.count}`;
             break;
         case 'rebuildTable':
             url = `groups=1&addcart=1&rebuildtable=${operation.stringOfCodes}`;
