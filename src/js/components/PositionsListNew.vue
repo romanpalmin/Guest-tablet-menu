@@ -37,7 +37,7 @@
                                                     </template>
                                                     <template v-else>
                                                         <div :style="getTitleStyle(sub0)">{{sub0.name_en |
-                                                            deleteQuotes}}
+                                                        deleteQuotes}}
                                                         </div>
                                                     </template>
                                                 </template>
@@ -71,13 +71,8 @@
                                             <div class="wrapper-for-add-btn">
                                                 <div class="btn-add-to-cart" @click="add2cart(sub0.code)"
                                                      :style="addingToCartStyle">
-                                                    <template
-                                                            v-if="$store.state.settings.language === 'ru'">
-                                                        {{addingToCartTitle}}
-                                                    </template>
-                                                    <template v-else>
-                                                        {{addingToCartTitleEng}}
-                                                    </template>
+                                                    {{getAddedTitle(sub0.code)}}
+
                                                 </div>
                                             </div>
                                         </div>
@@ -170,14 +165,9 @@
                                                         <div class="wrapper-for-add-btn">
                                                             <div class="btn-add-to-cart"
                                                                  @click="add2cart(sub1item.code)"
-                                                                 :style="addingToCartStyle">
-                                                                <template
-                                                                        v-if="$store.state.settings.language === 'ru'">
-                                                                    {{addingToCartTitle}}
-                                                                </template>
-                                                                <template v-else>
-                                                                    {{addingToCartTitleEng}}
-                                                                </template>
+                                                                 :style="currentAddingId === sub1item.code ? addingToCartStyle : ''">
+                                                                {{getAddedTitle(sub1item.code)}}
+
                                                             </div>
                                                         </div>
                                                     </div>
@@ -441,7 +431,8 @@
                 related: [],
                 charset: [],
                 ancor: '',
-                ancorUrl: ''
+                ancorUrl: '',
+                currentAddingId: 0
             }
         },
         computed: {
@@ -457,7 +448,7 @@
             currentData: function () {
                 return _.sortBy(this.data, ['order']);
             },
-            changePage: function(){
+            changePage: function () {
                 return this.$store.state.app.changePage;
             }
 
@@ -466,7 +457,7 @@
             categoryId: function () {
                 this.rebuildData();
             },
-            changePage: function(){
+            changePage: function () {
                 this.scrollToHash();
             }
         },
@@ -482,6 +473,15 @@
         },
 
         methods: {
+            getAddedTitle(id) {
+                return this.settings.language === 'ru'
+                    ? id === this.currentAddingId
+                        ? 'Добавление'
+                        : 'Выбрать'
+                    : id === this.currentAddingId
+                        ? 'Adding'
+                        : 'Add';
+            },
 
             getNewJson() {
                 this.$store.dispatch('GET_FULL_TREE');
@@ -512,7 +512,7 @@
                 path += name + '.png';
                 if (!this.$store.state.settings.isBrowser) {
                     getImg(path, (res, isExist) => {
-                        if(isExist){
+                        if (isExist) {
                             path = 'file:///storage/emulated/0/StreetFoodBar/images/' + res;
                         }
                     })
@@ -594,11 +594,14 @@
                 if (this.IsAddingToCart) return;
                 let self = this;
                 this.IsAddingToCart = true;
+                this.currentAddingId = id;
                 let payload = {
                     positionId: id,
+                    count: 1,
                     TableNumberPrimary: this.$store.state.app.TableNumberPrimary,
                     callback: function () {
-                        self.IsAddingToCart = false
+                        self.IsAddingToCart = false;
+                        self.currentAddingId = 0;
                     }
                 };
                 this.$store.dispatch('ADD_TO_CART', payload);
@@ -611,13 +614,13 @@
                 this.code = item.code;
                 this.urlImageLarge = item.urlImageLarge;
                 this.price = item.price,
-                this.name = this.$store.state.settings.language === 'ru' ? item.name : item.name_en,
-                this.name_ru = item.name_ru,
-                this.name_en = item.name_en,
-                this.description = this.$store.state.settings.language === 'ru' ? item.description_ru : item.description_en,
-                this.description_ru = item.description_ru,
-                this.description_en = item.description_en,
-                this.yacheika = item.yacheika === null ? '' : item.yacheika;
+                    this.name = this.$store.state.settings.language === 'ru' ? item.name : item.name_en,
+                    this.name_ru = item.name_ru,
+                    this.name_en = item.name_en,
+                    this.description = this.$store.state.settings.language === 'ru' ? item.description_ru : item.description_en,
+                    this.description_ru = item.description_ru,
+                    this.description_en = item.description_en,
+                    this.yacheika = item.yacheika === null ? '' : item.yacheika;
                 this.activeTime = group.activeTime;
                 this.vitrina = 'test';//item.vitrina;
                 this.related = item.related;
@@ -646,11 +649,11 @@
                     goTopBtn.classList.remove('back_to_top-show');
                 }
             },
-            scrollToHash(){
+            scrollToHash() {
                 let hash = this.$router.currentRoute.params.hash;
-                if (hash && hash !== '' ){
-                    setTimeout(()=>{
-                        let el = document.querySelector('a.hash-'+hash);
+                if (hash && hash !== '') {
+                    setTimeout(() => {
+                        let el = document.querySelector('a.hash-' + hash);
                         if (!el) return;
                         el.scrollIntoView(true);
                         let panel = document.querySelector('.rolling');
@@ -679,9 +682,4 @@
             'position': Position
         }
     }
-
-
-
-
-
 </script>
