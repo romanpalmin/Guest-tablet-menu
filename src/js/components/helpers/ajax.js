@@ -123,9 +123,10 @@ function getUrl(operation) {
         case 'show':
             //url = 'groups=1&shows=1';
             //url = 'newJsnoShow=1';
-            url = ip === '10.10.182.11'
+            /*url = ip === '10.10.182.11'
                 ? 'newJsnoShow=1'
-                : 'newJsonShow=1';
+                : 'newJsonShow=1';*/
+            url = 'newJsonShow=1';
             break;
 
         case 'order':
