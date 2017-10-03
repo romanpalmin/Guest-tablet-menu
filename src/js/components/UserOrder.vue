@@ -186,10 +186,10 @@
                             width: 15%;
                         }
                         &.col2 {
-                            width: 65%;
+                            width: 60%;
                         }
                         &.col3 {
-                            width: 10%;
+                            width: 15%;
                         }
                         &.col4 {
                             width: 10%;
@@ -229,20 +229,21 @@
                         }
                     });
                     let it = this.getItem(item[0].code)[0];
-                    row = {
-                        client: item[0].client,
-                        code: item[0].code,
-                        name: item[0].name,
-                        nameEN: it.name_en,
-                        nameRU: it.name_ru,
-                        price: it.price,
-                        stroka: strArray,
-                    };
-                    if (row.code) {
-                        res.push(row);
+                    if (it) {
+                        row = {
+                            client: item[0].client,
+                            code: item[0].code,
+                            name: item[0].name,
+                            nameEN: it.name_en,
+                            nameRU: it.name_ru,
+                            price: it.price,
+                            stroka: strArray,
+                        };
+                        if (row.code) {
+                            res.push(row);
+                        }
                     }
                 });
-                //alert(JSON.stringify(res));
                 return res;
             },
             summary() {
@@ -326,6 +327,7 @@
                 let self = this;
                 const payload = {
                     positionId: id,
+                    count: 1,
                     tableId: this.store.app.TableNumberPrimary,
                     callback: function () {
                         self.isAdding = false;
