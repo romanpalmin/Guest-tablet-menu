@@ -22,7 +22,15 @@
                                          @click="setCurrentPressedPlus" @click="plus(item.code)">+
                                     </div>
                                 </td>
-                                <td class="table-cell col2">{{item.name | deleteQuotes}}</td>
+                                <td class="table-cell col2">
+                                    <template v-if="$store.state.settings.language === 'ru'">
+                                        {{item.nameRU | deleteQuotes}}
+                                    </template>
+                                    <template v-else>
+                                        {{item.nameEN | deleteQuotes}}
+                                    </template>
+                                </td>
+
                                 <td class="table-cell col3">
                                     {{item.price}}×{{(+item.stroka.length)}} ₽
                                 </td>
@@ -220,17 +228,21 @@
                             strArray.push(str.stroka);
                         }
                     });
+                    let it = this.getItem(item[0].code)[0];
                     row = {
                         client: item[0].client,
                         code: item[0].code,
                         name: item[0].name,
-                        nameEN: this.getItem(item[0].code).name_en,
-                        nameRU: this.getItem(item[0].code).name_ru,
-                        price: this.getItem(item[0].code).price,
+                        nameEN: it.name_en,
+                        nameRU: it.name_ru,
+                        price: it.price,
                         stroka: strArray,
                     };
-                    if (row.code) res.push(row);
+                    if (row.code) {
+                        res.push(row);
+                    }
                 });
+                //alert(JSON.stringify(res));
                 return res;
             },
             summary() {
@@ -282,7 +294,7 @@
 
         methods: {
             getItem(code) {
-                return _.filter(this.$store.state.app.SourceTree, item => {
+                return _.filter(this.$store.state.app.SourceTree.items, item => {
                     return item.code === code;
                 });
             },
