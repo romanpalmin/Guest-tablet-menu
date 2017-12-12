@@ -1,7 +1,7 @@
 ### Project description / Описание проекта
 
 #### ENG
-##### E-menu of the restaurant visitor
+#### E-menu of the restaurant visitor
 - **The application provides the following functions to the restaurant administrator:**
   - update the current menu on-line on all tablets-menu visitors from the administrative interface;
   - manage ad unit system;
@@ -17,7 +17,7 @@
   - change the language of the menu
 
 #### RUS
-##### Электронное меню посетителя ресторана
+#### Электронное меню посетителя ресторана
 - **Приложение предоставляет администратору ресторана следующий функционал:**
   - обновлять текущее меню он-лайн на всех планшетах-меню посетителей из административного интерфейса;
   - управлять системой рекламных блоков;
