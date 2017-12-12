@@ -3,7 +3,7 @@
 #### ENG
 ##### E-menu of the restaurant visitor
 - **The application provides the following functions to the restaurant administrator:**
- - update the current menu on-line on all tablets-menu visitors from the administrative interface;
+-- update the current menu on-line on all tablets-menu visitors from the administrative interface;
  - manage ad unit system;
  - customize and set the current stocks of the restaurant;
  - set the schedule of events in the restaurant
